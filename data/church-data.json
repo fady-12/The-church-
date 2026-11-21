@@ -1,7 +1,7 @@
 {
   "churchName": "الكنيسة الرسولية الأولى بالعزية",
   "systemTitle": "نظام الخدام",
-  "updatedAt": "2026-11-21T18:16:05.684Z",
+  "updatedAt": "2026-11-21T18:16:08.968Z",
   "revision": 11,
   "adminPasswordHash": "c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646",
   "members": [
@@ -38,12 +38,12 @@
   },
   "transactions": [
     {
-      "id": "tx_1795284965684_46x",
+      "id": "tx_1795284968968_247",
       "memberId": "m_1795284609883_9cu",
       "memberName": "Fady Safwat",
       "delta": 2,
       "reason": "حضور اجتماع (2026-11-21)",
-      "timestamp": "2026-11-21T18:16:05.684Z"
+      "timestamp": "2026-11-21T18:16:08.968Z"
     },
     {
       "id": "t1",
