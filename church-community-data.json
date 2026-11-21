@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-21T20:57:24.603Z",
+  "updatedAt": "2026-11-21T20:59:06.777Z",
   "leaderSecretHash": "f84ac7ba58ed87643dd1daed19d54dc7b4b722ac1e99b942ea1044e019bb6b13",
   "session": {
     "attendeeName": "مخدوم سريع",
@@ -59,20 +59,6 @@
   },
   "quizScores": {
     "2026-11-21": {
-      "زائر": {
-        "answers": {},
-        "bonusClaimed": false,
-        "submittedPoints": 0,
-        "submittedCount": 0
-      },
-      "مخدوم سريع": {
-        "answers": {
-          "1": 2
-        },
-        "bonusClaimed": false,
-        "submittedPoints": 0,
-        "submittedCount": 0
-      },
       "خادم الخدمة (خادم)": {
         "answers": {},
         "bonusClaimed": false,
