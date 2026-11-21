@@ -1,8 +1,8 @@
 {
   "churchName": "الكنيسة الرسولية الأولى بالعزية",
   "systemTitle": "نظام الخدام",
-  "updatedAt": "2026-11-21T18:30:58.309Z",
-  "revision": 34,
+  "updatedAt": "2026-11-21T18:30:15.610Z",
+  "revision": 35,
   "adminPasswordHash": "c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646",
   "members": [
     {
@@ -18,6 +18,13 @@
       "role": "شباب",
       "phone": "01080783823",
       "points": 12
+    },
+    {
+      "id": "m_1795285815610_zaa",
+      "name": "Steven Safwat",
+      "role": "شباب",
+      "phone": "01220010257",
+      "points": 10
     }
   ],
   "attendance": {
