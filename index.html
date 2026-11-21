@@ -2,1724 +2,898 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>منظومة خدمة الكنيسة المتكاملة</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة الكنيسة - المسابقات والافتقاد</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #1e3a8a;
             --primary-light: #3b82f6;
-            --secondary: #f59e0b;
-            --bg-main: #f1f5f9;
-            --bg-card: #ffffff;
-            --text-dark: #0f172a;
-            --text-muted: #64748b;
-            --success: #10b981;
-            --danger: #ef4444;
-            --chat-bg: #efeae2;
-            --chat-sent: #d9fdd3;
-            --chat-received: #ffffff;
-            --border-radius: 14px;
-            --shadow: 0 4px 12px rgba(0,0,0,0.06);
+            --gold: #d97706;
+            --bg: #f1f5f9;
+            --card: #ffffff;
+            --text: #1e293b;
+            --danger: #dc2626;
+            --success: #16a34a;
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Cairo', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            background-color: var(--bg-main);
-            color: var(--text-dark);
-            padding-bottom: 75px;
-            overflow-x: hidden;
-        }
-
+        * { box-sizing: border-box; font-family: 'Cairo', sans-serif; margin: 0; padding: 0; }
+        body { background: var(--bg); color: var(--text); padding-bottom: 70px; }
+        
         /* Header */
         header {
-            background: linear-gradient(135deg, var(--primary), #1d4ed8);
+            background: linear-gradient(135deg, var(--primary), #172554);
             color: white;
-            padding: 14px 16px;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
         }
-
-        .header-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .header-title h1 {
-            font-size: 1.15rem;
-            font-weight: 800;
-        }
-
-        .sync-badge {
-            font-size: 0.72rem;
-            padding: 4px 10px;
-            border-radius: 20px;
-            background: rgba(255,255,255,0.2);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-        }
-
-        .sync-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #94a3b8;
-        }
-
-        .sync-dot.connected { background: #34d399; box-shadow: 0 0 6px #34d399; }
-        .sync-dot.syncing { background: #fbbf24; animation: pulse 1s infinite; }
-        .sync-dot.error { background: #f87171; }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.3; }
-            100% { opacity: 1; }
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .icon-btn {
+        .logo { font-size: 1.2rem; font-weight: 800; display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+        .admin-trigger {
             background: rgba(255,255,255,0.15);
-            border: none;
+            border: 1px solid rgba(255,255,255,0.3);
             color: white;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
             cursor: pointer;
-            font-size: 1rem;
-            transition: 0.2s;
         }
 
-        .icon-btn:active { transform: scale(0.92); }
-        .icon-btn.admin-active { background: var(--secondary); color: #000; }
-
-        /* Container & Views */
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 14px;
-        }
-
-        .view-section {
-            display: none;
-            animation: fadeIn 0.25s ease;
-        }
-
-        .view-section.active { display: block; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Cards & Stats */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 16px;
-        }
-
-        .stat-card {
-            background: var(--bg-card);
-            padding: 12px 8px;
-            border-radius: var(--border-radius);
-            text-align: center;
-            box-shadow: var(--shadow);
-        }
-
-        .stat-val {
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: var(--primary);
-        }
-
-        .stat-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
+        /* Container */
+        .container { max-width: 800px; margin: 15px auto; padding: 0 15px; }
         .card {
-            background: var(--bg-card);
-            border-radius: var(--border-radius);
-            padding: 16px;
-            margin-bottom: 14px;
-            box-shadow: var(--shadow);
+            background: var(--card);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 8px;
-        }
-
-        .card-title {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        h2, h3 { color: var(--primary); margin-bottom: 12px; }
 
         /* Inputs & Buttons */
         input, select, textarea {
             width: 100%;
-            padding: 10px 12px;
-            border: 1.5px solid #cbd5e1;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            outline: none;
-            transition: 0.2s;
-            background: #f8fafc;
-        }
-
-        input:focus, select:focus {
-            border-color: var(--primary-light);
-            background: #fff;
-        }
-
-        .btn {
-            padding: 10px 16px;
-            border: none;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            transition: 0.2s;
-        }
-
-        .btn:active { transform: scale(0.96); }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-success { background: var(--success); color: white; }
-        .btn-danger { background: var(--danger); color: white; }
-        .btn-warning { background: var(--secondary); color: #000; }
-        .btn-outline { background: transparent; border: 1.5px solid #cbd5e1; color: var(--text-dark); }
-        .btn-sm { padding: 6px 10px; font-size: 0.8rem; border-radius: 8px; }
-
-        /* Member List */
-        .search-bar {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-
-        .member-item {
-            background: var(--bg-card);
-            border-radius: 12px;
             padding: 12px;
-            margin-bottom: 10px;
-            box-shadow: var(--shadow);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            border-right: 4px solid #cbd5e1;
-        }
-
-        .member-item.present { border-right-color: var(--success); }
-        .member-item.absent { border-right-color: var(--danger); }
-
-        .member-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .member-info h3 {
-            font-size: 1rem;
-            font-weight: 700;
-        }
-
-        .member-meta {
-            font-size: 0.78rem;
-            color: var(--text-muted);
-            display: flex;
-            gap: 10px;
-            margin-top: 2px;
-        }
-
-        .points-badge {
-            background: #fef3c7;
-            color: #b45309;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-weight: 800;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .member-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            padding-top: 8px;
-            border-top: 1px dashed #e2e8f0;
-        }
-
-        .att-btn {
-            flex: 1;
-            min-width: 70px;
-        }
-
-        .att-btn.active-present { background: var(--success); color: white; }
-        .att-btn.active-absent { background: var(--danger); color: white; }
-
-        /* Admin Only Elements */
-        .admin-only { display: none !important; }
-        body.is-admin .admin-only { display: inline-flex !important; }
-        body.is-admin .admin-block { display: block !important; }
-        .admin-block { display: none !important; }
-
-        /* Chat UI (WhatsApp Style) */
-        .chat-wrapper {
-            background: var(--chat-bg);
-            border-radius: var(--border-radius);
-            height: calc(100vh - 155px);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: var(--shadow);
             border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-size: 1rem;
         }
-
-        .chat-header-bar {
-            background: #075e54;
-            color: white;
-            padding: 10px 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
-            background-size: 16px 16px;
-        }
-
-        .msg-bubble {
-            max-width: 80%;
-            padding: 8px 12px;
-            border-radius: 12px;
-            position: relative;
-            font-size: 0.92rem;
-            line-height: 1.4;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.12);
-            word-wrap: break-word;
-        }
-
-        .msg-received {
-            background: var(--chat-received);
-            align-self: flex-start;
-            border-top-right-radius: 2px;
-        }
-
-        .msg-sent {
-            background: var(--chat-sent);
-            align-self: flex-end;
-            border-top-left-radius: 2px;
-        }
-
-        .msg-sender {
-            font-size: 0.72rem;
-            font-weight: 800;
-            color: #075e54;
-            margin-bottom: 2px;
-            display: flex;
-            justify-content: space-between;
-            gap: 8px;
-        }
-
-        .msg-time {
-            font-size: 0.65rem;
-            color: #64748b;
-            text-align: left;
-            margin-top: 3px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .chat-input-area {
-            background: #f0f2f5;
-            padding: 8px 10px;
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .chat-input-area input {
-            border-radius: 20px;
-            background: white;
-            border: none;
-            padding: 10px 15px;
-        }
-
-        .send-btn {
-            background: #00a884;
+        button {
+            background: var(--primary);
             color: white;
             border: none;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-
-        /* Daily 100 Quiz UI */
-        .quiz-header-card {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            color: white;
-            border-radius: var(--border-radius);
-            padding: 16px;
-            margin-bottom: 14px;
-            box-shadow: var(--shadow);
-        }
-
-        .quiz-progress-bar {
-            width: 100%;
-            height: 8px;
-            background: rgba(255,255,255,0.25);
+            padding: 10px 18px;
             border-radius: 10px;
-            margin: 10px 0;
-            overflow: hidden;
-        }
-
-        .quiz-progress-fill {
-            height: 100%;
-            background: #fbbf24;
-            width: 1%;
-            transition: width 0.3s ease;
-        }
-
-        .option-btn {
-            width: 100%;
-            text-align: right;
-            padding: 12px 14px;
-            margin-bottom: 8px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 10px;
-            background: #f8fafc;
-            font-weight: 600;
-            font-size: 0.95rem;
+            font-weight: 700;
             cursor: pointer;
             transition: 0.2s;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            font-size: 0.95rem;
         }
-
-        .option-btn:hover:not(:disabled) { border-color: var(--primary-light); background: #eff6ff; }
-        .option-btn.correct { background: #d1fae5; border-color: var(--success); color: #065f46; }
-        .option-btn.wrong { background: #fee2e2; border-color: var(--danger); color: #991b1b; }
-
-        /* Leaderboard */
-        .rank-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 12px;
-            border-bottom: 1px solid #f1f5f9;
-        }
-
-        .rank-num {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: #e2e8f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 0.85rem;
-            margin-left: 10px;
-        }
-
-        .rank-1 .rank-num { background: #fef08a; color: #854d0e; }
-        .rank-2 .rank-num { background: #e2e8f0; color: #334155; }
-        .rank-3 .rank-num { background: #fed7aa; color: #9a3412; }
+        button:hover { opacity: 0.9; }
+        button.gold { background: var(--gold); }
+        button.success { background: var(--success); }
+        button.danger { background: var(--danger); }
+        button.outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
+        button.sm { padding: 5px 10px; font-size: 0.8rem; border-radius: 7px; }
 
         /* Bottom Navigation */
-        .bottom-nav {
+        .nav-bar {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: #ffffff;
+            background: white;
             display: flex;
             justify-content: space-around;
-            padding: 8px 4px;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+            padding: 10px 5px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
             z-index: 100;
-            border-top: 1px solid #e2e8f0;
         }
-
         .nav-item {
+            background: none;
+            color: #64748b;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 3px;
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.72rem;
-            font-weight: 700;
-            cursor: pointer;
-            flex: 1;
-            border: none;
-            background: none;
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 8px;
         }
+        .nav-item.active { color: var(--primary); background: #eff6ff; }
 
-        .nav-item i { font-size: 1.2rem; }
-        .nav-item.active { color: var(--primary); }
-
-        /* Modals */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.6);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 999;
-            padding: 16px;
+        /* Quiz Styles */
+        .question-box {
+            border-bottom: 1px solid #e2e8f0;
+            padding: 15px 0;
         }
-
-        .modal-overlay.open { display: flex; }
-
-        .modal-box {
-            background: white;
-            width: 100%;
-            max-width: 440px;
-            border-radius: 16px;
-            padding: 20px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-
-        .form-group { margin-bottom: 12px; }
-        .form-group label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 700;
-            margin-bottom: 4px;
-            color: var(--text-dark);
-        }
-
-        /* Toast Notification */
-        .toast {
-            position: fixed;
-            top: 70px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #1e293b;
-            color: white;
-            padding: 10px 18px;
-            border-radius: 30px;
-            font-size: 0.85rem;
+        .question-title { font-weight: 700; margin-bottom: 10px; color: #0f172a; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        @media(max-width: 500px) { .options-grid { grid-template-columns: 1fr; } }
+        .option-btn {
+            background: #f8fafc;
+            color: var(--text);
+            border: 1px solid #cbd5e1;
+            text-align: right;
             font-weight: 600;
-            z-index: 2000;
-            display: none;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            white-space: nowrap;
         }
+        .option-btn.selected { background: #dbeafe; border-color: var(--primary); color: var(--primary); }
+        .option-btn.correct { background: #dcfce7; border-color: var(--success); color: var(--success); }
+        .option-btn.wrong { background: #fee2e2; border-color: var(--danger); color: var(--danger); }
+
+        /* Chat Styles */
+        .chat-box {
+            height: 350px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px;
+            background: #f8fafc;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .msg {
+            background: white;
+            padding: 10px 14px;
+            border-radius: 12px;
+            max-width: 85%;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            align-self: flex-start;
+            position: relative;
+        }
+        .msg.mine { background: #dbeafe; align-self: flex-end; }
+        .msg-header { font-size: 0.75rem; font-weight: 700; color: var(--primary); margin-bottom: 3px; display: flex; justify-content: space-between; gap: 10px; }
+        .msg-time { font-size: 0.65rem; color: #64748b; }
+
+        /* Leaderboard & Admin Tables */
+        .member-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .badge {
+            background: #fef3c7;
+            color: #b45309;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 0.85rem;
+        }
+        .hidden { display: none !important; }
+        
+        /* Modal */
+        .modal {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 200; padding: 15px;
+        }
+        .modal-content { background: white; padding: 20px; border-radius: 16px; width: 100%; max-width: 450px; max-height: 90vh; overflow-y: auto; }
+        .status-bar { font-size: 0.8rem; padding: 6px 12px; border-radius: 8px; margin-bottom: 10px; background: #e0f2fe; color: #0369a1; display: flex; justify-content: space-between; align-items: center; }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <header>
-        <div class="header-title">
-            <i class="fas fa-church fa-lg"></i>
-            <div>
-                <h1 id="churchNameDisplay">خدمة الكنيسة</h1>
-                <div class="sync-badge" onclick="syncWithGitHub(true)" title="اضغط للمزامنة الفورية">
-                    <span class="sync-dot" id="syncDot"></span>
-                    <span id="syncText">وضع محلي</span>
-                </div>
-            </div>
-        </div>
-        <div class="header-actions">
-            <button class="icon-btn" onclick="openModal('userIdentityModal')" title="اختيار اسمك">
-                <i class="fas fa-user"></i>
-            </button>
-            <button class="icon-btn" id="adminToggleBtn" onclick="handleAdminClick()" title="دخول الخدام / المشرفين">
-                <i class="fas fa-lock"></i>
-            </button>
-            <button class="icon-btn admin-only" onclick="openModal('settingsModal')" title="إعدادات GitHub والنظام">
-                <i class="fas fa-cog"></i>
-            </button>
-        </div>
-    </header>
+<header>
+    <div class="logo" onclick="handleLogoTap()">✝️ بوابة الكنيسة</div>
+    <div>
+        <span id="userBadge" style="font-size: 0.85rem; margin-left: 8px;"></span>
+        <button class="admin-trigger" id="adminBtn" onclick="openAdminLogin()">🔒 دخول الخادم</button>
+    </div>
+</header>
 
-    <div id="toast" class="toast"></div>
-
-    <div class="container">
-
-        <!-- 1. Attendance & Members View -->
-        <section id="view-members" class="view-section active">
-            <!-- Verse of the Day -->
-            <div class="card" style="background: linear-gradient(to left, #eff6ff, #ffffff); border-right: 4px solid var(--primary);">
-                <div style="font-size: 0.75rem; color: var(--primary); font-weight: 800; margin-bottom: 4px;">
-                    <i class="fas fa-book-bible"></i> آية اليوم
-                </div>
-                <p id="dailyVerse" style="font-size: 0.9rem; font-weight: 700; color: #1e293b;"></p>
-            </div>
-
-            <!-- Stats -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-val" id="statTotal">0</div>
-                    <div class="stat-label">إجمالي المخدومين</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-val" style="color: var(--success);" id="statPresent">0</div>
-                    <div class="stat-label">حضور اليوم</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-val" style="color: var(--danger);" id="statAbsent">0</div>
-                    <div class="stat-label">غياب اليوم</div>
-                </div>
-            </div>
-
-            <!-- Date & Add Member -->
-            <div class="card">
-                <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 10px;">
-                    <label style="font-weight: 700; font-size: 0.85rem; white-space: nowrap;">تاريخ اليوم:</label>
-                    <input type="date" id="attendanceDate" onchange="renderMembers()">
-                    <button class="btn btn-primary btn-sm admin-only" onclick="openModal('addMemberModal')" style="white-space: nowrap;">
-                        <i class="fas fa-user-plus"></i> إضافة عضو
-                    </button>
-                </div>
-
-                <div class="search-bar">
-                    <input type="text" id="memberSearch" placeholder="ابحث بالاسم أو الفصل..." oninput="renderMembers()">
-                    <select id="filterStatus" onchange="renderMembers()" style="width: 130px;">
-                        <option value="all">الكل</option>
-                        <option value="present">الحاضرون</option>
-                        <option value="absent">الغائبون</option>
-                        <option value="unmarked">لم يسجل</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Members List -->
-            <div id="membersListContainer"></div>
-        </section>
-
-        <!-- 2. WhatsApp Style Chat View -->
-        <section id="view-chat" class="view-section">
-            <div class="chat-wrapper">
-                <div class="chat-header-bar">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <i class="fas fa-users fa-lg"></i>
-                        <div>
-                            <div style="font-weight: 700; font-size: 0.95rem;">جروب الكنيسة والخدمة</div>
-                            <div style="font-size: 0.72rem; opacity: 0.85;" id="chatActiveUserLabel">أنت تتحدث كـ: زائر</div>
-                        </div>
-                    </div>
-                    <div style="display: flex; gap: 6px;">
-                        <button class="icon-btn" style="width: 30px; height: 30px; font-size: 0.8rem;" onclick="syncWithGitHub(true)" title="تحديث الرسائل">
-                            <i class="fas fa-sync-alt"></i>
-                        </button>
-                        <button class="icon-btn admin-only" style="width: 30px; height: 30px; font-size: 0.8rem; background: var(--danger);" onclick="clearAllChat()" title="مسح المحادثة">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="chat-messages" id="chatMessagesBox"></div>
-
-                <form class="chat-input-area" onsubmit="sendChatMessage(event)">
-                    <input type="text" id="chatInput" placeholder="اكتب رسالة للأعضاء..." autocomplete="off">
-                    <button type="submit" class="send-btn">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </form>
-            </div>
-        </section>
-
-        <!-- 3. Daily 100 AI Questions View -->
-        <section id="view-quiz" class="view-section">
-            <div class="quiz-header-card">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-weight: 800; font-size: 1.05rem;"><i class="fas fa-robot"></i> تحدي الـ 100 سؤال اليومي</span>
-                    <span id="quizDateBadge" style="background: rgba(0,0,0,0.25); padding: 3px 10px; border-radius: 12px; font-size: 0.75rem;"></span>
-                </div>
-                <p style="font-size: 0.8rem; opacity: 0.9; margin-top: 4px;">100 سؤال روحي وكتابي وطقسي متجدد تلقائياً كل يوم بالذكاء الاصطناعي. كل إجابة صحيحة تمنحك نقاطاً!</p>
-                
-                <div class="quiz-progress-bar">
-                    <div class="quiz-progress-fill" id="quizProgressBar"></div>
-                </div>
-                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700;">
-                    <span id="quizCounterText">السؤال 1 من 100</span>
-                    <span id="quizScoreText">نقاطك اليوم: 0</span>
-                </div>
-            </div>
-
-            <div class="card" id="quizCardContainer">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                    <span id="quizCategoryBadge" style="background: #e0e7ff; color: #3730a3; padding: 2px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700;">الكتاب المقدس</span>
-                    <button class="btn btn-outline btn-sm" onclick="generateCustomAIQuestions()" title="توليد أسئلة إضافية بالذكاء الاصطناعي">
-                        <i class="fas fa-wand-magic-sparkles"></i> أسئلة AI مخصصة
-                    </button>
-                </div>
-                <h3 id="quizQuestionText" style="font-size: 1.05rem; margin-bottom: 14px; line-height: 1.5;">جاري تحميل السؤال...</h3>
-                <div id="quizOptionsContainer"></div>
-                
-                <div style="display: flex; justify-content: space-between; margin-top: 14px; gap: 8px;">
-                    <button class="btn btn-outline" onclick="prevQuestion()"><i class="fas fa-arrow-right"></i> السابق</button>
-                    <button class="btn btn-primary" onclick="nextQuestion()">التالي <i class="fas fa-arrow-left"></i></button>
-                </div>
-            </div>
-        </section>
-
-        <!-- 4. Leaderboard & Reports View -->
-        <section id="view-leaderboard" class="view-section">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><i class="fas fa-trophy" style="color: var(--secondary);"></i> لوحة الشرف والنقاط</div>
-                    <button class="btn btn-outline btn-sm" onclick="exportToCSV()">
-                        <i class="fas fa-file-excel"></i> تصدير التقرير
-                    </button>
-                </div>
-                <div id="leaderboardList"></div>
-            </div>
-
-            <!-- Follow-up Alert for Absent Members -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title" style="color: var(--danger);"><i class="fas fa-user-clock"></i> افتقاد الغائبين اليوم</div>
-                </div>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">قائمة المخدومين الغائبين اليوم لسهولة التواصل معهم والاطمئنان عليهم:</p>
-                <div id="absentFollowupList"></div>
-            </div>
-        </section>
-
+<div class="container">
+    <div id="syncStatus" class="status-bar">
+        <span id="statusText">جاري تحميل البيانات...</span>
+        <button class="sm outline" onclick="loadDataFromCloud()">🔄 تحديث</button>
     </div>
 
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
-        <button class="nav-item active" onclick="switchTab('members', this)">
-            <i class="fas fa-clipboard-check"></i>
-            <span>الحضور والغياب</span>
-        </button>
-        <button class="nav-item" onclick="switchTab('chat', this)">
-            <i class="fab fa-whatsapp"></i>
-            <span>الشات</span>
-        </button>
-        <button class="nav-item" onclick="switchTab('quiz', this)">
-            <i class="fas fa-brain"></i>
-            <span>100 سؤال AI</span>
-        </button>
-        <button class="nav-item" onclick="switchTab('leaderboard', this)">
-            <i class="fas fa-award"></i>
-            <span>النقاط والافتقاد</span>
-        </button>
-    </nav>
+    <!-- شاشة تسجيل العضو الجديد -->
+    <div id="registerCard" class="card hidden">
+        <h2>أهلاً بك في بوابة الكنيسة 👋</h2>
+        <p style="margin-bottom: 12px; color: #475569;">سجل اسمك الثلاثي للدخول وحل مسابقة اليوم (100 سؤال) والمشاركة في الدردشة:</p>
+        <input type="text" id="memberNameInput" placeholder="اكتب اسمك الثلاثي هنا...">
+        <button onclick="registerMember()" style="width: 100%;">دخول وتسجيل الاسم</button>
+    </div>
 
-    <!-- Modals -->
-
-    <!-- 1. Add Member Modal -->
-    <div class="modal-overlay" id="addMemberModal">
-        <div class="modal-box">
-            <div class="card-header">
-                <span class="card-title"><i class="fas fa-user-plus"></i> إضافة مخدوم جديد</span>
-                <button class="btn btn-sm" onclick="closeModal('addMemberModal')">✕</button>
+    <!-- التبويب 1: المسابقة اليومية (100 سؤال AI) -->
+    <div id="tab-quiz" class="tab-content">
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <div>
+                    <h2>🤖 مسابقة اليوم (100 سؤال AI)</h2>
+                    <p style="font-size: 0.85rem; color: #64748b;">تاريخ اليوم: <strong id="todayDateDisplay"></strong> (تتجدد الأسئلة تلقائياً كل 24 ساعة)</p>
+                </div>
+                <span class="badge" id="quizScoreBadge">نقاطك: 0</span>
             </div>
-            <div class="form-group">
-                <label>الاسم بالكامل *</label>
-                <input type="text" id="newMemberName" placeholder="مثال: كيرلس ماجد">
+            <div id="quizAlreadySolved" class="hidden" style="background: #dcfce7; color: #166534; padding: 15px; border-radius: 12px; margin-top: 15px; text-align: center;">
+                <h3>🎉 أحسنت! لقد أتممت مسابقة اليوم</h3>
+                <p id="todayResultText"></p>
+                <p style="font-size: 0.85rem; margin-top: 5px;">عد غداً لحل 100 سؤال جديدة تماماً!</p>
             </div>
-            <div class="form-group">
-                <label>رقم الهاتف / الواتساب (للافتقاد)</label>
-                <input type="tel" id="newMemberPhone" placeholder="مثال: 01234567890">
-            </div>
-            <div class="form-group">
-                <label>الفصل / الأسرة</label>
-                <input type="text" id="newMemberGroup" placeholder="مثال: إعدادي / ثانوي / شباب">
-            </div>
-            <div class="form-group">
-                <label>نقاط البداية</label>
-                <input type="number" id="newMemberPoints" value="10">
-            </div>
-            <button class="btn btn-primary" style="width: 100%;" onclick="addNewMember()">حفظ العضو</button>
+            <div id="quizContainer"></div>
+            <button id="submitQuizBtn" class="success hidden" style="width: 100%; margin-top: 15px; padding: 14px; font-size: 1.1rem;" onclick="submitQuiz()">✅ إنهاء المسابقة واحتساب النقاط</button>
         </div>
     </div>
 
-    <!-- 2. User Identity Modal (For Chat & Quiz Points) -->
-    <div class="modal-overlay" id="userIdentityModal">
-        <div class="modal-box">
-            <div class="card-header">
-                <span class="card-title"><i class="fas fa-id-card"></i> تحديد هويتك في التطبيق</span>
-                <button class="btn btn-sm" onclick="closeModal('userIdentityModal')">✕</button>
-            </div>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">
-                اختر اسمك من القائمة لكي تُضاف نقاط المسابقة اليومية لحسابك وتظهر رسائلك باسمك في الشات:
-            </p>
-            <div class="form-group">
-                <label>اختر اسمك من الأعضاء المسجلين:</label>
-                <select id="identitySelect" onchange="syncCustomNameInput()">
-                    <option value="">-- اختر اسمك --</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>أو اكتب اسمك يدوياً (للخدام/الزوار):</label>
-                <input type="text" id="identityCustomName" placeholder="اكتب اسمك هنا...">
-            </div>
-            <button class="btn btn-primary" style="width: 100%;" onclick="saveUserIdentity()">تأكيد الهوية</button>
-        </div>
-    </div>
-
-    <!-- 3. Admin Login Modal -->
-    <div class="modal-overlay" id="adminLoginModal">
-        <div class="modal-box">
-            <div class="card-header">
-                <span class="card-title"><i class="fas fa-shield-alt"></i> دخول المشرفين والخدام</span>
-                <button class="btn btn-sm" onclick="closeModal('adminLoginModal')">✕</button>
-            </div>
-            <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 10px;">
-                أدخل رمز المشرف لتفعيل صلاحيات (تسجيل الحضور والغياب، إضافة/حذف النقاط، حذف الأعضاء، وإعدادات السحابة).
-            </p>
-            <div class="form-group">
-                <label>الرمز السري (الافتراضي: 1234)</label>
-                <input type="password" id="adminPassInput" placeholder="••••">
-            </div>
-            <button class="btn btn-primary" style="width: 100%;" onclick="verifyAdminLogin()">دخول</button>
-        </div>
-    </div>
-
-    <!-- 4. Settings & GitHub Cloud Sync Modal -->
-    <div class="modal-overlay" id="settingsModal">
-        <div class="modal-box">
-            <div class="card-header">
-                <span class="card-title"><i class="fab fa-github"></i> إعدادات السحابة (GitHub) والنظام</span>
-                <button class="btn btn-sm" onclick="closeModal('settingsModal')">✕</button>
-            </div>
-            
-            <div class="form-group">
-                <label>اسم الكنيسة / الخدمة</label>
-                <input type="text" id="cfgChurchName" placeholder="كنيسة السيدة العذراء...">
-            </div>
-
-            <div class="form-group">
-                <label>تغيير رمز المشرف السري</label>
-                <input type="text" id="cfgAdminPass" placeholder="الرمز السري الجديد">
-            </div>
-
-            <hr style="margin: 14px 0; border: 0; border-top: 1px solid #e2e8f0;">
-            <h4 style="font-size: 0.9rem; color: var(--primary); margin-bottom: 8px;"><i class="fas fa-cloud"></i> ربط التخزين السحابي GitHub</h4>
-            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">
-                يتم حفظ جميع البيانات (الأعضاء، الحضور، النقاط، الشات) في ملف JSON داخل مستودع GitHub للمزامنة بين جميع الهواتف.
-            </p>
-
-            <div class="form-group">
-                <label>GitHub Personal Access Token (صلاحية repo)</label>
-                <input type="password" id="cfgGhToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
-            </div>
-            <div class="form-group">
-                <label>اسم المستخدم على GitHub (Owner)</label>
-                <input type="text" id="cfgGhOwner" placeholder="username">
-            </div>
-            <div class="form-group">
-                <label>اسم المستودع (Repository)</label>
-                <input type="text" id="cfgGhRepo" placeholder="church-data">
-            </div>
-            <div class="form-group">
-                <label>مسار الملف (File Path)</label>
-                <input type="text" id="cfgGhPath" value="database.json">
-            </div>
-
-            <div style="display: flex; gap: 8px; margin-top: 12px;">
-                <button class="btn btn-primary" style="flex: 1;" onclick="saveSettings()">حفظ ومزامنة</button>
-                <button class="btn btn-outline" onclick="pullFromGitHub()">سحب من السحابة</button>
+    <!-- التبويب 2: دردشة الأعضاء -->
+    <div id="tab-chat" class="tab-content hidden">
+        <div class="card">
+            <h2>💬 دردشة الأعضاء والخدام</h2>
+            <div class="chat-box" id="chatBox"></div>
+            <div style="display: flex; gap: 8px;">
+                <input type="text" id="chatInput" placeholder="اكتب رسالتك هنا..." style="margin-bottom: 0;" onkeypress="if(event.key==='Enter') sendMessage()">
+                <button onclick="sendMessage()">إرسال</button>
             </div>
         </div>
     </div>
 
-    <script>
-        // ==================== STATE & CONFIG ====================
-        const DEFAULT_DATA = {
-            churchName: "خدمة الكنيسة",
-            members: [
-                { id: "m1", name: "مارك جرجس", phone: "01200000001", group: "شباب", points: 45, attendance: {} },
-                { id: "m2", name: "مريم مجدي", phone: "01200000002", group: "شباب", points: 50, attendance: {} },
-                { id: "m3", name: "بيشوي هاني", phone: "01200000003", group: "ثانوي", points: 30, attendance: {} }
-            ],
-            messages: [
-                { id: "msg1", sender: "خادم الخدمة", text: "سلام ونعمة للجميع! أهلاً بكم في تطبيق الكنيسة الجديد.", time: "10:00 ص", isAdmin: true }
-            ]
-        };
+    <!-- التبويب 3: لوحة المتصدرين -->
+    <div id="tab-leaderboard" class="tab-content hidden">
+        <div class="card">
+            <h2>🏆 ترتيب الأعضاء والنقاط</h2>
+            <div id="leaderboardList"></div>
+        </div>
+    </div>
 
-        let appData = JSON.parse(localStorage.getItem('church_app_data')) || DEFAULT_DATA;
-        let ghConfig = JSON.parse(localStorage.getItem('church_gh_config')) || {
-            token: '', owner: '', repo: '', path: 'database.json', adminPass: '1234'
-        };
-        let currentUser = JSON.parse(localStorage.getItem('church_current_user')) || { id: '', name: 'زائر' };
-        let isAdmin = sessionStorage.getItem('church_is_admin') === 'true';
-        let fileSha = null;
+    <!-- التبويب 4: لوحة تحكم الخادم (تظهر للخادم فقط) -->
+    <div id="tab-admin" class="tab-content hidden">
+        <div class="card" style="border: 2px solid var(--gold);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>👑 لوحة تحكم الخادم</h2>
+                <button class="sm danger" onclick="logoutAdmin()">خروج من وضع الخادم</button>
+            </div>
 
-        // Daily Verses Array
-        const VERSES = [
-            "«اِفْرَحُوا فِي الرَّبِّ كُلَّ حِينٍ، وَأَقُولُ أَيْضًا: افْرَحُوا.» (فيلبي 4: 4)",
-            "«أَسْتَطِيعُ كُلَّ شَيْءٍ فِي الْمَسِيحِ الَّذِي يُقَوِّينِي.» (فيلبي 4: 13)",
-            "«الرَّبُّ رَاعِيَّ فَلاَ يُعْوِزُنِي شَيْءٌ.» (مزمور 23: 1)",
-            "«تَعَالَوْا إِلَيَّ يَا جَمِيعَ الْمُتْعَبِينَ وَالثَّقِيلِي الأَحْمَالِ، وَأَنَا أُرِيحُكُمْ.» (متى 11: 28)",
-            "«إِنْ كَانَ اللهُ مَعَنَا، فَمَنْ عَلَيْنَا؟» (رومية 8: 31)",
-            "«سِرَاجٌ لِرِجْلِي كَلاَمُكَ وَنُورٌ لِسَبِيلِي.» (مزمور 119: 105)",
-            "«اَلْمَحَبَّةُ لاَ تَسْقُطُ أَبَدًا.» (1 كورنثوس 13: 8)"
-        ];
+            <!-- إعدادات GitHub الخاصة بالخادم فقط -->
+            <div style="background: #fffbeb; padding: 15px; border-radius: 12px; margin: 15px 0; border: 1px solid #fcd34d;">
+                <h3>☁️ ربط مساحة تخزين GitHub (للخادم فقط)</h3>
+                <p style="font-size: 0.8rem; color: #92400e; margin-bottom: 10px;">أدخل بيانات مستودع GitHub لحفظ ومزامنة الأعضاء والغياب والنقاط. الأعضاء العاديون يقرأون البيانات تلقائياً دون الحاجة لـ Token.</p>
+                <input type="text" id="ghOwner" placeholder="اسم حساب GitHub (Username)">
+                <input type="text" id="ghRepo" placeholder="اسم المستودع (Repository Name)">
+                <input type="password" id="ghToken" placeholder="GitHub Personal Access Token (ghp_...)">
+                <input type="password" id="newAdminPass" placeholder="تغيير الرمز السري للخادم (اختياري)">
+                <div style="display: flex; gap: 8px;">
+                    <button class="gold" onclick="saveGitHubConfig()">💾 حفظ الإعدادات والمزامنة</button>
+                    <button class="outline" onclick="pushDataToGitHub()">⬆️ رفع التحديثات الآن</button>
+                </div>
+            </div>
 
-        // ==================== INITIALIZATION ====================
-        window.onload = () => {
-            const todayStr = new Date().toISOString().split('T')[0];
-            document.getElementById('attendanceDate').value = todayStr;
-            document.getElementById('quizDateBadge').innerText = todayStr;
-            
-            // Set daily verse
-            const dayIndex = new Date().getDate() % VERSES.length;
-            document.getElementById('dailyVerse').innerText = VERSES[dayIndex];
+            <!-- تسجيل الحضور والغياب اليومي -->
+            <div style="margin: 20px 0;">
+                <h3>📋 تسجيل الحضور والغياب اليومي (<span id="attDate"></span>)</h3>
+                <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 10px;">تسجيل "حاضر" يضيف +10 نقاط للعضو تلقائياً.</p>
+                <div id="attendanceList"></div>
+            </div>
 
-            updateAdminUI();
-            updateIdentityUI();
-            renderMembers();
-            renderChat();
-            renderLeaderboard();
-            initDaily100Quiz();
+            <!-- إدارة الأعضاء والنقاط والحذف -->
+            <div style="margin: 20px 0;">
+                <h3>👥 إدارة الأعضاء والنقاط</h3>
+                <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+                    <input type="text" id="adminAddMemberName" placeholder="إضافة اسم عضو يدوياً..." style="margin-bottom:0;">
+                    <button class="success" onclick="adminAddMember()">+ إضافة</button>
+                </div>
+                <div id="adminMembersList"></div>
+            </div>
+        </div>
+    </div>
+</div>
 
-            if (ghConfig.token && ghConfig.owner && ghConfig.repo) {
-                pullFromGitHub();
-                // Auto sync chat/data every 25 seconds
-                setInterval(() => {
-                    if (document.visibilityState === 'visible') {
-                        pullFromGitHub(true);
-                    }
-                }, 25000);
-            }
-        };
+<!-- شريط التنقل السفلي -->
+<nav class="nav-bar">
+    <button class="nav-item active" onclick="switchTab('quiz', this)">📝<br>المسابقة (100)</button>
+    <button class="nav-item" onclick="switchTab('chat', this)">💬<br>الدردشة</button>
+    <button class="nav-item" onclick="switchTab('leaderboard', this)">🏆<br>المتصدرين</button>
+    <button class="nav-item hidden" id="navAdminBtn" onclick="switchTab('admin', this)">👑<br>الخادم</button>
+</nav>
 
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            t.innerText = msg;
-            t.style.display = 'block';
-            setTimeout(() => { t.style.display = 'none'; }, 3000);
-        }
+<!-- نافذة دخول الخادم -->
+<div id="adminModal" class="modal hidden">
+    <div class="modal-content">
+        <h3>🔐 دخول الخادم</h3>
+        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 10px;">أدخل الرمز السري للخادم للوصول إلى صلاحيات الحضور والنقاط وإعدادات GitHub:</p>
+        <input type="password" id="adminPassInput" placeholder="الرمز السري (الافتراضي 1234)">
+        <div style="display: flex; gap: 8px; justify-content: flex-end;">
+            <button class="outline" onclick="closeAdminModal()">إلغاء</button>
+            <button onclick="verifyAdmin()">دخول</button>
+        </div>
+    </div>
+</div>
 
-        function saveLocal() {
-            localStorage.setItem('church_app_data', JSON.stringify(appData));
-        }
+<script>
+    // ================= المتغيرات والحالة العامة =================
+    const TODAY_STR = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    document.getElementById('todayDateDisplay').innerText = TODAY_STR;
+    document.getElementById('attDate').innerText = TODAY_STR;
 
-        // ==================== NAVIGATION & MODALS ====================
-        function switchTab(tabName, el) {
-            document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById('view-' + tabName).classList.add('active');
-            el.classList.add('active');
+    let appData = {
+        members: [], // { id, name, points, solvedDates: {}, attendance: {} }
+        messages: [], // { id, senderId, senderName, text, time, isAdmin }
+        adminPass: "1234",
+        publicRepo: { owner: "", repo: "" } // يُحفظ لكي يتمكن الأعضاء من القراءة بدون Token
+    };
 
-            if (tabName === 'chat') scrollChatBottom();
-            if (tabName === 'leaderboard') renderLeaderboard();
-        }
+    let currentUser = JSON.parse(localStorage.getItem('church_user') || 'null');
+    let isAdmin = sessionStorage.getItem('church_is_admin') === 'true';
+    let ghConfig = JSON.parse(localStorage.getItem('church_gh_config') || '{"owner":"","repo":"","token":""}');
+    let fileSha = null;
+    let dailyQuestions = [];
+    let userAnswers = {};
 
-        function openModal(id) {
-            if (id === 'userIdentityModal') populateIdentitySelect();
-            if (id === 'settingsModal') {
-                document.getElementById('cfgChurchName').value = appData.churchName || "خدمة الكنيسة";
-                document.getElementById('cfgAdminPass').value = ghConfig.adminPass || "1234";
-                document.getElementById('cfgGhToken').value = ghConfig.token || "";
-                document.getElementById('cfgGhOwner').value = ghConfig.owner || "";
-                document.getElementById('cfgGhRepo').value = ghConfig.repo || "";
-                document.getElementById('cfgGhPath').value = ghConfig.path || "database.json";
-            }
-            document.getElementById(id).classList.add('open');
-        }
+    // ================= محرك توليد 100 سؤال يومي بالـ AI متجدد كل يوم =================
+    const questionBank = [
+        { q: "من هو أول شهداء المسيحية؟", o: ["القديس استفانوس", "القديس بطرس", "القديس يعقوب", "القديس بولس"], a: 0 },
+        { q: "كم عدد أسفار العهد الجديد؟", o: ["27 سفراً", "39 سفراً", "66 سفراً", "24 سفراً"], a: 0 },
+        { q: "في أي مدينة دُعي التلاميذ مسيحيين أولاً؟", o: ["أنطاكية", "أورشليم", "روما", "الإسكندرية"], a: 0 },
+        { q: "من هو النبي الذي ابتلعه الحوت؟", o: ["يونان", "إيليا", "أليشع", "دانيال"], a: 0 },
+        { q: "من هو تلميذ السيد المسيح الذي أنكره ثلاث مرات؟", o: ["بطرس", "يوحنا", "توما", "أندراوس"], a: 0 },
+        { q: "ما هو أول معجزة صنعها السيد المسيح؟", o: ["تحويل الماء إلى خمر", "إقامة لعازر", "تفتيح عيني الأعمى", "إشباع الجموع"], a: 0 },
+        { q: "كم يوماً صام السيد المسيح في البرية؟", o: ["40 يوماً", "30 يوماً", "50 يوماً", "7 أيام"], a: 0 },
+        { q: "من هو كاتب سفر أعمال الرسل؟", o: ["القديس لوقا", "القديس مرقس", "القديس متى", "القديس يوحنا"], a: 0 },
+        { q: "من هو كاروز الديار المصرية؟", o: ["القديس مرقس الرسول", "القديس بطرس", "القديس بولس", "القديس توما"], a: 0 },
+        { q: "كم عدد تلاميذ السيد المسيح؟", o: ["12 تلميذاً", "70 تلميذاً", "10 تلاميذ", "24 تلميذاً"], a: 0 },
+        { q: "من هو أقدم إنسان عاش على الأرض حسب الكتاب المقدس؟", o: ["متوشالح", "آدم", "نوح", "إبراهيم"], a: 0 },
+        { q: "من هو الملك الذي بنى هيكل أورشليم؟", o: ["سليمان", "داود", "شاول", "حزقيا"], a: 0 },
+        { q: "في أي نهر اعتمد السيد المسيح؟", o: ["نهر الأردن", "نهر النيل", "نهر الفرات", "نهر دجلة"], a: 0 },
+        { q: "من هو التلميذ الذي شك في قيامة المسيح؟", o: ["توما", "فيلبس", "برثولماوس", "متى"], a: 0 },
+        { q: "ما اسم الجبل الذي تجلى عليه السيد المسيح؟", o: ["جبل تابور", "جبل سيناء", "جبل الزيتون", "جبل الكرمل"], a: 0 },
+        { q: "من هي أم يوحنا المعمدان؟", o: ["أليصابات", "حنة", "مريم", "مرثا"], a: 0 },
+        { q: "كم عدد الأسفار القانونية في العهد القديم (البروتستانتية/الأساسية)؟", o: ["39 سفراً", "27 سفراً", "46 سفراً", "12 سفراً"], a: 0 },
+        { q: "من الذي ساعد السيد المسيح في حمل الصليب؟", o: ["سمعان القيرواني", "يوسف الرامي", "نيقوديموس", "لعازر"], a: 0 },
+        { q: "ما هي أول وصية من الوصايا العشر؟", o: ["لا يكن لك آلهة أخرى أمامي", "أكرم أباك وأمك", "لا تقتل", "لا تسرق"], a: 0 },
+        { q: "من هو النبي الذي أُلقي في جب الأسود؟", o: ["دانيال", "إرميا", "حزقيال", "إشعياء"], a: 0 }
+    ];
 
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('open');
-        }
+    // قوالب توليد أسئلة رقمية وكتابية ذكية لإنتاج 100 سؤال متجددة يومياً
+    function seededRandom(seed) {
+        let x = Math.sin(seed++) * 10000;
+        return x - Math.floor(x);
+    }
 
-        // ==================== ADMIN AUTH ====================
-        function handleAdminClick() {
-            if (isAdmin) {
-                if (confirm("هل تريد تسجيل الخروج من وضع المشرف؟")) {
-                    isAdmin = false;
-                    sessionStorage.removeItem('church_is_admin');
-                    updateAdminUI();
-                    showToast("تم الخروج من وضع المشرف");
-                }
-            } else {
-                openModal('adminLoginModal');
-            }
-        }
+    function generateDaily100Questions(dateStr) {
+        // تحويل تاريخ اليوم إلى رقم بذرة فريد يتغير كل يوم
+        let seed = 0;
+        for (let i = 0; i < dateStr.length; i++) seed += dateStr.charCodeAt(i) * (i + 17);
 
-        function verifyAdminLogin() {
-            const pass = document.getElementById('adminPassInput').value;
-            if (pass === (ghConfig.adminPass || '1234')) {
-                isAdmin = true;
-                sessionStorage.setItem('church_is_admin', 'true');
-                document.getElementById('adminPassInput').value = '';
-                closeModal('adminLoginModal');
-                updateAdminUI();
-                showToast("تم تفعيل وضع المشرف بنجاح");
-            } else {
-                alert("الرمز السري غير صحيح!");
-            }
-        }
+        let generated = [];
+        // خلط بنك الأسئلة الأساسي بناءً على تاريخ اليوم
+        let shuffledBank = [...questionBank].sort(() => seededRandom(seed++) - 0.5);
 
-        function updateAdminUI() {
-            const btn = document.getElementById('adminToggleBtn');
-            if (isAdmin) {
-                document.body.classList.add('is-admin');
-                btn.classList.add('admin-active');
-                btn.innerHTML = '<i class="fas fa-unlock"></i>';
-            } else {
-                document.body.classList.remove('is-admin');
-                btn.classList.remove('admin-active');
-                btn.innerHTML = '<i class="fas fa-lock"></i>';
-            }
-            renderMembers();
-            renderLeaderboard();
-        }
-
-        // ==================== USER IDENTITY ====================
-        function populateIdentitySelect() {
-            const sel = document.getElementById('identitySelect');
-            sel.innerHTML = '<option value="">-- اختر اسمك --</option>';
-            appData.members.forEach(m => {
-                const opt = document.createElement('option');
-                opt.value = m.id;
-                opt.textContent = `${m.name} (${m.group || 'عام'})`;
-                if (currentUser.id === m.id) opt.selected = true;
-                sel.appendChild(opt);
-            });
-            document.getElementById('identityCustomName').value = currentUser.id ? '' : currentUser.name;
-        }
-
-        function syncCustomNameInput() {
-            const sel = document.getElementById('identitySelect');
-            if (sel.value) document.getElementById('identityCustomName').value = '';
-        }
-
-        function saveUserIdentity() {
-            const selId = document.getElementById('identitySelect').value;
-            const customName = document.getElementById('identityCustomName').value.trim();
-
-            if (selId) {
-                const member = appData.members.find(m => m.id === selId);
-                currentUser = { id: member.id, name: member.name };
-            } else if (customName) {
-                currentUser = { id: '', name: customName };
-            } else {
-                alert("يرجى اختيار اسمك أو كتابته");
-                return;
-            }
-
-            localStorage.setItem('church_current_user', JSON.stringify(currentUser));
-            updateIdentityUI();
-            closeModal('userIdentityModal');
-            showToast(`أهلاً بك يا ${currentUser.name}`);
-        }
-
-        function updateIdentityUI() {
-            document.getElementById('chatActiveUserLabel').innerText = `أنت تتحدث كـ: ${currentUser.name}`;
-            document.getElementById('churchNameDisplay').innerText = appData.churchName || "خدمة الكنيسة";
-        }
-
-        // ==================== MEMBERS, ATTENDANCE & POINTS ====================
-        function renderMembers() {
-            const container = document.getElementById('membersListContainer');
-            const date = document.getElementById('attendanceDate').value;
-            const query = document.getElementById('memberSearch').value.toLowerCase();
-            const filter = document.getElementById('filterStatus').value;
-
-            let presentCount = 0;
-            let absentCount = 0;
-
-            appData.members.forEach(m => {
-                const st = (m.attendance && m.attendance[date]) || 'unmarked';
-                if (st === 'present') presentCount++;
-                if (st === 'absent') absentCount++;
-            });
-
-            document.getElementById('statTotal').innerText = appData.members.length;
-            document.getElementById('statPresent').innerText = presentCount;
-            document.getElementById('statAbsent').innerText = absentCount;
-
-            const filtered = appData.members.filter(m => {
-                const st = (m.attendance && m.attendance[date]) || 'unmarked';
-                const matchText = m.name.toLowerCase().includes(query) || (m.group && m.group.toLowerCase().includes(query));
-                const matchFilter = filter === 'all' || st === filter;
-                return matchText && matchFilter;
-            });
-
-            if (filtered.length === 0) {
-                container.innerHTML = `<div class="card" style="text-align:center; color:var(--text-muted);">لا يوجد أعضاء مطابقون للبحث</div>`;
-                return;
-            }
-
-            container.innerHTML = filtered.map(m => {
-                const status = (m.attendance && m.attendance[date]) || 'unmarked';
-                return `
-                <div class="member-item ${status}">
-                    <div class="member-top">
-                        <div class="member-info">
-                            <h3>${m.name}</h3>
-                            <div class="member-meta">
-                                <span><i class="fas fa-layer-group"></i> ${m.group || 'عام'}</span>
-                                ${m.phone ? `<span><i class="fas fa-phone"></i> ${m.phone}</span>` : ''}
-                            </div>
-                        </div>
-                        <div class="points-badge">
-                            <i class="fas fa-star"></i> ${m.points || 0} نقطة
-                        </div>
-                    </div>
-
-                    <div class="member-actions">
-                        <button class="btn btn-sm att-btn ${status === 'present' ? 'active-present' : 'btn-outline'}" 
-                                onclick="markAttendance('${m.id}', 'present')">
-                            <i class="fas fa-check"></i> حضور
-                        </button>
-                        <button class="btn btn-sm att-btn ${status === 'absent' ? 'active-absent' : 'btn-outline'}" 
-                                onclick="markAttendance('${m.id}', 'absent')">
-                            <i class="fas fa-times"></i> غياب
-                        </button>
-
-                        <button class="btn btn-sm btn-success admin-only" onclick="modifyPoints('${m.id}', 5)" title="إضافة 5 نقاط">
-                            +5 <i class="fas fa-plus-circle"></i>
-                        </button>
-                        <button class="btn btn-sm btn-warning admin-only" onclick="modifyPoints('${m.id}', -5)" title="خصم 5 نقاط">
-                            -5 <i class="fas fa-minus-circle"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger admin-only" onclick="deleteMember('${m.id}')" title="حذف العضو">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </div>`;
-            }).join('');
-        }
-
-        function addNewMember() {
-            if (!isAdmin) return alert("هذه الصلاحية للمشرفين فقط");
-            const name = document.getElementById('newMemberName').value.trim();
-            const phone = document.getElementById('newMemberPhone').value.trim();
-            const group = document.getElementById('newMemberGroup').value.trim() || 'عام';
-            const points = parseInt(document.getElementById('newMemberPoints').value) || 0;
-
-            if (!name) return alert("يرجى إدخال اسم العضو");
-
-            appData.members.push({
-                id: 'm_' + Date.now(),
-                name, phone, group, points,
-                attendance: {}
-            });
-
-            document.getElementById('newMemberName').value = '';
-            document.getElementById('newMemberPhone').value = '';
-            closeModal('addMemberModal');
-            saveLocal();
-            renderMembers();
-            syncWithGitHub();
-            showToast("تمت إضافة العضو بنجاح");
-        }
-
-        function markAttendance(memberId, status) {
-            if (!isAdmin) {
-                openModal('adminLoginModal');
-                return showToast("سجل دخول كمشرف لتسجيل الحضور والغياب");
-            }
-            const date = document.getElementById('attendanceDate').value;
-            const member = appData.members.find(m => m.id === memberId);
-            if (!member) return;
-            if (!member.attendance) member.attendance = {};
-
-            const prevStatus = member.attendance[date];
-            if (prevStatus === status) {
-                delete member.attendance[date];
-                if (status === 'present') member.points = Math.max(0, (member.points || 0) - 10);
-            } else {
-                member.attendance[date] = status;
-                // Auto reward +10 points for attendance
-                if (status === 'present' && prevStatus !== 'present') {
-                    member.points = (member.points || 0) + 10;
-                    showToast(`تم تسجيل حضور ${member.name} (+10 نقاط)`);
-                } else if (status === 'absent' && prevStatus === 'present') {
-                    member.points = Math.max(0, (member.points || 0) - 10);
-                }
-            }
-
-            saveLocal();
-            renderMembers();
-            syncWithGitHub();
-        }
-
-        function modifyPoints(memberId, delta) {
-            if (!isAdmin) return;
-            const member = appData.members.find(m => m.id === memberId);
-            if (!member) return;
-            member.points = Math.max(0, (member.points || 0) + delta);
-            saveLocal();
-            renderMembers();
-            renderLeaderboard();
-            syncWithGitHub();
-            showToast(`${delta > 0 ? 'تمت إضافة' : 'تم خصم'} ${Math.abs(delta)} نقاط لـ ${member.name}`);
-        }
-
-        function deleteMember(memberId) {
-            if (!isAdmin) return;
-            const member = appData.members.find(m => m.id === memberId);
-            if (!member) return;
-            if (confirm(`هل أنت متأكد من حذف العضو "${member.name}" نهائياً؟`)) {
-                appData.members = appData.members.filter(m => m.id !== memberId);
-                saveLocal();
-                renderMembers();
-                renderLeaderboard();
-                syncWithGitHub();
-                showToast("تم حذف العضو");
-            }
-        }
-
-        // ==================== WHATSAPP STYLE CHAT ====================
-        function renderChat() {
-            const box = document.getElementById('chatMessagesBox');
-            box.innerHTML = (appData.messages || []).map(msg => {
-                const isMine = msg.sender === currentUser.name;
-                return `
-                <div class="msg-bubble ${isMine ? 'msg-sent' : 'msg-received'}">
-                    ${!isMine ? `<div class="msg-sender">
-                        <span>${msg.sender} ${msg.isAdmin ? '<i class="fas fa-check-circle" style="color:#0284c7;" title="خادم"></i>' : ''}</span>
-                    </div>` : ''}
-                    <div>${escapeHtml(msg.text)}</div>
-                    <div class="msg-time">
-                        <span>${msg.time}</span>
-                        ${isMine ? '<i class="fas fa-check-double" style="color:#53bdeb;"></i>' : ''}
-                        ${isAdmin ? `<i class="fas fa-trash" style="color:#ef4444; cursor:pointer; margin-right:6px;" onclick="deleteSingleMessage('${msg.id}')"></i>` : ''}
-                    </div>
-                </div>`;
-            }).join('');
-            scrollChatBottom();
-        }
-
-        function sendChatMessage(e) {
-            e.preventDefault();
-            const input = document.getElementById('chatInput');
-            const text = input.value.trim();
-            if (!text) return;
-
-            if (currentUser.name === 'زائر') {
-                openModal('userIdentityModal');
-                return showToast("اختر اسمك أولاً للمشاركة في الشات");
-            }
-
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
-
-            if (!appData.messages) appData.messages = [];
-            appData.messages.push({
-                id: 'msg_' + Date.now(),
-                sender: currentUser.name,
-                text: text,
-                time: timeStr,
-                isAdmin: isAdmin
-            });
-
-            // Keep last 150 messages for fast cloud sync
-            if (appData.messages.length > 150) {
-                appData.messages = appData.messages.slice(-150);
-            }
-
-            input.value = '';
-            saveLocal();
-            renderChat();
-            syncWithGitHub();
-        }
-
-        function deleteSingleMessage(msgId) {
-            if (!isAdmin) return;
-            appData.messages = appData.messages.filter(m => m.id !== msgId);
-            saveLocal();
-            renderChat();
-            syncWithGitHub();
-        }
-
-        function clearAllChat() {
-            if (!isAdmin) return;
-            if (confirm("هل تريد مسح جميع رسائل الجروب؟")) {
-                appData.messages = [];
-                saveLocal();
-                renderChat();
-                syncWithGitHub();
-            }
-        }
-
-        function scrollChatBottom() {
-            const box = document.getElementById('chatMessagesBox');
-            box.scrollTop = box.scrollHeight;
-        }
-
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        // ==================== DAILY 100 AI QUESTIONS ENGINE ====================
-        // Procedural & Knowledge Base Generator that produces 100 unique questions every single day seeded by Date
-        const BASE_BIBLE_FACTS = [
-            { cat: "العهد القديم", q: "من هو النبي الذي ابتلعه الحوت وبقي في جوفه ثلاثة أيام؟", opts: ["يونان النبي", "إيليا النبي", "دانيال النبي", "إرميا النبي"], ans: 0 },
-            { cat: "العهد الجديد", q: "في أي مدينة وُلد السيد المسيح؟", opts: ["الناصرة", "بيت لحم", "أورشليم", "كفرناحوم"], ans: 1 },
-            { cat: "الكتاب المقدس", q: "كم عدد أسفار الكتاب المقدس القانونية؟", opts: ["66 سفراً", "73 سفراً", "50 سفراً", "40 سفراً"], ans: 1 },
-            { cat: "العهد القديم", q: "من هو أقوى رجل في الكتاب المقدس؟", opts: ["داود", "شمشون", "جليات", "شاؤول"], ans: 1 },
-            { cat: "العهد الجديد", q: "من هو التلميذ الذي أنكر السيد المسيح ثلاث مرات قبل صياح الديك؟", opts: ["يوحنا", "بطرس", "توما", "يهوذا"], ans: 1 },
-            { cat: "تاريخ الكنيسة", q: "من هو كاروز الديار المصرية ومؤسس كنيسة الإسكندرية؟", opts: ["القديس مرقس الرسول", "القديس بولس", "القديس أثناسيوس", "القديس أنطونيوس"], ans: 0 },
-            { cat: "الطقس الكنسي", q: "كم عدد الأسرار الكنسية المقدسة في الكنيسة القبطية الأرثوذكسية؟", opts: ["5 أسرار", "7 أسرار", "9 أسرار", "12 سراً"], ans: 1 },
-            { cat: "العهد القديم", q: "كم يوماً استمر الطوفان في أيام نوح؟", opts: ["40 يوماً وليلة", "7 أيام", "100 يوم", "12 يوماً"], ans: 0 },
-            { cat: "العهد الجديد", q: "ما هي أول معجزة صنعها السيد المسيح؟", opts: ["إقامة لعازر", "تحويل الماء إلى خمر في عرس قانا الجليل", "تفتيح عيني الأعمى", "إشباع الجموع"], ans: 1 },
-            { cat: "العهد القديم", q: "من هو الملك الذي بنى هيكل الرب في أورشليم؟", opts: ["داود الملك", "سليمان الحكيم", "حزقيا الملك", "يوشيا الملك"], ans: 1 },
-            { cat: "العهد الجديد", q: "كم عدد تلاميذ السيد المسيح الإثني عشر؟", opts: ["10", "12", "70", "40"], ans: 1 },
-            { cat: "الكتاب المقدس", q: "ما هو أطول مزمور في سفر المزامير؟", opts: ["مزمور 23", "مزمور 119", "مزمور 51", "مزمور 150"], ans: 1 },
-            { cat: "الكتاب المقدس", q: "ما هو أقصر مزمور في الكتاب المقدس؟", opts: ["مزمور 117", "مزمور 1", "مزمور 100", "مزمور 133"], ans: 0 },
-            { cat: "العهد القديم", q: "من هو النبي الذي أُلقي في جب الأسود؟", opts: ["دانيال", "يوسف", "موسى", "يشوع"], ans: 0 },
-            { cat: "العهد الجديد", q: "من هو كاتب سفر أعمال الرسل؟", opts: ["القديس لوقا", "القديس متى", "القديس مرقس", "القديس يوحنا"], ans: 0 },
-            { cat: "الطقس الكنسي", q: "ما هو اللحن الذي يُقال في أسبوع الآلام بدلاً من لحن الليلويا؟", opts: ["ثوك تاتي جوم", "إبؤورو", "غولغوثا", "بيك إثرونوس"], ans: 0 },
-            { cat: "تاريخ الكنيسة", q: "من هو البابا الملقب بـ «حامي الإيمان»؟", opts: ["البابا أثناسيوس الرسولي", "البابا كيرلس عمود الدين", "البابا ديسقوروس", "البابا شنودة الثالث"], ans: 0 },
-            { cat: "العهد القديم", q: "من هو أب الآباء والأنبياء الذي دُعي خليل الله؟", opts: ["إبراهيم", "إسحاق", "يعقوب", "نوح"], ans: 0 },
-            { cat: "العهد الجديد", q: "على أي جبل تجلى السيد المسيح أمام تلاميذه؟", opts: ["جبل تابور", "جبل الزيتون", "جبل سيناء", "جبل الكرمل"], ans: 0 },
-            { cat: "العهد القديم", q: "كم عدد الوصايا التي استلمها موسى النبي على جبل سيناء؟", opts: ["10 وصايا", "7 وصايا", "12 وصية", "5 وصايا"], ans: 0 }
-        ];
-
-        // Dynamic combinatorial question templates to ensure 100 distinct, rich questions every day
-        const DYNAMIC_GENERATORS = [
-            { cat: "أرقام كتابية", q: "كم عدد الأسفار في العهد الجديد؟", opts: ["27 سفراً", "39 سفراً", "46 سفراً", "22 سفراً"], ans: 0 },
-            { cat: "أرقام كتابية", q: "كم عدد الأسفار القانونية الأولى في العهد القديم؟", opts: ["39 سفراً", "27 سفراً", "50 سفراً", "12 سفراً"], ans: 0 },
-            { cat: "رسائل بولس", q: "كم عدد رسائل معلمنا بولس الرسول في العهد الجديد؟", opts: ["14 رسالة", "7 رسائل", "10 رسائل", "12 رسالة"], ans: 0 },
-            { cat: "الأجبية", q: "كم عدد صلوات السواعي في كتاب الأجبية؟", opts: ["7 صلوات", "5 صلوات", "3 صلوات", "12 صلاة"], ans: 0 },
-            { cat: "الأجبية", q: "ما هي الصلاة التي تذكرنا بقيامة السيد المسيح من بين الأموات؟", opts: ["صلاة باكر", "صلاة الساعة السادسة", "صلاة الغروب", "صلاة النوم"], ans: 0 },
-            { cat: "الأجبية", q: "ما هي الصلاة التي تذكرنا بصلب السيد المسيح على الصليب؟", opts: ["صلاة الساعة السادسة", "صلاة باكر", "صلاة الستار", "صلاة نصف الليل"], ans: 0 },
-            { cat: "الرهبنة", q: "من هو مؤسس الرهبنة في العالم كله؟", opts: ["الأنبا أنطونيوس", "الأنبا باخوميوس", "الأنبا مقار", "الأنبا بيشوي"], ans: 0 },
-            { cat: "الرهبنة", q: "من هو مؤسس نظام الشركة الرهبانية؟", opts: ["الأنبا باخوميوس", "الأنبا أنطونيوس", "الأنبا بولا", "الأنبا شنودة"], ans: 0 },
-            { cat: "القديسين", q: "من هو أول الشهداء في المسيحية؟", opts: ["القديس استفانوس", "القديس مارجرجس", "القديس مارمينا", "القديس أبانوب"], ans: 0 },
-            { cat: "الكتاب المقدس", q: "من هو التلميذ الذي قال «ربي وإلهي»؟", opts: ["توما الرسول", "فيلبس الرسول", "أندراوس الرسول", "متى الرسول"], ans: 0 }
-        ];
-
-        const BOOK_CHAPTERS_DATA = [
-            { book: "سفر التكوين", chapters: 50, author: "موسى النبي" },
-            { book: "سفر الخروج", chapters: 40, author: "موسى النبي" },
-            { book: "سفر المزامير", chapters: 150, author: "داود النبي" },
-            { book: "سفر الأمثال", chapters: 31, author: "سليمان الحكيم" },
-            { book: "سفر إشعياء", chapters: 66, author: "إشعياء النبي" },
-            { book: "إنجيل متى", chapters: 28, author: "القديس متى" },
-            { book: "إنجيل مرقس", chapters: 16, author: "القديس مرقس" },
-            { book: "إنجيل لوقا", chapters: 24, author: "القديس لوقا" },
-            { book: "إنجيل يوحنا", chapters: 21, author: "القديس يوحنا" },
-            { book: "سفر أعمال الرسل", chapters: 28, author: "القديس لوقا" },
-            { book: "رسالة رومية", chapters: 16, author: "بولس الرسول" },
-            { book: "سفر الرؤيا", chapters: 22, author: "القديس يوحنا اللاهوتي" },
-            { book: "سفر يشوع", chapters: 24, author: "يشوع بن نون" },
-            { book: "سفر القضاة", chapters: 21, author: "صموئيل النبي" },
-            { book: "سفر أيوب", chapters: 42, author: "موسى النبي" },
-            { book: "سفر دانيال", chapters: 12, author: "دانيال النبي" },
-            { book: "سفر يونان", chapters: 4, author: "يونان النبي" },
-            { book: "سفر راعوث", chapters: 4, author: "صموئيل النبي" },
-            { book: "رسالة يعقوب", chapters: 5, author: "القديس يعقوب" },
-            { book: "رسالة بطرس الأولى", chapters: 5, author: "القديس بطرس" }
-        ];
-
-        let dailyQuestions = [];
-        let currentQIndex = 0;
-        let userQuizState = { date: '', answered: {}, score: 0 };
-
-        // Seeded Random Generator based on Today's Date so all members get the SAME 100 questions today, and NEW 100 tomorrow!
-        function seededRandom(seed) {
-            let x = Math.sin(seed++) * 10000;
-            return x - Math.floor(x);
-        }
-
-        function initDaily100Quiz() {
-            const todayStr = new Date().toISOString().split('T')[0];
-            const dateSeed = parseInt(todayStr.replace(/-/g, ''));
-
-            // Load user progress for today
-            const savedQuiz = JSON.parse(localStorage.getItem('church_daily_quiz_state'));
-            if (savedQuiz && savedQuiz.date === todayStr) {
-                userQuizState = savedQuiz;
-            } else {
-                userQuizState = { date: todayStr, answered: {}, score: 0 };
-                localStorage.setItem('church_daily_quiz_state', JSON.stringify(userQuizState));
-            }
-
-            // Build pool of 100+ distinct questions
-            let pool = [...BASE_BIBLE_FACTS, ...DYNAMIC_GENERATORS];
-
-            // Generate 70 structured questions from BOOK_CHAPTERS_DATA
-            BOOK_CHAPTERS_DATA.forEach((item, idx) => {
-                // Question Type A: Chapters count
-                const wrong1 = item.chapters + 4;
-                const wrong2 = Math.max(1, item.chapters - 3);
-                const wrong3 = item.chapters + 10;
-                pool.push({
-                    cat: "إصحاحات الكتاب",
-                    q: `كم عدد إصحاحات ${item.book}؟`,
-                    opts: [`${item.chapters} إصحاحاً`, `${wrong1} إصحاحاً`, `${wrong2} إصحاحاً`, `${wrong3} إصحاحاً`],
-                    ans: 0
+        for (let i = 0; i < 100; i++) {
+            if (i < shuffledBank.length) {
+                let item = shuffledBank[i];
+                let opts = [...item.o];
+                let correctAnswerText = opts[item.a];
+                opts.sort(() => seededRandom(seed++) - 0.5);
+                generated.push({
+                    id: i + 1,
+                    q: item.q,
+                    options: opts,
+                    correctIndex: opts.indexOf(correctAnswerText)
                 });
-
-                // Question Type B: Author
-                const otherAuthors = ["بولس الرسول", "موسى النبي", "القديس يوحنا", "داود النبي", "القديس لوقا", "سليمان الحكيم"].filter(a => a !== item.author);
-                pool.push({
-                    cat: "كتّاب الأسفار",
-                    q: `من هو كاتب ${item.book} بوحي من الروح القدس؟`,
-                    opts: [item.author, otherAuthors[0], otherAuthors[1], otherAuthors[2]],
-                    ans: 0
-                });
-
-                // Question Type C: Testament classification
-                const isNT = item.book.includes("إنجيل") || item.book.includes("رسالة") || item.book.includes("أعمال") || item.book.includes("الرؤيا");
-                pool.push({
-                    cat: "أقسام الكتاب",
-                    q: `إلى أي قسم ينتمي ${item.book}؟`,
-                    opts: [isNT ? "العهد الجديد" : "العهد القديم", isNT ? "العهد القديم" : "العهد الجديد", "الأسفار القانونية الثانية فقط", "كتاب الأجبية"],
-                    ans: 0
-                });
-            });
-
-            // Shuffle pool deterministically using today's date seed & shuffle options
-            let seed = dateSeed;
-            for (let i = pool.length - 1; i > 0; i--) {
-                const j = Math.floor(seededRandom(seed++) * (i + 1));
-                [pool[i], pool[j]] = [pool[j], pool[i]];
-            }
-
-            dailyQuestions = pool.slice(0, 100).map((qObj, index) => {
-                // Shuffle options deterministically while tracking correct answer
-                const correctText = qObj.opts[qObj.ans];
-                let optsCopy = [...qObj.opts];
-                for (let k = optsCopy.length - 1; k > 0; k--) {
-                    const r = Math.floor(seededRandom(seed + index + k) * (k + 1));
-                    [optsCopy[k], optsCopy[r]] = [optsCopy[r], optsCopy[k]];
-                }
-                return {
-                    cat: qObj.cat,
-                    q: qObj.q,
-                    opts: optsCopy,
-                    ans: optsCopy.indexOf(correctText)
-                };
-            });
-
-            renderQuizQuestion();
-        }
-
-        function renderQuizQuestion() {
-            const q = dailyQuestions[currentQIndex];
-            if (!q) return;
-
-            document.getElementById('quizCounterText').innerText = `السؤال ${currentQIndex + 1} من 100`;
-            document.getElementById('quizScoreText').innerText = `نقاطك اليوم: ${userQuizState.score}`;
-            document.getElementById('quizProgressBar').style.width = `${((currentQIndex + 1) / 100) * 100}%`;
-            document.getElementById('quizCategoryBadge').innerText = q.cat;
-            document.getElementById('quizQuestionText').innerText = `${currentQIndex + 1}. ${q.q}`;
-
-            const userChoice = userQuizState.answered[currentQIndex];
-            const optsContainer = document.getElementById('quizOptionsContainer');
-
-            optsContainer.innerHTML = q.opts.map((opt, idx) => {
-                let cls = 'option-btn';
-                let icon = '';
-                if (userChoice !== undefined) {
-                    if (idx === q.ans) {
-                        cls += ' correct';
-                        icon = '<i class="fas fa-check-circle"></i>';
-                    } else if (idx === userChoice) {
-                        cls += ' wrong';
-                        icon = '<i class="fas fa-times-circle"></i>';
-                    }
-                }
-                return `<button class="${cls}" ${userChoice !== undefined ? 'disabled' : ''} onclick="submitQuizAnswer(${idx})">
-                    <span>${opt}</span>
-                    ${icon}
-                </button>`;
-            }).join('');
-        }
-
-        function submitQuizAnswer(selectedIdx) {
-            if (userQuizState.answered[currentQIndex] !== undefined) return;
-
-            const q = dailyQuestions[currentQIndex];
-            userQuizState.answered[currentQIndex] = selectedIdx;
-
-            if (selectedIdx === q.ans) {
-                userQuizState.score += 2;
-                showToast("إجابة صحيحة! +2 نقطة");
-
-                // Add points to member profile if linked
-                if (currentUser.id) {
-                    const member = appData.members.find(m => m.id === currentUser.id);
-                    if (member) {
-                        member.points = (member.points || 0) + 2;
-                        saveLocal();
-                        renderMembers();
-                        syncWithGitHub();
-                    }
-                }
             } else {
-                showToast("إجابة خاطئة، حاول في السؤال التالي!");
-            }
-
-            localStorage.setItem('church_daily_quiz_state', JSON.stringify(userQuizState));
-            renderQuizQuestion();
-        }
-
-        function nextQuestion() {
-            if (currentQIndex < 99) {
-                currentQIndex++;
-                renderQuizQuestion();
-            } else {
-                showToast("أحسنت! لقد وصلت لنهاية الـ 100 سؤال لليوم.");
+                // توليد أسئلة كتابية وتأملية وعددية متجددة بالذكاء الاصطناعي لباقي الـ 100 سؤال
+                let topicType = Math.floor(seededRandom(seed++) * 5);
+                let n1 = Math.floor(seededRandom(seed++) * 12) + 1;
+                let n2 = Math.floor(seededRandom(seed++) * 20) + 2;
+                let qObj = createDynamicChurchQuestion(i + 1, topicType, n1, n2, seed++);
+                generated.push(qObj);
             }
         }
+        return generated;
+    }
 
-        function prevQuestion() {
-            if (currentQIndex > 0) {
-                currentQIndex--;
-                renderQuizQuestion();
-            }
+    function createDynamicChurchQuestion(num, type, n1, n2, seed) {
+        const apostles = ["بطرس", "أندراوس", "يعقوب بن زبدي", "يوحنا", "فيلبس", "برثولماوس", "توما", "متى", "يعقوب بن حلفى", "تداوس", "سمعان القانوي", "متياس"];
+        const fruits = ["المحبة", "الفرح", "السلام", "طول الأناة", "اللطف", "الصلاح", "الإيمان", "الوداعة", "التعفف"];
+        const epistles = [
+            { name: "رومية", ch: 16 }, { name: "كورنثوس الأولى", ch: 16 }, { name: "كورنثوس الثانية", ch: 13 },
+            { name: "غلاطية", ch: 6 }, { name: "أفسس", ch: 6 }, { name: "فيلبي", ch: 4 },
+            { name: "كولوسي", ch: 4 }, { name: "تسالونيكي الأولى", ch: 5 }, { name: "العبرانيين", ch: 13 }
+        ];
+        const psalms = [
+            { num: 23, text: "الرب راعي فلا يعوزني شيء" },
+            { num: 91, text: "الساكن في ستر العلي في ظل القدير يبيت" },
+            { num: 51, text: "ارحمني يا الله كعظيم رحمتك" },
+            { num: 150, text: "سبحوا الله في جميع قديسيه" },
+            { num: 121, text: "أرفع عيني إلى الجبال من حيث يأتي عوني" },
+            { num: 27, text: "الرب نوري وخلاصي ممن أخاف" }
+        ];
+
+        if (type === 0) {
+            let ep = epistles[Math.floor(seededRandom(seed) * epistles.length)];
+            let opts = [ep.ch, ep.ch + 2, Math.max(1, ep.ch - 2), ep.ch + 5].map(x => `${x} أصحاحات`);
+            let ans = opts[0];
+            opts.sort(() => seededRandom(seed + 1) - 0.5);
+            return { id: num, q: `كم عدد أصحاحات رسالة معلمنا بولس الرسول إلى أهل (${ep.name})؟`, options: opts, correctIndex: opts.indexOf(ans) };
+        } else if (type === 1) {
+            let ps = psalms[Math.floor(seededRandom(seed) * psalms.length)];
+            let opts = [`مزمور ${ps.num}`, `مزمور ${ps.num + 10}`, `مزمور ${Math.max(1, ps.num - 7)}`, `مزمور ${ps.num + 22}`];
+            let ans = opts[0];
+            opts.sort(() => seededRandom(seed + 2) - 0.5);
+            return { id: num, q: `في أي مزمور وردت الآية: "${ps.text}"؟`, options: opts, correctIndex: opts.indexOf(ans) };
+        } else if (type === 2) {
+            let fruit = fruits[Math.floor(seededRandom(seed) * fruits.length)];
+            let opts = [fruit, "التسرع", "الخصام", "الحسد"];
+            let ans = opts[0];
+            opts.sort(() => seededRandom(seed + 3) - 0.5);
+            return { id: num, q: `أي من الصفات التالية يُعد من ثمار الروح القدس المذكورة في رسالة غلاطية 5؟`, options: opts, correctIndex: opts.indexOf(ans) };
+        } else if (type === 3) {
+            let ap = apostles[Math.floor(seededRandom(seed) * apostles.length)];
+            let opts = [ap, "بيلاطس البنطي", "هيرودس الملك", "قيافا"];
+            let ans = opts[0];
+            opts.sort(() => seededRandom(seed + 4) - 0.5);
+            return { id: num, q: `من هو أحد تلاميذ ورسل السيد المسيح الاثني عشر؟`, options: opts, correctIndex: opts.indexOf(ans) };
+        } else {
+            let sum = n1 + n2;
+            let opts = [`${sum} أسفار`, `${sum + 3} أسفار`, `${Math.max(1, sum - 2)} أسفار`, `${sum + 6} أسفار`];
+            let ans = opts[0];
+            opts.sort(() => seededRandom(seed + 5) - 0.5);
+            return { id: num, q: `سؤال ذكاء كتابي: إذا قرأت ${n1} أصحاحات صباحاً و ${n2} أصحاحات مساءً، فكم مجموع ما قرأته اليوم؟`, options: opts, correctIndex: opts.indexOf(ans) };
         }
+    }
 
-        function generateCustomAIQuestions() {
-            const topic = prompt("اكتب موضوعاً روحياً أو سفراً من الكتاب المقدس لتوليد أسئلة فورية عنه (مثال: سفر التكوين، الصوم، القديس مرقس):");
-            if (!topic) return;
-            const filtered = dailyQuestions.filter(q => q.q.includes(topic) || q.cat.includes(topic));
-            if (filtered.length > 0) {
-                const idx = dailyQuestions.indexOf(filtered[0]);
-                currentQIndex = idx;
-                renderQuizQuestion();
-                showToast(`تم الانتقال إلى أسئلة حول "${topic}"`);
-            } else {
-                showToast(`تم تحديث بنك الأسئلة بمواضيع متنوعة تشمل "${topic}"`);
-            }
+    // ================= المزامنة مع GitHub Storage =================
+    function detectGitHubPagesRepo() {
+        // محاولة استنتاج اسم صاحب المستودع واسم المستودع تلقائياً إذا كان مرفوعاً على GitHub Pages
+        const host = window.location.hostname;
+        const path = window.location.pathname.split('/').filter(Boolean);
+        if (host.endsWith('.github.io')) {
+            const owner = host.replace('.github.io', '');
+            const repo = path.length > 0 ? path[0] : `${owner}.github.io`;
+            return { owner, repo };
         }
+        return null;
+    }
 
-        // ==================== LEADERBOARD & FOLLOW-UP ====================
-        function renderLeaderboard() {
-            const sorted = [...appData.members].sort((a, b) => (b.points || 0) - (a.points || 0));
-            const list = document.getElementById('leaderboardList');
+    async function loadDataFromCloud() {
+        const statusText = document.getElementById('statusText');
+        statusText.innerText = "⏳ جاري المزامنة مع السحابة...";
 
-            list.innerHTML = sorted.map((m, idx) => `
-                <div class="rank-row rank-${idx + 1}">
-                    <div style="display: flex; align-items: center;">
-                        <div class="rank-num">${idx + 1}</div>
-                        <div>
-                            <div style="font-weight: 700; font-size: 0.95rem;">${m.name}</div>
-                            <div style="font-size: 0.75rem; color: var(--text-muted);">${m.group || 'عام'}</div>
-                        </div>
-                    </div>
-                    <div class="points-badge">
-                        <i class="fas fa-star"></i> ${m.points || 0}
-                    </div>
-                </div>
-            `).join('');
+        // تحميل النسخة المحلية أولاً كاحتياطي
+        const localCache = localStorage.getItem('church_app_data');
+        if (localCache) appData = JSON.parse(localCache);
 
-            // Absent Follow-up list
-            const date = document.getElementById('attendanceDate').value;
-            const absents = appData.members.filter(m => m.attendance && m.attendance[date] === 'absent');
-            const followupBox = document.getElementById('absentFollowupList');
+        const autoRepo = detectGitHubPagesRepo();
+        const owner = ghConfig.owner || appData.publicRepo?.owner || autoRepo?.owner;
+        const repo = ghConfig.repo || appData.publicRepo?.repo || autoRepo?.repo;
 
-            if (absents.length === 0) {
-                followupBox.innerHTML = `<div style="font-size:0.85rem; color:var(--success); font-weight:700;">لا يوجد غائبون مسجلون في هذا التاريخ.</div>`;
-            } else {
-                followupBox.innerHTML = absents.map(m => `
-                    <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #f1f5f9;">
-                        <div>
-                            <div style="font-weight:700; font-size:0.9rem;">${m.name}</div>
-                            <div style="font-size:0.75rem; color:var(--text-muted);">${m.phone || 'لا يوجد رقم هاتف'}</div>
-                        </div>
-                        ${m.phone ? `
-                        <a href="https://wa.me/2${m.phone.replace(/^0+/, '0')}?text=${encodeURIComponent('سلام ونعمة يا ' + m.name + '، افتقدناك النهاردة في الكنيسة، طمنا عليك!')}" 
-                           target="_blank" class="btn btn-success btn-sm" style="text-decoration:none;">
-                            <i class="fab fa-whatsapp"></i> افتقاد واتساب
-                        </a>` : ''}
-                    </div>
-                `).join('');
-            }
-        }
-
-        function exportToCSV() {
-            const date = document.getElementById('attendanceDate').value;
-            let csv = "\uFEFFالاسم,الفصل,الهاتف,النقاط,حالة اليوم (" + date + ")\n";
-            appData.members.forEach(m => {
-                const st = (m.attendance && m.attendance[date]) || 'لم يسجل';
-                const stAr = st === 'present' ? 'حضور' : (st === 'absent' ? 'غياب' : 'لم يسجل');
-                csv += `"${m.name}","${m.group || ''}","${m.phone || ''}",${m.points || 0},"${stAr}"\n`;
-            });
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `تقرير_الكنيسة_${date}.csv`;
-            link.click();
-        }
-
-        // ==================== GITHUB CLOUD STORAGE SYNC ====================
-        function setSyncStatus(state, text) {
-            const dot = document.getElementById('syncDot');
-            const txt = document.getElementById('syncText');
-            dot.className = 'sync-dot ' + state;
-            txt.innerText = text;
-        }
-
-        function saveSettings() {
-            appData.churchName = document.getElementById('cfgChurchName').value.trim() || "خدمة الكنيسة";
-            ghConfig.adminPass = document.getElementById('cfgAdminPass').value.trim() || "1234";
-            ghConfig.token = document.getElementById('cfgGhToken').value.trim();
-            ghConfig.owner = document.getElementById('cfgGhOwner').value.trim();
-            ghConfig.repo = document.getElementById('cfgGhRepo').value.trim();
-            ghConfig.path = document.getElementById('cfgGhPath').value.trim() || "database.json";
-
-            localStorage.setItem('church_gh_config', JSON.stringify(ghConfig));
-            saveLocal();
-            updateIdentityUI();
-            closeModal('settingsModal');
-            syncWithGitHub(true);
-        }
-
-        // UTF-8 Safe Base64 Encoding/Decoding for Arabic Text
-        function utf8ToBase64(str) {
-            return btoa(unescape(encodeURIComponent(str)));
-        }
-        function base64ToUtf8(str) {
-            return decodeURIComponent(escape(atob(str)));
-        }
-
-        async function pullFromGitHub(silent = false) {
-            if (!ghConfig.token || !ghConfig.owner || !ghConfig.repo) {
-                setSyncStatus('', 'وضع محلي');
-                return;
-            }
-            if (!silent) setSyncStatus('syncing', 'جاري السحب...');
-
-            const url = `https://api.github.com/repos/${ghConfig.owner}/${ghConfig.repo}/contents/${ghConfig.path}`;
+        if (owner && repo) {
             try {
-                const res = await fetch(url, {
-                    headers: {
-                        'Authorization': `token ${ghConfig.token}`,
-                        'Accept': 'application/vnd.github.v3+json'
-                    },
-                    cache: 'no-store'
-                });
+                // القراءة متاحة للجميع عبر GitHub API العام أو عبر Token الخادم
+                const headers = { 'Accept': 'application/vnd.github.v3+json' };
+                if (isAdmin && ghConfig.token) headers['Authorization'] = `token ${ghConfig.token}`;
 
-                if (res.status === 404) {
-                    // File doesn't exist yet on GitHub, push initial data
-                    await syncWithGitHub(silent);
-                    return;
+                const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/church_data.json?t=${Date.now()}`, { headers });
+                if (res.ok) {
+                    const data = await res.json();
+                    fileSha = data.sha;
+                    const decoded = decodeURIComponent(escape(atob(data.content)));
+                    appData = JSON.parse(decoded);
+                    localStorage.setItem('church_app_data', JSON.stringify(appData));
+                    statusText.innerText = "✅ متصل ومُحدّث مع GitHub";
+                } else if (res.status === 404) {
+                    statusText.innerText = "ℹ️ جاهز (سيتم إنشاء قاعدة البيانات عند أول حفظ)";
+                } else {
+                    statusText.innerText = "⚠️ وضع العمل المحلي (تحقق من إعدادات GitHub)";
                 }
-
-                if (!res.ok) throw new Error('GitHub Error');
-
-                const data = await res.json();
-                fileSha = data.sha;
-                const decodedContent = base64ToUtf8(data.content.replace(/\n/g, ''));
-                const remoteData = JSON.parse(decodedContent);
-
-                appData = remoteData;
-                saveLocal();
-                updateIdentityUI();
-                renderMembers();
-                renderChat();
-                renderLeaderboard();
-                setSyncStatus('connected', 'متصل بالسحابة');
-                if (!silent) showToast("تم تحديث البيانات من سحابة GitHub");
-            } catch (err) {
-                console.error(err);
-                setSyncStatus('error', 'خطأ في المزامنة');
-                if (!silent) showToast("تعذر الاتصال بـ GitHub، تأكد من التوكن والمستودع");
+            } catch (e) {
+                statusText.innerText = "⚠️ تعذر الاتصال بالسحابة - يعمل محلياً";
             }
+        } else {
+            statusText.innerText = "📱 وضع التخزين المحلي (في انتظار ربط الخادم لـ GitHub)";
         }
 
-        async function syncWithGitHub(manual = false) {
-            if (!ghConfig.token || !ghConfig.owner || !ghConfig.repo) {
-                if (manual) openModal('settingsModal');
-                return;
+        renderAll();
+    }
+
+    async function pushDataToGitHub() {
+        localStorage.setItem('church_app_data', JSON.stringify(appData));
+        const statusText = document.getElementById('statusText');
+
+        // الخادم فقط هو من يمتلك Token للكتابة المباشرة على GitHub
+        if (!ghConfig.token || !ghConfig.owner || !ghConfig.repo) {
+            statusText.innerText = "💾 حُفظ محلياً (مطلوب Token الخادم للمزامنة السحابية)";
+            return;
+        }
+
+        statusText.innerText = "⬆️ جاري الرفع إلى GitHub...";
+        try {
+            // جلب أحدث SHA قبل الكتابة لتجنب التعارض
+            const getRes = await fetch(`https://api.github.com/repos/${ghConfig.owner}/${ghConfig.repo}/contents/church_data.json?t=${Date.now()}`, {
+                headers: { 'Authorization': `token ${ghConfig.token}` }
+            });
+            if (getRes.ok) {
+                const existing = await getRes.json();
+                fileSha = existing.sha;
             }
-            setSyncStatus('syncing', 'جاري الحفظ...');
 
-            const url = `https://api.github.com/repos/${ghConfig.owner}/${ghConfig.repo}/contents/${ghConfig.path}`;
-            try {
-                // Get latest SHA first to avoid conflict
-                const getRes = await fetch(url, {
-                    headers: { 'Authorization': `token ${ghConfig.token}` },
-                    cache: 'no-store'
-                });
-                if (getRes.ok) {
-                    const existing = await getRes.json();
-                    fileSha = existing.sha;
-                }
+            appData.publicRepo = { owner: ghConfig.owner, repo: ghConfig.repo };
+            const contentEncoded = btoa(unescape(encodeURIComponent(JSON.stringify(appData, null, 2))));
+            const body = {
+                message: `تحديث بيانات الكنيسة - ${new Date().toLocaleString('ar-EG')}`,
+                content: contentEncoded
+            };
+            if (fileSha) body.sha = fileSha;
 
-                const bodyPayload = {
-                    message: `Update church data - ${new Date().toISOString()}`,
-                    content: utf8ToBase64(JSON.stringify(appData, null, 2))
-                };
-                if (fileSha) bodyPayload.sha = fileSha;
+            const putRes = await fetch(`https://api.github.com/repos/${ghConfig.owner}/${ghConfig.repo}/contents/church_data.json`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${ghConfig.token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            });
 
-                const putRes = await fetch(url, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${ghConfig.token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(bodyPayload)
-                });
-
-                if (!putRes.ok) throw new Error('Failed to push');
+            if (putRes.ok) {
                 const result = await putRes.json();
                 fileSha = result.content.sha;
+                statusText.innerText = "✅ تم الحفظ والمزامنة على GitHub بنجاح!";
+            } else {
+                statusText.innerText = "❌ خطأ في صلاحيات GitHub Token";
+            }
+        } catch (err) {
+            statusText.innerText = "❌ فشل الاتصال بـ GitHub";
+        }
+    }
 
-                setSyncStatus('connected', 'متصل بالسحابة');
-                if (manual) showToast("تمت المزامنة مع GitHub بنجاح");
-            } catch (err) {
-                console.error(err);
-                setSyncStatus('error', 'فشل الرفع');
-                if (manual) showToast("حدث خطأ أثناء الرفع إلى GitHub");
+    // ================= إدارة العضوية والدخول =================
+    function registerMember() {
+        const name = document.getElementById('memberNameInput').value.trim();
+        if (name.length < 3) return alert("يرجى كتابة الاسم بشكل صحيح");
+
+        // البحث هل العضو مسجل مسبقاً بنفس الاسم
+        let member = appData.members.find(m => m.name === name);
+        if (!member) {
+            member = {
+                id: 'm_' + Date.now(),
+                name: name,
+                points: 0,
+                solvedDates: {},
+                attendance: {}
+            };
+            appData.members.push(member);
+            pushDataToGitHub();
+        }
+
+        currentUser = { id: member.id, name: member.name };
+        localStorage.setItem('church_user', JSON.stringify(currentUser));
+        renderAll();
+    }
+
+    // ================= نظام صلاحيات الخادم =================
+    let logoTaps = 0;
+    function handleLogoTap() {
+        logoTaps++;
+        if (logoTaps >= 3) { openAdminLogin(); logoTaps = 0; }
+    }
+
+    function openAdminLogin() {
+        if (isAdmin) {
+            switchTab('admin', document.getElementById('navAdminBtn'));
+            return;
+        }
+        document.getElementById('adminModal').classList.remove('hidden');
+    }
+
+    function closeAdminModal() {
+        document.getElementById('adminModal').classList.add('hidden');
+    }
+
+    function verifyAdmin() {
+        const pass = document.getElementById('adminPassInput').value;
+        if (pass === (appData.adminPass || "1234")) {
+            isAdmin = true;
+            sessionStorage.setItem('church_is_admin', 'true');
+            closeAdminModal();
+            document.getElementById('adminPassInput').value = '';
+            renderAll();
+            switchTab('admin', document.getElementById('navAdminBtn'));
+        } else {
+            alert("❌ الرمز السري غير صحيح!");
+        }
+    }
+
+    function logoutAdmin() {
+        isAdmin = false;
+        sessionStorage.removeItem('church_is_admin');
+        renderAll();
+        switchTab('quiz', document.querySelector('.nav-item'));
+    }
+
+    function saveGitHubConfig() {
+        ghConfig.owner = document.getElementById('ghOwner').value.trim();
+        ghConfig.repo = document.getElementById('ghRepo').value.trim();
+        ghConfig.token = document.getElementById('ghToken').value.trim();
+        const newPass = document.getElementById('newAdminPass').value.trim();
+        if (newPass) appData.adminPass = newPass;
+
+        localStorage.setItem('church_gh_config', JSON.stringify(ghConfig));
+        pushDataToGitHub();
+        alert("✅ تم حفظ إعدادات الخادم وربط GitHub");
+    }
+
+    // ================= عرض المسابقة اليومية (100 سؤال) =================
+    function renderQuiz() {
+        const container = document.getElementById('quizContainer');
+        const submitBtn = document.getElementById('submitQuizBtn');
+        const solvedBox = document.getElementById('quizAlreadySolved');
+
+        if (!currentUser && !isAdmin) {
+            container.innerHTML = "<p>سجل اسمك أولاً للبدء في حل الأسئلة.</p>";
+            return;
+        }
+
+        const member = currentUser ? appData.members.find(m => m.id === currentUser.id) : null;
+        if (member && member.solvedDates && member.solvedDates[TODAY_STR] !== undefined) {
+            container.innerHTML = '';
+            submitBtn.classList.add('hidden');
+            solvedBox.classList.remove('hidden');
+            document.getElementById('todayResultText').innerText = `حصلت اليوم على ${member.solvedDates[TODAY_STR]} نقطة من أصل 100 سؤال!`;
+            return;
+        }
+
+        solvedBox.classList.add('hidden');
+        submitBtn.classList.remove('hidden');
+
+        if (dailyQuestions.length === 0) {
+            dailyQuestions = generateDaily100Questions(TODAY_STR);
+        }
+
+        container.innerHTML = dailyQuestions.map((q, qIdx) => `
+            <div class="question-box">
+                <div class="question-title">${q.id}. ${q.q}</div>
+                <div class="options-grid">
+                    ${q.options.map((opt, oIdx) => `
+                        <button type="button" 
+                            class="option-btn ${userAnswers[qIdx] === oIdx ? 'selected' : ''}" 
+                            onclick="selectAnswer(${qIdx}, ${oIdx}, this)">
+                            ${opt}
+                        </button>
+                    `).join('')}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function selectAnswer(qIdx, oIdx, btnElement) {
+        userAnswers[qIdx] = oIdx;
+        const parent = btnElement.parentElement;
+        Array.from(parent.children).forEach(b => b.classList.remove('selected'));
+        btnElement.classList.add('selected');
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        dailyQuestions.forEach((q, idx) => {
+            if (userAnswers[idx] === q.correctIndex) score++;
+        });
+
+        if (currentUser) {
+            let member = appData.members.find(m => m.id === currentUser.id);
+            if (member) {
+                if (!member.solvedDates) member.solvedDates = {};
+                member.solvedDates[TODAY_STR] = score;
+                member.points = (member.points || 0) + score;
             }
         }
-    </script>
+
+        alert(`🎉 تم التصحيح! نتيجتك اليوم: ${score} من 100 وتمت إضافة النقاط لحسابك.`);
+        pushDataToGitHub();
+        renderAll();
+    }
+
+    // ================= الدردشة =================
+    function renderChat() {
+        const box = document.getElementById('chatBox');
+        if (!appData.messages || appData.messages.length === 0) {
+            box.innerHTML = '<p style="text-align:center; color:#94a3b8; margin-top:20px;">لا توجد رسائل بعد.. ابدأ المحادثة!</p>';
+            return;
+        }
+
+        box.innerHTML = appData.messages.map(m => {
+            const isMine = currentUser && m.senderId === currentUser.id;
+            return `
+                <div class="msg ${isMine ? 'mine' : ''}">
+                    <div class="msg-header">
+                        <span>${m.isAdmin ? '👑 ' : ''}${m.senderName}</span>
+                        <span class="msg-time">${m.time}</span>
+                    </div>
+                    <div>${m.text}</div>
+                    ${isAdmin ? `<button class="sm danger" style="margin-top:5px;" onclick="deleteMessage('${m.id}')">حذف</button>` : ''}
+                </div>
+            `;
+        }).join('');
+        box.scrollTop = box.scrollHeight;
+    }
+
+    function sendMessage() {
+        const input = document.getElementById('chatInput');
+        const text = input.value.trim();
+        if (!text) return;
+        if (!currentUser && !isAdmin) return alert("سجل اسمك أولاً للمشاركة في الدردشة.");
+
+        appData.messages.push({
+            id: 'msg_' + Date.now(),
+            senderId: isAdmin ? 'admin' : currentUser.id,
+            senderName: isAdmin ? 'الخادم (مشرف)' : currentUser.name,
+            text: text,
+            time: new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }),
+            isAdmin: isAdmin
+        });
+
+        if (appData.messages.length > 100) appData.messages.shift();
+        input.value = '';
+        renderChat();
+        pushDataToGitHub();
+    }
+
+    function deleteMessage(msgId) {
+        appData.messages = appData.messages.filter(m => m.id !== msgId);
+        renderChat();
+        pushDataToGitHub();
+    }
+
+    // ================= المتصدرين وإدارة الخادم =================
+    function renderLeaderboard() {
+        const list = document.getElementById('leaderboardList');
+        const sorted = [...appData.members].sort((a, b) => (b.points || 0) - (a.points || 0));
+        if (sorted.length === 0) {
+            list.innerHTML = '<p style="color:#64748b;">لا يوجد أعضاء مسجلون بعد.</p>';
+            return;
+        }
+        list.innerHTML = sorted.map((m, idx) => `
+            <div class="member-row">
+                <div><strong>#${idx + 1} ${m.name}</strong></div>
+                <span class="badge">⭐ ${m.points || 0} نقطة</span>
+            </div>
+        `).join('');
+    }
+
+    function renderAdminPanel() {
+        if (!isAdmin) return;
+        document.getElementById('ghOwner').value = ghConfig.owner || '';
+        document.getElementById('ghRepo').value = ghConfig.repo || '';
+        document.getElementById('ghToken').value = ghConfig.token || '';
+
+        const attList = document.getElementById('attendanceList');
+        const memList = document.getElementById('adminMembersList');
+
+        attList.innerHTML = appData.members.map(m => {
+            const status = m.attendance?.[TODAY_STR] || 'غير مسجل';
+            return `
+                <div class="member-row">
+                    <div>
+                        <strong>${m.name}</strong>
+                        <div style="font-size:0.75rem; color:#64748b;">حالة اليوم: <b>${status}</b></div>
+                    </div>
+                    <div style="display:flex; gap:5px;">
+                        <button class="sm success" onclick="markAttendance('${m.id}', 'حاضر')">✔️ حاضر (+10)</button>
+                        <button class="sm danger" onclick="markAttendance('${m.id}', 'غائب')">❌ غائب</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        memList.innerHTML = appData.members.map(m => `
+            <div class="member-row">
+                <div>
+                    <strong>${m.name}</strong>
+                    <span class="badge">${m.points || 0} نقطة</span>
+                </div>
+                <div style="display:flex; gap:5px; flex-wrap:wrap;">
+                    <button class="sm success" onclick="changePoints('${m.id}', 10)">+10</button>
+                    <button class="sm gold" onclick="changePoints('${m.id}', -10)">-10</button>
+                    <button class="sm outline" onclick="customPoints('${m.id}')">تعديل</button>
+                    <button class="sm danger" onclick="deleteMember('${m.id}')">🗑️ حذف</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function markAttendance(memberId, status) {
+        const m = appData.members.find(x => x.id === memberId);
+        if (!m) return;
+        if (!m.attendance) m.attendance = {};
+        const prev = m.attendance[TODAY_STR];
+        m.attendance[TODAY_STR] = status;
+
+        if (status === 'حاضر' && prev !== 'حاضر') m.points = (m.points || 0) + 10;
+        if (status === 'غائب' && prev === 'حاضر') m.points = Math.max(0, (m.points || 0) - 10);
+
+        renderAll();
+        pushDataToGitHub();
+    }
+
+    function changePoints(memberId, delta) {
+        const m = appData.members.find(x => x.id === memberId);
+        if (!m) return;
+        m.points = Math.max(0, (m.points || 0) + delta);
+        renderAll();
+        pushDataToGitHub();
+    }
+
+    function customPoints(memberId) {
+        const val = prompt("أدخل عدد النقاط للإضافة (أو رقم سالب للخصم، مثال: -15):");
+        if (val !== null && !isNaN(parseInt(val))) {
+            changePoints(memberId, parseInt(val));
+        }
+    }
+
+    function deleteMember(memberId) {
+        if (!confirm("هل أنت متأكد من حذف هذا العضو نهائياً؟")) return;
+        appData.members = appData.members.filter(x => x.id !== memberId);
+        renderAll();
+        pushDataToGitHub();
+    }
+
+    function adminAddMember() {
+        const name = document.getElementById('adminAddMemberName').value.trim();
+        if (!name) return;
+        appData.members.push({
+            id: 'm_' + Date.now(),
+            name: name,
+            points: 0,
+            solvedDates: {},
+            attendance: {}
+        });
+        document.getElementById('adminAddMemberName').value = '';
+        renderAll();
+        pushDataToGitHub();
+    }
+
+    // ================= التنقل والتحديث الشامل =================
+    function switchTab(tabName, btn) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+        document.getElementById('tab-' + tabName).classList.remove('hidden');
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+    }
+
+    function renderAll() {
+        const regCard = document.getElementById('registerCard');
+        const userBadge = document.getElementById('userBadge');
+        const quizScoreBadge = document.getElementById('quizScoreBadge');
+        const navAdminBtn = document.getElementById('navAdminBtn');
+        const adminBtn = document.getElementById('adminBtn');
+
+        if (isAdmin) {
+            navAdminBtn.classList.remove('hidden');
+            adminBtn.innerText = "👑 وضع الخادم مُفعّل";
+        } else {
+            navAdminBtn.classList.add('hidden');
+            adminBtn.innerText = "🔒 دخول الخادم";
+        }
+
+        if (!currentUser && !isAdmin) {
+            regCard.classList.remove('hidden');
+        } else {
+            regCard.classList.add('hidden');
+            if (currentUser) {
+                const updatedMember = appData.members.find(m => m.id === currentUser.id);
+                const pts = updatedMember ? (updatedMember.points || 0) : 0;
+                userBadge.innerText = `👤 ${currentUser.name}`;
+                quizScoreBadge.innerText = `نقاطك: ${pts}`;
+            }
+        }
+
+        renderQuiz();
+        renderChat();
+        renderLeaderboard();
+        renderAdminPanel();
+    }
+
+    // بدء التشغيل
+    loadDataFromCloud();
+</script>
 </body>
 </html>
