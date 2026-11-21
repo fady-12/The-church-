@@ -1,7 +1,7 @@
 {
   "churchName": "الكنيسة الرسولية الأولى بالعزية",
   "systemTitle": "نظام الخدام",
-  "updatedAt": "2026-11-21T18:30:15.610Z",
+  "updatedAt": "2026-11-21T18:31:26.270Z",
   "revision": 35,
   "adminPasswordHash": "c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646",
   "members": [
@@ -10,7 +10,7 @@
       "name": "Fady Safwat",
       "role": "ثانوى",
       "phone": "01280234499",
-      "points": 32
+      "points": 33
     },
     {
       "id": "m_1795284798987_82m",
@@ -18,13 +18,6 @@
       "role": "شباب",
       "phone": "01080783823",
       "points": 12
-    },
-    {
-      "id": "m_1795285815610_zaa",
-      "name": "Steven Safwat",
-      "role": "شباب",
-      "phone": "01220010257",
-      "points": 10
     }
   ],
   "attendance": {
@@ -48,6 +41,14 @@
     }
   },
   "transactions": [
+    {
+      "id": "tx_quiz_1795285886270",
+      "memberId": "m_1795284609883_9cu",
+      "memberName": "Fady Safwat",
+      "delta": 1,
+      "reason": "تحدي 100 سؤال يومي (سؤال #54)",
+      "timestamp": "2026-11-21T18:31:26.270Z"
+    },
     {
       "id": "tx_quiz_1795285858309",
       "memberId": "m_1795284609883_9cu",
