@@ -1,7 +1,7 @@
 {
   "churchName": "الكنيسة الرسولية الأولى بالعزية",
   "systemTitle": "نظام الخدام",
-  "updatedAt": "2026-11-21T18:30:44.784Z",
+  "updatedAt": "2026-11-21T18:30:51.932Z",
   "revision": 33,
   "adminPasswordHash": "c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646",
   "members": [
@@ -42,12 +42,12 @@
   },
   "transactions": [
     {
-      "id": "tx_quiz_1795285844784",
+      "id": "tx_quiz_1795285851932",
       "memberId": "m_1795284609883_9cu",
       "memberName": "Fady Safwat",
       "delta": 1,
-      "reason": "تحدي 100 سؤال يومي (سؤال #50)",
-      "timestamp": "2026-11-21T18:30:44.784Z"
+      "reason": "تحدي 100 سؤال يومي (سؤال #51)",
+      "timestamp": "2026-11-21T18:30:51.932Z"
     },
     {
       "id": "tx_quiz_1795285833865",
