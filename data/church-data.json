@@ -1,10 +1,18 @@
 {
   "churchName": "الكنيسة الرسولية الأولى بالعزية",
   "systemTitle": "نظام الخدام",
-  "updatedAt": "2026-11-21T17:58:34.591Z",
-  "revision": 7,
+  "updatedAt": "2026-11-21T18:10:09.883Z",
+  "revision": 8,
   "adminPasswordHash": "c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646",
-  "members": [],
+  "members": [
+    {
+      "id": "m_1795284609883_9cu",
+      "name": "Fady Safwat",
+      "role": "ثانوى",
+      "phone": "01280234499",
+      "points": 10
+    }
+  ],
   "attendance": {
     "2026-11-21": {
       "m1": {
