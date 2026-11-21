@@ -1,8 +1,8 @@
 {
   "churchName": "الكنيسة الرسولية الأولى بالعزية",
   "systemTitle": "نظام الخدام",
-  "updatedAt": "2026-11-21T18:16:08.968Z",
-  "revision": 11,
+  "updatedAt": "2026-11-21T18:16:12.972Z",
+  "revision": 13,
   "adminPasswordHash": "c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646",
   "members": [
     {
@@ -17,7 +17,7 @@
       "name": "اندرو ايمن عادل",
       "role": "شباب",
       "phone": "01080783823",
-      "points": 10
+      "points": 12
     }
   ],
   "attendance": {
@@ -33,10 +33,22 @@
       "m_1795284609883_9cu": {
         "status": "present",
         "note": ""
+      },
+      "m_1795284798987_82m": {
+        "status": "present",
+        "note": ""
       }
     }
   },
   "transactions": [
+    {
+      "id": "tx_1795284972524_3vg",
+      "memberId": "m_1795284798987_82m",
+      "memberName": "اندرو ايمن عادل",
+      "delta": 2,
+      "reason": "حضور اجتماع (2026-11-21)",
+      "timestamp": "2026-11-21T18:16:12.524Z"
+    },
     {
       "id": "tx_1795284968968_247",
       "memberId": "m_1795284609883_9cu",
