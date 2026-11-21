@@ -1,0 +1,67 @@
+{
+  "updatedAt": "2026-11-21T12:54:57.314Z",
+  "settings": {
+    "churchName": "كنيسة مار جرجس والأنبا أنطونيوس",
+    "groupSubtitle": "نظام متابعة الحضور والدرجات والنقاط والدردشة — سحابة GitHub",
+    "presentPoints": 10,
+    "absentPenalty": 5,
+    "excusedPoints": 2,
+    "servantPin": "5555"
+  },
+  "announcements": [
+    {
+      "id": "ann-1",
+      "text": "اجتماع الخدمة والدرس يوم الجمعة الساعة 5:00 مساءً — لا تنسوا مراجعة الألحان والآيات.",
+      "createdAt": "2026-11-21"
+    }
+  ],
+  "members": [],
+  "attendance": {
+    "2026-11-21": {
+      "m-1": "present",
+      "m-2": "present",
+      "m-3": "excused",
+      "m-4": "present",
+      "m-5": "absent",
+      "m-6": "present"
+    }
+  },
+  "logs": [
+    {
+      "id": "log-1",
+      "memberId": "m-2",
+      "memberName": "مريم جرجس",
+      "type": "add",
+      "amount": 15,
+      "reason": "حفظ ألحان الكيهك كاملة",
+      "byServant": true,
+      "timestamp": "٢١‏/١١‏/٢٠٢٦، ٢:٥٢:٠٤ م"
+    },
+    {
+      "id": "log-2",
+      "memberId": "m-5",
+      "memberName": "بيتر عادل",
+      "type": "deduct",
+      "amount": 5,
+      "reason": "تأخير عن بداية الدرس",
+      "byServant": true,
+      "timestamp": "٢١‏/١١‏/٢٠٢٦، ٢:٥٢:٠٤ م"
+    }
+  ],
+  "messages": [
+    {
+      "id": "msg-1",
+      "sender": "خادم الخدمة",
+      "roleTag": "خادم",
+      "text": "أهلاً بكم جميعاً في مجموعة الكنيسة ✝️ هنا نتابع الدروس والآيات ونتواصل مع بعضنا.",
+      "time": "04:15 م"
+    },
+    {
+      "id": "msg-2",
+      "sender": "مريم جرجس",
+      "roleTag": "مخدوم",
+      "text": "شكراً لحضرتك، أنا مستعدة لتسميع الجزء الجديد يوم الجمعة 🙏",
+      "time": "04:20 م"
+    }
+  ]
+}
