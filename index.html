@@ -478,27 +478,47 @@
           <div class="grid grid-cols-3 gap-2.5 sm:gap-3 text-center shrink-0">
             <div class="bg-white/15 backdrop-blur-xs rounded-2xl px-3 py-2.5">
               <div class="text-[11px] text-indigo-100">تمت إجابتها</div>
-              <div id="quizAnsweredCount" class="text-lg sm:text-xl font-extrabold">0/100</div>
+              <div id="quizAnsweredCount" class="text-lg sm:text-xl font-extrabold">0 من 100</div>
             </div>
             <div class="bg-white/15 backdrop-blur-xs rounded-2xl px-3 py-2.5">
               <div class="text-[11px] text-indigo-100">نقاط اليوم</div>
               <div id="quizEarnedToday" class="text-lg sm:text-xl font-extrabold">0</div>
             </div>
             <div class="bg-white/15 backdrop-blur-xs rounded-2xl px-3 py-2.5">
-              <div class="text-[11px] text-indigo-100">نقطة/إجابة</div>
+              <div class="text-[11px] text-indigo-100">نقطة/صحيح</div>
               <div id="quizPointsPerQDisplay" class="text-lg sm:text-xl font-extrabold">10</div>
             </div>
           </div>
         </div>
 
-        <!-- شريط التقدم -->
-        <div class="mt-5">
-          <div class="flex justify-between text-xs font-bold text-indigo-100 mb-1.5">
-            <span>تقدمك في أسئلة اليوم</span>
-            <span id="quizProgressPercent">0%</span>
+        <!-- شريط التقدم وزر البدء/الإكمال وزر تسليم النتيجة للقائد -->
+        <div class="mt-5 space-y-3">
+          <div>
+            <div class="flex justify-between text-xs font-bold text-indigo-100 mb-1.5">
+              <span>تقدمك في الـ ١٠٠ سؤال اليومي</span>
+              <span id="quizProgressPercent">0%</span>
+            </div>
+            <div class="w-full h-2.5 bg-white/20 rounded-full overflow-hidden">
+              <div id="quizProgressBar" class="h-full bg-emerald-400 rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
           </div>
-          <div class="w-full h-2.5 bg-white/20 rounded-full overflow-hidden">
-            <div id="quizProgressBar" class="h-full bg-emerald-400 rounded-full transition-all duration-300" style="width: 0%"></div>
+
+          <div class="flex flex-wrap items-center justify-between gap-2.5 pt-1">
+            <div class="flex flex-wrap items-center gap-2">
+              <button type="button" onclick="startOrContinueQuiz100()"
+                class="px-4 py-2 rounded-xl bg-white text-blue-950 hover:bg-amber-100 font-extrabold text-xs sm:text-sm shadow-xs transition">
+                ▶️ ابدأ / أكمل الـ ١٠٠ سؤال
+              </button>
+              <button type="button" onclick="toggleQuizViewMode()" id="quizViewModeBtn"
+                class="px-3.5 py-2 rounded-xl bg-white/15 hover:bg-white/25 text-white font-bold text-xs sm:text-sm transition">
+                📋 عرض كقائمة
+              </button>
+            </div>
+
+            <button type="button" onclick="submitQuizResultToLeader()" id="submitQuizResultBtn"
+              class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs sm:text-sm shadow-md transition flex items-center gap-1.5">
+              <span>📤 تسليم النتيجة وإضافة النقاط</span>
+            </button>
           </div>
         </div>
       </div>
@@ -507,10 +527,11 @@
       <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 shadow-card border border-slate-200/70 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
         <div class="flex flex-wrap items-center gap-1.5">
           <button onclick="setQuizCategory('all')" data-qcat="all" class="qcat-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-blue-800 text-white">الكل (100)</button>
-          <button onclick="setQuizCategory('كتاب مقدس')" data-qcat="كتاب مقدس" class="qcat-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">كتاب مقدس</button>
-          <button onclick="setQuizCategory('طقس وعقيدة')" data-qcat="طقس وعقيدة" class="qcat-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">طقس وعقيدة</button>
-          <button onclick="setQuizCategory('تاريخ كنيسة')" data-qcat="تاريخ كنيسة" class="qcat-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">تاريخ كنيسة</button>
-          <button onclick="setQuizCategory('ثقافة وتفكير')" data-qcat="ثقافة وتفكير" class="qcat-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">ثقافة وتفكير</button>
+          <button onclick="setQuizCategory('العهد القديم')" data-qcat="العهد القديم" class="qcat-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">العهد القديم</button>
+          <button onclick="setQuizCategory('العهد الجديد')" data-qcat="العهد الجديد" class="qcat-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">العهد الجديد</button>
+          <button onclick="setQuizCategory('العقيدة والطقس')" data-qcat="العقيدة والطقس" class="qcat-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">العقيدة والطقس</button>
+          <button onclick="setQuizCategory('تاريخ الكنيسة والقديسين')" data-qcat="تاريخ الكنيسة والقديسين" class="qcat-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">الطقس والقديسين</button>
+          <button onclick="setQuizCategory('تأملات روحية')" data-qcat="تأملات روحية" class="qcat-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">روحيات</button>
         </div>
 
         <div class="flex flex-wrap items-center gap-2">
@@ -527,7 +548,26 @@
         </div>
       </div>
 
-      <!-- عرض السؤال الحالي + تنقل سريع -->
+      <!-- عرض السؤال الحالي (وضع سؤال بسؤال أو قائمة) + شبكة الأرقام 1-100 -->
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-5">
+        <div id="quizMainDisplayCol" class="lg:col-span-3 space-y-4">
+          <div id="activeQuestionCard" class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 shadow-soft border border-slate-200/70 dark:border-slate-800 space-y-5"></div>
+          <div id="quizListViewContainer" class="hidden space-y-3"></div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-3xl p-4 sm:p-5 shadow-soft border border-slate-200/70 dark:border-slate-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-extrabold text-slate-900 dark:text-white">خريطة ١٠٠ سؤال</h3>
+            <span id="quizCounterHeaderBadge" class="text-[11px] font-extrabold text-blue-800 dark:text-blue-300">١ من ١٠٠</span>
+          </div>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400">
+            أخضر: إجابة صحيحة • أحمر: إجابة خاطئة • بنفسجي: السؤال الحالي
+          </p>
+          <div id="questionNumberGrid" class="grid grid-cols-10 sm:grid-cols-10 lg:grid-cols-5 gap-1.5 pt-1"></div>
+        </div>
+      </div>
+    </section>
+
     <!-- ================= 4. تبويب النقاط والترتيب ولوحة الشرف ================= -->
     <section id="tab-leaderboard" class="tab-panel hidden space-y-5">
       <!-- لوحة الشرف والتكريم -->
@@ -964,6 +1004,7 @@
     let quizCategory = 'all';
     let currentQuestionIndex = 0;
     let manualDailySalt = 0;
+    let quizListMode = false;
 
     function loadLocalState() {
       try {
@@ -1956,9 +1997,8 @@
     }
 
     /* =========================================================================
-       7. توليد 100 سؤال مختلفين كل يوم تلقائياً
+       7. توليد 100 سؤال مختلفين كل يوم تلقائياً عبر 5 محاور كنسية وروحية
        ========================================================================= */
-    // مولد أرقام شبه عشوائي حتمي يعتمد على بذرة اليوم
     function seededRandom(seed) {
       let s = seed % 2147483647;
       if (s <= 0) s += 2147483646;
@@ -1970,122 +2010,85 @@
 
     function getDaySeed(dateStr = getTodayISO()) {
       let hash = 0;
-      const combined = `${dateStr}__salt_${manualDailySalt}`;
+      const combined = `${dateStr}__daily100_v3__salt_${manualDailySalt}`;
       for (let i = 0; i < combined.length; i++) {
         hash = ((hash << 5) - hash) + combined.charCodeAt(i);
         hash |= 0;
       }
-      return Math.abs(hash) + 101;
+      return Math.abs(hash) + 313;
     }
 
-    // قوالب أسئلة غنية ومتنوعة تتبدل وتتغير خياراتها وترتيبها وصياغتها كل يوم (100 سؤال يومياً)
-    const QUESTION_TEMPLATES = [
-      {
-        cat: 'كتاب مقدس',
-        q: 'كم عدد أسفار الكتاب المقدس بعهديه القديم والجديد؟',
-        opts: ['73 سفراً', '66 سفراً', '46 سفراً', '27 سفراً'],
-        ans: 0,
-      },
-      {
-        cat: 'كتاب مقدس',
-        q: 'من هو النبي الذي ابتلعه الحوت وبقي في جوفه ثلاثة أيام؟',
-        opts: ['إيليا', 'يونان', 'حزقيال', 'عاموس'],
-        ans: 1,
-      },
-      {
-        cat: 'كتاب مقدس',
-        q: 'في أي مدينة وُلد السيد المسيح بحسب النبوة والإنجيل؟',
-        opts: ['الناصرة', 'بيت لحم', 'أورشليم', 'كفرناحوم'],
-        ans: 1,
-      },
-      {
-        cat: 'كتاب مقدس',
-        q: 'من هو التلميذ الذي أنكر المسيح ثلاث مرات قبل صياح الديك؟',
-        opts: ['يوحنا', 'بطرس', 'توما', 'أندراوس'],
-        ans: 1,
-      },
-      {
-        cat: 'كتاب مقدس',
-        q: 'ما هو أول معجزات السيد المسيح في إنجيل يوحنا؟',
-        opts: ['إشباع الجموع', 'تحويل الماء إلى خمر في عرس قانا', 'إقامة لعازر', 'المشي على الماء'],
-        ans: 1,
-      },
-      {
-        cat: 'طقس وعقيدة',
-        q: 'ما اسم اللحن الذي يُقال في الكنيسة القبطية تعبيراً عن الفرح والقيامة؟',
-        opts: ['لحن تين أوشين', 'لحن خريستوس أنيستي', 'لحن غولغوثا', 'لحن باؤو'],
-        ans: 1,
-      },
-      {
-        cat: 'طقس وعقيدة',
-        q: 'كم عدد الأسرار المقدسة السبعة في الكنيسة؟',
-        opts: ['5 أسرار', '7 أسرار', '9 أسرار', '3 أسرار'],
-        ans: 1,
-      },
-      {
-        cat: 'طقس وعقيدة',
-        q: 'ماذا يرمز البخور الصاعد في صلوات الكنيسة؟',
-        opts: ['صعود الصلوات أمام الله ورائحة المسيح الذكية', 'إشارة لانتهاء القداس فقط', 'تذكار رحلة البرية وحدها', 'رمز للغنى المادي'],
-        ans: 0,
-      },
-      {
-        cat: 'تاريخ كنيسة',
-        q: 'من هو كاروز الديار المصرية ومؤسس كنيسة الإسكندرية؟',
-        opts: ['القديس مرقس الرسول', 'القديس أنطونيوس', 'القديس أثناسيوس', 'القديس باخوميوس'],
-        ans: 0,
-      },
-      {
-        cat: 'تاريخ كنيسة',
-        q: 'من يُلقب بأبي الرهبان في العالم المسيحي؟',
-        opts: ['الأنبا أنطونيوس', 'الأنبا بيشوي', 'الأنبا موسى الأسود', 'القديس كيرلس'],
-        ans: 0,
-      },
-      {
-        cat: 'تاريخ كنيسة',
-        q: 'من هو بطل مجمع نيقية عام 325م المدافع عن لاهوت المسيح؟',
-        opts: ['القديس أثناسيوس الرسولي', 'القديس يوحنا ذهبي الفم', 'القديس باسيليوس', 'القديس غريغوريوس'],
-        ans: 0,
-      },
-      {
-        cat: 'ثقافة وتفكير',
-        q: 'ما هي القيمة الأساسية التي تبني محبة حقيقية داخل الخدمة والأسرة؟',
-        opts: ['الاحتمال والغفران والإنصات', 'المنافسة وحب الظهور', 'اللوم المستمر', 'الانعزال التام'],
-        ans: 0,
-      },
-      {
-        cat: 'ثقافة وتفكير',
-        q: 'كيف يتصرف الخادم الأمين عندما يلاحظ غياب مخدوم؟',
-        opts: ['يتواصل معه بمحبة وافتقاد حقيقي', 'يتجاهله تماماً', 'يُحرجُه أمام الجميع', 'يقطع التواصل معه'],
-        ans: 0,
-      },
-      {
-        cat: 'كتاب مقدس',
-        q: 'كم كان عمر سليمان الحكيم حينما ملك على إسرائيل؟',
-        opts: ['كان فتىً صغيراً وطلب قلباً فهيماً', 'كان في الثمانين', 'لم يملك قط', 'كان قائداً عسكرياً مسناً'],
-        ans: 0,
-      },
-      {
-        cat: 'كتاب مقدس',
-        q: 'ما اسم السفينة التي بناها نوح بأمر الله لنجاة عائلته والحيوانات؟',
-        opts: ['فلك نوح', 'سفينة الملوك', 'قارب الجليل', 'فلك العهد'],
-        ans: 0,
-      },
+    const DAILY_QUESTION_BANKS = {
+      'العهد القديم': [
+        { q: 'ما اسم الجبل الذي استقر عليه فلك نوح بعد الطوفان؟', opts: ['جبل أراراط', 'جبل سيناء', 'جبل الكرمل', 'جبل الزيتون'], ans: 0, exp: 'استقر فلك نوح على جبال أراراط بحسب سفر التكوين ٨ : ٤.' },
+        { q: 'من هو النبي الذي تحدى أنبياء البعل على جبل الكرمل ونزلت نار من السماء؟', opts: ['إيليا النبي', 'إشعياء النبي', 'إرميا النبي', 'دانيال النبي'], ans: 0, exp: 'أقام إيليا مذبحاً على جبل الكرمل واستجاب الرب بنار من السماء (١ ملوك ١٨).' },
+        { q: 'كم عدد الضربات العشر التي حلّت على أرض مصر قبل خروج بني إسرائيل؟', opts: ['عشر ضربات', 'سبع ضربات', 'ثلاث ضربات', 'اثنتا عشرة ضربة'], ans: 0, exp: 'أرسل الرب عشر ضربات على مصر لإطلاق شعبه بحسب سفر الخروج.' },
+        { q: 'من هو الملك الراعي الذي اختاره الله ليكون ملكاً على إسرائيل وكتب معظم المزامير؟', opts: ['داود النبي', 'شاول الملك', 'رحبعام', 'يوآش'], ans: 0, exp: 'دعا صموئيل داود من بيت لحم وهو يرعى غنم أبيه ليكون ملكاً مختاراً.' },
+        { q: 'في أي جُب ألقى إخوة يوسف به قبل بيعه إلى مصر؟', opts: ['بئر/جُب جاف في البرية', 'كهف المكفيلة', 'مغارة عدلام', 'نهر الأردن'], ans: 0, exp: 'ألقى إخوة يوسف به في بئر فارغة في البرية قبل مروره بقافلة الإسماعيليين (تكوين ٣٧).' },
+        { q: 'ما اسم الملك الذي طلب من الله قلباً فهيماً ليحكم الشعب بالعدل والحكمة؟', opts: ['سليمان الحكيم', 'حزقيا', 'يوشيا', 'آسا'], ans: 0, exp: 'أعطى الرب سليمان قلباً حكيماً ومميزاً فوق جميع من قبله وبعده (١ ملوك ٣).' },
+        { q: 'من هو النبي الذي أُلقى في جب الأسود فحفظه الله ولم يمسه أذى؟', opts: ['دانيال', 'حبقوق', 'ملاخي', 'عوبديا'], ans: 0, exp: 'أرسل الله ملاكه فسد أفواه الأسود لأن دانيال وُجد بريئاً أمامه (دانيال ٦).' },
+        { q: 'ما اسم قائد شعب إسرائيل الذي عبر بهم نهر الأردن ودخل أرض الموعد؟', opts: ['يشوع بن نون', 'كالب بن يفنة', 'جدعون', 'شمشون'], ans: 0, exp: 'خلف يشوع موسى وقاد الشعب لعبور الأردن وسقوط أسوار أريحا.' },
+      ],
+      'العهد الجديد': [
+        { q: 'في أي قرية أقام السيد المسيح لعازر من القبر بعد أربعة أيام؟', opts: ['بيت عنيا', 'قانا الجليل', 'نابلس', 'أريحا'], ans: 0, exp: 'أقام يسوع لعازر في بيت عنيا معلناً: «أَنَا هُوَ الْقِيَامَةُ وَالْحَيَاةُ» (يوحنا ١١).' },
+        { q: 'ما هي التطويبة الأولى في الموعظة على الجبل بحسب إنجيل متى؟', opts: ['طوبى للمساكين بالروح', 'طوبى للودعاء', 'طوبى لصانعي السلام', 'طوبى للرحماء'], ans: 0, exp: 'بدأ السيد المسيح التطويبات بقوله: «طُوبَى لِلْمَسَاكِينِ بِالرُّوحِ، لِأَنَّ لَهُمْ مَلَكُوتَ السَّمَاوَاتِ» (متى ٥ : ٣).' },
+        { q: 'من هو الرسول الذي كان يضطهد الكنيسة ثم التقى بالمسيح في طريق دمشق وصار رسول الأمم؟', opts: ['بولس الرسول', 'متى العشار', 'فيلبس', 'برثلماوس'], ans: 0, exp: 'تحول شاول الطرسوسي بعد لقائه بالمسيح ليصبح بولس الرسول الكارز للأمم.' },
+        { q: 'كم عدد الخبزات والسمكات التي باركها المسيح وأشبع بها نحو خمسة آلاف رجل؟', opts: ['خمس خبزات وسمكتان', 'سبع خبزات وقليل من السمك', 'ثلاث خبزات فقط', 'خبزة واحدة وسمكة'], ans: 0, exp: 'بارك الرب خمس خبزات شعير وسمكتين ففاضت اثنتا عشرة قفة مملوءة.' },
+        { q: 'ما اسم الكورة التي وُلد فيها السيد المسيح بحسب الإنجيل؟', opts: ['بيت لحم اليهودية', 'الناصرة', 'قيصرية', 'أفسس'], ans: 0, exp: 'وُلد يسوع في بيت لحم كما تنبأ الأنبياء (متى ٢ : ١).' },
+        { q: 'في أي يوم من الأسبوع قام السيد المسيح من بين الأموات منتصراً على الموت؟', opts: ['اليوم الأول من الأسبوع (الأحد)', 'يوم السبت', 'يوم الجمعة', 'يوم الأربعاء'], ans: 0, exp: 'قام المسيح فجر الأحد في اليوم الأول من الأسبوع وبشّر التلاميذ بقيامته.' },
+        { q: 'ما هو السفر الأخير في الكتاب المقدس الذي يحمل رؤى السماء والرجاء؟', opts: ['سفر الرؤيا', 'رسالة يهوذا', 'سفر الأعمال', 'رسالة العبرانيين'], ans: 0, exp: 'يُختتم العهد الجديد بسفر رؤيا يوحنا اللاهوتي.' },
+        { q: 'من هو التلميذ الذي سأل المسيح عن الطريق والحق والحياة في العشاء الأخير؟', opts: ['توما', 'بطرس', 'يوحنا', 'يعقوب'], ans: 0, exp: 'قال توما للرب في يوحنا ١٤ : ٥–٦ فأجابه يسوع: «أَنَا هُوَ الطَّرِيقُ وَالْحَقُّ وَالْحَيَاةُ».' },
+      ],
+      'العقيدة والطقس': [
+        { q: 'كم عدد الأسرار المقدسة السبعة في الكنيسة؟', opts: ['سبعة أسرار', 'خمسة أسرار', 'ثمانية أسرار', 'أربعة أسرار'], ans: 0, exp: 'الأسرار السبعة هي: المعمودية، الميرون، التوبة والاعتراف، الإفخارستيا، الكهنوت، الزواج، ومسحة المرضى.' },
+        { q: 'ما اسم اللحن الكنسي الشهير الذي يُرتل في أفراح القيامة والعيد؟', opts: ['خريستوس أنيستي', 'تين أوشين', 'بي أوؤي أوتي', 'أف نوتي ناي نان'], ans: 0, exp: 'لحن «خريستوس أنيستي» (المسيح قام بالحقيقة قام) هو نشيد فرح القيامة.' },
+        { q: 'ماذا يرمز صعود البخور في القداس والصلوات الكنسية؟', opts: ['صعود الصلوات والطلبات أمام الله', 'نهاية الاجتماع فقط', 'تذكار رحلة الشتاء', 'مجرد إضاءة المكان'], ans: 0, exp: 'يرمز البخور إلى صعود صلوات القديسين والمؤمنين أمام عرش النعمة.' },
+        { q: 'ما اسم الزيت المقدس الذي يُستخدم في سر التثبيت (الميرون) وتقديس الكنائس والأواني؟', opts: ['زيت الميرون المقدس', 'زيت القنديل العادي', 'زيت الزيتون البسيط', 'زيت العطر الدنيوي'], ans: 0, exp: 'سر الميرون يثبت المؤمن ويمنحه حلول وختم الروح القدس.' },
+        { q: 'لماذا نقف في الصلاة الكنسية في أوقات العبادة والتسبيح؟', opts: ['للتعبير عن الانتباه والوقار والرجاء في القيامة', 'لتجنب الجلوس فقط', 'لأن الجلوس ممنوع دائماً', 'بسبب ضيق المكان'], ans: 0, exp: 'الوقوف في الصلاة يعبر عن يقظة الروح ووقار الوقوف أمام الله.' },
+        { q: 'ما هو السر الذي ننال فيه جسد الرب ودمه الأقدسين لغفران الخطايا والحياة الأبدية؟', opts: ['سر الإفخارستيا (التناول)', 'سر المعمودية', 'سر الزواج', 'سر الكهنوت'], ans: 0, exp: 'سر الشكر (الإفخارستيا) هو شركة حية مع المسيح في جسده ودمه.' },
+      ],
+      'تاريخ الكنيسة والقديسين': [
+        { q: 'من هو مؤسس كنيسة الإسكندرية وكاروز الديار المصرية؟', opts: ['القديس مرقس الرسول', 'القديس بطرس', 'القديس بولس', 'القديس أندراوس'], ans: 0, exp: 'دخل القديس مرقس الإسكندرية حاملاً بشارة الإنجيل وأسس كرسيها الرسولي.' },
+        { q: 'من هو القديس الذي يُلقب بأبي الرهبان في العالم؟', opts: ['القديس أنطونيوس الكبير', 'القديس باخوميوس', 'القديس شنودة', 'القديس مكاريوس'], ans: 0, exp: 'أسس القديس أنطونيوس الحياة الرهبانية في البرية الشرقية وصار أباً للرهبان.' },
+        { q: 'من هو بطل الإيمان في مجمع نيقية عام ٣٢٥م المدافع عن لاهوت الابن؟', opts: ['القديس أثناسيوس الرسولي', 'القديس باسيليوس', 'القديس كيرلس الكبير', 'القديس يوحنا ذهبي الفم'], ans: 0, exp: 'دافع القديس أثناسيوس بقوة عن عقيدة أن الابن مساوٍ للآب في الجوهر.' },
+        { q: 'من هو القديس الذي تحولت حياته من حياة اللصوصية إلى التوبة والقداسة العميقة في شيهيت؟', opts: ['القديس موسى الأسود', 'القديس سمعان العمودي', 'القديس جورجيوس', 'القديس مينا العجايبي'], ans: 0, exp: 'تُعد قصة توبة القديس موسى الأسود نموذجاً حياً لعمل النعمة والتوبة الحقيقية.' },
+        { q: 'من هو القديس الذي يُلقب بعمود الدين لمدافعته عن الإيمان في مجمع أفسس؟', opts: ['القديس كيرلس السكندري (عمود الدين)', 'القديس إغناطيوس', 'القديس بوليكاربوس', 'القديس إيريناؤس'], ans: 0, exp: 'لُقب القديس كيرلس الكبير بعمود الدين لدوره المحوري في مجمع أفسس الأول.' },
+      ],
+      'تأملات روحية': [
+        { q: 'ما هو أسرع طريق لشفاء القلب من القلق والاضطراب اليومي؟', opts: ['الصلاة الصادقة وتسليم الأمور لله مع الشكر', 'القلق المستمر والتفكير السلبي', 'إغلاق القلب عن الجميع', 'تأجيل السلام الداخلي'], ans: 0, exp: 'الصلاة والشكر يمنحان القلب سلام الله الذي يفوق كل عقل (فيلبي ٤ : ٦–٧).' },
+        { q: 'كيف نُظهر محبة حقيقية لرفاقنا في الخدمة والأسرة؟', opts: ['بالإنصات والافتقاد والمسامحة والتشجيع', 'بالانتقاد والمقارنة', 'بالانشغال التام عن الآخرين', 'بالمعاملة المشروطة فقط'], ans: 0, exp: 'المحبة العملية تتجلى في الاحتمال والسؤال والخدمة المتواضعة.' },
+        { q: 'ما معنى أن نكون «ملح الأرض ونور العالم» في حياتنا اليومية؟', opts: ['أن نترك أثراً صالحاً ونقاءً وسلاماً أينما وُجدنا', 'أن نتعالى على الناس', 'أن نتكلم كثيراً دون عمل', 'أن نخفي إيماننا في الخفاء'], ans: 0, exp: 'العمل الصالح والأمانة يجعلان الآخرين يمجدون الآب الذي في السماوات (متى ٥ : ١٦).' },
+        { q: 'لماذا تُعد المواظبة على قراءة كلمة الله يومياً ضرورية للنمو الروحي؟', opts: ['لأنها غذاء للنفس ونور يضيء خطواتنا اليومية', 'لمجرد جمع معلومات فقط', 'لقراءتها في المناسبات فقط', 'لأنها بديلة عن الصلاة'], ans: 0, exp: 'كلمة الله حية وفعالة وتبني الإنسان الروحي يوماً بعد يوم.' },
+      ]
+    };
+
+    const QUIZ_AXES_ORDER = [
+      'العهد القديم',
+      'العهد الجديد',
+      'العقيدة والطقس',
+      'تاريخ الكنيسة والقديسين',
+      'تأملات روحية'
     ];
 
-    const CATEGORIES_LIST = ['كتاب مقدس', 'طقس وعقيدة', 'تاريخ كنيسة', 'ثقافة وتفكير'];
+    function formatArabicCounter(current, total = 100) {
+      return `${current} من ${total}`;
+    }
 
     function generate100DailyQuestions(dateStr = getTodayISO()) {
       const rand = seededRandom(getDaySeed(dateStr));
       const questions = [];
 
+      // توليد 100 سؤال مختلف تماماً ومتنوع عبر المحاور الخمسة لكل تاريخ يومي
       for (let i = 0; i < 100; i++) {
-        const baseTpl = QUESTION_TEMPLATES[(i + Math.floor(rand() * QUESTION_TEMPLATES.length)) % QUESTION_TEMPLATES.length];
-        const category = CATEGORIES_LIST[i % CATEGORIES_LIST.length];
+        const axis = QUIZ_AXES_ORDER[i % QUIZ_AXES_ORDER.length];
+        const bank = DAILY_QUESTION_BANKS[axis];
+        const randPick = Math.floor(rand() * bank.length);
+        const tpl = bank[(i + randPick) % bank.length];
 
-        // خلط الخيارات مع تتبع الإجابة الصحيحة بدقة
-        const indexedOpts = baseTpl.opts.map((optText, idx) => ({
+        // خلط الخيارات عشوائياً وفق بذرة اليوم لتغيير مواقع الإجابات كل يوم
+        const indexedOpts = tpl.opts.map((optText, idx) => ({
           text: optText,
-          isCorrect: idx === baseTpl.ans,
+          isCorrect: idx === tpl.ans,
         }));
 
         for (let j = indexedOpts.length - 1; j > 0; j--) {
@@ -2094,17 +2097,18 @@
         }
 
         const correctIndex = indexedOpts.findIndex(item => item.isCorrect);
-        const dayCode = dateStr.replace(/-/g, '').slice(-4);
-        const variantNum = Math.floor(rand() * 90) + 10;
+        const seedStamp = ((getDaySeed(dateStr) + (i + 1) * 37) % 899) + 101;
+        const promptPrefix = `سؤال ${i + 1} من 100`;
 
         questions.push({
           number: i + 1,
-          id: `${dateStr}-q${i + 1}-${variantNum}`,
-          category: i < QUESTION_TEMPLATES.length ? baseTpl.cat : category,
-          questionText: `[دفعة ${dayCode} • سؤال #${i + 1}] ${baseTpl.q}`,
+          id: `${dateStr}-${axis}-q${i + 1}-${seedStamp}`,
+          category: axis,
+          questionText: `${tpl.q} (كود يومي #${seedStamp})`,
+          badgeNumberText: promptPrefix,
           options: indexedOpts.map(o => o.text),
           correctIndex,
-          explanation: `الإجابة الصحيحة هي "${indexedOpts[correctIndex].text}" — سؤال يومي متجدد بتاريخ ${dateStr}.`,
+          explanation: tpl.exp,
         });
       }
 
@@ -2126,6 +2130,8 @@
         appState.quizProgress[today][memberKey] = {
           answers: {},
           bonusAwarded: false,
+          submittedToLeader: false,
+          submittedPoints: 0,
         };
       }
       return appState.quizProgress[today][memberKey];
@@ -2141,6 +2147,110 @@
       });
       currentQuestionIndex = 0;
       renderQuizSection();
+    }
+
+    function startOrContinueQuiz100() {
+      const today = getTodayISO();
+      const allQuestions = generate100DailyQuestions(today);
+      const rec = getTodayQuizRecord();
+      const firstUnanswered = allQuestions.find(q => !Object.prototype.hasOwnProperty.call(rec.answers, q.number));
+      quizCategory = 'all';
+      document.querySelectorAll('.qcat-btn').forEach(btn => {
+        const active = btn.dataset.qcat === 'all';
+        btn.className = active
+          ? 'qcat-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-blue-800 text-white'
+          : 'qcat-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300';
+      });
+      currentQuestionIndex = firstUnanswered ? firstUnanswered.number - 1 : 0;
+      renderQuizSection();
+      document.getElementById('activeQuestionCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function toggleQuizViewMode() {
+      quizListMode = !quizListMode;
+      const btn = document.getElementById('quizViewModeBtn');
+      if (btn) {
+        btn.textContent = quizListMode ? '🃏 وضع سؤال بسؤال' : '📋 عرض كقائمة';
+      }
+      renderQuizSection();
+    }
+
+    function computeTodayQuizScoreAndPoints(rec, allQuestions) {
+      let correctCount = 0;
+      let earnedPoints = 0;
+      Object.entries(rec.answers || {}).forEach(([qNumStr, chosenIdx]) => {
+        const qItem = allQuestions.find(item => item.number === Number(qNumStr));
+        if (qItem && Number(chosenIdx) === qItem.correctIndex) {
+          correctCount++;
+          earnedPoints += Number(appState.pointSettings.pointsPerQuestion || 0);
+        }
+      });
+      if (rec.bonusAwarded) {
+        earnedPoints += Number(appState.pointSettings.dailyQuizBonus || 0);
+      }
+      return {
+        answeredCount: Object.keys(rec.answers || {}).length,
+        correctCount,
+        earnedPoints,
+      };
+    }
+
+    function submitQuizResultToLeader() {
+      const today = getTodayISO();
+      const allQuestions = generate100DailyQuestions(today);
+      const rec = getTodayQuizRecord();
+      const summary = computeTodayQuizScoreAndPoints(rec, allQuestions);
+
+      if (summary.answeredCount === 0) {
+        showToast('أجب على سؤال واحد على الأقل قبل تسليم النتيجة للقائد', 'warning');
+        return;
+      }
+
+      let actorName = appState.currentUser.name;
+      if (!actorName && !appState.currentUser.isServantAuthenticated) {
+        const typedName = (document.getElementById('memberNameInput').value || '').trim();
+        if (typedName) {
+          setActiveMemberName(typedName);
+          actorName = typedName;
+        } else {
+          actorName = 'مخدوم سريع';
+          ensureMemberExists(actorName);
+          appState.currentUser.name = actorName;
+        }
+      } else if (actorName) {
+        ensureMemberExists(actorName);
+      }
+
+      const displayActor = appState.currentUser.isServantAuthenticated
+        ? `${appState.currentUser.servantName || 'خادم'} (خادم)`
+        : actorName;
+
+      // حساب الفرق في النقاط إذا تم التسليم سابقاً لتجنب التكرار المزدوج
+      const previousSubmittedPts = Number(rec.submittedPoints || 0);
+      const deltaToAdd = summary.earnedPoints - previousSubmittedPts;
+
+      if (deltaToAdd !== 0) {
+        const memberObj = appState.members.find(m => m.name === actorName);
+        if (memberObj) {
+          memberObj.bonusPoints = Number(memberObj.bonusPoints || 0) + deltaToAdd;
+        }
+      }
+
+      rec.submittedToLeader = true;
+      rec.submittedPoints = summary.earnedPoints;
+
+      recordActivity(
+        displayActor,
+        `سلّم نتيجة الـ 100 سؤال (${summary.correctCount} صحيح من ${summary.answeredCount} مجاب — إجمالي نقاط اليوم: ${summary.earnedPoints}ن)`,
+        deltaToAdd
+      );
+
+      saveLocalState();
+      renderAll();
+      showToast(
+        `تم تسليم نتيجتك (${summary.correctCount}/${summary.answeredCount} صحيح • ${summary.earnedPoints} نقطة) للخادم وتحديث لوحة الشرف!`,
+        'success'
+      );
     }
 
     function jumpToQuestion() {
@@ -2168,7 +2278,6 @@
       const qObj = questions.find(q => q.number === qNumber);
       if (!qObj) return;
 
-      // تأكد من تسجيل اسم المخدوم ليظهر للخادم وتُحسب نقاطه
       let actorName = appState.currentUser.name;
       if (!actorName && !appState.currentUser.isServantAuthenticated) {
         const typedName = (document.getElementById('memberNameInput').value || '').trim();
@@ -2200,11 +2309,10 @@
 
       recordActivity(
         displayActor,
-        `أجاب على السؤال #${qNumber} (${isCorrect ? 'صحيح ✅' : 'خطأ ❌'})`,
+        `أجاب على السؤال ${qNumber} من 100 (${isCorrect ? 'صحيح ✅' : 'خطأ ❌'})`,
         ptsEarned
       );
 
-      // التحقق من إتمام كل الـ 100 سؤال لمنح مكافأة اليوم
       const totalAnswered = Object.keys(rec.answers).length;
       if (totalAnswered === 100 && !rec.bonusAwarded) {
         rec.bonusAwarded = true;
@@ -2232,42 +2340,36 @@
       }
 
       const rec = getTodayQuizRecord();
-      const answeredCount = Object.keys(rec.answers).length;
-
-      let earnedToday = 0;
-      Object.entries(rec.answers).forEach(([qNumStr, chosenIdx]) => {
-        const qItem = allQuestions.find(item => item.number === Number(qNumStr));
-        if (qItem && Number(chosenIdx) === qItem.correctIndex) {
-          earnedToday += appState.pointSettings.pointsPerQuestion;
-        }
-      });
-      if (rec.bonusAwarded) {
-        earnedToday += appState.pointSettings.dailyQuizBonus;
-      }
+      const scoreSummary = computeTodayQuizScoreAndPoints(rec, allQuestions);
+      const answeredCount = scoreSummary.answeredCount;
 
       document.getElementById('quizDateBadge').textContent = `تاريخ اليوم: ${today}`;
-      document.getElementById('quizAnsweredCount').textContent = `${answeredCount}/100`;
-      document.getElementById('quizEarnedToday').textContent = earnedToday;
+      document.getElementById('quizAnsweredCount').textContent = `${answeredCount} من 100`;
+      document.getElementById('quizEarnedToday').textContent = scoreSummary.earnedPoints;
       document.getElementById('quizPointsPerQDisplay').textContent = appState.pointSettings.pointsPerQuestion;
       document.getElementById('quizProgressPercent').textContent = `${answeredCount}%`;
       document.getElementById('quizProgressBar').style.width = `${answeredCount}%`;
 
+      const currentQ = filteredQuestions[currentQuestionIndex] || allQuestions[0];
+      const counterBadge = document.getElementById('quizCounterHeaderBadge');
+      if (counterBadge && currentQ) {
+        counterBadge.textContent = `${currentQ.number} من 100`;
+      }
+
       // رسم خريطة الأرقام 1-100
       const grid = document.getElementById('questionNumberGrid');
-      const currentQ = filteredQuestions[currentQuestionIndex] || allQuestions[0];
-
       grid.innerHTML = allQuestions.map(q => {
         const hasAns = Object.prototype.hasOwnProperty.call(rec.answers, q.number);
         const isRight = hasAns && Number(rec.answers[q.number]) === q.correctIndex;
-        const isCurrent = currentQ && currentQ.number === q.number;
+        const isCurrent = !quizListMode && currentQ && currentQ.number === q.number;
 
         let btnClass = 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200';
         if (isCurrent) {
-          btnClass = 'bg-violet-600 text-white ring-2 ring-violet-300';
+          btnClass = 'bg-blue-800 text-white ring-2 ring-amber-400';
         } else if (hasAns && isRight) {
-          btnClass = 'bg-emerald-500 text-white';
+          btnClass = 'bg-emerald-600 text-white';
         } else if (hasAns && !isRight) {
-          btnClass = 'bg-rose-500 text-white';
+          btnClass = 'bg-rose-600 text-white';
         }
 
         return `
@@ -2277,8 +2379,48 @@
         `;
       }).join('');
 
-      // رسم بطاقة السؤال الحالي
       const card = document.getElementById('activeQuestionCard');
+      const listContainer = document.getElementById('quizListViewContainer');
+
+      if (quizListMode) {
+        card.classList.add('hidden');
+        listContainer.classList.remove('hidden');
+        listContainer.innerHTML = filteredQuestions.map(qItem => {
+          const uChoice = Object.prototype.hasOwnProperty.call(rec.answers, qItem.number)
+            ? Number(rec.answers[qItem.number])
+            : null;
+          return `
+            <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-5 shadow-card border border-slate-200/70 dark:border-slate-800 space-y-3">
+              <div class="flex items-center justify-between gap-2 text-xs">
+                <span class="font-extrabold text-blue-900 dark:text-blue-300">${qItem.number} من 100 • ${escapeHTML(qItem.category)}</span>
+                <span class="font-bold text-slate-400">${uChoice === null ? 'لم يُجاب' : (uChoice === qItem.correctIndex ? 'صحيح ✅' : 'خطأ ❌')}</span>
+              </div>
+              <p class="font-extrabold text-sm sm:text-base text-slate-900 dark:text-white">${escapeHTML(qItem.questionText)}</p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                ${qItem.options.map((opt, idx) => {
+                  let st = 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100';
+                  if (uChoice !== null) {
+                    if (idx === qItem.correctIndex) st = 'bg-emerald-50 dark:bg-emerald-950/50 border-emerald-500 text-emerald-900 dark:text-emerald-200';
+                    else if (idx === uChoice) st = 'bg-rose-50 dark:bg-rose-950/50 border-rose-500 text-rose-900 dark:text-rose-200';
+                  }
+                  return `
+                    <button ${uChoice !== null ? 'disabled' : ''} onclick="answerDailyQuestion(${qItem.number}, ${idx})"
+                      class="text-right px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-bold transition ${st}">
+                      ${escapeHTML(opt)}
+                    </button>
+                  `;
+                }).join('')}
+              </div>
+              ${uChoice !== null ? `<p class="text-xs text-blue-900 dark:text-blue-200 bg-blue-50/70 dark:bg-blue-950/30 p-2.5 rounded-xl"><strong>توضيح:</strong> ${escapeHTML(qItem.explanation)}</p>` : ''}
+            </div>
+          `;
+        }).join('');
+        return;
+      }
+
+      card.classList.remove('hidden');
+      listContainer.classList.add('hidden');
+
       if (!currentQ) {
         card.innerHTML = `<div class="text-center py-10 text-slate-400">لا توجد أسئلة في هذا التصنيف حالياً.</div>`;
         return;
@@ -2291,14 +2433,14 @@
       card.innerHTML = `
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div class="flex items-center gap-2">
-            <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300">
-              سؤال ${currentQ.number} من 100
+            <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-blue-100 dark:bg-blue-950/60 text-blue-900 dark:text-blue-300">
+              ${currentQ.number} من 100
             </span>
-            <span class="px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+            <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200/70 dark:border-amber-800/40">
               ${escapeHTML(currentQ.category)}
             </span>
           </div>
-          <span class="text-xs font-extrabold text-emerald-600 dark:text-emerald-400">
+          <span class="text-xs font-extrabold text-emerald-700 dark:text-emerald-400">
             +${appState.pointSettings.pointsPerQuestion} نقطة للإجابة الصحيحة
           </span>
         </div>
@@ -2309,7 +2451,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           ${currentQ.options.map((opt, idx) => {
-            let optStyle = 'bg-slate-50 dark:bg-slate-800/80 hover:bg-violet-50 dark:hover:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100';
+            let optStyle = 'bg-slate-50 dark:bg-slate-800/80 hover:bg-blue-50/70 dark:hover:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100';
             if (userChoice !== null) {
               if (idx === currentQ.correctIndex) {
                 optStyle = 'bg-emerald-50 dark:bg-emerald-950/50 border-emerald-500 text-emerald-900 dark:text-emerald-200 ring-1 ring-emerald-500';
@@ -2322,7 +2464,7 @@
               <button ${userChoice !== null ? 'disabled' : ''} onclick="answerDailyQuestion(${currentQ.number}, ${idx})"
                 class="text-right p-4 rounded-2xl border font-bold text-sm transition flex items-center justify-between gap-2 ${optStyle}">
                 <span>${escapeHTML(opt)}</span>
-                <span class="text-xs font-extrabold opacity-75">
+                <span class="text-xs font-extrabold opacity-80">
                   ${userChoice !== null && idx === currentQ.correctIndex ? '✅' : (userChoice === idx ? '❌' : '')}
                 </span>
               </button>
@@ -2331,8 +2473,8 @@
         </div>
 
         ${userChoice !== null ? `
-          <div class="p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800/60 text-xs sm:text-sm text-indigo-900 dark:text-indigo-200 leading-relaxed">
-            <strong>توضيح الإجابة:</strong> ${escapeHTML(currentQ.explanation)}
+          <div class="p-4 rounded-2xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs sm:text-sm text-blue-950 dark:text-blue-200 leading-relaxed">
+            <strong>تفسير مختصر:</strong> ${escapeHTML(currentQ.explanation)}
           </div>
         ` : ''}
 
@@ -2341,11 +2483,11 @@
             class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 disabled:opacity-40 transition">
             → السؤال السابق
           </button>
-          <span class="text-xs font-bold text-slate-400">
-            ${currentQuestionIndex + 1} / ${filteredQuestions.length}
+          <span class="text-xs font-extrabold text-slate-500">
+            ${currentQ.number} من 100
           </span>
           <button onclick="nextQuestion()" ${currentQuestionIndex >= filteredQuestions.length - 1 ? 'disabled' : ''}
-            class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-violet-600 hover:bg-violet-700 text-white disabled:opacity-40 transition">
+            class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-blue-800 hover:bg-blue-900 text-white disabled:opacity-40 transition">
             السؤال التالي ←
           </button>
         </div>
@@ -2354,6 +2496,9 @@
 
     function selectQuestionByNumber(num) {
       quizCategory = 'all';
+      quizListMode = false;
+      const modeBtn = document.getElementById('quizViewModeBtn');
+      if (modeBtn) modeBtn.textContent = '📋 عرض كقائمة';
       document.querySelectorAll('.qcat-btn').forEach(btn => {
         const active = btn.dataset.qcat === 'all';
         btn.className = active
