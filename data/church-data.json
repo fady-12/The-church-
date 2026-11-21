@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-21T13:09:34.623Z",
+  "updatedAt": "2026-11-21T13:09:39.971Z",
   "settings": {
     "churchName": "كنيسة مار جرجس والأنبا أنطونيوس",
     "groupSubtitle": "نظام متابعة الحضور والدرجات والنقاط والدردشة — سحابة GitHub",
@@ -20,7 +20,7 @@
       "id": "m-1795266574026-d11",
       "name": "Fady",
       "grade": 0,
-      "points": 0
+      "points": 10
     }
   ],
   "attendance": {
@@ -30,10 +30,21 @@
       "m-3": "excused",
       "m-4": "present",
       "m-5": "absent",
-      "m-6": "present"
+      "m-6": "present",
+      "m-1795266574026-d11": "present"
     }
   },
   "logs": [
+    {
+      "id": "log-1795266579265-ot6v",
+      "memberId": "m-1795266574026-d11",
+      "memberName": "Fady",
+      "type": "add",
+      "amount": 10,
+      "reason": "حضور (2026-11-21): حاضر",
+      "byServant": true,
+      "timestamp": "٢١‏/١١‏/٢٠٢٦، ٣:٠٩:٣٩ م"
+    },
     {
       "id": "log-1",
       "memberId": "m-2",
