@@ -1,0 +1,139 @@
+{
+  "updatedAt": "2026-11-21T20:57:16.461Z",
+  "leaderSecretHash": "f84ac7ba58ed87643dd1daed19d54dc7b4b722ac1e99b942ea1044e019bb6b13",
+  "session": {
+    "attendeeName": "مخدوم سريع",
+    "attendeeGroup": "",
+    "isLeaderAuthenticated": true,
+    "leaderName": "خادم الخدمة"
+  },
+  "pointsConfig": {
+    "perCorrectQuestion": 10,
+    "quizCompletionBonus": 100,
+    "perPresent": 20,
+    "perLateOrExcused": 10
+  },
+  "members": [
+    {
+      "id": "u1",
+      "name": "كيرلس أشرف",
+      "group": "شباب",
+      "manualPoints": 10
+    },
+    {
+      "id": "u2",
+      "name": "مارينا عادل",
+      "group": "شباب",
+      "manualPoints": 15
+    },
+    {
+      "id": "u3",
+      "name": "يوحنا مجدي",
+      "group": "ثانوي",
+      "manualPoints": 0
+    },
+    {
+      "id": "u4",
+      "name": "دميانة سامي",
+      "group": "ثانوي",
+      "manualPoints": 5
+    },
+    {
+      "id": "u_1795294258829_aom2",
+      "name": "مخدوم سريع",
+      "group": "عام",
+      "manualPoints": 0
+    }
+  ],
+  "meetingTitles": {
+    "2026-11-21": "اجتماع الخدمة الأسبوعي"
+  },
+  "attendance": {
+    "2026-11-21": {}
+  },
+  "quizScores": {
+    "2026-11-21": {
+      "زائر": {
+        "answers": {},
+        "bonusClaimed": false,
+        "submittedPoints": 0,
+        "submittedCount": 0
+      },
+      "مخدوم سريع": {
+        "answers": {
+          "1": 2
+        },
+        "bonusClaimed": false,
+        "submittedPoints": 0,
+        "submittedCount": 0
+      },
+      "خادم الخدمة (خادم)": {
+        "answers": {},
+        "bonusClaimed": false,
+        "submittedPoints": 0,
+        "submittedCount": 0
+      }
+    }
+  },
+  "chat": {
+    "pinnedMessageId": "c1",
+    "replyToId": null,
+    "lastReadCount": 2,
+    "messages": [
+      {
+        "id": "c1",
+        "sender": "أ. مينا (خادم)",
+        "role": "leader",
+        "text": "سلام ونعمة للجميع! اكتب اسمك لتسجيل حضورك وحل ١٠٠ سؤال اليومي المتجدد بالذكاء الاصطناعي.",
+        "time": "05:50 م",
+        "date": "2026-11-21",
+        "replyTo": null
+      },
+      {
+        "id": "c2",
+        "sender": "مارينا عادل",
+        "role": "member",
+        "text": "سلام ونعمة يا خادم، سجلت حضوري وبدأت في حل أسئلة اليوم 🙏",
+        "time": "06:08 م",
+        "date": "2026-11-21",
+        "replyTo": null
+      }
+    ]
+  },
+  "activityFeed": [
+    {
+      "id": "act_1795294258893_wnc",
+      "actor": "مخدوم سريع",
+      "detail": "أجاب على السؤال 1 من 100 (صحيح ✅)",
+      "deltaPoints": 10,
+      "time": "١٠:٥٠ م",
+      "date": "2026-11-21"
+    },
+    {
+      "id": "act_1795294258829_1ai",
+      "actor": "مخدوم سريع",
+      "detail": "سجل اسمه في المنصة (عام) وظهر للخادم",
+      "deltaPoints": 0,
+      "time": "١٠:٥٠ م",
+      "date": "2026-11-21"
+    },
+    {
+      "id": "f1",
+      "actor": "مارينا عادل",
+      "detail": "سجلت حضورها في اجتماع اليوم",
+      "deltaPoints": 20,
+      "time": "06:08 م",
+      "date": "2026-11-21"
+    }
+  ],
+  "githubCloud": {
+    "owner": "fady-12",
+    "repo": "The-church-",
+    "branch": "main",
+    "path": "church-community-data.json",
+    "autoSync": true,
+    "token": "",
+    "sha": "",
+    "geminiApiKey": ""
+  }
+}
