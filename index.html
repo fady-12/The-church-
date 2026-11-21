@@ -1040,6 +1040,8 @@
     let activeQuizUserId = '';
     let activeQuizQuestionIndex = 0;
     let geminiApiKey = localStorage.getItem('church_gemini_api_key') || '';
+    let pushQueuePromise = Promise.resolve(false);
+    let autoPushDebounceTimer = null;
 
     async function ensurePasswordHashInitialized() {
       const defaultHash = await getDefaultPasswordHash();
@@ -1084,13 +1086,19 @@
           branch: 'main',
           path: 'data/church-data.json',
           token: '',
-          autoPush: false,
+          autoPush: true,
           autoPoll: true
         };
         if (!raw) return defaults;
-        return { ...defaults, ...JSON.parse(raw) };
+        const parsed = JSON.parse(raw);
+        return {
+          ...defaults,
+          ...parsed,
+          autoPush: parsed.autoPush !== false,
+          autoPoll: parsed.autoPoll !== false
+        };
       } catch (err) {
-        return { owner: '', repo: '', branch: 'main', path: 'data/church-data.json', token: '', autoPush: false, autoPoll: true };
+        return { owner: '', repo: '', branch: 'main', path: 'data/church-data.json', token: '', autoPush: true, autoPoll: true };
       }
     }
 
@@ -1103,11 +1111,26 @@
       }
     }
 
+    function scheduleAutoPushToGitHub() {
+      if (!isServant) return;
+      if (ghConfig.autoPush === false) return;
+      if (!ghConfig.owner || !ghConfig.repo || !ghConfig.token) return;
+
+      setSyncStatus('syncing', 'جاري الحفظ الفوري...');
+      if (autoPushDebounceTimer) {
+        clearTimeout(autoPushDebounceTimer);
+      }
+      autoPushDebounceTimer = setTimeout(() => {
+        autoPushDebounceTimer = null;
+        enqueueGitHubPush(false);
+      }, 350);
+    }
+
     async function persistState(options = { syncCloud: true }) {
       saveLocalState();
       renderAll();
-      if (options.syncCloud && ghConfig.autoPush && ghConfig.owner && ghConfig.repo && ghConfig.token) {
-        await pushToGitHub(false);
+      if (options.syncCloud) {
+        scheduleAutoPushToGitHub();
       }
     }
 
@@ -2442,11 +2465,11 @@
         clearInterval(autoPollTimer);
         autoPollTimer = null;
       }
-      // Enabled by default every 30s so any visitor sees updates automatically
+      // Fast polling every 12 seconds by default so any phone receives leader updates quickly
       if (ghConfig.autoPoll !== false && ghConfig.owner && ghConfig.repo) {
         autoPollTimer = setInterval(() => {
           syncFromGitHub(false, true);
-        }, 30000);
+        }, 12000);
       }
     }
 
@@ -2454,7 +2477,15 @@
       ghConfig.autoPoll = Boolean(checked);
       localStorage.setItem(GH_CONFIG_KEY, JSON.stringify(ghConfig));
       configureAutoPolling();
-      showToast(ghConfig.autoPoll ? 'تم تفعيل التحديث التلقائي كل 30 ثانية' : 'تم إيقاف التحديث التلقائي الدوري', 'info');
+      showToast(ghConfig.autoPoll ? 'تم تفعيل التحديث التلقائي السريع لجميع الهواتف (كل 12 ثانية)' : 'تم إيقاف التحديث التلقائي الدوري', 'info');
+    }
+    }
+
+    function handleAutoPollToggle(checked) {
+      ghConfig.autoPoll = Boolean(checked);
+      localStorage.setItem(GH_CONFIG_KEY, JSON.stringify(ghConfig));
+      configureAutoPolling();
+      showToast(ghConfig.autoPoll ? 'تم تفعيل التحديث التلقائي للزوار (التخزين والمزامنة نشطة)' : 'تم إيقاف التحديث التلقائي الدوري', 'info');
     }
 
     function populateGitHubForm() {
@@ -2471,7 +2502,7 @@
       if (branchEl) branchEl.value = ghConfig.branch || 'main';
       if (pathEl) pathEl.value = ghConfig.path || 'data/church-data.json';
       if (tokenEl) tokenEl.value = ghConfig.token || '';
-      if (autoPushEl) autoPushEl.checked = Boolean(ghConfig.autoPush);
+      if (autoPushEl) autoPushEl.checked = ghConfig.autoPush !== false;
       if (autoPollEl) autoPollEl.checked = ghConfig.autoPoll !== false;
     }
 
@@ -2585,18 +2616,29 @@
       }
 
       configureAutoPolling();
-      appendSyncLog(`تم حفظ إعدادات السحابة والرمز على هذا الجهاز (${ghConfig.owner || 'غير محدد'}/${ghConfig.repo || 'غير محدد'})`);
+      appendSyncLog(`تم حفظ إعدادات السحابة والرمز على هذا الجهاز (${ghConfig.owner || 'غير محدد'}/${ghConfig.repo || 'غير محدد'}) — التخزين الفوري: ${ghConfig.autoPush ? 'مفعّل' : 'متوقف'}`);
       showToast('تم حفظ إعدادات سحابة GitHub على هذا الجهاز بنجاح', 'success');
+
+      if (isServant && ghConfig.autoPush && ghConfig.owner && ghConfig.repo && ghConfig.token) {
+        enqueueGitHubPush(false);
+      }
     }
 
     async function fetchRemoteStateWithoutToken(cleanPath, branch) {
-      const bust = `t=${Date.now()}&r=${Math.random().toString(36).slice(2, 7)}`;
+      const bust = `t=${Date.now()}&r=${Math.random().toString(36).slice(2, 8)}`;
       const apiUrl = `https://api.github.com/repos/${encodeURIComponent(ghConfig.owner)}/${encodeURIComponent(ghConfig.repo)}/contents/${cleanPath}?ref=${encodeURIComponent(branch)}&${bust}`;
       const rawUrl = `https://raw.githubusercontent.com/${encodeURIComponent(ghConfig.owner)}/${encodeURIComponent(ghConfig.repo)}/${encodeURIComponent(branch)}/${cleanPath}?${bust}`;
 
-      // 1) Try public GitHub Contents API first (no token needed for public repos)
+      // 1) Primary source: GitHub Contents API with strict no-store cache busting for near-instant updates across phones
+      const apiHeaders = {
+        'Accept': 'application/vnd.github+json'
+      };
+      if (ghConfig.token) {
+        apiHeaders['Authorization'] = `Bearer ${ghConfig.token}`;
+      }
+
       const apiRes = await fetch(apiUrl, {
-        headers: { 'Accept': 'application/vnd.github+json' },
+        headers: apiHeaders,
         cache: 'no-store'
       });
 
@@ -2617,6 +2659,13 @@
         throw new Error(`HTTP ${rawRes.status}`);
       }
       return await rawRes.json();
+    }
+
+    function isUserActivelyTyping() {
+      const active = document.activeElement;
+      if (!active) return false;
+      const tag = active.tagName;
+      return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
     }
 
     async function syncFromGitHub(notifyUser = true, isBackgroundPoll = false) {
@@ -2641,27 +2690,58 @@
         if (remoteState && Array.isArray(remoteState.members)) {
           const prevUpdatedAt = appState.updatedAt || '';
           const nextUpdatedAt = remoteState.updatedAt || '';
+          const prevSerialized = JSON.stringify({
+            settings: appState.settings,
+            announcements: appState.announcements,
+            members: appState.members,
+            attendance: appState.attendance,
+            logs: appState.logs,
+            messages: appState.messages
+          });
+          const nextSerialized = JSON.stringify({
+            settings: remoteState.settings,
+            announcements: remoteState.announcements,
+            members: remoteState.members,
+            attendance: remoteState.attendance,
+            logs: remoteState.logs,
+            messages: remoteState.messages
+          });
+
           const prevMsgCount = appState.messages.length;
+
+          // If servant has a pending local edit queued, do not overwrite local servant state with older remote data
+          if (isServant && autoPushDebounceTimer && prevUpdatedAt >= nextUpdatedAt) {
+            setSyncStatus('syncing', 'جاري رفع أحدث تعديل للقائد...');
+            return true;
+          }
+
+          const hasMeaningfulChange = nextSerialized !== prevSerialized || nextUpdatedAt !== prevUpdatedAt;
 
           appState = { ...createInitialState(), ...remoteState };
           saveLocalState();
           markFetchedNow();
-          renderAll();
 
-          const hasNewData = nextUpdatedAt !== prevUpdatedAt || (remoteState.messages && remoteState.messages.length !== prevMsgCount);
+          // Avoid disrupting active typing on mobile inputs during background poll; re-render as soon as not typing or on manual sync
+          if (!isBackgroundPoll || !isUserActivelyTyping()) {
+            renderAll();
+          } else if (hasMeaningfulChange) {
+            renderHeaderAndSettings();
+            renderAnnouncementsBar();
+          }
+
           if (remoteState.messages && remoteState.messages.length > prevMsgCount && currentTab !== 'chat') {
             unreadChatCount += (remoteState.messages.length - prevMsgCount);
             updateUnreadBadges();
           }
 
-          setSyncStatus('synced', 'متصل بالسحابة');
+          setSyncStatus('synced', 'مزامنة نشطة لجميع الهواتف');
           if (!isBackgroundPoll) {
-            appendSyncLog(`تم جلب البيانات بنجاح (آخر جلب: ${lastFetchedLabel}).`);
+            appendSyncLog(`تم جلب أحدث البيانات من GitHub (آخر جلب: ${lastFetchedLabel}).`);
           }
           if (notifyUser) {
-            showToast(hasNewData ? 'تم تحديث الموقع بأحدث تغييرات الخادم من GitHub!' : 'البيانات محدثة بالفعل من سحابة GitHub', 'success');
-          } else if (isBackgroundPoll && hasNewData) {
-            showToast('تم رصد وتطبيق تحديث جديد من سحابة GitHub تلقائياً', 'info');
+            showToast(hasMeaningfulChange ? 'تم تحديث الهاتف بأحدث تغييرات القائد من GitHub!' : 'البيانات محدثة بالفعل من سحابة GitHub', 'success');
+          } else if (isBackgroundPoll && hasMeaningfulChange) {
+            showToast('وصل تحديث جديد من القائد وتم تطبيقه تلقائياً', 'info');
           }
           return true;
         }
@@ -2670,9 +2750,9 @@
         console.error('GitHub pull error:', err);
         if (err.code === 'NOT_FOUND') {
           markFetchedNow();
-          setSyncStatus('ready', 'بانتظار أول رفع من الخادم');
+          setSyncStatus('ready', 'بانتظار أول رفع من القائد');
           if (!isBackgroundPoll) {
-            appendSyncLog('ملف البيانات لم يُنشأ بعد على GitHub؛ يمكن للخادم رفعه بضغطة "رفع إلى GitHub".');
+            appendSyncLog('ملف البيانات لم يُنشأ بعد على GitHub؛ يمكن للقائد رفعه بضغطة "رفع إلى GitHub".');
           }
           if (notifyUser) showToast('ملف البيانات السحابي لم يُنشأ بعد. ارفع البيانات أولاً.', 'info');
           return false;
@@ -2687,6 +2767,15 @@
     }
 
     async function pushToGitHub(notifyUser = true) {
+      return enqueueGitHubPush(notifyUser);
+    }
+
+    function enqueueGitHubPush(notifyUser = true) {
+      pushQueuePromise = pushQueuePromise.catch(() => false).then(() => performPushToGitHub(notifyUser));
+      return pushQueuePromise;
+    }
+
+    async function performPushToGitHub(notifyUser = true) {
       if (!ghConfig.owner || !ghConfig.repo || !ghConfig.token) {
         if (notifyUser) {
           showToast('لرفع التغييرات إلى GitHub يلزم ضبط Owner و Repo و Token في تبويب GitHub', 'warning');
@@ -2699,7 +2788,7 @@
       const branch = ghConfig.branch || 'main';
       const apiUrl = `https://api.github.com/repos/${encodeURIComponent(ghConfig.owner)}/${encodeURIComponent(ghConfig.repo)}/contents/${cleanPath}`;
 
-      setSyncStatus('syncing', 'جاري الرفع إلى GitHub...');
+      setSyncStatus('syncing', 'جاري التخزين على GitHub...');
       try {
         const headers = {
           'Accept': 'application/vnd.github+json',
@@ -2707,43 +2796,52 @@
           'Content-Type': 'application/json'
         };
 
-        // Fetch existing SHA if file already exists
-        let sha = undefined;
-        const getRes = await fetch(`${apiUrl}?ref=${encodeURIComponent(branch)}`, { headers, cache: 'no-store' });
-        if (getRes.ok) {
-          const existing = await getRes.json();
-          sha = existing.sha;
-        }
+        const attemptUpload = async () => {
+          let sha = undefined;
+          const bust = `t=${Date.now()}&r=${Math.random().toString(36).slice(2, 6)}`;
+          const getRes = await fetch(`${apiUrl}?ref=${encodeURIComponent(branch)}&${bust}`, { headers, cache: 'no-store' });
+          if (getRes.ok) {
+            const existing = await getRes.json();
+            sha = existing.sha;
+          }
 
-        appState.updatedAt = new Date().toISOString();
-        saveLocalState();
+          appState.updatedAt = new Date().toISOString();
+          saveLocalState();
 
-        const body = {
-          message: `Church sync update (${new Date().toLocaleString('ar-EG')})`,
-          content: utf8ToBase64(JSON.stringify(appState, null, 2)),
-          branch
+          const body = {
+            message: `Instant church sync (${new Date().toLocaleString('ar-EG')})`,
+            content: utf8ToBase64(JSON.stringify(appState, null, 2)),
+            branch
+          };
+          if (sha) body.sha = sha;
+
+          return fetch(apiUrl, {
+            method: 'PUT',
+            headers,
+            body: JSON.stringify(body)
+          });
         };
-        if (sha) body.sha = sha;
 
-        const putRes = await fetch(apiUrl, {
-          method: 'PUT',
-          headers,
-          body: JSON.stringify(body)
-        });
+        let putRes = await attemptUpload();
+        if (putRes.status === 409) {
+          // Automatic SHA refresh & retry on conflict so rapid edits always save cleanly
+          putRes = await attemptUpload();
+        }
 
         if (!putRes.ok) {
           const errText = await putRes.text();
           throw new Error(`HTTP ${putRes.status}: ${errText.slice(0, 120)}`);
         }
 
-        setSyncStatus('synced', 'محفوظ على GitHub');
-        appendSyncLog('تم رفع وحفظ التغييرات على GitHub بنجاح.');
+        markFetchedNow();
+        setSyncStatus('synced', 'مخزّن على GitHub الآن');
+        appendSyncLog('تم التخزين الفوري وحفظ التغييرات على GitHub بنجاح.');
         if (notifyUser) showToast('تم حفظ جميع التغييرات على سحابة GitHub بنجاح!', 'success');
         return true;
       } catch (err) {
         console.error('GitHub push error:', err);
-        setSyncStatus('error', 'فشل الرفع');
-        appendSyncLog(`فشل الرفع إلى GitHub: ${err.message}`);
+        setSyncStatus('error', 'فشل التخزين السحابي');
+        appendSyncLog(`فشل التخزين الفوري على GitHub: ${err.message}`);
         if (notifyUser) showToast(`تعذر الرفع إلى GitHub: ${err.message}`, 'error');
         return false;
       }
@@ -2774,17 +2872,38 @@
       updateUnreadBadges();
     }
 
+    function triggerPhoneForegroundSync() {
+      if (ghConfig.owner && ghConfig.repo) {
+        syncFromGitHub(false, true);
+      }
+    }
+
     window.addEventListener('DOMContentLoaded', async () => {
       await ensurePasswordHashInitialized();
       initAttendanceDate();
       populateGitHubForm();
       renderAll();
 
-      // Automatically fetch latest cloud data on page load for any visitor without needing a Token
+      // Immediately fetch latest cloud data on page load for any phone without needing a Token
       if (ghConfig.owner && ghConfig.repo) {
         await syncFromGitHub(false, false);
         configureAutoPolling();
       }
+
+      // Sync immediately when user returns to tab/phone screen, restores history/BFCache, or regains internet
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+          triggerPhoneForegroundSync();
+        }
+      });
+      window.addEventListener('focus', triggerPhoneForegroundSync);
+      window.addEventListener('pageshow', triggerPhoneForegroundSync);
+      window.addEventListener('online', () => {
+        triggerPhoneForegroundSync();
+        if (isServant && ghConfig.autoPush && ghConfig.owner && ghConfig.repo && ghConfig.token) {
+          enqueueGitHubPush(false);
+        }
+      });
     });
   </script>
 </body>
