@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-21T13:09:14.381Z",
+  "updatedAt": "2026-11-21T13:09:34.623Z",
   "settings": {
     "churchName": "كنيسة مار جرجس والأنبا أنطونيوس",
     "groupSubtitle": "نظام متابعة الحضور والدرجات والنقاط والدردشة — سحابة GitHub",
@@ -15,7 +15,14 @@
       "createdAt": "2026-11-21"
     }
   ],
-  "members": [],
+  "members": [
+    {
+      "id": "m-1795266574026-d11",
+      "name": "Fady",
+      "grade": 0,
+      "points": 0
+    }
+  ],
   "attendance": {
     "2026-11-21": {
       "m-1": "present",
