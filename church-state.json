@@ -1,0 +1,102 @@
+{
+  "adminPasscode": "123456",
+  "theme": "light",
+  "members": [
+    {
+      "id": "m-1",
+      "name": "مينا عادل",
+      "group": "خدمة الشباب",
+      "points": 85,
+      "attendance": {
+        "2026-11-21": "present"
+      }
+    },
+    {
+      "id": "m-2",
+      "name": "مريم سامي",
+      "group": "مدارس الأحد",
+      "points": 110,
+      "attendance": {
+        "2026-11-21": "present"
+      }
+    },
+    {
+      "id": "m-3",
+      "name": "كيرلس هاني",
+      "group": "خدمة الكورال",
+      "points": 65,
+      "attendance": {
+        "2026-11-21": "absent"
+      }
+    },
+    {
+      "id": "m-4",
+      "name": "مارينا جورج",
+      "group": "خدمة الشباب",
+      "points": 95,
+      "attendance": {}
+    }
+  ],
+  "quizQuestions": [
+    {
+      "id": "q-1",
+      "question": "ما هو أول سفر في الكتاب المقدس؟",
+      "options": [
+        "التكوين",
+        "الخروج",
+        "اللاويين",
+        "العدد"
+      ],
+      "correctIndex": 0,
+      "points": 15
+    },
+    {
+      "id": "q-2",
+      "question": "في أي مدينة وُلد السيد المسيح؟",
+      "options": [
+        "الناصرة",
+        "بيت لحم",
+        "أورشليم",
+        "أريحا"
+      ],
+      "correctIndex": 1,
+      "points": 15
+    },
+    {
+      "id": "q-3",
+      "question": "كم عدد أيام صوم موسى على الجبل قبل تسلّم الوصايا؟",
+      "options": [
+        "7 أيام",
+        "21 يوماً",
+        "40 يوماً",
+        "30 يوماً"
+      ],
+      "correctIndex": 2,
+      "points": 20
+    }
+  ],
+  "quizSubmissions": {},
+  "messages": [
+    {
+      "id": "msg-1",
+      "sender": "خادم الخدمة",
+      "text": "أهلًا بكم في منصة الكنيسة! يمكن لأي شخص إضافة نفسه وتسجيل الحضور وخوض الاختبار اليومي.",
+      "time": "٠٩:٥٤ م"
+    },
+    {
+      "id": "msg-2",
+      "sender": "مريم سامي",
+      "text": "تم حل الاختبار اليومي بنجاح، الرب يبارك خدمتكم!",
+      "time": "٠٩:٥٤ م"
+    }
+  ],
+  "files": [],
+  "github": {
+    "token": "",
+    "owner": "fady-12",
+    "repo": "The-church-",
+    "branch": "main",
+    "path": "church-state.json",
+    "lastSha": ""
+  }
+}
