@@ -541,7 +541,7 @@
             </span>
             <div>
               <h2 class="text-base font-extrabold">وضع الخادم نشط — تحكم كامل بالموقع</h2>
-              <p class="text-xs text-church-goldLight">أي تعديل هنا يُحفظ محلياً ويمكن رفعه فوراً إلى سحابة GitHub ليظهر للجميع</p>
+              <p class="text-xs text-church-goldLight">أي تعديل هنا يُحفظ محلياً ويُرفع فوراً إلى سحابة GitHub ليظهر للجميع</p>
             </div>
           </div>
           <div class="flex items-center gap-2">
@@ -790,12 +790,12 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1">اسم المالك / الحساب (Repository Owner)</label>
-                <input type="text" id="gh-owner" placeholder="مثال: fady-12"
+                <input type="text" id="gh-owner" oninput="handleLiveGitHubFieldChange()" onchange="handleLiveGitHubFieldChange()" placeholder="مثال: fady-12"
                   class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-church-gold" />
               </div>
               <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1">اسم المستودع (Repository Name)</label>
-                <input type="text" id="gh-repo" placeholder="مثال: The-church-"
+                <input type="text" id="gh-repo" oninput="handleLiveGitHubFieldChange()" onchange="handleLiveGitHubFieldChange()" placeholder="مثال: The-church-"
                   class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-church-gold" />
               </div>
             </div>
@@ -803,12 +803,12 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1">الفرع (Branch)</label>
-                <input type="text" id="gh-branch" value="main" placeholder="main"
+                <input type="text" id="gh-branch" value="main" oninput="handleLiveGitHubFieldChange()" onchange="handleLiveGitHubFieldChange()" placeholder="main"
                   class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-church-gold" />
               </div>
               <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1">مسار ملف البيانات داخل المستودع (File Path)</label>
-                <input type="text" id="gh-path" value="data/church-data.json" placeholder="data/church-data.json"
+                <input type="text" id="gh-path" value="data/church-data.json" oninput="handleLiveGitHubFieldChange()" onchange="handleLiveGitHubFieldChange()" placeholder="data/church-data.json"
                   class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-church-gold" />
               </div>
             </div>
@@ -817,22 +817,22 @@
               <label class="block text-xs font-bold text-slate-700 mb-1">
                 رمز الوصول الشخصي (GitHub Personal Access Token - Fine-grained أو Classic بصلاحية Contents: Read & Write)
               </label>
-              <input type="password" id="gh-token" placeholder="github_pat_... أو ghp_... (مطلوب للرفع والحفظ من الهاتف)"
+              <input type="password" id="gh-token" oninput="handleGitHubTokenInstantInput(this.value)" onchange="handleGitHubTokenInstantInput(this.value)" onpaste="setTimeout(() => handleGitHubTokenInstantInput(this.value), 0)" placeholder="github_pat_... أو ghp_... (يُحفظ تلقائياً على الجهاز)"
                 class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-church-gold" />
-              <p class="text-[11px] text-slate-500 mt-1">
-                ملاحظة: يمكن لأي هاتف آخر <strong>قراءة/سحب</strong> البيانات بمجرد ضبط Owner و Repo و Branch و Path، بينما يُستخدم Token عند <strong>رفع وحفظ</strong> التعديلات الجديدة إلى المستودع.
+              <p id="gh-instant-save-indicator" class="text-[11px] text-emerald-700 font-bold mt-1">
+                يتم حفظ إعدادات السحابة والرمز تلقائياً على هذا الجهاز فور إدخالها أو تعديلها.
               </p>
             </div>
 
             <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-church-sand">
               <div class="flex flex-col gap-1.5">
                 <label class="flex items-center gap-2 text-xs font-bold text-church-navy cursor-pointer">
-                  <input type="checkbox" id="gh-auto-push" class="w-4 h-4 rounded accent-church-navy" />
+                  <input type="checkbox" id="gh-auto-push" onchange="handleLiveGitHubFieldChange()" class="w-4 h-4 rounded accent-church-navy" />
                   <span>رفع تلقائي إلى GitHub عند أي تعديل (للخادم فقط)</span>
                 </label>
                 <label class="flex items-center gap-2 text-xs font-bold text-emerald-800 cursor-pointer">
                   <input type="checkbox" id="gh-auto-poll" onchange="handleAutoPollToggle(this.checked)" class="w-4 h-4 rounded accent-emerald-600" />
-                  <span>تحديث تلقائي دوري للزوار كل 30 ثانية لجلب التغييرات الجديدة</span>
+                  <span>تحديث تلقائي دوري للزوار كل 12 ثانية لجلب التغييرات الجديدة</span>
                 </label>
               </div>
 
@@ -858,10 +858,10 @@
             <span>كيف تعمل المزامنة بين الهواتف؟</span>
           </h3>
           <ol class="list-decimal list-inside space-y-2 text-xs text-slate-700 leading-relaxed">
-            <li>أنشئ مستودعاً على GitHub (مثل <code class="bg-slate-100 px-1.5 py-0.5 rounded font-mono">church-cloud-data</code>) وفعّل GitHub Pages لرفع هذا الملف.</li>
+            <li>أنشئ مستودعاً عاماً (Public) على GitHub وفعّل GitHub Pages لرفع هذا الملف.</li>
             <li>استخرج <strong>Personal Access Token</strong> بصلاحية القراءة والكتابة على محتوى المستودع (Contents).</li>
-            <li>أدخل بيانات المستودع والـ Token في هذا التبويب واضغط <strong>رفع إلى GitHub</strong> لإنشاء ملف <code class="bg-slate-100 px-1.5 py-0.5 rounded font-mono">data/church-data.json</code>.</li>
-            <li>عند فتح الموقع من أي هاتف آخر، يتم سحب أحدث نسخة من GitHub تلقائياً، وعند تسجيل حضور أو خصم نقاط أو إرسال رسالة يتم تحديث الملف السحابي ليراه الجميع!</li>
+            <li>أدخل بيانات المستودع والـ Token في هذا التبويب واضغط <strong>حفظ الإعدادات</strong> ثم <strong>رفع إلى GitHub</strong> لإنشاء ملف <code class="bg-slate-100 px-1.5 py-0.5 rounded font-mono">data/church-data.json</code>.</li>
+            <li>عند فتح الموقع من أي هاتف آخر أو العودة إليه، يتم سحب أحدث نسخة من GitHub تلقائياً، وعند تسجيل حضور أو خصم نقاط أو إرسال رسالة يتم تحديث الملف السحابي ليراه الجميع!</li>
           </ol>
 
           <div id="gh-sync-log" class="p-3 rounded-xl bg-church-cream border border-church-sand text-[11px] font-mono text-slate-600 space-y-1 max-h-40 overflow-y-auto">
@@ -912,10 +912,30 @@
   <script>
     /* =====================================================================
        STATE, DEFAULT DATA & PERSISTENCE ARCHITECTURE
-       ===================================================================== */
-    const STORAGE_KEY = 'church_app_state_v1';
-    const GH_CONFIG_KEY = 'church_github_config_v1';
-    const SERVANT_SESSION_KEY = 'church_servant_auth_v1';
+    // Default shared cloud target: can be pre-configured or inferred from GitHub Pages URL automatically
+    const DEFAULT_GH_CLOUD = {
+      owner: '',
+      repo: '',
+      branch: 'main',
+      path: 'data/church-data.json'
+    };
+
+    function inferCloudTargetFromHost() {
+      const result = {
+        owner: (DEFAULT_GH_CLOUD.owner || '').trim(),
+        repo: (DEFAULT_GH_CLOUD.repo || '').trim(),
+        branch: (DEFAULT_GH_CLOUD.branch || 'main').trim(),
+        path: (DEFAULT_GH_CLOUD.path || 'data/church-data.json').trim()
+      };
+      const host = window.location.hostname || '';
+      const pathParts = window.location.pathname.split('/').filter(Boolean);
+      if (host.endsWith('.github.io')) {
+        const inferredOwner = host.replace(/\.github\.io$/i, '');
+        if (!result.owner && inferredOwner) result.owner = inferredOwner;
+        if (!result.repo && pathParts.length > 0) result.repo = pathParts[0];
+      }
+      return result;
+    }
 
     function getTodayISO() {
       const now = new Date();
@@ -923,7 +943,7 @@
       return new Date(now - offset).toISOString().slice(0, 10);
     }
 
-    // Deterministic SHA-256 hex digest with fallback so password is never stored or displayed in plain text
+    // Deterministic SHA-256 hex digest so password is never stored or displayed in plain text
     async function hashPassword(password) {
       const normalized = String(password || '').trim();
       const salted = `church_secure_v2::${normalized}`;
@@ -976,7 +996,6 @@
           { id: 'm-5', name: 'بيتر عادل', grade: 84, points: 95 },
           { id: 'm-6', name: 'مارينا أشرف', grade: 96, points: 150 }
         ],
-        // attendance[date][memberId] = 'present' | 'absent' | 'excused'
         attendance: {
           [today]: {
             'm-1': 'present',
@@ -1025,7 +1044,6 @@
             time: '04:20 م'
           }
         ],
-        // Daily 100 AI Questions per user & date: dailyQuizzes[`${date}::${userId}`] = { questions, answers, earnedPoints }
         dailyQuizzes: {}
       };
     }
@@ -1042,7 +1060,7 @@
     let geminiApiKey = localStorage.getItem('church_gemini_api_key') || '';
     let pushQueuePromise = Promise.resolve(false);
     let autoPushDebounceTimer = null;
-
+    let tokenAutoDetectTimer = null;
     async function ensurePasswordHashInitialized() {
       const defaultHash = await getDefaultPasswordHash();
       if (!appState.settings.servantPasswordHash) {
@@ -1058,7 +1076,6 @@
         const parsed = JSON.parse(raw);
         const def = createInitialState();
         const mergedSettings = { ...def.settings, ...(parsed.settings || {}) };
-        // Never retain legacy plain-text pin field if present
         delete mergedSettings.servantPin;
         return {
           ...def,
@@ -1078,27 +1095,32 @@
     }
 
     function loadGitHubConfig() {
+      const inferred = inferCloudTargetFromHost();
+      const defaults = {
+        owner: inferred.owner || '',
+        repo: inferred.repo || '',
+        branch: inferred.branch || 'main',
+        path: inferred.path || 'data/church-data.json',
+        token: '',
+        autoPush: true,
+        autoPoll: true
+      };
       try {
         const raw = localStorage.getItem(GH_CONFIG_KEY);
-        const defaults = {
-          owner: '',
-          repo: '',
-          branch: 'main',
-          path: 'data/church-data.json',
-          token: '',
-          autoPush: true,
-          autoPoll: true
-        };
         if (!raw) return defaults;
         const parsed = JSON.parse(raw);
         return {
           ...defaults,
           ...parsed,
+          owner: (parsed.owner || defaults.owner || '').trim(),
+          repo: (parsed.repo || defaults.repo || '').trim(),
+          branch: (parsed.branch || defaults.branch || 'main').trim(),
+          path: (parsed.path || defaults.path || 'data/church-data.json').trim(),
           autoPush: parsed.autoPush !== false,
           autoPoll: parsed.autoPoll !== false
         };
       } catch (err) {
-        return { owner: '', repo: '', branch: 'main', path: 'data/church-data.json', token: '', autoPush: true, autoPoll: true };
+        return defaults;
       }
     }
 
@@ -1123,7 +1145,7 @@
       autoPushDebounceTimer = setTimeout(() => {
         autoPushDebounceTimer = null;
         enqueueGitHubPush(false);
-      }, 350);
+      }, 300);
     }
 
     async function persistState(options = { syncCloud: true }) {
@@ -1135,7 +1157,7 @@
     }
 
     /* =====================================================================
-       TOAST NOTIFICATIONS (Non-blocking UI replacement for alert())
+       TOAST NOTIFICATIONS
        ===================================================================== */
     function showToast(message, type = 'info') {
       const container = document.getElementById('toast-container');
@@ -1182,7 +1204,6 @@
         panel.classList.toggle('hidden', panel.id !== `tab-${tabName}`);
       });
 
-      // Desktop nav styling
       document.querySelectorAll('.nav-tab').forEach(btn => {
         const active = btn.dataset.tab === tabName;
         btn.classList.toggle('border-church-gold', active);
@@ -1191,7 +1212,6 @@
         btn.classList.toggle('text-white/80', !active);
       });
 
-      // Mobile nav styling
       document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
         const active = btn.dataset.tab === tabName;
         btn.classList.toggle('text-church-navy', active);
@@ -1280,7 +1300,7 @@
     }
 
     /* =====================================================================
-       ATTENDANCE & ABSENCE LOGIC (الحضور والغياب)
+       ATTENDANCE & ABSENCE LOGIC
        ===================================================================== */
     function initAttendanceDate() {
       const dateInput = document.getElementById('attendance-date');
@@ -1307,7 +1327,6 @@
       const prevStatus = appState.attendance[dateStr][memberId];
       appState.attendance[dateStr][memberId] = status;
 
-      // Apply points delta based on status transition
       const ptsDelta = getStatusPointDelta(prevStatus, status);
       member.points = Math.max(0, (member.points || 0) + ptsDelta);
 
@@ -1452,7 +1471,7 @@
     }
 
     /* =====================================================================
-       GRADES, POINTS & PENALTIES LOGIC (الدرجات وخصم النقاط)
+       GRADES, POINTS & PENALTIES LOGIC
        ===================================================================== */
     function updatePresetReasons() {
       const type = document.getElementById('points-type-select').value;
@@ -1570,7 +1589,6 @@
     }
 
     function renderGradesAndPointsTab() {
-      // Populate select dropdown
       const select = document.getElementById('points-member-select');
       const prevVal = select.value;
       select.innerHTML = appState.members.map(m => `<option value="${m.id}">${escapeHTML(m.name)} (${m.points} نقطة)</option>`).join('');
@@ -1582,7 +1600,6 @@
         updatePresetReasons();
       }
 
-      // Sorted Leaderboard
       const sorted = [...appState.members].sort((a, b) => (b.points || 0) - (a.points || 0));
       const tbody = document.getElementById('leaderboard-tbody');
 
@@ -1612,7 +1629,6 @@
         `;
       }).join('');
 
-      // Logs
       const logsEl = document.getElementById('points-logs-list');
       document.getElementById('logs-count-badge').textContent = `${appState.logs.length} عملية`;
 
@@ -1645,7 +1661,7 @@
     }
 
     /* =====================================================================
-       WHATSAPP-STYLE GROUP CHAT LOGIC (دردشة الكنيسة)
+       WHATSAPP-STYLE GROUP CHAT LOGIC
        ===================================================================== */
     function insertChatSnippet(text) {
       const input = document.getElementById('chat-message-input');
@@ -1770,7 +1786,7 @@
     }
 
     /* =====================================================================
-       SERVANT CONTROL PANEL ACTIONS (لوحة تحكم الخادم)
+       SERVANT CONTROL PANEL ACTIONS
        ===================================================================== */
     function handleAddMember(e) {
       e.preventDefault();
@@ -1883,13 +1899,11 @@
       updateRoleUI();
       if (!isServant) return;
 
-      // Populate settings inputs (never expose password or hash in UI)
       document.getElementById('setting-church-name').value = appState.settings.churchName;
       document.getElementById('setting-present-pts').value = appState.settings.presentPoints;
       document.getElementById('setting-absent-pts').value = appState.settings.absentPenalty;
       document.getElementById('setting-excused-pts').value = appState.settings.excusedPoints;
 
-      // Members list
       const membersList = document.getElementById('servant-members-list');
       membersList.innerHTML = appState.members.map(m => `
         <div class="flex items-center justify-between gap-2 p-2.5 rounded-xl bg-church-cream border border-church-sand text-xs">
@@ -1903,7 +1917,6 @@
         </div>
       `).join('');
 
-      // Announcements list
       const annList = document.getElementById('servant-announcements-list');
       annList.innerHTML = appState.announcements.length
         ? appState.announcements.map(a => `
@@ -1938,7 +1951,7 @@
     }
 
     /* =====================================================================
-       EXPORT CENTER (لوحة التصدير - CSV / JSON / Copy / Print)
+       EXPORT CENTER
        ===================================================================== */
     function downloadFile(content, filename, mimeType) {
       const blob = new Blob([content], { type: mimeType });
@@ -2066,10 +2079,7 @@
     }
 
     /* =====================================================================
-       DAILY 100 AI QUESTIONS CHALLENGE (تحدي 100 سؤال يومي بالذكاء الاصطناعي)
-       Generates 100 distinct daily questions per user & date (each servant or
-       member), checks answers instantaneously, awards +1 point per right answer,
-       prevents duplicate scoring on the same day, and syncs to GitHub.
+       DAILY 100 AI QUESTIONS CHALLENGE
        ===================================================================== */
     const QUIZ_QUESTION_BANK = [
       { category: 'الكتاب المقدس — العهد الجديد', q: 'من هو التلميذ الذي أنكر السيد المسيح ثلاث مرات قبل صياح الديك؟', options: ['بطرس', 'يوحنا', 'أندراوس', 'توما'], answerIndex: 0, explanation: 'أنكر القديس بطرس الرسول ثلاث مرات كما تنبأ الرب يسوع.' },
@@ -2205,7 +2215,7 @@
           date: dateStr,
           userId,
           questions: buildDeterministic100Questions(dateStr, userId),
-          answers: {}, // questionIndex -> { selectedIndex, isCorrect, awarded }
+          answers: {},
           earnedPoints: 0,
           correctCount: 0
         };
@@ -2239,7 +2249,6 @@
           }
         }
 
-        // Preserve already answered questions for today so points cannot be double-claimed
         const mergedQuestions = baseQuestions.map((qItem, idx) => {
           const prevAns = existing.answers?.[idx];
           if (prevAns && existing.questions?.[idx]) {
@@ -2298,7 +2307,6 @@
       const q = record.questions[activeQuizQuestionIndex];
       if (!q) return;
 
-      // Prevent re-answering or double-scoring the same question on the same day
       if (record.answers[activeQuizQuestionIndex]) {
         showToast('تمت الإجابة على هذا السؤال مسبقاً اليوم (بدون تكرار للنقاط)', 'info');
         return;
@@ -2377,7 +2385,6 @@
       document.getElementById('quiz-user-total-pts').textContent = totalPts;
       document.getElementById('quiz-progress-bar').style.width = `${pct}%`;
 
-      // Render jump grid (1..100)
       const jumpGrid = document.getElementById('quiz-jump-grid');
       if (jumpGrid) {
         jumpGrid.innerHTML = record.questions.map((q, idx) => {
@@ -2460,12 +2467,14 @@
       }
     }
 
+    /* =====================================================================
+       GITHUB CLOUD STORAGE & MULTI-DEVICE SYNC ENGINE
+       ===================================================================== */
     function configureAutoPolling() {
       if (autoPollTimer) {
         clearInterval(autoPollTimer);
         autoPollTimer = null;
       }
-      // Fast polling every 12 seconds by default so any phone receives leader updates quickly
       if (ghConfig.autoPoll !== false && ghConfig.owner && ghConfig.repo) {
         autoPollTimer = setInterval(() => {
           syncFromGitHub(false, true);
@@ -2479,14 +2488,6 @@
       configureAutoPolling();
       showToast(ghConfig.autoPoll ? 'تم تفعيل التحديث التلقائي السريع لجميع الهواتف (كل 12 ثانية)' : 'تم إيقاف التحديث التلقائي الدوري', 'info');
     }
-    }
-
-    function handleAutoPollToggle(checked) {
-      ghConfig.autoPoll = Boolean(checked);
-      localStorage.setItem(GH_CONFIG_KEY, JSON.stringify(ghConfig));
-      configureAutoPolling();
-      showToast(ghConfig.autoPoll ? 'تم تفعيل التحديث التلقائي للزوار (التخزين والمزامنة نشطة)' : 'تم إيقاف التحديث التلقائي الدوري', 'info');
-    }
 
     function populateGitHubForm() {
       const ownerEl = document.getElementById('gh-owner');
@@ -2497,11 +2498,11 @@
       const autoPushEl = document.getElementById('gh-auto-push');
       const autoPollEl = document.getElementById('gh-auto-poll');
 
-      if (ownerEl) ownerEl.value = ghConfig.owner || '';
-      if (repoEl) repoEl.value = ghConfig.repo || '';
-      if (branchEl) branchEl.value = ghConfig.branch || 'main';
-      if (pathEl) pathEl.value = ghConfig.path || 'data/church-data.json';
-      if (tokenEl) tokenEl.value = ghConfig.token || '';
+      if (ownerEl && document.activeElement !== ownerEl) ownerEl.value = ghConfig.owner || '';
+      if (repoEl && document.activeElement !== repoEl) repoEl.value = ghConfig.repo || '';
+      if (branchEl && document.activeElement !== branchEl) branchEl.value = ghConfig.branch || 'main';
+      if (pathEl && document.activeElement !== pathEl) pathEl.value = ghConfig.path || 'data/church-data.json';
+      if (tokenEl && document.activeElement !== tokenEl) tokenEl.value = ghConfig.token || '';
       if (autoPushEl) autoPushEl.checked = ghConfig.autoPush !== false;
       if (autoPollEl) autoPollEl.checked = ghConfig.autoPoll !== false;
     }
@@ -2539,79 +2540,77 @@
     function utf8ToBase64(str) {
       const bytes = new TextEncoder().encode(str);
       let bin = '';
-      for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
-      return btoa(bin);
+    function readGitHubConfigFromInputs(fallbackExisting = true) {
+      const base = fallbackExisting ? ghConfig : loadGitHubConfig();
+      const ownerEl = document.getElementById('gh-owner');
+      const repoEl = document.getElementById('gh-repo');
+      const branchEl = document.getElementById('gh-branch');
+      const pathEl = document.getElementById('gh-path');
+      const tokenEl = document.getElementById('gh-token');
+      const autoPushEl = document.getElementById('gh-auto-push');
+      const autoPollEl = document.getElementById('gh-auto-poll');
+
+      return {
+        owner: ownerEl ? ownerEl.value.trim() : (base.owner || ''),
+        repo: repoEl ? repoEl.value.trim() : (base.repo || ''),
+        branch: (branchEl ? branchEl.value.trim() : base.branch) || 'main',
+        path: (pathEl ? pathEl.value.trim() : base.path) || 'data/church-data.json',
+        token: tokenEl ? tokenEl.value.trim() : (base.token || ''),
+        autoPush: autoPushEl ? Boolean(autoPushEl.checked) : (base.autoPush !== false),
+        autoPoll: autoPollEl ? Boolean(autoPollEl.checked) : (base.autoPoll !== false)
+      };
     }
 
-    function base64ToUtf8(b64) {
-      const clean = (b64 || '').replace(/\s+/g, '');
-      const bin = atob(clean);
-      const bytes = new Uint8Array(bin.length);
-      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-      return new TextDecoder().decode(bytes);
-    }
-
-    async function autoDetectGitHubOwnerAndRepo(token) {
-      if (!token) return;
+    function persistGitHubConfigImmediate(nextConfig, statusMessage = '') {
+      ghConfig = { ...ghConfig, ...nextConfig };
       try {
-        const userRes = await fetch('https://api.github.com/user', {
-          headers: {
-            'Accept': 'application/vnd.github+json',
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        if (!userRes.ok) return;
-        const userData = await userRes.json();
-        if (userData?.login && !ghConfig.owner) {
-          ghConfig.owner = userData.login;
-        }
-
-        // Infer repo name from current GitHub Pages host if available (e.g. owner.github.io/repo)
-        const pathParts = window.location.pathname.split('/').filter(Boolean);
-        if (!ghConfig.repo && pathParts.length > 0 && window.location.hostname.endsWith('github.io')) {
-          ghConfig.repo = pathParts[0];
-        } else if (!ghConfig.repo && ghConfig.owner) {
-          const reposRes = await fetch(`https://api.github.com/users/${encodeURIComponent(ghConfig.owner)}/repos?per_page=10&sort=updated`, {
-            headers: {
-              'Accept': 'application/vnd.github+json',
-              'Authorization': `Bearer ${token}`
-            }
-          });
-          if (reposRes.ok) {
-            const repos = await reposRes.json();
-            if (Array.isArray(repos) && repos.length > 0) {
-              const churchRepo = repos.find(r => /church/i.test(r.name)) || repos[0];
-              ghConfig.repo = churchRepo.name;
-              if (churchRepo.default_branch && !ghConfig.branch) {
-                ghConfig.branch = churchRepo.default_branch;
-              }
-            }
-          }
-        }
+        localStorage.setItem(GH_CONFIG_KEY, JSON.stringify(ghConfig));
       } catch (err) {
-        console.warn('Auto-detect GitHub info skipped:', err);
+        console.error('Failed saving GitHub config to localStorage:', err);
+      }
+      const indicator = document.getElementById('gh-instant-save-indicator');
+      if (indicator) {
+        const stamp = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        indicator.textContent = statusMessage || `تم حفظ إعدادات السحابة والرمز على هذا الجهاز (${stamp})`;
+      }
+    }
+
+    function handleLiveGitHubFieldChange() {
+      const updated = readGitHubConfigFromInputs(true);
+      persistGitHubConfigImmediate(updated);
+      configureAutoPolling();
+    }
+
+    function handleGitHubTokenInstantInput(rawToken) {
+      const cleanToken = String(rawToken || '').trim();
+      const updated = readGitHubConfigFromInputs(true);
+      updated.token = cleanToken;
+      persistGitHubConfigImmediate(
+        updated,
+        cleanToken
+          ? `تم حفظ رمز الوصول (Token) فوراً على هذا الجهاز (${new Date().toLocaleTimeString('ar-EG')})`
+          : 'تم تحديث رمز الوصول على هذا الجهاز'
+      );
+
+      if (cleanToken && (!ghConfig.owner || !ghConfig.repo)) {
+        if (tokenAutoDetectTimer) clearTimeout(tokenAutoDetectTimer);
+        tokenAutoDetectTimer = setTimeout(async () => {
+          await autoDetectGitHubOwnerAndRepo(cleanToken);
+          persistGitHubConfigImmediate(ghConfig);
+          populateGitHubForm();
+          configureAutoPolling();
+        }, 450);
       }
     }
 
     async function handleSaveGitHubConfig(e) {
       e.preventDefault();
-      const enteredToken = document.getElementById('gh-token').value.trim();
-      ghConfig = {
-        owner: document.getElementById('gh-owner').value.trim(),
-        repo: document.getElementById('gh-repo').value.trim(),
-        branch: document.getElementById('gh-branch').value.trim() || 'main',
-        path: document.getElementById('gh-path').value.trim() || 'data/church-data.json',
-        token: enteredToken,
-        autoPush: document.getElementById('gh-auto-push').checked,
-        autoPoll: document.getElementById('gh-auto-poll').checked
-      };
+      const nextCfg = readGitHubConfigFromInputs(false);
+      persistGitHubConfigImmediate(nextCfg);
 
-      // Immediately save token and cloud settings locally on this device
-      localStorage.setItem(GH_CONFIG_KEY, JSON.stringify(ghConfig));
-
-      if (enteredToken && (!ghConfig.owner || !ghConfig.repo)) {
-        await autoDetectGitHubOwnerAndRepo(enteredToken);
-        localStorage.setItem(GH_CONFIG_KEY, JSON.stringify(ghConfig));
+      if (nextCfg.token && (!ghConfig.owner || !ghConfig.repo)) {
+        await autoDetectGitHubOwnerAndRepo(nextCfg.token);
+        persistGitHubConfigImmediate(ghConfig);
         populateGitHubForm();
       }
 
@@ -2619,17 +2618,19 @@
       appendSyncLog(`تم حفظ إعدادات السحابة والرمز على هذا الجهاز (${ghConfig.owner || 'غير محدد'}/${ghConfig.repo || 'غير محدد'}) — التخزين الفوري: ${ghConfig.autoPush ? 'مفعّل' : 'متوقف'}`);
       showToast('تم حفظ إعدادات سحابة GitHub على هذا الجهاز بنجاح', 'success');
 
+      if (ghConfig.owner && ghConfig.repo) {
+        await syncFromGitHub(false, false);
+      }
       if (isServant && ghConfig.autoPush && ghConfig.owner && ghConfig.repo && ghConfig.token) {
         enqueueGitHubPush(false);
       }
     }
 
-    async function fetchRemoteStateWithoutToken(cleanPath, branch) {
+    async function fetchRemoteStateWithFallback(cleanPath, branch) {
       const bust = `t=${Date.now()}&r=${Math.random().toString(36).slice(2, 8)}`;
       const apiUrl = `https://api.github.com/repos/${encodeURIComponent(ghConfig.owner)}/${encodeURIComponent(ghConfig.repo)}/contents/${cleanPath}?ref=${encodeURIComponent(branch)}&${bust}`;
       const rawUrl = `https://raw.githubusercontent.com/${encodeURIComponent(ghConfig.owner)}/${encodeURIComponent(ghConfig.repo)}/${encodeURIComponent(branch)}/${cleanPath}?${bust}`;
 
-      // 1) Primary source: GitHub Contents API with strict no-store cache busting for near-instant updates across phones
       const apiHeaders = {
         'Accept': 'application/vnd.github+json'
       };
@@ -2637,20 +2638,24 @@
         apiHeaders['Authorization'] = `Bearer ${ghConfig.token}`;
       }
 
-      const apiRes = await fetch(apiUrl, {
-        headers: apiHeaders,
-        cache: 'no-store'
-      });
-
-      if (apiRes.ok) {
-        const data = await apiRes.json();
-        const decodedJson = base64ToUtf8(data.content || '');
-        return JSON.parse(decodedJson);
+      let apiStatus = 0;
+      try {
+        const apiRes = await fetch(apiUrl, {
+          headers: apiHeaders,
+          cache: 'no-store'
+        });
+        apiStatus = apiRes.status;
+        if (apiRes.ok) {
+          const data = await apiRes.json();
+          const decodedJson = base64ToUtf8(data.content || '');
+          return JSON.parse(decodedJson);
+        }
+      } catch (apiErr) {
+        console.warn('Contents API fetch fallback to raw:', apiErr);
       }
 
-      // 2) Fallback to raw.githubusercontent.com with cache-busting query
       const rawRes = await fetch(rawUrl, { cache: 'no-store' });
-      if (rawRes.status === 404 || apiRes.status === 404) {
+      if (rawRes.status === 404 || apiStatus === 404) {
         const err = new Error('NOT_FOUND');
         err.code = 'NOT_FOUND';
         throw err;
@@ -2685,7 +2690,7 @@
       }
 
       try {
-        const remoteState = await fetchRemoteStateWithoutToken(cleanPath, branch);
+        const remoteState = await fetchRemoteStateWithFallback(cleanPath, branch);
 
         if (remoteState && Array.isArray(remoteState.members)) {
           const prevUpdatedAt = appState.updatedAt || '';
@@ -2709,7 +2714,6 @@
 
           const prevMsgCount = appState.messages.length;
 
-          // If servant has a pending local edit queued, do not overwrite local servant state with older remote data
           if (isServant && autoPushDebounceTimer && prevUpdatedAt >= nextUpdatedAt) {
             setSyncStatus('syncing', 'جاري رفع أحدث تعديل للقائد...');
             return true;
@@ -2721,7 +2725,6 @@
           saveLocalState();
           markFetchedNow();
 
-          // Avoid disrupting active typing on mobile inputs during background poll; re-render as soon as not typing or on manual sync
           if (!isBackgroundPoll || !isUserActivelyTyping()) {
             renderAll();
           } else if (hasMeaningfulChange) {
@@ -2824,7 +2827,6 @@
 
         let putRes = await attemptUpload();
         if (putRes.status === 409) {
-          // Automatic SHA refresh & retry on conflict so rapid edits always save cleanly
           putRes = await attemptUpload();
         }
 
@@ -2884,13 +2886,11 @@
       populateGitHubForm();
       renderAll();
 
-      // Immediately fetch latest cloud data on page load for any phone without needing a Token
       if (ghConfig.owner && ghConfig.repo) {
         await syncFromGitHub(false, false);
         configureAutoPolling();
       }
 
-      // Sync immediately when user returns to tab/phone screen, restores history/BFCache, or regains internet
       document.addEventListener('visibilitychange', () => {
         if (!document.hidden) {
           triggerPhoneForegroundSync();
