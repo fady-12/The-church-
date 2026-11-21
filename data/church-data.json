@@ -1,12 +1,13 @@
 {
-  "updatedAt": "2026-11-21T14:04:41.832Z",
+  "updatedAt": "2026-11-21T14:29:02.188Z",
   "settings": {
     "churchName": "الكنيسه الرسوليه الاولي بالعزيه",
     "groupSubtitle": "نظام متابعة الحضور والدرجات والنقاط والدردشة — سحابة GitHub",
     "presentPoints": 10,
     "absentPenalty": 5,
     "excusedPoints": 2,
-    "servantPin": "5555"
+    "servantPin": "5555",
+    "servantPasswordHash": "43f308c60d9fc9b09aa49d01ee1cfc18cabe629510caca38e67c128cee114cf4"
   },
   "announcements": [
     {
