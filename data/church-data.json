@@ -1,8 +1,8 @@
 {
   "churchName": "الكنيسة الرسولية الأولى بالعزية",
   "systemTitle": "نظام الخدام",
-  "updatedAt": "2026-11-21T18:40:02.655Z",
-  "revision": 54,
+  "updatedAt": "2026-11-21T18:39:09.630Z",
+  "revision": 51,
   "adminPasswordHash": "c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646",
   "members": [
     {
@@ -10,7 +10,7 @@
       "name": "Fady Safwat",
       "role": "ثانوى",
       "phone": "01280234499",
-      "points": 52
+      "points": 49
     },
     {
       "id": "m_1795284798987_82m",
@@ -41,30 +41,6 @@
     }
   },
   "transactions": [
-    {
-      "id": "tx_quiz_1795286402655",
-      "memberId": "m_1795284609883_9cu",
-      "memberName": "Fady Safwat",
-      "delta": 1,
-      "reason": "تحدي 100 سؤال يومي (سؤال #40)",
-      "timestamp": "2026-11-21T18:40:02.655Z"
-    },
-    {
-      "id": "tx_quiz_1795286395041",
-      "memberId": "m_1795284609883_9cu",
-      "memberName": "Fady Safwat",
-      "delta": 1,
-      "reason": "تحدي 100 سؤال يومي (سؤال #39)",
-      "timestamp": "2026-11-21T18:39:55.041Z"
-    },
-    {
-      "id": "tx_quiz_1795286391878",
-      "memberId": "m_1795284609883_9cu",
-      "memberName": "Fady Safwat",
-      "delta": 1,
-      "reason": "تحدي 100 سؤال يومي (سؤال #38)",
-      "timestamp": "2026-11-21T18:39:51.878Z"
-    },
     {
       "id": "tx_quiz_1795286349630",
       "memberId": "m_1795284609883_9cu",
