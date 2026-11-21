@@ -889,15 +889,19 @@
         <span>100 سؤال</span>
       </button>
       <button data-tab="chat" onclick="switchTab('chat')" class="mobile-nav-btn relative py-2 px-0.5 flex flex-col items-center justify-center gap-0.5 text-[9px] font-bold text-slate-500">
-      <button data-tab="servant" onclick="switchTab('servant')" class="mobile-nav-btn py-2 px-1 flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold text-slate-500">
+        <i class="fa-brands fa-whatsapp text-sm"></i>
+        <span>الدردشة</span>
+        <span id="unread-badge-mobile" class="hidden absolute top-1 right-2 w-4 h-4 rounded-full bg-emerald-500 text-white text-[9px] font-extrabold flex items-center justify-center">0</span>
+      </button>
+      <button data-tab="servant" onclick="switchTab('servant')" class="mobile-nav-btn py-2 px-0.5 flex flex-col items-center justify-center gap-0.5 text-[9px] font-bold text-slate-500">
         <i class="fa-solid fa-sliders text-sm"></i>
         <span>الخادم</span>
       </button>
-      <button data-tab="export" onclick="switchTab('export')" class="mobile-nav-btn py-2 px-1 flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold text-slate-500">
+      <button data-tab="export" onclick="switchTab('export')" class="mobile-nav-btn py-2 px-0.5 flex flex-col items-center justify-center gap-0.5 text-[9px] font-bold text-slate-500">
         <i class="fa-solid fa-file-export text-sm"></i>
         <span>تصدير</span>
       </button>
-      <button data-tab="github" onclick="switchTab('github')" class="mobile-nav-btn py-2 px-1 flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold text-slate-500">
+      <button data-tab="github" onclick="switchTab('github')" class="mobile-nav-btn py-2 px-0.5 flex flex-col items-center justify-center gap-0.5 text-[9px] font-bold text-slate-500">
         <i class="fa-brands fa-github text-sm"></i>
         <span>GitHub</span>
       </button>
@@ -2446,21 +2450,143 @@
       }
     }
 
-    function handleSaveGitHubConfig(e) {
+    function handleAutoPollToggle(checked) {
+      ghConfig.autoPoll = Boolean(checked);
+      localStorage.setItem(GH_CONFIG_KEY, JSON.stringify(ghConfig));
+      configureAutoPolling();
+      showToast(ghConfig.autoPoll ? 'تم تفعيل التحديث التلقائي كل 30 ثانية' : 'تم إيقاف التحديث التلقائي الدوري', 'info');
+    }
+
+    function populateGitHubForm() {
+      const ownerEl = document.getElementById('gh-owner');
+      const repoEl = document.getElementById('gh-repo');
+      const branchEl = document.getElementById('gh-branch');
+      const pathEl = document.getElementById('gh-path');
+      const tokenEl = document.getElementById('gh-token');
+      const autoPushEl = document.getElementById('gh-auto-push');
+      const autoPollEl = document.getElementById('gh-auto-poll');
+
+      if (ownerEl) ownerEl.value = ghConfig.owner || '';
+      if (repoEl) repoEl.value = ghConfig.repo || '';
+      if (branchEl) branchEl.value = ghConfig.branch || 'main';
+      if (pathEl) pathEl.value = ghConfig.path || 'data/church-data.json';
+      if (tokenEl) tokenEl.value = ghConfig.token || '';
+      if (autoPushEl) autoPushEl.checked = Boolean(ghConfig.autoPush);
+      if (autoPollEl) autoPollEl.checked = ghConfig.autoPoll !== false;
+    }
+
+    function appendSyncLog(msg) {
+      const logBox = document.getElementById('gh-sync-log');
+      if (!logBox) return;
+      const line = document.createElement('div');
+      line.textContent = `[${new Date().toLocaleTimeString('ar-EG')}] ${msg}`;
+      logBox.prepend(line);
+    }
+
+    function setSyncStatus(mode, text) {
+      const dot = document.getElementById('sync-dot');
+      const label = document.getElementById('sync-status-text');
+      const spin = document.getElementById('sync-spin-icon');
+      if (label) label.textContent = text;
+      if (dot) {
+        dot.className = 'w-2.5 h-2.5 rounded-full ' + (
+          mode === 'synced' ? 'bg-emerald-400' :
+          mode === 'syncing' ? 'bg-sky-400 animate-ping' :
+          mode === 'error' ? 'bg-rose-400' : 'bg-amber-400'
+        );
+      }
+      if (spin) spin.classList.toggle('fa-spin', mode === 'syncing');
+    }
+
+    function markFetchedNow() {
+      const nowStr = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      lastFetchedLabel = nowStr;
+      const el = document.getElementById('last-fetched-time');
+      if (el) el.textContent = `(${nowStr})`;
+    }
+
+    function utf8ToBase64(str) {
+      const bytes = new TextEncoder().encode(str);
+      let bin = '';
+      for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+      return btoa(bin);
+    }
+
+    function base64ToUtf8(b64) {
+      const clean = (b64 || '').replace(/\s+/g, '');
+      const bin = atob(clean);
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      return new TextDecoder().decode(bytes);
+    }
+
+    async function autoDetectGitHubOwnerAndRepo(token) {
+      if (!token) return;
+      try {
+        const userRes = await fetch('https://api.github.com/user', {
+          headers: {
+            'Accept': 'application/vnd.github+json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (!userRes.ok) return;
+        const userData = await userRes.json();
+        if (userData?.login && !ghConfig.owner) {
+          ghConfig.owner = userData.login;
+        }
+
+        // Infer repo name from current GitHub Pages host if available (e.g. owner.github.io/repo)
+        const pathParts = window.location.pathname.split('/').filter(Boolean);
+        if (!ghConfig.repo && pathParts.length > 0 && window.location.hostname.endsWith('github.io')) {
+          ghConfig.repo = pathParts[0];
+        } else if (!ghConfig.repo && ghConfig.owner) {
+          const reposRes = await fetch(`https://api.github.com/users/${encodeURIComponent(ghConfig.owner)}/repos?per_page=10&sort=updated`, {
+            headers: {
+              'Accept': 'application/vnd.github+json',
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          if (reposRes.ok) {
+            const repos = await reposRes.json();
+            if (Array.isArray(repos) && repos.length > 0) {
+              const churchRepo = repos.find(r => /church/i.test(r.name)) || repos[0];
+              ghConfig.repo = churchRepo.name;
+              if (churchRepo.default_branch && !ghConfig.branch) {
+                ghConfig.branch = churchRepo.default_branch;
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.warn('Auto-detect GitHub info skipped:', err);
+      }
+    }
+
+    async function handleSaveGitHubConfig(e) {
       e.preventDefault();
+      const enteredToken = document.getElementById('gh-token').value.trim();
       ghConfig = {
         owner: document.getElementById('gh-owner').value.trim(),
         repo: document.getElementById('gh-repo').value.trim(),
         branch: document.getElementById('gh-branch').value.trim() || 'main',
         path: document.getElementById('gh-path').value.trim() || 'data/church-data.json',
-        token: document.getElementById('gh-token').value.trim(),
+        token: enteredToken,
         autoPush: document.getElementById('gh-auto-push').checked,
         autoPoll: document.getElementById('gh-auto-poll').checked
       };
+
+      // Immediately save token and cloud settings locally on this device
       localStorage.setItem(GH_CONFIG_KEY, JSON.stringify(ghConfig));
+
+      if (enteredToken && (!ghConfig.owner || !ghConfig.repo)) {
+        await autoDetectGitHubOwnerAndRepo(enteredToken);
+        localStorage.setItem(GH_CONFIG_KEY, JSON.stringify(ghConfig));
+        populateGitHubForm();
+      }
+
       configureAutoPolling();
-      appendSyncLog(`تم حفظ إعدادات GitHub (${ghConfig.owner}/${ghConfig.repo})`);
-      showToast('تم حفظ إعدادات سحابة GitHub بنجاح', 'success');
+      appendSyncLog(`تم حفظ إعدادات السحابة والرمز على هذا الجهاز (${ghConfig.owner || 'غير محدد'}/${ghConfig.repo || 'غير محدد'})`);
+      showToast('تم حفظ إعدادات سحابة GitHub على هذا الجهاز بنجاح', 'success');
     }
 
     async function fetchRemoteStateWithoutToken(cleanPath, branch) {
@@ -2664,4 +2790,3 @@
 </body>
 </html>
 ```
-            
