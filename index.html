@@ -3,1237 +3,1758 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>موقع الكنيسة — GitHub Pages</title>
+  <title>منصة الكنيسة — إدارة الأعضاء والاختبارات والتفاعل</title>
+  <!-- تحميل خطي Cairo و Tajawal لدعم العربية الحديثة بشكل أنيق -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+  <!-- تحميل Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Cairo', 'Tajawal', 'sans-serif'],
+            display: ['Cairo', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#4f46e5',
+              600: '#4338ca',
+              700: '#3730a3',
+            },
+            accent: {
+              500: '#0d9488',
+              600: '#0f766e',
+            }
+          }
+        }
+      }
+    };
+  </script>
   <style>
-    :root {
-      --bg: #f4f6f9;
-      --surface: #ffffff;
-      --primary: #1e3a5f;
-      --primary-dark: #14273f;
-      --accent: #b07d4f;
-      --danger: #b91c1c;
-      --success: #15803d;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --border: #e5e7eb;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     body {
-      font-family: system-ui, -apple-system, "Segoe UI", Tahoma, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.65;
+      font-family: 'Cairo', 'Tajawal', sans-serif;
     }
-
-    header {
-      background: var(--primary);
-      color: #fff;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    }
-
-    .nav-wrap {
-      max-width: 1160px;
-      margin: auto;
-      padding: 0.9rem 1rem;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem;
-    }
-
-    .brand {
-      font-size: 1.25rem;
-      font-weight: 700;
-    }
-
-    .nav-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-    }
-
-    .tab-btn {
-      background: transparent;
-      color: #e5e7eb;
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      padding: 0.45rem 0.85rem;
-      border-radius: 8px;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 0.9rem;
-    }
-
-    .tab-btn:hover,
-    .tab-btn.active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #fff;
-    }
-
-    .sync-bar {
-      background: var(--primary-dark);
-      color: #e5e7eb;
-      font-size: 0.85rem;
-      padding: 0.45rem 1rem;
-    }
-
-    .sync-inner {
-      max-width: 1160px;
-      margin: auto;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.5rem;
-    }
-
-    main {
-      max-width: 1160px;
-      margin: 1.75rem auto;
-      padding: 0 1rem 3rem;
-    }
-
-    .page {
+    /* شريط تمرير ناعم ومناسب للهواتف */
+    .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
-
-    .page.active {
-      display: block;
-    }
-
-    .hero {
-      background: linear-gradient(135deg, var(--primary), #2b547e);
-      color: #fff;
-      border-radius: 16px;
-      padding: 2.5rem 1.5rem;
-      text-align: center;
-      margin-bottom: 1.75rem;
-    }
-
-    .hero h1 {
-      font-size: 1.9rem;
-      margin-bottom: 0.6rem;
-    }
-
-    .hero p {
-      max-width: 680px;
-      margin: 0 auto 1.25rem;
-      color: #e5e7eb;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-      gap: 1.1rem;
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 1.25rem;
-    }
-
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.2rem;
-      margin-bottom: 1.1rem;
-    }
-
-    .card h2,
-    .card h3 {
-      color: var(--primary);
-      margin-bottom: 0.65rem;
-    }
-
-    .muted {
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    .btn {
-      display: inline-block;
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      padding: 0.55rem 1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 0.92rem;
-      text-decoration: none;
-    }
-
-    .btn:hover {
-      opacity: 0.92;
-    }
-
-    .btn-accent {
-      background: var(--accent);
-    }
-
-    .btn-success {
-      background: var(--success);
-    }
-
-    .btn-danger {
-      background: var(--danger);
-    }
-
-    .btn-sm {
-      padding: 0.35rem 0.65rem;
-      font-size: 0.82rem;
-    }
-
-    .row-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-top: 0.6rem;
-    }
-
-    label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 0.25rem;
-      font-size: 0.92rem;
-    }
-
-    input,
-    select,
-    textarea {
-      width: 100%;
-      padding: 0.55rem 0.7rem;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 0.95rem;
-      margin-bottom: 0.75rem;
-      background: #fff;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.92rem;
-    }
-
-    th,
-    td {
-      border-bottom: 1px solid var(--border);
-      padding: 0.6rem 0.5rem;
-      text-align: right;
-    }
-
-    th {
-      background: #f9fafb;
-      color: var(--primary);
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 0.15rem 0.55rem;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 600;
-    }
-
-    .badge-present {
-      background: #dcfce7;
-      color: #166534;
-    }
-
-    .badge-absent {
-      background: #fee2e2;
-      color: #991b1b;
-    }
-
-    .chat-box {
-      height: 320px;
-      overflow-y: auto;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 0.85rem;
-      background: #fafafa;
-      margin-bottom: 0.75rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-    }
-
-    .msg {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 0.6rem 0.8rem;
-    }
-
-    .msg-meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-bottom: 0.2rem;
-    }
-
-    .quiz-q {
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 0.9rem;
-      margin-bottom: 0.85rem;
-      background: #fcfcfd;
-    }
-
-    .opt-label {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-weight: 400;
-      margin-bottom: 0.35rem;
-      cursor: pointer;
-    }
-
-    .opt-label input {
-      width: auto;
-      margin: 0;
-    }
-
-    .status-msg {
-      font-size: 0.9rem;
-      margin-top: 0.4rem;
-      min-height: 1.2rem;
-      font-weight: 600;
-    }
-
-    .hidden {
-      display: none !important;
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
   </style>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen transition-colors duration-200 selection:bg-indigo-500 selection:text-white">
+  <!-- حاوية الإشعارات العائمة (Toast) -->
+  <div id="toast-container" class="fixed bottom-4 left-4 right-4 sm:right-auto sm:left-6 z-50 flex flex-col gap-2 max-w-sm pointer-events-none"></div>
 
-  <header>
-    <div class="nav-wrap">
-      <div class="brand" id="church-brand">موقع الكنيسة</div>
-      <div class="nav-tabs">
-        <button class="tab-btn active" data-page="home">الرئيسية</button>
-        <button class="tab-btn" data-page="attendance">الحضور والغياب</button>
-        <button class="tab-btn" data-page="quiz">الاختبار اليومي</button>
-        <button class="tab-btn" data-page="leaderboard">لوحة الشرف</button>
-        <button class="tab-btn" data-page="chat">الدردشة</button>
-        <button class="tab-btn" data-page="export">التصدير</button>
-        <button class="tab-btn" data-page="admin">الإدارة</button>
-      </div>
-    </div>
-    <div class="sync-bar">
-      <div class="sync-inner">
-        <span id="sync-status">الحالة: محلي (جاهز للعمل)</span>
-        <div>
-          <button class="btn btn-sm btn-accent" id="btn-pull-cloud">سحب من GitHub</button>
-          <button class="btn btn-sm btn-success" id="btn-push-cloud">رفع إلى GitHub</button>
+  <!-- الشريط العلوي -->
+  <header class="sticky top-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur border-b border-slate-200 dark:border-slate-800 shadow-sm">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 h-16 flex items-center justify-between gap-2">
+      <!-- شعار واسم الكنيسة -->
+      <div class="flex items-center gap-2.5 min-w-0">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-teal-600 flex items-center justify-center text-white font-bold text-lg shadow shrink-0">
+          ✝
+        </div>
+        <div class="truncate">
+          <h1 class="text-base sm:text-lg font-extrabold tracking-tight truncate">منصة الكنيسة</h1>
+          <p id="sync-status-badge" class="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
+            <span>وضع التخزين المحلي (جاهز)</span>
+          </p>
         </div>
       </div>
+
+      <!-- أزرار التحكم السريعة -->
+      <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <button id="btn-self-join-top" type="button" class="inline-flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-extrabold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition">
+          <span>🙋‍♂️</span>
+          <span>أضف نفسك</span>
+        </button>
+        <button id="btn-sync-now" type="button" title="مزامنة الآن" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition">
+          <span>مزامنة</span>
+        </button>
+        <button id="btn-theme-toggle" type="button" title="تبديل المظهر" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition">
+          <span id="theme-icon">🌙</span>
+        </button>
+        <button id="btn-admin-top" type="button" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm transition">
+          <span>🛡️</span>
+          <span id="admin-status-label">بوابة الإدارة</span>
+        </button>
+      </div>
     </div>
+
+    <!-- شريط التبويبات المتجاوب -->
+    <nav aria-label="الأقسام الرئيسية" class="border-t border-slate-100 dark:border-slate-800/80 bg-white dark:bg-slate-900">
+      <div class="max-w-7xl mx-auto px-2 sm:px-6 flex items-center gap-1 overflow-x-auto no-scrollbar py-1.5" id="tabs-bar">
+        <button data-tab="members" class="tab-btn whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-indigo-600 text-white">👥 الأعضاء والحضور</button>
+        <button data-tab="quiz" class="tab-btn whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">📝 الاختبار اليومي</button>
+        <button data-tab="leaderboard" class="tab-btn whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">🏆 المتصدرون</button>
+        <button data-tab="chat" class="tab-btn whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">💬 الدردشة الجماعية</button>
+        <button data-tab="files" class="tab-btn whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">📁 مدير الملفات</button>
+        <button data-tab="exports" class="tab-btn whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">📤 التصدير والتقارير</button>
+        <button data-tab="admin" class="tab-btn whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">⚙️ الإدارة والمزامنة</button>
+      </div>
+    </nav>
   </header>
 
-  <main>
-    <section id="page-home" class="page active">
-      <div class="hero">
-        <h1 id="hero-title">أهلاً بكم في كنيستنا</h1>
-        <p id="hero-subtitle">منصة متكاملة للخدمات، الحضور، المسابقات اليومية، لوحة النقاط، والتواصل.</p>
-        <button class="btn btn-accent" onclick="switchPage('quiz')">ابدأ الاختبار اليومي</button>
-      </div>
-
-      <div class="card">
-        <h2>عن الكنيسة</h2>
-        <p id="about-text"></p>
-      </div>
-
-      <div class="grid-2">
-        <div class="card">
-          <h2>مواعيد الخدمات</h2>
-          <div id="services-view"></div>
+  <!-- المحتوى الرئيسي -->
+  <main class="max-w-7xl mx-auto px-3 sm:px-6 py-5 space-y-6 pb-20">
+    <!-- بانر انضمام سريع لأي زائر / عضو جديد -->
+    <section id="self-register-card" class="bg-gradient-to-l from-indigo-50 via-white to-teal-50 dark:from-indigo-950/40 dark:via-slate-900 dark:to-teal-950/30 rounded-2xl p-4 sm:p-5 border border-indigo-200/80 dark:border-indigo-900/60 shadow-sm space-y-3">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h2 class="text-sm sm:text-base font-extrabold text-indigo-950 dark:text-indigo-200 flex items-center gap-2">
+            <span>🙋‍♂️</span>
+            <span>انضم الآن وأضف نفسك إلى الكنيسة</span>
+          </h2>
+          <p class="text-xs text-slate-600 dark:text-slate-400">يمكن لأي شخص تسجيل اسمه وخدمته مباشرة ليظهر في الحضور والاختبار اليومي ولوحة المتصدرين.</p>
         </div>
-        <div class="card">
-          <h2>الإعلانات</h2>
-          <div id="announcements-view"></div>
-        </div>
+        <span id="current-member-pill" class="hidden px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300"></span>
       </div>
 
-      <div class="card">
-        <h2>تواصل معنا / طلب صلاة</h2>
-        <form id="contact-form">
-          <label>الاسم</label>
-          <input type="text" id="c-name" required placeholder="اكتب اسمك" />
-          <label>وسيلة تواصل (اختياري)</label>
-          <input type="text" id="c-contact" placeholder="هاتف أو بريد" />
-          <label>النوع</label>
-          <select id="c-type">
-            <option value="طلب صلاة">طلب صلاة</option>
-            <option value="استفسار">استفسار</option>
-            <option value="مشاركة">مشاركة في خدمة</option>
-          </select>
-          <label>الرسالة</label>
-          <textarea id="c-msg" rows="3" required placeholder="اكتب رسالتك..."></textarea>
-          <button type="submit" class="btn">إرسال الرسالة</button>
-          <div class="status-msg" id="c-status"></div>
-        </form>
+      <form id="self-join-form" class="grid grid-cols-1 sm:grid-cols-4 gap-2.5">
+        <input id="self-name-input" type="text" required placeholder="اكتب اسمك الكامل..." class="sm:col-span-2 px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+        <input id="self-group-input" type="text" placeholder="الخدمة (مثال: الشباب)" class="px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+        <button type="submit" class="py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm shadow-sm transition">
+          أضف نفسي الآن (+10 نقاط)
+        </button>
+      </form>
+    </section>
+
+    <!-- بطاقات الإحصاء السريع -->
+    <section class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm">
+        <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold">إجمالي الأعضاء</p>
+        <p id="stat-total-members" class="text-2xl font-extrabold mt-1 text-indigo-600 dark:text-indigo-400">0</p>
+      </div>
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm">
+        <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold">الحضور اليوم</p>
+        <p id="stat-present-today" class="text-2xl font-extrabold mt-1 text-emerald-600 dark:text-emerald-400">0</p>
+      </div>
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm">
+        <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold">مجموع النقاط</p>
+        <p id="stat-total-points" class="text-2xl font-extrabold mt-1 text-amber-600 dark:text-amber-400">0</p>
+      </div>
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm">
+        <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold">الملفات والرسائل</p>
+        <p id="stat-files-msgs" class="text-2xl font-extrabold mt-1 text-teal-600 dark:text-teal-400">0 / 0</p>
       </div>
     </section>
 
-    <section id="page-attendance" class="page">
-      <div class="card">
-        <h2>إضافة عضو جديد</h2>
-        <form id="add-member-form" class="grid">
-          <div>
-            <label>اسم العضو</label>
-            <input type="text" id="m-name" required placeholder="الاسم الثلاثي" />
-          </div>
-          <div>
-            <label>الفئة / الخدمة</label>
-            <input type="text" id="m-group" placeholder="مثال: شباب / خدام" />
-          </div>
-          <div style="display:flex;align-items:flex-end;">
-            <button type="submit" class="btn btn-success" style="margin-bottom:0.75rem;">إضافة للقائمة</button>
-          </div>
-        </form>
-      </div>
+    <!-- 1. قسم الأعضاء والحضور والغياب -->
+    <section id="tab-members" class="tab-panel space-y-5">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <!-- إضافة عضو جديد -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm">
+          <h2 class="text-base font-extrabold mb-3 flex items-center gap-2">
+            <span>➕</span>
+            <span>إضافة عضو جديد</span>
+          </h2>
+          <form id="add-member-form" class="space-y-3">
+            <div>
+              <label class="block text-xs font-bold mb-1 text-slate-600 dark:text-slate-300">الاسم الكامل</label>
+              <input id="member-name-input" type="text" required placeholder="مثال: مينا عادل" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold mb-1 text-slate-600 dark:text-slate-300">الخدمة / المجموعة</label>
+              <input id="member-group-input" type="text" placeholder="مثال: خدمة الشباب" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold mb-1 text-slate-600 dark:text-slate-300">نقاط ابتدائية</label>
+              <input id="member-points-input" type="number" value="10" min="0" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            </div>
+            <button type="submit" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-sm transition">
+              حفظ العضو
+            </button>
+          </form>
+        </div>
 
-      <div class="card">
-        <h2>تسجيل الحضور والغياب</h2>
-        <label>تاريخ اليوم</label>
-        <input type="date" id="att-date" />
-        <div style="overflow-x:auto;">
-          <table>
-            <thead>
-              <tr>
-                <th>الاسم</th>
-                <th>الفئة</th>
-                <th>النقاط</th>
-                <th>حالة اليوم</th>
-                <th>تسجيل</th>
-              </tr>
-            </thead>
-            <tbody id="attendance-tbody"></tbody>
-          </table>
+        <!-- جدول متابعة الحضور والغياب -->
+        <div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h2 class="text-base font-extrabold">سجل الأعضاء والحضور اليومي</h2>
+              <p class="text-xs text-slate-500 dark:text-slate-400">تاريخ اليوم: <span id="today-date-label" class="font-bold"></span></p>
+            </div>
+            <div class="flex items-center gap-2">
+              <input id="member-search-input" type="search" placeholder="بحث بالاسم أو الخدمة..." class="px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full sm:w-56" />
+            </div>
+          </div>
+
+          <div id="members-list-container" class="space-y-2.5 max-h-[520px] overflow-y-auto pr-1"></div>
         </div>
       </div>
     </section>
 
-    <section id="page-quiz" class="page">
-      <div class="card">
-        <h2>الاختبار اليومي التفاعلي</h2>
-        <p class="muted">يتم توليد أسئلة جديدة عند الطلب أو التبديل، وتُضاف النقاط فوراً عند التسليم.</p>
-        <div class="grid" style="margin-top:0.75rem;">
-          <div>
-            <label>اختر اسمك</label>
-            <select id="quiz-member"></select>
+    <!-- 2. قسم الاختبار اليومي -->
+    <section id="tab-quiz" class="tab-panel hidden space-y-5">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <!-- بطاقة أداء الاختبار -->
+        <div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+            <div>
+              <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-teal-100 text-teal-800 dark:bg-teal-900/50 dark:text-teal-300 mb-1">تحدي اليوم</span>
+              <h2 class="text-lg font-extrabold">الاختبار اليومي الفوري</h2>
+            </div>
+            <div class="w-full sm:w-60">
+              <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-1">اختر العضو المشارك</label>
+              <select id="quiz-member-select" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500"></select>
+            </div>
           </div>
+
+          <div id="quiz-questions-container" class="space-y-4"></div>
+
+          <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+            <button id="btn-submit-quiz" type="button" class="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow transition">
+              تصحيح فوري وإضافة النقاط
+            </button>
+            <div id="quiz-result-box" class="hidden px-4 py-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-xs sm:text-sm font-bold text-indigo-900 dark:text-indigo-200"></div>
+          </div>
+        </div>
+
+        <!-- إضافة سؤال جديد للاختبار اليومي -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3 h-fit">
+          <h3 class="text-base font-extrabold flex items-center gap-2">
+            <span>✍️</span>
+            <span>إضافة سؤال جديد</span>
+          </h3>
+          <form id="add-quiz-question-form" class="space-y-3">
+            <div>
+              <label class="block text-xs font-bold mb-1 text-slate-600 dark:text-slate-300">نص السؤال</label>
+              <input id="quiz-q-text" type="text" required placeholder="اكتب السؤال هنا..." class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm" />
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <input id="quiz-opt-0" type="text" required placeholder="الخيار 1" class="px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs" />
+              <input id="quiz-opt-1" type="text" required placeholder="الخيار 2" class="px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs" />
+              <input id="quiz-opt-2" type="text" required placeholder="الخيار 3" class="px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs" />
+              <input id="quiz-opt-3" type="text" required placeholder="الخيار 4" class="px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs" />
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[11px] font-bold mb-1">الإجابة الصحيحة</label>
+                <select id="quiz-correct-idx" class="w-full px-2.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs">
+                  <option value="0">الخيار 1</option>
+                  <option value="1">الخيار 2</option>
+                  <option value="2">الخيار 3</option>
+                  <option value="3">الخيار 4</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold mb-1">نقاط المكافأة</label>
+                <input id="quiz-reward-pts" type="number" value="15" min="1" class="w-full px-2.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs" />
+              </div>
+            </div>
+            <button type="submit" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm transition">
+              إضافة السؤال للاختبار
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. قسم لوحة المتصدرين -->
+    <section id="tab-leaderboard" class="tab-panel hidden">
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
           <div>
-            <label>عدد الأسئلة</label>
-            <select id="quiz-count">
-              <option value="10">10 أسئلة</option>
-              <option value="25">25 سؤالاً</option>
-              <option value="50">50 سؤالاً</option>
-              <option value="100">100 سؤال</option>
+            <h2 class="text-lg font-extrabold">🏆 لوحة المتصدرين والنقاط</h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">يتم الترتيب تلقائيًا حسب مجموع النقاط. خصم النقاط متاح للمشرفين أو عبر صلاحية الإدارة.</p>
+          </div>
+          <span id="leaderboard-admin-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+            وضع العرض (فعل الإدارة لخصم النقاط)
+          </span>
+        </div>
+
+        <div id="leaderboard-list" class="space-y-2.5"></div>
+      </div>
+    </section>
+
+    <!-- 4. قسم الدردشة الجماعية -->
+    <section id="tab-chat" class="tab-panel hidden">
+      <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col h-[560px]">
+        <div class="px-5 py-3.5 border-b border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2 bg-slate-50/70 dark:bg-slate-800/40">
+          <div>
+            <h2 class="text-base font-extrabold">💬 الدردشة الجماعية للكنيسة</h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">شارك التحديثات وطلبات الصلاة والرسائل مع الأعضاء</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <select id="chat-sender-select" class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold">
+              <option value="خادم الخدمة">خادم الخدمة</option>
             </select>
-          </div>
-          <div style="display:flex;align-items:flex-end;gap:0.5rem;">
-            <button type="button" class="btn" id="btn-gen-quiz" style="margin-bottom:0.75rem;">توليد الأسئلة</button>
+            <button id="btn-clear-chat" type="button" class="px-3 py-1.5 rounded-xl text-xs font-bold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition">
+              مسح السجل
+            </button>
           </div>
         </div>
-      </div>
 
-      <div class="card">
-        <div id="quiz-questions-container"></div>
-        <button type="button" class="btn btn-success" id="btn-submit-quiz">تصحيح الاختبار وحفظ النقاط</button>
-        <div class="status-msg" id="quiz-result"></div>
-      </div>
-    </section>
+        <div id="chat-messages-container" class="flex-1 p-4 space-y-3 overflow-y-auto"></div>
 
-    <section id="page-leaderboard" class="page">
-      <div class="card">
-        <h2>لوحة الشرف والنقاط</h2>
-        <div style="overflow-x:auto;">
-          <table>
-            <thead>
-              <tr>
-                <th>الترتيب</th>
-                <th>الاسم</th>
-                <th>الفئة</th>
-                <th>النقاط</th>
-                <th>تحكم الإدارة</th>
-              </tr>
-            </thead>
-            <tbody id="leaderboard-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <section id="page-chat" class="page">
-      <div class="card">
-        <h2>دردشة الخدمة</h2>
-        <div class="chat-box" id="chat-box"></div>
-        <form id="chat-form">
-          <div class="grid">
-            <div>
-              <label>اسمك</label>
-              <input type="text" id="chat-sender" required placeholder="اكتب اسمك" />
-            </div>
-            <div>
-              <label>الرسالة</label>
-              <input type="text" id="chat-text" required placeholder="اكتب رسالة..." />
-            </div>
-          </div>
-          <button type="submit" class="btn">إرسال</button>
+        <form id="chat-form" class="p-3 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 flex items-center gap-2">
+          <input id="chat-message-input" type="text" required placeholder="اكتب رسالتك هنا..." class="flex-1 px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm transition shrink-0">
+            إرسال
+          </button>
         </form>
       </div>
     </section>
 
-    <section id="page-export" class="page">
-      <div class="card">
-        <h2>تصدير البيانات والنسخ الاحتياطي</h2>
-        <p class="muted">يمكنك تحميل ملف JSON كامل بكل البيانات أو ملف CSV للنقاط والحضور.</p>
-        <div class="row-actions" style="margin-top:1rem;">
-          <button type="button" class="btn" id="btn-export-json">تحميل نسخة JSON كاملة</button>
-          <button type="button" class="btn btn-accent" id="btn-export-csv">تحميل جدول الأعضاء (CSV)</button>
+    <!-- 5. قسم مدير الملفات -->
+    <section id="tab-files" class="tab-panel hidden space-y-5">
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div>
+            <h2 class="text-lg font-extrabold">📁 مدير الملفات والموارد</h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">رفع الملفات (حتى 1.5 ميجابايت للملف الواحد لتوافق التخزين السحابي والمحلي)، البحث، الفلترة، والحذف.</p>
+          </div>
+
+          <!-- رفع ملف -->
+          <label class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm cursor-pointer transition shrink-0">
+            <span>⬆️ رفع ملف جديد</span>
+            <input id="file-upload-input" type="file" multiple class="hidden" />
+          </label>
+        </div>
+
+        <!-- شريط البحث والفلترة -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+          <input id="file-search-input" type="search" placeholder="ابحث باسم الملف..." class="sm:col-span-2 px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          <select id="file-type-filter" class="px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-semibold">
+            <option value="all">جميع الأنواع</option>
+            <option value="image">الصور</option>
+            <option value="document">المستندات والـ PDF</option>
+            <option value="data">البيانات (JSON / CSV / TXT)</option>
+            <option value="other">ملفات أخرى</option>
+          </select>
+        </div>
+
+        <div id="files-list-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-2"></div>
+      </div>
+    </section>
+
+    <!-- 6. قسم التصدير والتقارير -->
+    <section id="tab-exports" class="tab-panel hidden">
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-5">
+        <div>
+          <h2 class="text-lg font-extrabold">📤 مركز التصدير والتقارير</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400">تصدير بيانات الأعضاء، الحضور، المتصدرين، والنسخة الاحتياطية الكاملة بصيغ JSON أو CSV.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 flex flex-col justify-between gap-3">
+            <div>
+              <h3 class="font-bold text-sm">تقرير الأعضاء والحضور (CSV)</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">متوافق مع Excel وجداول البيانات مع دعم العربية (UTF-8 BOM).</p>
+            </div>
+            <button id="btn-export-members-csv" type="button" class="w-full py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition">
+              تحميل CSV للأعضاء
+            </button>
+          </div>
+
+          <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 flex flex-col justify-between gap-3">
+            <div>
+              <h3 class="font-bold text-sm">لوحة المتصدرين (CSV)</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">قائمة مرتبة بالأعضاء والنقاط وعدد مرات الحضور.</p>
+            </div>
+            <button id="btn-export-leaderboard-csv" type="button" class="w-full py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs transition">
+              تحميل CSV للمتصدرين
+            </button>
+          </div>
+
+          <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 flex flex-col justify-between gap-3">
+            <div>
+              <h3 class="font-bold text-sm">نسخة احتياطية كاملة (JSON)</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">تشمل الأعضاء، الأسئلة، الدردشة، الملفات، وإعدادات المزامنة.</p>
+            </div>
+            <button id="btn-export-full-json" type="button" class="w-full py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs transition">
+              تحميل النسخة الكاملة JSON
+            </button>
+          </div>
+        </div>
+
+        <!-- معاينة JSON قابلة للنسخ -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="text-xs font-bold text-slate-600 dark:text-slate-300">معاينة ملخص البيانات الحالية</label>
+            <button id="btn-copy-summary" type="button" class="px-3 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-bold transition">
+              نسخ الملخص
+            </button>
+          </div>
+          <pre id="export-preview-box" dir="ltr" class="p-4 rounded-xl bg-slate-900 text-slate-100 text-xs overflow-x-auto max-h-60 font-mono"></pre>
         </div>
       </div>
     </section>
 
-    <section id="page-admin" class="page">
-      <div class="card" id="admin-login-card">
-        <h2>دخول الإدارة</h2>
-        <p class="muted">أدخل رمز المرور الإداري للوصول إلى إعدادات الكنيسة، الخدمات، الإعلانات، والربط السحابي.</p>
-        <label>رمز المرور</label>
-        <input type="password" id="admin-pass-input" placeholder="أدخل رمز المرور" />
-        <button type="button" class="btn" id="btn-admin-login">دخول</button>
-        <div class="status-msg" id="admin-login-status"></div>
+    <!-- 7. قسم الإدارة والمزامنة السحابية (GitHub REST API) -->
+    <section id="tab-admin" class="tab-panel hidden space-y-5">
+      <!-- شاشة قفل بوابة الإدارة -->
+      <div id="admin-lock-card" class="max-w-md mx-auto bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4 text-center">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-2xl">
+          🔐
+        </div>
+        <div>
+          <h2 class="text-lg font-extrabold">بوابة الإدارة المحمية</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">أدخل رمز المرور الإداري للوصول إلى إعدادات المزامنة السحابية وتغيير الرمز وحذف الأعضاء.</p>
+        </div>
+        <form id="admin-login-form" class="space-y-3 text-right">
+          <div>
+            <label class="block text-xs font-bold mb-1">رمز المرور الإداري</label>
+            <input id="admin-passcode-input" type="password" required placeholder="أدخل رمز المرور..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            <p class="text-[11px] text-slate-400 mt-1">الرمز الافتراضي الأولي: <span class="font-mono font-bold">admin123</span> (يمكن تغييره فور الدخول)</p>
+          </div>
+          <button type="submit" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm transition">
+            فتح بوابة الإدارة
+          </button>
+        </form>
       </div>
 
-      <div id="admin-panel" class="hidden">
-        <div class="card">
-          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;">
-            <h2>لوحة تحكم الإدارة</h2>
-            <button type="button" class="btn btn-danger btn-sm" id="btn-admin-logout">خروج</button>
+      <!-- لوحة الإدارة بعد تسجيل الدخول -->
+      <div id="admin-unlocked-panel" class="hidden space-y-5">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-emerald-200 dark:border-emerald-900/60 flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-2.5">
+            <span class="px-2.5 py-1 rounded-lg bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 text-xs font-extrabold">وضع المشرف مفعل</span>
+            <span class="text-xs text-slate-500 dark:text-slate-400">يمكنك الآن خصم النقاط، حذف الأعضاء، تغيير رمز المرور، والمزامنة مع GitHub.</span>
           </div>
+          <button id="btn-admin-logout" type="button" class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-bold transition">
+            قفل البوابة
+          </button>
         </div>
 
-        <div class="grid-2">
-          <div class="card">
-            <h3>بيانات الكنيسة الرئيسية</h3>
-            <label>اسم الكنيسة</label>
-            <input type="text" id="adm-brand" />
-            <label>عنوان الترحيب</label>
-            <input type="text" id="adm-hero-title" />
-            <label>وصف الترحيب</label>
-            <textarea id="adm-hero-sub" rows="2"></textarea>
-            <label>نبذة عن الكنيسة</label>
-            <textarea id="adm-about" rows="3"></textarea>
-            <button type="button" class="btn btn-success" id="btn-save-info">حفظ البيانات</button>
-            <div class="status-msg" id="adm-info-status"></div>
-          </div>
-
-          <div class="card">
-            <h3>تغيير رمز المرور الإداري</h3>
-            <label>رمز المرور الجديد</label>
-            <input type="password" id="adm-new-pass" placeholder="4 أحرف أو أرقام على الأقل" />
-            <button type="button" class="btn" id="btn-change-pass">تحديث الرمز</button>
-            <div class="status-msg" id="adm-pass-status"></div>
-
-            <hr style="margin:1.25rem 0;border:0;border-top:1px solid var(--border);" />
-
-            <h3>إعدادات المزامنة السحابية (GitHub)</h3>
-            <label>اسم المستخدم أو المنظمة (Owner)</label>
-            <input type="text" id="gh-owner" placeholder="username" />
-            <label>اسم المستودع (Repo)</label>
-            <input type="text" id="gh-repo" placeholder="church-site" />
-            <label>الفرع (Branch)</label>
-            <input type="text" id="gh-branch" placeholder="main" />
-            <label>مسار ملف البيانات داخل المستودع</label>
-            <input type="text" id="gh-path" placeholder="data/church-data.json" />
-            <label>Personal Access Token</label>
-            <input type="password" id="gh-token" placeholder="github_pat_..." />
-            <div class="row-actions">
-              <button type="button" class="btn btn-accent" id="btn-save-gh">حفظ إعدادات GitHub</button>
-              <button type="button" class="btn" id="btn-clear-token">مسح Token من المتصفح</button>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <!-- إعدادات المزامنة عبر GitHub REST API -->
+          <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="text-base font-extrabold">☁️ المزامنة السحابية (GitHub REST API)</h3>
+              <span class="text-[11px] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 font-semibold">اختياري</span>
             </div>
-            <div class="status-msg" id="adm-gh-status"></div>
-          </div>
-        </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              اربط التطبيق بملف JSON داخل مستودع GitHub لحفظ البيانات سحابيًا ومشاركتها عبر الأجهزة أو GitHub Pages. في حال عدم الربط، يعمل التطبيق تلقائيًا عبر <code class="font-mono">localStorage</code>.
+            </p>
 
-        <div class="grid-2">
-          <div class="card">
-            <h3>إدارة مواعيد الخدمات</h3>
-            <label>اسم الخدمة</label>
-            <input type="text" id="srv-title" placeholder="مثال: القداس الإلهي" />
-            <label>الموعد</label>
-            <input type="text" id="srv-time" placeholder="مثال: الأحد 8:00 ص" />
-            <label>ملاحظة</label>
-            <input type="text" id="srv-note" placeholder="مثال: للجميع" />
-            <button type="button" class="btn btn-success" id="btn-add-srv">إضافة خدمة</button>
-            <div id="adm-services-list" style="margin-top:1rem;"></div>
+            <form id="github-config-form" class="space-y-3 text-left" dir="ltr">
+              <div>
+                <label class="block text-xs font-bold mb-1 text-right" dir="rtl">Personal Access Token (صلاحية Contents: Read & Write)</label>
+                <input id="gh-token" type="password" placeholder="ghp_xxxxxxxxxxxx" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-mono" />
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div>
+                  <label class="block text-xs font-bold mb-1">Owner (اسم المستخدم أو المنظمة)</label>
+                  <input id="gh-owner" type="text" placeholder="username" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-mono" />
+                </div>
+                <div>
+                  <label class="block text-xs font-bold mb-1">Repository (اسم المستودع)</label>
+                  <input id="gh-repo" type="text" placeholder="church-site-data" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-mono" />
+                </div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div>
+                  <label class="block text-xs font-bold mb-1">Branch (الفرع)</label>
+                  <input id="gh-branch" type="text" placeholder="main" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-mono" />
+                </div>
+                <div>
+                  <label class="block text-xs font-bold mb-1">File Path (مسار ملف البيانات)</label>
+                  <input id="gh-path" type="text" placeholder="data/church-state.json" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-mono" />
+                </div>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-2 pt-2" dir="rtl">
+                <button type="submit" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs transition">
+                  حفظ إعدادات GitHub
+                </button>
+                <button id="btn-gh-pull" type="button" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 font-bold text-xs transition">
+                  سحب من GitHub
+                </button>
+                <button id="btn-gh-push" type="button" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition">
+                  رفع إلى GitHub الآن
+                </button>
+              </div>
+            </form>
           </div>
 
-          <div class="card">
-            <h3>إدارة الإعلانات</h3>
-            <label>عنوان الإعلان</label>
-            <input type="text" id="ann-title" />
-            <label>التاريخ / الفترة</label>
-            <input type="text" id="ann-date" />
-            <label>التفاصيل</label>
-            <textarea id="ann-body" rows="2"></textarea>
-            <button type="button" class="btn btn-success" id="btn-add-ann">إضافة إعلان</button>
-            <div id="adm-announcements-list" style="margin-top:1rem;"></div>
-          </div>
-        </div>
+          <!-- تغيير رمز المرور الإداري وإدارة البيانات -->
+          <div class="space-y-5">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+              <h3 class="text-base font-extrabold">🔑 تغيير رمز المرور الإداري</h3>
+              <form id="change-passcode-form" class="space-y-3">
+                <div>
+                  <label class="block text-xs font-bold mb-1">الرمز الإداري الجديد</label>
+                  <input id="new-passcode-input" type="password" required minlength="4" placeholder="أدخل رمزًا جديدًا (4 أحرف على الأقل)" class="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm" />
+                </div>
+                <div>
+                  <label class="block text-xs font-bold mb-1">تأكيد الرمز الجديد</label>
+                  <input id="confirm-passcode-input" type="password" required minlength="4" placeholder="أعد إدخال الرمز الجديد" class="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm" />
+                </div>
+                <button type="submit" class="w-full py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs sm:text-sm transition">
+                  تحديث رمز المرور
+                </button>
+              </form>
+            </div>
 
-        <div class="card">
-          <h3>رسائل التواصل وطلبات الصلاة الواردة</h3>
-          <div id="messages-list"></div>
+            <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-rose-200/80 dark:border-rose-900/50 shadow-sm space-y-3">
+              <h3 class="text-base font-extrabold text-rose-600 dark:text-rose-400">⚠️ استعادة البيانات الافتراضية</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400">إعادة تعيين البيانات المحلية إلى القيم الافتراضية الأولية في حال رغبت ببدء تجربة جديدة.</p>
+              <button id="btn-reset-demo-data" type="button" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs transition">
+                إعادة ضبط البيانات الافتراضية
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
   <script>
-    const STORAGE_KEY = "church_github_app_v1";
-    const SESSION_ADMIN_KEY = "church_admin_auth_v1";
+    /**
+     * =========================================================================
+     * منصة الكنيسة - تطبيق متكامل بملف واحد (HTML + Tailwind + Vanilla JS)
+     * يدعم التخزين المحلي (localStorage) والمزامنة الاختيارية عبر GitHub REST API.
+     * =========================================================================
+     */
 
-    const DEFAULT_STATE = {
-      adminPassHash: null,
-      info: {
-        brand: "موقع الكنيسة",
-        heroTitle: "أهلاً بكم في كنيستنا",
-        heroSubtitle: "منصة متكاملة للخدمات، الحضور، المسابقات اليومية، لوحة النقاط، والتواصل.",
-        about: "نرحب بكم في بيت الرب. نعمل معاً على البناء الروحي، خدمة الأسرة، رعاية الشباب والأطفال، والمشاركة الفعالة."
-      },
-      services: [
-        { id: "s1", title: "القداس الإلهي", time: "الأحد — 8:00 ص", note: "بحضور الجميع" },
-        { id: "s2", title: "مدارس الأحد", time: "الجمعة — 10:00 ص", note: "لكافة المراحل" },
-        { id: "s3", title: "اجتماع الشباب", time: "الثلاثاء — 7:00 م", note: "دراسة وتسبحة" }
-      ],
-      announcements: [
-        { id: "a1", title: "لقاء الخدمة الشهري", date: "قريباً", body: "يرجى التأكيد مع مسؤول الخدمة قبل الموعد." }
-      ],
-      members: [
-        { id: "m1", name: "مينا عادل", group: "شباب", points: 20 },
-        { id: "m2", name: "مريم سامي", group: "خدام", points: 35 }
-      ],
-      attendance: {},
-      messages: [],
-      chat: [
-        { id: "ch1", sender: "الإدارة", text: "أهلاً بكم في دردشة الخدمة.", time: "الآن" }
-      ],
-      github: {
-        owner: "",
-        repo: "",
-        branch: "main",
-        path: "data/church-data.json",
-        token: ""
-      }
-    };
+    const STORAGE_KEY = 'CHURCH_PLATFORM_STATE_V1';
+    const ADMIN_AUTH_SESSION_KEY = 'CHURCH_ADMIN_UNLOCKED_V1';
+    const CURRENT_MEMBER_SESSION_KEY = 'CHURCH_CURRENT_MEMBER_ID_V1';
 
-    const QUESTION_BANK = [
-      { q: "كم عدد أسفار العهد القديم في الكتاب المقدس التقليدي؟", opts: ["39 سفراً", "27 سفراً", "46 سفراً", "12 سفراً"], ans: 0 },
-      { q: "ما هو أول سفر في الكتاب المقدس؟", opts: ["الخروج", "التكوين", "اللاويين", "العدد"], ans: 1 },
-      { q: "في أي مدينة وُلد السيد المسيح؟", opts: ["الناصرة", "أورشليم", "بيت لحم", "أريحا"], ans: 2 },
-      { q: "من هو التلميذ الذي أنكر المسيح ثلاث مرات قبل صياح الديك؟", opts: ["يوحنا", "بطرس", "يعقوب", "توما"], ans: 1 },
-      { q: "كم يوماً صام موسى على الجبل قبل استلام الوصايا؟", opts: ["7 أيام", "21 يوماً", "40 يوماً", "30 يوماً"], ans: 2 },
-      { q: "ما اسم النهر الذي اعتمد فيه السيد المسيح؟", opts: ["النيل", "الأردن", "الفرات", "دجلة"], ans: 1 },
-      { q: "من هو النبي الذي ابتلعه الحوت؟", opts: ["إيليا", "إشعياء", "يونان", "حزقيال"], ans: 2 },
-      { q: "كم عدد تلاميذ المسيح الاثني عشر؟", opts: ["10", "12", "7", "70"], ans: 1 },
-      { q: "ما هي أول معجزة صنعها المسيح بحسب إنجيل يوحنا؟", opts: ["إشباع الجموع", "تحويل الماء إلى خمر", "إقامة لعازر", "المشي على الماء"], ans: 1 },
-      { q: "من كتب سفر الرؤيا؟", opts: ["بولس", "بطرس", "يوحنا", "لوقا"], ans: 2 }
-    ];
-
-    let state = loadState();
-    let currentQuiz = [];
-
-    async function hashText(text) {
-      const enc = new TextEncoder().encode(text);
-      const buf = await crypto.subtle.digest("SHA-256", enc);
-      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
-    }
-
-    function loadState() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return structuredClone(DEFAULT_STATE);
-        const parsed = JSON.parse(raw);
-        return {
-          ...structuredClone(DEFAULT_STATE),
-          ...parsed,
-          info: { ...DEFAULT_STATE.info, ...(parsed.info || {}) },
-          github: { ...DEFAULT_STATE.github, ...(parsed.github || {}) }
-        };
-      } catch {
-        return structuredClone(DEFAULT_STATE);
-      }
-    }
-
-    function saveState() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      renderAll();
-    }
-
-    function setSyncStatus(msg) {
-      document.getElementById("sync-status").textContent = "الحالة: " + msg;
-    }
-
-    function switchPage(pageName) {
-      document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-      const target = document.getElementById("page-" + pageName);
-      if (target) target.classList.add("active");
-      const btn = document.querySelector(`.tab-btn[data-page="${pageName}"]`);
-      if (btn) btn.classList.add("active");
-      if (pageName === "admin") syncAdminPanelVisibility();
-    }
-
-    document.querySelectorAll(".tab-btn").forEach(btn => {
-      btn.addEventListener("click", () => switchPage(btn.dataset.page));
-    });
-
-    function todayStr() {
-      return new Date().toISOString().slice(0, 10);
-    }
-
-    function renderHome() {
-      document.getElementById("church-brand").textContent = state.info.brand;
-      document.title = state.info.brand;
-      document.getElementById("hero-title").textContent = state.info.heroTitle;
-      document.getElementById("hero-subtitle").textContent = state.info.heroSubtitle;
-      document.getElementById("about-text").textContent = state.info.about;
-
-      const srvBox = document.getElementById("services-view");
-      srvBox.innerHTML = state.services.length
-        ? state.services.map(s => `<div class="msg"><strong>${escapeHtml(s.title)}</strong> — <span class="muted">${escapeHtml(s.time)}</span><div class="muted">${escapeHtml(s.note || "")}</div></div>`).join("")
-        : `<p class="muted">لا توجد خدمات مضافة حالياً.</p>`;
-
-      const annBox = document.getElementById("announcements-view");
-      annBox.innerHTML = state.announcements.length
-        ? state.announcements.map(a => `<div class="msg"><strong>${escapeHtml(a.title)}</strong> <span class="muted">(${escapeHtml(a.date || "")})</span><p>${escapeHtml(a.body)}</p></div>`).join("")
-        : `<p class="muted">لا توجد إعلانات حالياً.</p>`;
-    }
-
-    function renderAttendance() {
-      const dateInput = document.getElementById("att-date");
-      if (!dateInput.value) dateInput.value = todayStr();
-      const dayKey = dateInput.value;
-      const dayRec = state.attendance[dayKey] || {};
-      const tbody = document.getElementById("attendance-tbody");
-
-      tbody.innerHTML = state.members.map(m => {
-        const status = dayRec[m.id];
-        const badge = status === "present"
-          ? `<span class="badge badge-present">حاضر</span>`
-          : status === "absent"
-            ? `<span class="badge badge-absent">غائب</span>`
-            : `<span class="muted">لم يُسجل</span>`;
-        return `
-          <tr>
-            <td>${escapeHtml(m.name)}</td>
-            <td class="muted">${escapeHtml(m.group || "-")}</td>
-            <td><strong>${m.points}</strong></td>
-            <td>${badge}</td>
-            <td>
-              <button class="btn btn-success btn-sm" onclick="markAttendance('${m.id}', 'present')">حاضر (+5)</button>
-              <button class="btn btn-danger btn-sm" onclick="markAttendance('${m.id}', 'absent')">غائب</button>
-            </td>
-          </tr>
-        `;
-      }).join("");
-    }
-
-    function markAttendance(memberId, status) {
-      const dayKey = document.getElementById("att-date").value || todayStr();
-      if (!state.attendance[dayKey]) state.attendance[dayKey] = {};
-      const prev = state.attendance[dayKey][memberId];
-      const member = state.members.find(m => m.id === memberId);
-      if (!member) return;
-
-      if (prev !== "present" && status === "present") {
-        member.points += 5;
-      } else if (prev === "present" && status !== "present") {
-        member.points = Math.max(0, member.points - 5);
-      }
-
-      state.attendance[dayKey][memberId] = status;
-      saveState();
-    }
-
-    document.getElementById("add-member-form").addEventListener("submit", e => {
-      e.preventDefault();
-      const name = document.getElementById("m-name").value.trim();
-      const group = document.getElementById("m-group").value.trim();
-      if (!name) return;
-      state.members.push({
-        id: "m_" + Date.now(),
-        name,
-        group,
-        points: 0
-      });
-      e.target.reset();
-      saveState();
-    });
-
-    document.getElementById("att-date").addEventListener("change", renderAttendance);
-
-    function renderQuizMembers() {
-      const sel = document.getElementById("quiz-member");
-      const currentVal = sel.value;
-      sel.innerHTML = state.members.map(m => `<option value="${m.id}">${escapeHtml(m.name)} (${m.points} نقطة)</option>`).join("");
-      if (currentVal) sel.value = currentVal;
-    }
-
-    function generateQuestions(count) {
-      const list = [];
-      for (let i = 0; i < count; i++) {
-        const base = QUESTION_BANK[i % QUESTION_BANK.length];
-        list.push({
-          index: i + 1,
-          q: `س${i + 1}: ${base.q}`,
-          opts: base.opts,
-          ans: base.ans
-        });
-      }
-      currentQuiz = list;
-      const box = document.getElementById("quiz-questions-container");
-      box.innerHTML = list.map((item, idx) => `
-        <div class="quiz-q">
-          <div><strong>${escapeHtml(item.q)}</strong></div>
-          ${item.opts.map((opt, oIdx) => `
-            <label class="opt-label">
-              <input type="radio" name="q_${idx}" value="${oIdx}" />
-              <span>${escapeHtml(opt)}</span>
-            </label>
-          `).join("")}
-        </div>
-      `).join("");
-      document.getElementById("quiz-result").textContent = "";
-    }
-
-    document.getElementById("btn-gen-quiz").addEventListener("click", () => {
-      const count = parseInt(document.getElementById("quiz-count").value, 10) || 10;
-      generateQuestions(count);
-    });
-
-    document.getElementById("btn-submit-quiz").addEventListener("click", () => {
-      if (!currentQuiz.length) {
-        generateQuestions(parseInt(document.getElementById("quiz-count").value, 10) || 10);
-      }
-      let correct = 0;
-      currentQuiz.forEach((item, idx) => {
-        const chosen = document.querySelector(`input[name="q_${idx}"]:checked`);
-        if (chosen && parseInt(chosen.value, 10) === item.ans) correct++;
-      });
-      const memberId = document.getElementById("quiz-member").value;
-      const member = state.members.find(m => m.id === memberId);
-      const earned = correct * 2;
-      if (member) member.points += earned;
-      saveState();
-      document.getElementById("quiz-result").textContent =
-        `النتيجة: ${correct} من ${currentQuiz.length} — تم إضافة ${earned} نقطة إلى ${member ? member.name : "العضو"}.`;
-    });
-
-    function renderLeaderboard() {
-      const sorted = [...state.members].sort((a, b) => b.points - a.points);
-      const isAdmin = isAdminLoggedIn();
-      const tbody = document.getElementById("leaderboard-tbody");
-      tbody.innerHTML = sorted.map((m, i) => `
-        <tr>
-          <td><strong>#${i + 1}</strong></td>
-          <td>${escapeHtml(m.name)}</td>
-          <td class="muted">${escapeHtml(m.group || "-")}</td>
-          <td><strong>${m.points}</strong></td>
-          <td>
-            ${isAdmin
-              ? `<button class="btn btn-success btn-sm" onclick="adjustPoints('${m.id}', 5)">+5</button>
-                 <button class="btn btn-danger btn-sm" onclick="adjustPoints('${m.id}', -5)">-5</button>`
-              : `<span class="muted">للإدارة فقط</span>`}
-          </td>
-        </tr>
-      `).join("");
-    }
-
-    function adjustPoints(memberId, delta) {
-      if (!isAdminLoggedIn()) return;
-      const m = state.members.find(x => x.id === memberId);
-      if (!m) return;
-      m.points = Math.max(0, m.points + delta);
-      saveState();
-    }
-
-    function renderChat() {
-      const box = document.getElementById("chat-box");
-      box.innerHTML = state.chat.map(c => `
-        <div class="msg">
-          <div class="msg-meta">
-            <strong>${escapeHtml(c.sender)}</strong>
-            <span>${escapeHtml(c.time)}</span>
-          </div>
-          <div>${escapeHtml(c.text)}</div>
-        </div>
-      `).join("");
-      box.scrollTop = box.scrollHeight;
-    }
-
-    document.getElementById("chat-form").addEventListener("submit", e => {
-      e.preventDefault();
-      const sender = document.getElementById("chat-sender").value.trim();
-      const text = document.getElementById("chat-text").value.trim();
-      if (!sender || !text) return;
-      state.chat.push({
-        id: "ch_" + Date.now(),
-        sender,
-        text,
-        time: new Date().toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit" })
-      });
-      document.getElementById("chat-text").value = "";
-      saveState();
-    });
-
-    document.getElementById("contact-form").addEventListener("submit", e => {
-      e.preventDefault();
-      state.messages.unshift({
-        id: "msg_" + Date.now(),
-        name: document.getElementById("c-name").value.trim(),
-        contact: document.getElementById("c-contact").value.trim(),
-        type: document.getElementById("c-type").value,
-        message: document.getElementById("c-msg").value.trim(),
-        date: new Date().toLocaleString("ar-EG")
-      });
-      e.target.reset();
-      document.getElementById("c-status").textContent = "تم إرسال رسالتك وحفظها بنجاح.";
-      saveState();
-    });
-
-    function downloadFile(filename, content, mime) {
-      const blob = new Blob([content], { type: mime });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = filename;
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-
-    document.getElementById("btn-export-json").addEventListener("click", () => {
-      const safeCopy = structuredClone(state);
-      safeCopy.github.token = "";
-      downloadFile("church-backup.json", JSON.stringify(safeCopy, null, 2), "application/json");
-    });
-
-    document.getElementById("btn-export-csv").addEventListener("click", () => {
-      const rows = ["الاسم,الفئة,النقاط", ...state.members.map(m => `"${m.name}","${m.group || ""}",${m.points}`)];
-      downloadFile("members-points.csv", "\uFEFF" + rows.join("\n"), "text/csv;charset=utf-8;");
-    });
-
-    function isAdminLoggedIn() {
-      return sessionStorage.getItem(SESSION_ADMIN_KEY) === "1";
-    }
-
-    function syncAdminPanelVisibility() {
-      const logged = isAdminLoggedIn();
-      document.getElementById("admin-login-card").classList.toggle("hidden", logged);
-      document.getElementById("admin-panel").classList.toggle("hidden", !logged);
-      if (logged) fillAdminForms();
-    }
-
-    document.getElementById("btn-admin-login").addEventListener("click", async () => {
-      const pass = document.getElementById("admin-pass-input").value;
-      const status = document.getElementById("admin-login-status");
-      if (!pass) {
-        status.textContent = "يرجى إدخال رمز المرور.";
-        return;
-      }
-      const h = await hashText(pass);
-      if (!state.adminPassHash) {
-        state.adminPassHash = h;
-        saveState();
-        sessionStorage.setItem(SESSION_ADMIN_KEY, "1");
-        document.getElementById("admin-pass-input").value = "";
-        syncAdminPanelVisibility();
-        return;
-      }
-      if (h === state.adminPassHash) {
-        sessionStorage.setItem(SESSION_ADMIN_KEY, "1");
-        document.getElementById("admin-pass-input").value = "";
-        status.textContent = "";
-        syncAdminPanelVisibility();
-      } else {
-        status.textContent = "رمز المرور غير صحيح.";
-      }
-    });
-
-    document.getElementById("btn-admin-logout").addEventListener("click", () => {
-      sessionStorage.removeItem(SESSION_ADMIN_KEY);
-      syncAdminPanelVisibility();
-    });
-
-    function fillAdminForms() {
-      document.getElementById("adm-brand").value = state.info.brand;
-      document.getElementById("adm-hero-title").value = state.info.heroTitle;
-      document.getElementById("adm-hero-sub").value = state.info.heroSubtitle;
-      document.getElementById("adm-about").value = state.info.about;
-
-      document.getElementById("gh-owner").value = state.github.owner || "";
-      document.getElementById("gh-repo").value = state.github.repo || "";
-      document.getElementById("gh-branch").value = state.github.branch || "main";
-      document.getElementById("gh-path").value = state.github.path || "data/church-data.json";
-      document.getElementById("gh-token").value = state.github.token || "";
-
-      renderAdminLists();
-    }
-
-    document.getElementById("btn-save-info").addEventListener("click", () => {
-      state.info.brand = document.getElementById("adm-brand").value.trim() || "موقع الكنيسة";
-      state.info.heroTitle = document.getElementById("adm-hero-title").value.trim();
-      state.info.heroSubtitle = document.getElementById("adm-hero-sub").value.trim();
-      state.info.about = document.getElementById("adm-about").value.trim();
-      saveState();
-      document.getElementById("adm-info-status").textContent = "تم حفظ بيانات الكنيسة.";
-    });
-
-    document.getElementById("btn-change-pass").addEventListener("click", async () => {
-      const np = document.getElementById("adm-new-pass").value;
-      const st = document.getElementById("adm-pass-status");
-      if (np.length < 4) {
-        st.textContent = "اختر رمزاً مكوناً من 4 أحرف أو أرقام على الأقل.";
-        return;
-      }
-      state.adminPassHash = await hashText(np);
-      document.getElementById("adm-new-pass").value = "";
-      saveState();
-      st.textContent = "تم تحديث رمز المرور بنجاح.";
-    });
-
-    document.getElementById("btn-save-gh").addEventListener("click", () => {
-      state.github = {
-        owner: document.getElementById("gh-owner").value.trim(),
-        repo: document.getElementById("gh-repo").value.trim(),
-        branch: document.getElementById("gh-branch").value.trim() || "main",
-        path: document.getElementById("gh-path").value.trim() || "data/church-data.json",
-        token: document.getElementById("gh-token").value.trim()
-      };
-      saveState();
-      document.getElementById("adm-gh-status").textContent = "تم حفظ إعدادات GitHub.";
-    });
-
-    document.getElementById("btn-clear-token").addEventListener("click", () => {
-      state.github.token = "";
-      document.getElementById("gh-token").value = "";
-      saveState();
-      document.getElementById("adm-gh-status").textContent = "تم مسح Token من المتصفح.";
-    });
-
-    document.getElementById("btn-add-srv").addEventListener("click", () => {
-      const title = document.getElementById("srv-title").value.trim();
-      const time = document.getElementById("srv-time").value.trim();
-      const note = document.getElementById("srv-note").value.trim();
-      if (!title || !time) return;
-      state.services.push({ id: "s_" + Date.now(), title, time, note });
-      document.getElementById("srv-title").value = "";
-      document.getElementById("srv-time").value = "";
-      document.getElementById("srv-note").value = "";
-      saveState();
-      renderAdminLists();
-    });
-
-    document.getElementById("btn-add-ann").addEventListener("click", () => {
-      const title = document.getElementById("ann-title").value.trim();
-      const date = document.getElementById("ann-date").value.trim();
-      const body = document.getElementById("ann-body").value.trim();
-      if (!title || !body) return;
-      state.announcements.unshift({ id: "a_" + Date.now(), title, date, body });
-      document.getElementById("ann-title").value = "";
-      document.getElementById("ann-date").value = "";
-      document.getElementById("ann-body").value = "";
-      saveState();
-      renderAdminLists();
-    });
-
-    function deleteService(id) {
-      state.services = state.services.filter(s => s.id !== id);
-      saveState();
-      renderAdminLists();
-    }
-
-    function deleteAnnouncement(id) {
-      state.announcements = state.announcements.filter(a => a.id !== id);
-      saveState();
-      renderAdminLists();
-    }
-
-    function renderAdminLists() {
-      document.getElementById("adm-services-list").innerHTML = state.services.map(s => `
-        <div class="msg">
-          <strong>${escapeHtml(s.title)}</strong> — ${escapeHtml(s.time)}
-          <div class="row-actions"><button class="btn btn-danger btn-sm" onclick="deleteService('${s.id}')">حذف</button></div>
-        </div>
-      `).join("");
-
-      document.getElementById("adm-announcements-list").innerHTML = state.announcements.map(a => `
-        <div class="msg">
-          <strong>${escapeHtml(a.title)}</strong>
-          <div class="row-actions"><button class="btn btn-danger btn-sm" onclick="deleteAnnouncement('${a.id}')">حذف</button></div>
-        </div>
-      `).join("");
-
-      document.getElementById("messages-list").innerHTML = state.messages.length
-        ? state.messages.map(m => `
-            <div class="msg">
-              <div class="msg-meta"><strong>${escapeHtml(m.name)} (${escapeHtml(m.type)})</strong><span>${escapeHtml(m.date)}</span></div>
-              <p>${escapeHtml(m.message)}</p>
-              <span class="muted">${escapeHtml(m.contact || "")}</span>
-            </div>
-          `).join("")
-        : `<p class="muted">لا توجد رسائل واردة.</p>`;
-    }
-
-    function ghEndpoint() {
-      const { owner, repo, path, branch } = state.github;
-      const cleanPath = path.replace(/^\/+/, "");
-      const refQuery = branch ? `?ref=${encodeURIComponent(branch)}` : "";
-      return `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${cleanPath}${refQuery}`;
-    }
-
+    // ترميز وفك ترميز Base64 لدعم النصوص العربية في GitHub Contents API
     function utf8ToBase64(str) {
       const bytes = new TextEncoder().encode(str);
-      let bin = "";
-      for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+      let bin = '';
+      for (let i = 0; i < bytes.length; i++) {
+        bin += String.fromCharCode(bytes[i]);
+      }
       return btoa(bin);
     }
 
     function base64ToUtf8(b64) {
-      const bin = atob(b64.replace(/\n/g, ""));
+      const clean = b64.replace(/\n/g, '');
+      const bin = atob(clean);
       const bytes = new Uint8Array(bin.length);
-      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      for (let i = 0; i < bin.length; i++) {
+        bytes[i] = bin.charCodeAt(i);
+      }
       return new TextDecoder().decode(bytes);
     }
 
-    async function autoPullIfConfigured() {
-      const { owner, repo, path } = state.github;
-      if (!owner || !repo || !path) return;
-      try {
-        const headers = { Accept: "application/vnd.github+json" };
-        if (state.github.token) headers.Authorization = `Bearer ${state.github.token}`;
-        const res = await fetch(ghEndpoint(), { headers });
-        if (!res.ok) return;
-        const data = await res.json();
-        if (!data.content) return;
-        const cloudState = JSON.parse(base64ToUtf8(data.content));
-        state = {
-          ...structuredClone(DEFAULT_STATE),
-          ...cloudState,
-          info: { ...DEFAULT_STATE.info, ...(cloudState.info || {}) },
-          github: { ...state.github }
-        };
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        renderAll();
-        setSyncStatus("تمت المزامنة تلقائياً من GitHub");
-      } catch {
-        // يظل على البيانات المحلية دون تعطيل الواجهة
-      }
+    function getTodayKey() {
+      const now = new Date();
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+      return `${yyyy}-${mm}-${dd}`;
     }
 
-    document.getElementById("btn-pull-cloud").addEventListener("click", async () => {
-      const { owner, repo, token } = state.github;
-      if (!owner || !repo) {
-        setSyncStatus("أدخل بيانات GitHub في صفحة الإدارة أولاً");
-        return;
-      }
-      try {
-        setSyncStatus("جاري السحب من GitHub...");
-        const headers = { Accept: "application/vnd.github+json" };
-        if (token) headers.Authorization = `Bearer ${token}`;
-        const res = await fetch(ghEndpoint(), { headers });
-        if (!res.ok) throw new Error("تعذر قراءة الملف من المستودع");
-        const data = await res.json();
-        const cloudState = JSON.parse(base64ToUtf8(data.content));
-        state = {
-          ...structuredClone(DEFAULT_STATE),
-          ...cloudState,
-          info: { ...DEFAULT_STATE.info, ...(cloudState.info || {}) },
-          github: { ...state.github }
-        };
-        saveState();
-        setSyncStatus("تم السحب والمزامنة بنجاح");
-      } catch (err) {
-        setSyncStatus("فشل السحب: " + err.message);
-      }
-    });
+    function formatTimeNow() {
+      return new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+    }
 
-    document.getElementById("btn-push-cloud").addEventListener("click", async () => {
-      const { owner, repo, token, branch } = state.github;
-      if (!owner || !repo || !token) {
-        setSyncStatus("يلزم إدخال Owner و Repo و Token في الإدارة للرفع");
-        return;
-      }
-      try {
-        setSyncStatus("جاري الرفع إلى GitHub...");
-        const url = ghEndpoint();
-        const headers = {
-          Accept: "application/vnd.github+json",
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json"
-        };
-        let sha;
-        const getRes = await fetch(url, { headers });
-        if (getRes.ok) {
-          const existing = await getRes.json();
-          sha = existing.sha;
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+
+      const palette = {
+        info: 'bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900',
+        success: 'bg-emerald-600 text-white',
+        error: 'bg-rose-600 text-white',
+        warning: 'bg-amber-600 text-white'
+      };
+
+      const toast = document.createElement('div');
+      toast.className = `pointer-events-auto px-4 py-3 rounded-2xl shadow-lg text-xs sm:text-sm font-bold flex items-center justify-between gap-3 transition-all duration-300 ${palette[type] || palette.info}`;
+      toast.innerHTML = `<span>${escapeHtml(message)}</span>`;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(8px)';
+        setTimeout(() => toast.remove(), 250);
+      }, 3200);
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function createDefaultState() {
+      const today = getTodayKey();
+      return {
+        // رمز المرور الإداري المخفي والقابل للتغيير من قبل المستخدم
+        adminPasscode: 'admin123',
+        theme: 'light',
+        members: [
+          {
+            id: 'm-1',
+            name: 'مينا عادل',
+            group: 'خدمة الشباب',
+            points: 85,
+            attendance: { [today]: 'present' }
+          },
+          {
+            id: 'm-2',
+            name: 'مريم سامي',
+            group: 'مدارس الأحد',
+            points: 110,
+            attendance: { [today]: 'present' }
+          },
+          {
+            id: 'm-3',
+            name: 'كيرلس هاني',
+            group: 'خدمة الكورال',
+            points: 65,
+            attendance: { [today]: 'absent' }
+          },
+          {
+            id: 'm-4',
+            name: 'مارينا جورج',
+            group: 'خدمة الشباب',
+            points: 95,
+            attendance: {}
+          }
+        ],
+        quizQuestions: [
+          {
+            id: 'q-1',
+            question: 'ما هو أول سفر في الكتاب المقدس؟',
+            options: ['التكوين', 'الخروج', 'اللاويين', 'العدد'],
+            correctIndex: 0,
+            points: 15
+          },
+          {
+            id: 'q-2',
+            question: 'في أي مدينة وُلد السيد المسيح؟',
+            options: ['الناصرة', 'بيت لحم', 'أورشليم', 'أريحا'],
+            correctIndex: 1,
+            points: 15
+          },
+          {
+            id: 'q-3',
+            question: 'كم عدد أيام صوم موسى على الجبل قبل تسلّم الوصايا؟',
+            options: ['7 أيام', '21 يوماً', '40 يوماً', '30 يوماً'],
+            correctIndex: 2,
+            points: 20
+          }
+        ],
+        // تتبع محاولات الاختبار اليومي لكل عضو لمنع التكرار العشوائي غير المقصود أو السماح بالتحديث
+        quizSubmissions: {},
+        messages: [
+          {
+            id: 'msg-1',
+            sender: 'خادم الخدمة',
+            text: 'أهلًا بكم في منصة الكنيسة! يمكن لأي شخص إضافة نفسه وتسجيل الحضور وخوض الاختبار اليومي.',
+            time: formatTimeNow()
+          },
+          {
+            id: 'msg-2',
+            sender: 'مريم سامي',
+            text: 'تم حل الاختبار اليومي بنجاح، الرب يبارك خدمتكم!',
+            time: formatTimeNow()
+          }
+        ],
+        files: [],
+        github: {
+          token: '',
+          owner: '',
+          repo: '',
+          branch: 'main',
+          path: 'church-state.json',
+          lastSha: ''
         }
-        const payloadToSave = structuredClone(state);
-        payloadToSave.github.token = "";
-        const body = {
-          message: "Sync church site data",
-          content: utf8ToBase64(JSON.stringify(payloadToSave, null, 2)),
-          ...(branch ? { branch } : {}),
-          ...(sha ? { sha } : {})
-        };
-        const putRes = await fetch(url, { method: "PUT", headers, body: JSON.stringify(body) });
-        if (!putRes.ok) throw new Error("تعذر حفظ الملف على GitHub");
-        setSyncStatus("تم الرفع إلى GitHub بنجاح");
-      } catch (err) {
-        setSyncStatus("فشل الرفع: " + err.message);
-      }
-    });
-
-    function escapeHtml(str) {
-      return String(str || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
+      };
     }
 
-    function renderAll() {
-      renderHome();
-      renderAttendance();
-      renderQuizMembers();
+    let state = loadState();
+    let isAdminUnlocked = sessionStorage.getItem(ADMIN_AUTH_SESSION_KEY) === 'true';
+    let currentMemberId = sessionStorage.getItem(CURRENT_MEMBER_SESSION_KEY) || '';
+    let activeTab = 'members';
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return createDefaultState();
+        const parsed = JSON.parse(raw);
+        const defaults = createDefaultState();
+        return {
+          ...defaults,
+          ...parsed,
+          github: { ...defaults.github, ...(parsed.github || {}) }
+        };
+      } catch (err) {
+        console.error('خطأ أثناء قراءة الحالة المحلية:', err);
+        return createDefaultState();
+      }
+    }
+
+    function saveStateLocally() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (err) {
+        console.error('خطأ أثناء حفظ الحالة محليًا:', err);
+        showToast('تعذر الحفظ المحلي (قد تكون مساحة التخزين ممتلئة)', 'error');
+      }
+    }
+
+    // إضافة عضو لنفسه (متاح لأي مستخدم دون الحاجة لصلاحية الإدارة)
+    function registerSelf(rawName, rawGroup) {
+      const name = (rawName || '').trim();
+      if (!name) return;
+
+      const group = (rawGroup || '').trim() || 'عام';
+      const existing = state.members.find((m) => (m.name || '').trim() === name);
+
+      if (existing) {
+        currentMemberId = existing.id;
+        sessionStorage.setItem(CURRENT_MEMBER_SESSION_KEY, existing.id);
+        document.getElementById('quiz-member-select').value = existing.id;
+        renderSelfBadge();
+        showToast(`مرحبًا بعودتك يا ${existing.name}! تم تحديد حسابك تلقائيًا`, 'info');
+        return;
+      }
+
+      const newMember = {
+        id: `m-${Date.now()}`,
+        name,
+        group,
+        points: 10,
+        attendance: {}
+      };
+
+      state.members.push(newMember);
+      currentMemberId = newMember.id;
+      sessionStorage.setItem(CURRENT_MEMBER_SESSION_KEY, newMember.id);
+
+      saveStateLocally();
+      renderStats();
+      renderMembers();
+      renderQuiz();
       renderLeaderboard();
       renderChat();
-      if (isAdminLoggedIn()) renderAdminLists();
+      renderExportPreview();
+      renderSelfBadge();
+
+      const quizSelect = document.getElementById('quiz-member-select');
+      if (quizSelect) quizSelect.value = newMember.id;
+
+      showToast(`أهلًا بك يا ${name}! تمت إضافتك بنجاح (+10 نقاط ترحيب)`, 'success');
     }
 
-    renderAll();
-    generateQuestions(10);
-    autoPullIfConfigured();
+    function renderSelfBadge() {
+      const pill = document.getElementById('current-member-pill');
+      if (!pill) return;
+      const found = state.members.find((m) => m.id === currentMemberId);
+      if (found) {
+        pill.classList.remove('hidden');
+        pill.textContent = `أنت مسجل كـ: ${found.name} (${Number(found.points) || 0} نقطة)`;
+      } else {
+        pill.classList.add('hidden');
+        pill.textContent = '';
+      }
+    }
+
+    // تطبيق المظهر (فاتح / داكن)
+    function applyTheme() {
+      const root = document.documentElement;
+      const icon = document.getElementById('theme-icon');
+      if (state.theme === 'dark') {
+        root.classList.add('dark');
+        if (icon) icon.textContent = '☀️';
+      } else {
+        root.classList.remove('dark');
+        if (icon) icon.textContent = '🌙';
+      }
+    }
+
+    // تحديث شارة حالة التخزين / المزامنة
+    function updateSyncBadge(text, statusColor = 'bg-emerald-500') {
+      const badge = document.getElementById('sync-status-badge');
+      if (!badge) return;
+      const hasGh = Boolean(state.github?.token && state.github?.owner && state.github?.repo);
+      const label = text || (hasGh ? 'متصل بـ GitHub (مع نسخ محلي)' : 'وضع التخزين المحلي (جاهز)');
+      badge.innerHTML = `<span class="w-2 h-2 rounded-full ${statusColor} inline-block"></span><span>${escapeHtml(label)}</span>`;
+    }
+
+    // =========================================================================
+    // التنقل بين التبويبات
+    // =========================================================================
+    function switchTab(tabName) {
+      activeTab = tabName;
+
+      document.querySelectorAll('.tab-btn').forEach((btn) => {
+        const isCurrent = btn.dataset.tab === tabName;
+        if (isCurrent) {
+          btn.className = 'tab-btn whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-indigo-600 text-white shadow-sm';
+        } else {
+          btn.className = 'tab-btn whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800';
+        }
+      });
+
+      document.querySelectorAll('.tab-panel').forEach((panel) => {
+        panel.classList.toggle('hidden', panel.id !== `tab-${tabName}`);
+      });
+
+      if (tabName === 'exports') {
+        renderExportPreview();
+      } else if (tabName === 'admin') {
+        renderAdminSection();
+      }
+    }
+
+    // =========================================================================
+    // تحديث الإحصاءات والواجهات
+    // =========================================================================
+    function renderAll() {
+      applyTheme();
+      updateSyncBadge();
+      renderSelfBadge();
+      renderStats();
+      renderMembers();
+      renderQuiz();
+      renderLeaderboard();
+      renderChat();
+      renderFiles();
+      renderExportPreview();
+      renderAdminSection();
+    }
+
+    function renderStats() {
+      const today = getTodayKey();
+      const totalMembers = state.members.length;
+      const presentToday = state.members.filter((m) => m.attendance && m.attendance[today] === 'present').length;
+      const totalPoints = state.members.reduce((sum, m) => sum + (Number(m.points) || 0), 0);
+      const filesCount = state.files.length;
+      const msgsCount = state.messages.length;
+
+      document.getElementById('stat-total-members').textContent = totalMembers;
+      document.getElementById('stat-present-today').textContent = presentToday;
+      document.getElementById('stat-total-points').textContent = totalPoints;
+      document.getElementById('stat-files-msgs').textContent = `${filesCount} / ${msgsCount}`;
+      document.getElementById('today-date-label').textContent = today;
+    }
+
+    // =========================================================================
+    // 1. إدارة الأعضاء والحضور والغياب
+    // =========================================================================
+    function renderMembers() {
+      const container = document.getElementById('members-list-container');
+      const query = (document.getElementById('member-search-input')?.value || '').trim().toLowerCase();
+      const today = getTodayKey();
+
+      const filtered = state.members.filter((m) => {
+        if (!query) return true;
+        return (
+          (m.name || '').toLowerCase().includes(query) ||
+          (m.group || '').toLowerCase().includes(query)
+        );
+      });
+
+      if (!filtered.length) {
+        container.innerHTML = `<div class="p-8 text-center text-sm text-slate-400 border border-dashed border-slate-200 dark:border-slate-800 rounded-2xl">لا يوجد أعضاء مطابقون للبحث.</div>`;
+        return;
+      }
+
+      container.innerHTML = filtered
+        .map((member) => {
+          const status = member.attendance?.[today] || 'none';
+          const presentBadge =
+            status === 'present'
+              ? 'bg-emerald-600 text-white'
+              : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40';
+          const absentBadge =
+            status === 'absent'
+              ? 'bg-rose-600 text-white'
+              : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-rose-50 dark:hover:bg-rose-950/40';
+
+          const isSelf = member.id === currentMemberId;
+          const selfTag = isSelf
+            ? `<span class="px-2 py-0.5 rounded-lg text-[10px] font-extrabold bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">حسابك</span>`
+            : '';
+
+          const deleteBtnHtml = isAdminUnlocked
+            ? `<button type="button" onclick="deleteMember('${member.id}')" class="px-2.5 py-1.5 rounded-xl text-xs font-bold bg-rose-50 text-rose-600 hover:bg-rose-100 dark:bg-rose-950/50 dark:text-rose-300 transition" title="حذف العضو">حذف</button>`
+            : '';
+
+          return `
+            <div class="p-3.5 rounded-2xl border ${isSelf ? 'border-emerald-400/80 dark:border-emerald-700' : 'border-slate-200/80 dark:border-slate-800'} bg-slate-50/50 dark:bg-slate-800/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="font-extrabold text-sm truncate">${escapeHtml(member.name)}</span>
+                  ${selfTag}
+                  <span class="px-2 py-0.5 rounded-lg text-[11px] font-semibold bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300">${escapeHtml(member.group || 'عام')}</span>
+                  <span class="px-2 py-0.5 rounded-lg text-[11px] font-bold bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300">${Number(member.points) || 0} نقطة</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-1.5 shrink-0">
+                <button type="button" onclick="setAttendance('${member.id}', 'present')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition ${presentBadge}">
+                  ✓ حاضر
+                </button>
+                <button type="button" onclick="setAttendance('${member.id}', 'absent')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition ${absentBadge}">
+                  ✕ غائب
+                </button>
+                ${deleteBtnHtml}
+              </div>
+            </div>
+          `;
+        })
+        .join('');
+    }
+
+    function setAttendance(memberId, status) {
+      const member = state.members.find((m) => m.id === memberId);
+      if (!member) return;
+      const today = getTodayKey();
+      if (!member.attendance) member.attendance = {};
+
+      // إذا ضغط على نفس الحالة الحالية يمكن إلغاؤها أو إبقاؤها
+      member.attendance[today] = member.attendance[today] === status ? 'none' : status;
+
+      // مكافأة حضور بسيطة (+5 نقاط) عند تسجيل الحضور لأول مرة اليوم
+      if (member.attendance[today] === 'present' && !member._presentRewardedToday) {
+        member.points = (Number(member.points) || 0) + 5;
+        member._presentRewardedToday = today;
+        showToast(`تم تسجيل حضور ${member.name} (+5 نقاط)`, 'success');
+      } else {
+        showToast(`تم تحديث حالة ${member.name}`, 'info');
+      }
+
+      saveStateLocally();
+      renderStats();
+      renderMembers();
+      renderLeaderboard();
+      renderSelfBadge();
+      renderExportPreview();
+    }
+
+    function deleteMember(memberId) {
+      if (!isAdminUnlocked) {
+        showToast('يلزم فتح بوابة الإدارة لحذف الأعضاء', 'warning');
+        return;
+      }
+      if (currentMemberId === memberId) {
+        currentMemberId = '';
+        sessionStorage.removeItem(CURRENT_MEMBER_SESSION_KEY);
+      }
+      state.members = state.members.filter((m) => m.id !== memberId);
+      saveStateLocally();
+      renderAll();
+      showToast('تم حذف العضو بنجاح', 'success');
+    }
+
+    // =========================================================================
+    // 2. الاختبار اليومي والتصحيح الفوري
+    // =========================================================================
+    function renderQuiz() {
+      const select = document.getElementById('quiz-member-select');
+      const preferredId = currentMemberId || select.value;
+
+      if (!state.members.length) {
+        select.innerHTML = `<option value="">أضف عضوًا أولًا</option>`;
+      } else {
+        select.innerHTML = state.members
+          .map((m) => `<option value="${escapeHtml(m.id)}">${escapeHtml(m.name)} (${Number(m.points) || 0} نقطة)</option>`)
+          .join('');
+        if (preferredId && state.members.some((m) => m.id === preferredId)) {
+          select.value = preferredId;
+        }
+      }
+
+      const container = document.getElementById('quiz-questions-container');
+      if (!state.quizQuestions.length) {
+        container.innerHTML = `<p class="text-sm text-slate-400 py-4">لا توجد أسئلة متاحة حاليًا. أضف سؤالًا من النموذج الجانبي.</p>`;
+        return;
+      }
+
+      container.innerHTML = state.quizQuestions
+        .map((q, qIdx) => {
+          const optionsHtml = q.options
+            .map(
+              (opt, oIdx) => `
+              <label class="flex items-center gap-2.5 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/60 cursor-pointer text-xs sm:text-sm transition">
+                <input type="radio" name="quiz-q-${escapeHtml(q.id)}" value="${oIdx}" class="text-indigo-600 focus:ring-indigo-500" />
+                <span>${escapeHtml(opt)}</span>
+              </label>
+            `
+            )
+            .join('');
+
+          return `
+            <div class="p-4 rounded-2xl bg-slate-50/70 dark:bg-slate-800/35 border border-slate-200/80 dark:border-slate-800 space-y-2.5">
+              <div class="flex items-start justify-between gap-2">
+                <p class="font-bold text-sm"><span class="text-indigo-600 dark:text-indigo-400">س${qIdx + 1}:</span> ${escapeHtml(q.question)}</p>
+                <span class="px-2 py-0.5 rounded-lg text-[11px] font-bold bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300 shrink-0">+${Number(q.points) || 10} نقاط</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">${optionsHtml}</div>
+            </div>
+          `;
+        })
+        .join('');
+    }
+
+    function submitQuiz() {
+      const memberId = document.getElementById('quiz-member-select').value;
+      if (!memberId) {
+        showToast('يرجى اختيار عضو أو إضافة نفسك أولًا', 'warning');
+        return;
+      }
+
+      const member = state.members.find((m) => m.id === memberId);
+      if (!member) return;
+
+      const today = getTodayKey();
+      const submissionKey = `${memberId}_${today}`;
+      if (state.quizSubmissions[submissionKey]) {
+        showToast(`لقد قام ${member.name} بحل اختبار اليوم مسبقًا`, 'warning');
+      }
+
+      let earnedPoints = 0;
+      let correctCount = 0;
+
+      state.quizQuestions.forEach((q) => {
+        const checked = document.querySelector(`input[name="quiz-q-${q.id}"]:checked`);
+        if (checked && Number(checked.value) === Number(q.correctIndex)) {
+          correctCount += 1;
+          earnedPoints += Number(q.points) || 10;
+        }
+      });
+
+      member.points = (Number(member.points) || 0) + earnedPoints;
+      state.quizSubmissions[submissionKey] = {
+        date: today,
+        correctCount,
+        totalQuestions: state.quizQuestions.length,
+        earnedPoints
+      };
+
+      saveStateLocally();
+      renderStats();
+      renderMembers();
+      renderLeaderboard();
+      renderQuiz();
+      renderSelfBadge();
+      renderExportPreview();
+
+      const resultBox = document.getElementById('quiz-result-box');
+      resultBox.classList.remove('hidden');
+      resultBox.textContent = `نتيجة ${member.name}: ${correctCount} من ${state.quizQuestions.length} إجابات صحيحة — تم منح +${earnedPoints} نقطة!`;
+      showToast(`تم تصحيح اختبار ${member.name} وإضافة ${earnedPoints} نقطة`, 'success');
+    }
+
+    // =========================================================================
+    // 3. لوحة المتصدرين وخصم النقاط الإداري
+    // =========================================================================
+    function renderLeaderboard() {
+      const container = document.getElementById('leaderboard-list');
+      const badge = document.getElementById('leaderboard-admin-badge');
+
+      if (badge) {
+        badge.textContent = isAdminUnlocked
+          ? 'صلاحية المشرف مفعلة: يمكنك خصم النقاط'
+          : 'وضع العرض (افتح بوابة الإدارة لخصم النقاط)';
+      }
+
+      const sorted = [...state.members].sort((a, b) => (Number(b.points) || 0) - (Number(a.points) || 0));
+
+      if (!sorted.length) {
+        container.innerHTML = `<p class="text-center text-sm text-slate-400 py-6">لا يوجد أعضاء في لوحة المتصدرين.</p>`;
+        return;
+      }
+
+      container.innerHTML = sorted
+        .map((m, index) => {
+          const rankIcon = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `#${index + 1}`;
+          const presentCount = Object.values(m.attendance || {}).filter((v) => v === 'present').length;
+
+          const deductControls = isAdminUnlocked
+            ? `
+              <div class="flex items-center gap-1.5">
+                <button type="button" onclick="deductPoints('${m.id}', 5)" class="px-2.5 py-1.5 rounded-xl text-xs font-bold bg-rose-100 hover:bg-rose-200 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300 transition">-5</button>
+                <button type="button" onclick="deductPoints('${m.id}', 10)" class="px-2.5 py-1.5 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white transition">-10</button>
+              </div>
+            `
+            : '';
+
+          return `
+            <div class="p-3.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 flex items-center justify-between gap-3 bg-slate-50/50 dark:bg-slate-800/30">
+              <div class="flex items-center gap-3 min-w-0">
+                <span class="w-9 h-9 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center font-extrabold text-sm shrink-0">${rankIcon}</span>
+                <div class="truncate">
+                  <p class="font-extrabold text-sm truncate">${escapeHtml(m.name)}</p>
+                  <p class="text-[11px] text-slate-500 dark:text-slate-400">${escapeHtml(m.group || 'عام')} • أيام الحضور: ${presentCount}</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 shrink-0">
+                <span class="px-3 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-extrabold text-sm">${Number(m.points) || 0} نقطة</span>
+                ${deductControls}
+              </div>
+            </div>
+          `;
+        })
+        .join('');
+    }
+
+    function deductPoints(memberId, amount) {
+      if (!isAdminUnlocked) {
+        showToast('يرجى فتح بوابة الإدارة أولًا لخصم النقاط', 'warning');
+        return;
+      }
+      const member = state.members.find((m) => m.id === memberId);
+      if (!member) return;
+      const current = Number(member.points) || 0;
+      member.points = Math.max(0, current - Number(amount));
+      saveStateLocally();
+      renderStats();
+      renderMembers();
+      renderLeaderboard();
+      renderSelfBadge();
+      renderExportPreview();
+      showToast(`تم خصم ${amount} نقاط من ${member.name}`, 'info');
+    }
+
+    // =========================================================================
+    // 4. الدردشة الجماعية
+    // =========================================================================
+    function renderChat() {
+      const senderSelect = document.getElementById('chat-sender-select');
+      const currentMemberObj = state.members.find((m) => m.id === currentMemberId);
+      const prevSender = currentMemberObj?.name || senderSelect.value;
+      const options = ['خادم الخدمة', ...state.members.map((m) => m.name)];
+      senderSelect.innerHTML = options.map((name) => `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`).join('');
+      if (options.includes(prevSender)) {
+        senderSelect.value = prevSender;
+      }
+
+      const container = document.getElementById('chat-messages-container');
+      if (!state.messages.length) {
+        container.innerHTML = `<div class="h-full flex items-center justify-center text-sm text-slate-400">لا توجد رسائل بعد. ابدأ المحادثة الآن!</div>`;
+        return;
+      }
+
+      container.innerHTML = state.messages
+        .map((msg) => {
+          const isAdminMsg = msg.sender === 'خادم الخدمة';
+          return `
+            <div class="p-3.5 rounded-2xl max-w-xl ${
+              isAdminMsg
+                ? 'bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-100 dark:border-indigo-900 mr-auto'
+                : 'bg-slate-100 dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700 ml-auto'
+            }">
+              <div class="flex items-center justify-between gap-4 mb-1">
+                <span class="text-xs font-extrabold text-indigo-700 dark:text-indigo-300">${escapeHtml(msg.sender)}</span>
+                <span class="text-[10px] text-slate-400">${escapeHtml(msg.time)}</span>
+              </div>
+              <p class="text-sm leading-relaxed break-words">${escapeHtml(msg.text)}</p>
+            </div>
+          `;
+        })
+        .join('');
+
+      container.scrollTop = container.scrollHeight;
+    }
+
+    // =========================================================================
+    // 5. مدير الملفات (رفع، عرض، بحث، فلترة، حذف)
+    // =========================================================================
+    function classifyFile(mime = '', name = '') {
+      const lowerMime = mime.toLowerCase();
+      const lowerName = name.toLowerCase();
+      if (lowerMime.startsWith('image/') || /\.(png|jpe?g|gif|webp|svg)$/i.test(lowerName)) {
+        return 'image';
+      }
+      if (
+        lowerMime.includes('pdf') ||
+        lowerMime.includes('document') ||
+        lowerMime.includes('word') ||
+        /\.(pdf|doc|docx|ppt|pptx|xls|xlsx)$/i.test(lowerName)
+      ) {
+        return 'document';
+      }
+      if (lowerMime.includes('json') || lowerMime.includes('csv') || lowerMime.startsWith('text/') || /\.(json|csv|txt|md)$/i.test(lowerName)) {
+        return 'data';
+      }
+      return 'other';
+    }
+
+    function formatFileSize(bytes = 0) {
+      if (bytes < 1024) return `${bytes} B`;
+      if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+      return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+    }
+
+    function handleFileUpload(event) {
+      const files = Array.from(event.target.files || []);
+      if (!files.length) return;
+
+      const MAX_BYTES = 1.5 * 1024 * 1024; // 1.5 MB حد عملي للحفظ المحلي والسحابي
+
+      files.forEach((file) => {
+        if (file.size > MAX_BYTES) {
+          showToast(`الملف "${file.name}" يتجاوز الحد المسموح (1.5 MB)`, 'error');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          const newFile = {
+            id: `f-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+            name: file.name,
+            size: file.size,
+            type: file.type || 'application/octet-stream',
+            category: classifyFile(file.type, file.name),
+            uploadedAt: getTodayKey(),
+            dataUrl: reader.result
+          };
+          state.files.unshift(newFile);
+          saveStateLocally();
+          renderStats();
+          renderFiles();
+          renderExportPreview();
+          showToast(`تم رفع الملف "${file.name}"`, 'success');
+        };
+        reader.readAsDataURL(file);
+      });
+
+      event.target.value = '';
+    }
+
+    function renderFiles() {
+      const container = document.getElementById('files-list-container');
+      const search = (document.getElementById('file-search-input')?.value || '').trim().toLowerCase();
+      const filterType = document.getElementById('file-type-filter')?.value || 'all';
+
+      const filtered = state.files.filter((f) => {
+        const matchesName = !search || (f.name || '').toLowerCase().includes(search);
+        const matchesType = filterType === 'all' || f.category === filterType;
+        return matchesName && matchesType;
+      });
+
+      if (!filtered.length) {
+        container.innerHTML = `<div class="sm:col-span-2 lg:col-span-3 p-8 text-center text-sm text-slate-400 border border-dashed border-slate-200 dark:border-slate-800 rounded-2xl">لا توجد ملفات مطابقة للبحث أو الفلترة.</div>`;
+        return;
+      }
+
+      const categoryLabels = {
+        image: '🖼️ صورة',
+        document: '📄 مستند',
+        data: '📊 بيانات',
+        other: '📎 ملف'
+      };
+
+      container.innerHTML = filtered
+        .map(
+          (f) => `
+          <div class="p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/30 flex flex-col justify-between gap-3">
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between gap-2">
+                <span class="px-2 py-0.5 rounded-lg text-[11px] font-bold bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300">${categoryLabels[f.category] || '📎 ملف'}</span>
+                <span class="text-[11px] text-slate-400">${formatFileSize(f.size)}</span>
+              </div>
+              <p class="font-bold text-sm truncate" title="${escapeHtml(f.name)}">${escapeHtml(f.name)}</p>
+              <p class="text-[11px] text-slate-400">تاريخ الرفع: ${escapeHtml(f.uploadedAt)}</p>
+            </div>
+            <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-200/60 dark:border-slate-700/60">
+              <a href="${escapeHtml(f.dataUrl)}" download="${escapeHtml(f.name)}" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline">
+                تنزيل
+              </a>
+              <button type="button" onclick="deleteFile('${f.id}')" class="text-xs font-bold text-rose-600 hover:text-rose-700">
+                حذف
+              </button>
+            </div>
+          </div>
+        `
+        )
+        .join('');
+    }
+
+    function deleteFile(fileId) {
+      state.files = state.files.filter((f) => f.id !== fileId);
+      saveStateLocally();
+      renderStats();
+      renderFiles();
+      renderExportPreview();
+      showToast('تم حذف الملف', 'info');
+    }
+
+    // =========================================================================
+    // 6. التصدير والتقارير (CSV / JSON)
+    // =========================================================================
+    function downloadTextFile(filename, content, mimeType = 'text/plain;charset=utf-8') {
+      const blob = new Blob([content], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function exportMembersCsv() {
+      const today = getTodayKey();
+      const BOM = '\uFEFF';
+      const rows = [['الاسم', 'الخدمة', 'النقاط', `حالة اليوم (${today})`]];
+      state.members.forEach((m) => {
+        const st = m.attendance?.[today] === 'present' ? 'حاضر' : m.attendance?.[today] === 'absent' ? 'غائب' : 'غير مسجل';
+        rows.push([m.name, m.group || 'عام', Number(m.points) || 0, st]);
+      });
+      const csv = BOM + rows.map((r) => r.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n');
+      downloadTextFile(`church-members-attendance-${today}.csv`, csv, 'text/csv;charset=utf-8;');
+      showToast('تم تصدير تقرير الأعضاء CSV', 'success');
+    }
+
+    function exportLeaderboardCsv() {
+      const BOM = '\uFEFF';
+      const sorted = [...state.members].sort((a, b) => (Number(b.points) || 0) - (Number(a.points) || 0));
+      const rows = [['الترتيب', 'الاسم', 'الخدمة', 'النقاط']];
+      sorted.forEach((m, idx) => {
+        rows.push([idx + 1, m.name, m.group || 'عام', Number(m.points) || 0]);
+      });
+      const csv = BOM + rows.map((r) => r.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n');
+      downloadTextFile(`church-leaderboard-${getTodayKey()}.csv`, csv, 'text/csv;charset=utf-8;');
+      showToast('تم تصدير لوحة المتصدرين CSV', 'success');
+    }
+
+    function exportFullJson() {
+      // استبعاد التوكن السري من التصدير العام للأمان
+      const safeExport = {
+        exportedAt: new Date().toISOString(),
+        members: state.members,
+        quizQuestions: state.quizQuestions,
+        quizSubmissions: state.quizSubmissions,
+        messages: state.messages,
+        files: state.files
+      };
+      downloadTextFile(`church-backup-${getTodayKey()}.json`, JSON.stringify(safeExport, null, 2), 'application/json;charset=utf-8');
+      showToast('تم تحميل النسخة الاحتياطية JSON', 'success');
+    }
+
+    function renderExportPreview() {
+      const box = document.getElementById('export-preview-box');
+      if (!box) return;
+      const summary = {
+        date: getTodayKey(),
+        membersCount: state.members.length,
+        topMember: [...state.members].sort((a, b) => (b.points || 0) - (a.points || 0))[0]?.name || null,
+        quizQuestionsCount: state.quizQuestions.length,
+        messagesCount: state.messages.length,
+        filesCount: state.files.length
+      };
+      box.textContent = JSON.stringify(summary, null, 2);
+    }
+
+    // =========================================================================
+    // 7. بوابة الإدارة، رمز المرور القابل للتغيير، ومزامنة GitHub REST API
+    // =========================================================================
+    function renderAdminSection() {
+      const lockCard = document.getElementById('admin-lock-card');
+      const unlockedPanel = document.getElementById('admin-unlocked-panel');
+      const adminLabel = document.getElementById('admin-status-label');
+
+      if (isAdminUnlocked) {
+        lockCard?.classList.add('hidden');
+        unlockedPanel?.classList.remove('hidden');
+        if (adminLabel) adminLabel.textContent = 'الإدارة (مفتوح)';
+      } else {
+        lockCard?.classList.remove('hidden');
+        unlockedPanel?.classList.add('hidden');
+        if (adminLabel) adminLabel.textContent = 'بوابة الإدارة';
+      }
+
+      // تعبئة حقول إعدادات GitHub
+      document.getElementById('gh-token').value = state.github.token || '';
+      document.getElementById('gh-owner').value = state.github.owner || '';
+      document.getElementById('gh-repo').value = state.github.repo || '';
+      document.getElementById('gh-branch').value = state.github.branch || 'main';
+      document.getElementById('gh-path').value = state.github.path || 'church-state.json';
+
+      // إعادة رسم القوائم التي تعرض أزرار الإدارة
+      renderMembers();
+      renderLeaderboard();
+    }
+
+    function unlockAdmin(passcode) {
+      if (passcode === state.adminPasscode) {
+        isAdminUnlocked = true;
+        sessionStorage.setItem(ADMIN_AUTH_SESSION_KEY, 'true');
+        renderAdminSection();
+        showToast('تم فتح بوابة الإدارة بنجاح', 'success');
+      } else {
+        showToast('رمز المرور الإداري غير صحيح', 'error');
+      }
+    }
+
+    function lockAdmin() {
+      isAdminUnlocked = false;
+      sessionStorage.removeItem(ADMIN_AUTH_SESSION_KEY);
+      document.getElementById('admin-passcode-input').value = '';
+      renderAdminSection();
+      showToast('تم قفل بوابة الإدارة', 'info');
+    }
+
+    // سحب البيانات من ملف JSON على GitHub عبر Contents API
+    async function pullFromGitHub() {
+      const { token, owner, repo, branch, path } = state.github;
+      if (!token || !owner || !repo || !path) {
+        showToast('يرجى إكمال إعدادات GitHub أولًا', 'warning');
+        return;
+      }
+
+      updateSyncBadge('جاري السحب من GitHub...', 'bg-amber-500');
+      try {
+        const url = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${encodeURIComponent(path)}?ref=${encodeURIComponent(branch || 'main')}`;
+        const res = await fetch(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/vnd.github+json'
+          }
+        });
+
+        if (res.status === 404) {
+          updateSyncBadge('الملف غير موجود بعد على GitHub', 'bg-amber-500');
+          showToast('الملف غير موجود بعد؛ يمكنك رفعه بالضغط على "رفع إلى GitHub الآن"', 'info');
+          return;
+        }
+
+        if (!res.ok) {
+          throw new Error(`فشل الطلب (${res.status})`);
+        }
+
+        const data = await res.json();
+        const decoded = JSON.parse(base64ToUtf8(data.content || ''));
+        const preservedGithub = { ...state.github, lastSha: data.sha || '' };
+
+        state = {
+          ...createDefaultState(),
+          ...decoded,
+          github: preservedGithub
+        };
+        saveStateLocally();
+        renderAll();
+        updateSyncBadge('تمت المزامنة من GitHub', 'bg-emerald-500');
+        showToast('تم سحب البيانات وتحديث التطبيق بنجاح', 'success');
+      } catch (err) {
+        console.error(err);
+        updateSyncBadge('خطأ في المزامنة مع GitHub', 'bg-rose-500');
+        showToast(`تعذر السحب من GitHub: ${err.message}`, 'error');
+      }
+    }
+
+    // رفع الحالة الحالية إلى GitHub عبر Contents API
+    async function pushToGitHub() {
+      const { token, owner, repo, branch, path } = state.github;
+      if (!token || !owner || !repo || !path) {
+        showToast('يرجى إكمال إعدادات GitHub أولًا', 'warning');
+        return;
+      }
+
+      updateSyncBadge('جاري الرفع إلى GitHub...', 'bg-amber-500');
+      try {
+        const apiUrl = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${encodeURIComponent(path)}`;
+
+        // التحقق من وجود الملف مسبقًا للحصول على أحدث SHA
+        let sha = state.github.lastSha || '';
+        const checkRes = await fetch(`${apiUrl}?ref=${encodeURIComponent(branch || 'main')}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/vnd.github+json'
+          }
+        });
+        if (checkRes.ok) {
+          const checkJson = await checkRes.json();
+          sha = checkJson.sha || sha;
+        }
+
+        // عدم تضمين التوكن داخل ملف البيانات المرفوع في المستودع
+        const payloadState = {
+          ...state,
+          github: {
+            token: '',
+            owner: state.github.owner,
+            repo: state.github.repo,
+            branch: state.github.branch,
+            path: state.github.path,
+            lastSha: ''
+          }
+        };
+
+        const body = {
+          message: `Update church state (${getTodayKey()})`,
+          content: utf8ToBase64(JSON.stringify(payloadState, null, 2)),
+          branch: branch || 'main'
+        };
+        if (sha) body.sha = sha;
+
+        const putRes = await fetch(apiUrl, {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/vnd.github+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        });
+
+        if (!putRes.ok) {
+          const errText = await putRes.text();
+          throw new Error(`فشل الرفع (${putRes.status}): ${errText.slice(0, 120)}`);
+        }
+
+        const putJson = await putRes.json();
+        state.github.lastSha = putJson.content?.sha || sha;
+        saveStateLocally();
+        updateSyncBadge('تم الحفظ سحابيًا على GitHub', 'bg-emerald-500');
+        showToast('تم رفع البيانات إلى GitHub بنجاح', 'success');
+      } catch (err) {
+        console.error(err);
+        updateSyncBadge('تعذر الرفع إلى GitHub', 'bg-rose-500');
+        showToast(err.message, 'error');
+      }
+    }
+
+    // =========================================================================
+    // ربط الأحداث الرئيسية للتطبيق
+    // =========================================================================
+    function bindEvents() {
+      // التبويبات
+      document.querySelectorAll('.tab-btn').forEach((btn) => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+      });
+
+      // زر "أضف نفسك" السريع في الشريط العلوي
+      document.getElementById('btn-self-join-top')?.addEventListener('click', () => {
+        const card = document.getElementById('self-register-card');
+        card?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => document.getElementById('self-name-input')?.focus(), 250);
+      });
+
+      // نموذج إضافة الشخص لنفسه
+      document.getElementById('self-join-form')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const nameInput = document.getElementById('self-name-input');
+        const groupInput = document.getElementById('self-group-input');
+        registerSelf(nameInput.value, groupInput.value);
+        nameInput.value = '';
+        groupInput.value = '';
+      });
+
+      // زر الإدارة العلوي ينقل مباشرة لتبويب الإدارة
+      document.getElementById('btn-admin-top')?.addEventListener('click', () => switchTab('admin'));
+
+      // زر المزامنة السريع
+      document.getElementById('btn-sync-now')?.addEventListener('click', () => {
+        if (state.github?.token && state.github?.owner && state.github?.repo) {
+          pullFromGitHub();
+        } else {
+          saveStateLocally();
+          showToast('تم حفظ جميع البيانات محليًا بنجاح', 'success');
+        }
+      });
+
+      // تبديل المظهر (فاتح / داكن)
+      document.getElementById('btn-theme-toggle')?.addEventListener('click', () => {
+        state.theme = state.theme === 'dark' ? 'light' : 'dark';
+        saveStateLocally();
+        applyTheme();
+      });
+
+      // إضافة عضو جديد
+      document.getElementById('add-member-form')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const nameInput = document.getElementById('member-name-input');
+        const groupInput = document.getElementById('member-group-input');
+        const pointsInput = document.getElementById('member-points-input');
+
+        const name = nameInput.value.trim();
+        if (!name) return;
+
+        state.members.push({
+          id: `m-${Date.now()}`,
+          name,
+          group: groupInput.value.trim() || 'عام',
+          points: Math.max(0, Number(pointsInput.value) || 0),
+          attendance: {}
+        });
+
+        nameInput.value = '';
+        groupInput.value = '';
+        pointsInput.value = '10';
+
+        saveStateLocally();
+        renderStats();
+        renderMembers();
+        renderQuiz();
+        renderLeaderboard();
+        renderChat();
+        renderExportPreview();
+        showToast(`تمت إضافة العضو "${name}"`, 'success');
+      });
+
+      // البحث في الأعضاء
+      document.getElementById('member-search-input')?.addEventListener('input', renderMembers);
+
+      // إرسال الاختبار اليومي
+      document.getElementById('btn-submit-quiz')?.addEventListener('click', submitQuiz);
+
+      // إضافة سؤال جديد للاختبار
+      document.getElementById('add-quiz-question-form')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const question = document.getElementById('quiz-q-text').value.trim();
+        const opts = [
+          document.getElementById('quiz-opt-0').value.trim(),
+          document.getElementById('quiz-opt-1').value.trim(),
+          document.getElementById('quiz-opt-2').value.trim(),
+          document.getElementById('quiz-opt-3').value.trim()
+        ];
+        const correctIndex = Number(document.getElementById('quiz-correct-idx').value) || 0;
+        const points = Math.max(1, Number(document.getElementById('quiz-reward-pts').value) || 10);
+
+        if (!question || opts.some((o) => !o)) return;
+
+        state.quizQuestions.push({
+          id: `q-${Date.now()}`,
+          question,
+          options: opts,
+          correctIndex,
+          points
+        });
+
+        e.target.reset();
+        document.getElementById('quiz-reward-pts').value = '15';
+        saveStateLocally();
+        renderQuiz();
+        showToast('تمت إضافة السؤال إلى الاختبار اليومي', 'success');
+      });
+
+      // الدردشة الجماعية
+      document.getElementById('chat-form')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const input = document.getElementById('chat-message-input');
+        const sender = document.getElementById('chat-sender-select').value || 'عضو';
+        const text = input.value.trim();
+        if (!text) return;
+
+        state.messages.push({
+          id: `msg-${Date.now()}`,
+          sender,
+          text,
+          time: formatTimeNow()
+        });
+
+        input.value = '';
+        saveStateLocally();
+        renderStats();
+        renderChat();
+        renderExportPreview();
+      });
+
+      document.getElementById('btn-clear-chat')?.addEventListener('click', () => {
+        state.messages = [];
+        saveStateLocally();
+        renderStats();
+        renderChat();
+        showToast('تم مسح سجل الدردشة', 'info');
+      });
+
+      // مدير الملفات
+      document.getElementById('file-upload-input')?.addEventListener('change', handleFileUpload);
+      document.getElementById('file-search-input')?.addEventListener('input', renderFiles);
+      document.getElementById('file-type-filter')?.addEventListener('change', renderFiles);
+
+      // التصدير
+      document.getElementById('btn-export-members-csv')?.addEventListener('click', exportMembersCsv);
+      document.getElementById('btn-export-leaderboard-csv')?.addEventListener('click', exportLeaderboardCsv);
+      document.getElementById('btn-export-full-json')?.addEventListener('click', exportFullJson);
+      document.getElementById('btn-copy-summary')?.addEventListener('click', () => {
+        const text = document.getElementById('export-preview-box')?.textContent || '';
+        const helper = document.createElement('textarea');
+        helper.value = text;
+        document.body.appendChild(helper);
+        helper.select();
+        try {
+          document.execCommand('copy');
+          showToast('تم نسخ ملخص البيانات', 'success');
+        } catch {
+          showToast('تعذر النسخ التلقائي', 'warning');
+        }
+        helper.remove();
+      });
+
+      // تسجيل الدخول وقفل بوابة الإدارة
+      document.getElementById('admin-login-form')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const code = document.getElementById('admin-passcode-input').value;
+        unlockAdmin(code);
+      });
+
+      document.getElementById('btn-admin-logout')?.addEventListener('click', lockAdmin);
+
+      // حفظ إعدادات GitHub
+      document.getElementById('github-config-form')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        state.github = {
+          ...state.github,
+          token: document.getElementById('gh-token').value.trim(),
+          owner: document.getElementById('gh-owner').value.trim(),
+          repo: document.getElementById('gh-repo').value.trim(),
+          branch: document.getElementById('gh-branch').value.trim() || 'main',
+          path: document.getElementById('gh-path').value.trim() || 'church-state.json'
+        };
+        saveStateLocally();
+        updateSyncBadge();
+        showToast('تم حفظ إعدادات GitHub محليًا', 'success');
+      });
+
+      document.getElementById('btn-gh-pull')?.addEventListener('click', pullFromGitHub);
+      document.getElementById('btn-gh-push')?.addEventListener('click', pushToGitHub);
+
+      // تغيير رمز المرور الإداري
+      document.getElementById('change-passcode-form')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const nextCode = document.getElementById('new-passcode-input').value;
+        const confirmCode = document.getElementById('confirm-passcode-input').value;
+
+        if (nextCode !== confirmCode) {
+          showToast('رمزا المرور غير متطابقين', 'error');
+          return;
+        }
+        if (nextCode.length < 4) {
+          showToast('يجب أن يتكون رمز المرور من 4 أحرف على الأقل', 'warning');
+          return;
+        }
+
+        state.adminPasscode = nextCode;
+        saveStateLocally();
+        e.target.reset();
+        showToast('تم تحديث رمز المرور الإداري بنجاح', 'success');
+      });
+
+      // إعادة ضبط البيانات الافتراضية
+      document.getElementById('btn-reset-demo-data')?.addEventListener('click', () => {
+        if (!isAdminUnlocked) return;
+        const ghSaved = { ...state.github };
+        state = createDefaultState();
+        state.github = ghSaved;
+        currentMemberId = '';
+        sessionStorage.removeItem(CURRENT_MEMBER_SESSION_KEY);
+        saveStateLocally();
+        renderAll();
+        showToast('تمت إعادة ضبط البيانات الافتراضية', 'info');
+      });
+    }
+
+    // تشغيل التطبيق عند اكتمال تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', () => {
+      bindEvents();
+      renderAll();
+      switchTab('members');
+    });
   </script>
 </body>
 </html>
-
