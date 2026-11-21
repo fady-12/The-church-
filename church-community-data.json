@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-11-21T20:59:06.777Z",
+  "updatedAt": "2026-11-21T20:59:49.692Z",
   "leaderSecretHash": "f84ac7ba58ed87643dd1daed19d54dc7b4b722ac1e99b942ea1044e019bb6b13",
   "session": {
     "attendeeName": "مخدوم سريع",
-    "attendeeGroup": "",
-    "isLeaderAuthenticated": true,
+    "attendeeGroup": "عام",
+    "isLeaderAuthenticated": false,
     "leaderName": "خادم الخدمة"
   },
   "pointsConfig": {
@@ -60,6 +60,12 @@
   "quizScores": {
     "2026-11-21": {
       "خادم الخدمة (خادم)": {
+        "answers": {},
+        "bonusClaimed": false,
+        "submittedPoints": 0,
+        "submittedCount": 0
+      },
+      "مخدوم سريع": {
         "answers": {},
         "bonusClaimed": false,
         "submittedPoints": 0,
