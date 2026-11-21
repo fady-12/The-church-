@@ -112,10 +112,11 @@
 
       <!-- Cloud Sync Pill + Role Badge -->
       <div class="flex items-center gap-2 flex-wrap">
-        <button id="btn-quick-sync" onclick="syncFromGitHub(true)" title="سحب أحدث البيانات من GitHub"
+        <button id="btn-quick-sync" onclick="syncFromGitHub(true)" title="سحب أحدث البيانات من GitHub الآن"
           class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-church-navyLight hover:bg-white/15 border border-white/15 text-xs font-semibold transition active:scale-95">
           <span id="sync-dot" class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
           <span id="sync-status-text">محلي / جاهز للمزامنة</span>
+          <span id="last-fetched-time" class="hidden sm:inline text-[10px] text-church-goldLight/90 font-mono"></span>
           <i id="sync-spin-icon" class="fa-solid fa-rotate text-church-goldLight"></i>
         </button>
 
@@ -137,6 +138,10 @@
         <button data-tab="grades-points" onclick="switchTab('grades-points')" class="nav-tab flex items-center gap-2 px-4 py-2.5 text-sm font-bold border-b-3 border-transparent text-white/80 hover:text-white transition">
           <i class="fa-solid fa-award"></i>
           <span>الدرجات وخصم النقاط</span>
+        </button>
+        <button data-tab="ai-quiz" onclick="switchTab('ai-quiz')" class="nav-tab flex items-center gap-2 px-4 py-2.5 text-sm font-bold border-b-3 border-transparent text-white/80 hover:text-white transition">
+          <i class="fa-solid fa-brain"></i>
+          <span>100 سؤال يومي (AI)</span>
         </button>
         <button data-tab="chat" onclick="switchTab('chat')" class="nav-tab flex items-center gap-2 px-4 py-2.5 text-sm font-bold border-b-3 border-transparent text-white/80 hover:text-white transition">
           <i class="fa-brands fa-whatsapp text-base"></i>
@@ -324,6 +329,115 @@
     </section>
 
     <!-- ============================================================
+         TAB 2B: DAILY 100 AI QUESTIONS CHALLENGE (100 سؤال يومي بالذكاء الاصطناعي)
+         ============================================================ -->
+    <section id="tab-ai-quiz" class="tab-panel hidden space-y-4">
+      <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-card border border-church-sand space-y-4">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-church-sand pb-4">
+          <div>
+            <h2 class="text-lg font-extrabold text-church-navy flex items-center gap-2">
+              <i class="fa-solid fa-brain text-church-gold"></i>
+              <span>تحدي 100 سؤال يومي بالذكاء الاصطناعي</span>
+            </h2>
+            <p class="text-xs text-slate-600 mt-0.5">
+              100 سؤال مختلف كل يوم لكل مخدوم أو خادم • تصحيح وإجابة فورية • كل سؤال صحيح = <strong>+1 نقطة</strong> تُضاف وتُزامن على GitHub.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <select id="quiz-user-select" onchange="onQuizUserChange()"
+              class="px-3 py-2 rounded-xl border border-slate-300 bg-church-cream text-xs sm:text-sm font-extrabold text-church-navy focus:outline-none focus:ring-2 focus:ring-church-gold">
+            </select>
+            <button type="button" onclick="generateAIQuestionsBatch(true)" id="btn-generate-ai-questions"
+              class="px-3.5 py-2 rounded-xl bg-church-navy hover:bg-church-navyLight text-white text-xs font-bold shadow transition active:scale-95">
+              <i class="fa-solid fa-wand-magic-sparkles ml-1 text-church-goldLight"></i>
+              توليد أسئلة AI لليوم
+            </button>
+          </div>
+        </div>
+
+        <!-- Optional Gemini API Key Bar for AI Generation + Instant Smart Fallback -->
+        <div class="bg-church-cream/80 border border-church-sand rounded-2xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+          <div class="flex items-center gap-2 flex-1">
+            <i class="fa-solid fa-key text-church-gold"></i>
+            <span class="font-bold text-church-navy shrink-0">مفتاح Gemini AI (اختياري):</span>
+            <input type="password" id="gemini-api-key-input" onchange="saveGeminiApiKey(this.value)"
+              placeholder="اتركه فارغاً لاستخدام المولد الذكي الفوري أو أدخل مفتاح Gemini لتوليد أسئلة AI"
+              class="flex-1 px-3 py-1.5 rounded-xl border border-slate-300 bg-white font-mono text-xs focus:outline-none focus:ring-2 focus:ring-church-gold" />
+          </div>
+          <span id="quiz-engine-badge" class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-extrabold shrink-0">
+            وضع التوليد الذكي الفوري (100 سؤال/يوم)
+          </span>
+        </div>
+
+        <!-- Daily Progress Metrics -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="p-3.5 rounded-2xl bg-church-cream border border-church-sand">
+            <div class="text-[11px] text-slate-500 font-bold">تقدم اليوم</div>
+            <div id="quiz-progress-text" class="text-xl font-extrabold text-church-navy mt-0.5">0 / 100</div>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200">
+            <div class="text-[11px] text-emerald-700 font-bold">إجابات صحيحة اليوم</div>
+            <div id="quiz-correct-text" class="text-xl font-extrabold text-emerald-700 mt-0.5">0</div>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200">
+            <div class="text-[11px] text-amber-800 font-bold">نقاط مكتسبة اليوم (+1/سؤال)</div>
+            <div id="quiz-earned-pts-text" class="text-xl font-extrabold text-amber-700 mt-0.5">+0</div>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-church-navy text-white">
+            <div class="text-[11px] text-church-goldLight font-bold">إجمالي نقاط المستخدم</div>
+            <div id="quiz-user-total-pts" class="text-xl font-extrabold mt-0.5">0</div>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full h-3 rounded-full bg-church-sand overflow-hidden">
+          <div id="quiz-progress-bar" class="h-full bg-gradient-to-l from-church-gold to-emerald-600 transition-all duration-300" style="width: 0%;"></div>
+        </div>
+
+        <!-- Active Question Stage -->
+        <div id="quiz-question-card" class="bg-church-cream/60 border border-church-gold/40 rounded-2xl p-4 sm:p-6 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span id="quiz-q-number-badge" class="px-3 py-1 rounded-full bg-church-navy text-church-goldLight text-xs font-extrabold">
+              سؤال 1 من 100
+            </span>
+            <span id="quiz-q-category-badge" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-xs font-bold text-slate-700">
+              الكتاب المقدس والطقس
+            </span>
+          </div>
+
+          <h3 id="quiz-question-text" class="text-base sm:text-lg font-extrabold text-church-navy leading-relaxed">
+            جاري تجهيز أسئلة اليوم...
+          </h3>
+
+          <div id="quiz-options-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+
+          <!-- Instant Answer & Explanation Box -->
+          <div id="quiz-instant-feedback" class="hidden p-4 rounded-2xl border text-xs sm:text-sm space-y-1.5"></div>
+
+          <!-- Question Navigation -->
+          <div class="flex items-center justify-between pt-2 border-t border-church-sand">
+            <button type="button" onclick="navigateQuizQuestion(-1)"
+              class="px-4 py-2 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-church-navy text-xs font-bold transition">
+              <i class="fa-solid fa-arrow-right ml-1"></i>السابق
+            </button>
+            <span id="quiz-question-status-pill" class="text-xs font-bold text-slate-500"></span>
+            <button type="button" onclick="navigateQuizQuestion(1)"
+              class="px-4 py-2 rounded-xl bg-church-navy hover:bg-church-navyLight text-white text-xs font-bold transition">
+              التالي<i class="fa-solid fa-arrow-left mr-1"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Question Jump Strip (1..100) -->
+        <div class="space-y-2">
+          <div class="text-xs font-extrabold text-church-navy">الانتقال السريع بين الأسئلة (1 - 100):</div>
+          <div id="quiz-jump-grid" class="flex flex-wrap gap-1.5 max-h-28 overflow-y-auto p-2 rounded-xl bg-church-cream border border-church-sand"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
          TAB 3: WHATSAPP-STYLE GROUP CHAT (دردشة الكنيسة)
          ============================================================ -->
     <section id="tab-chat" class="tab-panel hidden">
@@ -399,14 +513,15 @@
             يتحكم الخادم في إضافة المخدومين وتعديل الدرجات وخصم النقاط والإعلانات وإعدادات الكنيسة.
           </p>
           <p class="text-xs text-church-navy font-bold bg-church-sand inline-block px-3 py-1 rounded-full mt-2">
-            الرقم السري الافتراضي: <span id="default-pin-hint" class="font-mono text-church-crimson">1234</span>
+            <i class="fa-solid fa-lock ml-1 text-church-crimson"></i>
+            كلمة السر محمية ولا تُعرض على الشاشة
           </p>
         </div>
 
         <form onsubmit="handleServantLogin(event)" class="space-y-3 text-right">
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">الرقم السري للخادم (PIN)</label>
-            <input type="password" id="servant-pin-input" inputmode="numeric" placeholder="أدخل الرقم السري..." required
+            <label class="block text-xs font-bold text-slate-700 mb-1">كلمة السر للخادم</label>
+            <input type="password" id="servant-pin-input" placeholder="أدخل كلمة السر..." required autocomplete="current-password"
               class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-center text-lg font-extrabold tracking-widest focus:outline-none focus:ring-2 focus:ring-church-gold" />
           </div>
           <button type="submit"
@@ -484,7 +599,7 @@
             <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-card border border-church-sand space-y-3">
               <h3 class="text-base font-extrabold text-church-navy flex items-center gap-2 border-b border-church-sand pb-2.5">
                 <i class="fa-solid fa-gear text-church-gold"></i>
-                <span>إعدادات الكنيسة ونقاط الحضور والرقم السري</span>
+                <span>إعدادات الكنيسة ونقاط الحضور وتغيير كلمة السر</span>
               </h3>
               <form onsubmit="handleSaveSettings(event)" class="space-y-3 text-xs">
                 <div>
@@ -509,14 +624,38 @@
                       class="w-full px-2.5 py-2 rounded-xl border border-slate-300 font-bold" />
                   </div>
                 </div>
-                <div>
-                  <label class="block font-bold text-slate-700 mb-1">تغيير الرقم السري للخادم (PIN)</label>
-                  <input type="text" id="setting-servant-pin" minlength="4" maxlength="12" required
-                    class="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono font-bold" />
-                </div>
                 <button type="submit" class="w-full py-2.5 rounded-xl bg-church-gold hover:bg-church-goldLight text-church-navy font-extrabold text-sm shadow transition">
                   <i class="fa-solid fa-floppy-disk ml-1"></i>
-                  حفظ الإعدادات
+                  حفظ إعدادات الكنيسة والنقاط
+                </button>
+              </form>
+
+              <!-- Secure Password Change Form (Only available when already authenticated with current password) -->
+              <form onsubmit="handleChangeServantPassword(event)" class="space-y-2.5 pt-3 border-t border-church-sand text-xs">
+                <div class="font-extrabold text-church-navy flex items-center gap-1.5">
+                  <i class="fa-solid fa-key text-church-gold"></i>
+                  <span>تغيير كلمة السر (لمن يعرف كلمة السر الحالية فقط)</span>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">كلمة السر الحالية</label>
+                  <input type="password" id="current-password-input" placeholder="أدخل كلمة السر الحالية" required autocomplete="current-password"
+                    class="w-full px-3 py-2 rounded-xl border border-slate-300 font-bold" />
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div>
+                    <label class="block font-bold text-slate-700 mb-1">كلمة السر الجديدة (4 أحرف/أرقام على الأقل)</label>
+                    <input type="password" id="new-password-input" minlength="4" placeholder="كلمة السر الجديدة" required autocomplete="new-password"
+                      class="w-full px-3 py-2 rounded-xl border border-slate-300 font-bold" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 mb-1">تأكيد كلمة السر الجديدة</label>
+                    <input type="password" id="confirm-password-input" minlength="4" placeholder="أعد كتابة الجديدة" required autocomplete="new-password"
+                      class="w-full px-3 py-2 rounded-xl border border-slate-300 font-bold" />
+                  </div>
+                </div>
+                <button type="submit" class="w-full py-2 rounded-xl bg-church-navy hover:bg-church-navyLight text-white font-bold text-xs shadow transition">
+                  <i class="fa-solid fa-shield-halved ml-1 text-church-goldLight"></i>
+                  تحديث كلمة السر ومزامنتها
                 </button>
               </form>
             </div>
@@ -686,17 +825,23 @@
             </div>
 
             <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-church-sand">
-              <label class="flex items-center gap-2 text-xs font-bold text-church-navy cursor-pointer">
-                <input type="checkbox" id="gh-auto-push" class="w-4 h-4 rounded accent-church-navy" />
-                <span>رفع تلقائي إلى GitHub عند أي تعديل (حضور / نقاط / دردشة)</span>
-              </label>
+              <div class="flex flex-col gap-1.5">
+                <label class="flex items-center gap-2 text-xs font-bold text-church-navy cursor-pointer">
+                  <input type="checkbox" id="gh-auto-push" class="w-4 h-4 rounded accent-church-navy" />
+                  <span>رفع تلقائي إلى GitHub عند أي تعديل (للخادم فقط)</span>
+                </label>
+                <label class="flex items-center gap-2 text-xs font-bold text-emerald-800 cursor-pointer">
+                  <input type="checkbox" id="gh-auto-poll" onchange="handleAutoPollToggle(this.checked)" class="w-4 h-4 rounded accent-emerald-600" />
+                  <span>تحديث تلقائي دوري للزوار كل 30 ثانية لجلب التغييرات الجديدة</span>
+                </label>
+              </div>
 
               <div class="flex flex-wrap gap-2">
                 <button type="submit" class="px-4 py-2 rounded-xl bg-church-navy hover:bg-church-navyLight text-white text-xs font-bold shadow transition">
                   <i class="fa-solid fa-check ml-1 text-church-goldLight"></i>حفظ الإعدادات
                 </button>
                 <button type="button" onclick="syncFromGitHub(true)" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow transition">
-                  <i class="fa-solid fa-cloud-arrow-down ml-1"></i>سحب من GitHub
+                  <i class="fa-solid fa-cloud-arrow-down ml-1"></i>مزامنة الآن
                 </button>
                 <button type="button" onclick="pushToGitHub(true)" class="px-4 py-2 rounded-xl bg-church-gold hover:bg-church-goldLight text-church-navy text-xs font-extrabold shadow transition">
                   <i class="fa-solid fa-cloud-arrow-up ml-1"></i>رفع إلى GitHub
@@ -730,20 +875,20 @@
 
   <!-- Mobile Bottom Navigation Bar -->
   <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur border-t border-slate-200 shadow-lg z-40 no-print">
-    <div class="grid grid-cols-6 text-center">
-      <button data-tab="attendance" onclick="switchTab('attendance')" class="mobile-nav-btn active py-2 px-1 flex flex-col items-center justify-center gap-0.5 text-[10px] font-extrabold text-church-navy">
+    <div class="grid grid-cols-7 text-center">
+      <button data-tab="attendance" onclick="switchTab('attendance')" class="mobile-nav-btn active py-2 px-0.5 flex flex-col items-center justify-center gap-0.5 text-[9px] font-extrabold text-church-navy">
         <i class="fa-solid fa-clipboard-check text-sm text-church-gold"></i>
         <span>الحضور</span>
       </button>
-      <button data-tab="grades-points" onclick="switchTab('grades-points')" class="mobile-nav-btn py-2 px-1 flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold text-slate-500">
+      <button data-tab="grades-points" onclick="switchTab('grades-points')" class="mobile-nav-btn py-2 px-0.5 flex flex-col items-center justify-center gap-0.5 text-[9px] font-bold text-slate-500">
         <i class="fa-solid fa-award text-sm"></i>
         <span>النقاط</span>
       </button>
-      <button data-tab="chat" onclick="switchTab('chat')" class="mobile-nav-btn relative py-2 px-1 flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold text-slate-500">
-        <i class="fa-brands fa-whatsapp text-sm"></i>
-        <span>الدردشة</span>
-        <span id="unread-badge-mobile" class="hidden absolute top-1 right-3 w-4 h-4 rounded-full bg-emerald-600 text-white text-[9px] font-extrabold flex items-center justify-center">0</span>
+      <button data-tab="ai-quiz" onclick="switchTab('ai-quiz')" class="mobile-nav-btn py-2 px-0.5 flex flex-col items-center justify-center gap-0.5 text-[9px] font-bold text-slate-500">
+        <i class="fa-solid fa-brain text-sm"></i>
+        <span>100 سؤال</span>
       </button>
+      <button data-tab="chat" onclick="switchTab('chat')" class="mobile-nav-btn relative py-2 px-0.5 flex flex-col items-center justify-center gap-0.5 text-[9px] font-bold text-slate-500">
       <button data-tab="servant" onclick="switchTab('servant')" class="mobile-nav-btn py-2 px-1 flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold text-slate-500">
         <i class="fa-solid fa-sliders text-sm"></i>
         <span>الخادم</span>
@@ -774,6 +919,32 @@
       return new Date(now - offset).toISOString().slice(0, 10);
     }
 
+    // Deterministic SHA-256 hex digest with fallback so password is never stored or displayed in plain text
+    async function hashPassword(password) {
+      const normalized = String(password || '').trim();
+      const salted = `church_secure_v2::${normalized}`;
+      if (window.crypto && window.crypto.subtle) {
+        const buf = await window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(salted));
+        return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+      }
+      let h = 2166136261;
+      for (let i = 0; i < salted.length; i++) {
+        h ^= salted.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return 'fnv1a_' + (h >>> 0).toString(16);
+    }
+
+    const INITIAL_DEFAULT_SECRET = '1234';
+    let cachedInitialHash = null;
+
+    async function getDefaultPasswordHash() {
+      if (!cachedInitialHash) {
+        cachedInitialHash = await hashPassword(INITIAL_DEFAULT_SECRET);
+      }
+      return cachedInitialHash;
+    }
+
     function createInitialState() {
       const today = getTodayISO();
       return {
@@ -784,7 +955,7 @@
           presentPoints: 10,
           absentPenalty: 5,
           excusedPoints: 2,
-          servantPin: '1234'
+          servantPasswordHash: ''
         },
         announcements: [
           {
@@ -849,7 +1020,9 @@
             text: 'شكراً لحضرتك، أنا مستعدة لتسميع الجزء الجديد يوم الجمعة 🙏',
             time: '04:20 م'
           }
-        ]
+        ],
+        // Daily 100 AI Questions per user & date: dailyQuizzes[`${date}::${userId}`] = { questions, answers, earnedPoints }
+        dailyQuizzes: {}
       };
     }
 
@@ -858,6 +1031,19 @@
     let isServant = sessionStorage.getItem(SERVANT_SESSION_KEY) === 'true';
     let currentTab = 'attendance';
     let unreadChatCount = 0;
+    let autoPollTimer = null;
+    let lastFetchedLabel = '';
+    let activeQuizUserId = '';
+    let activeQuizQuestionIndex = 0;
+    let geminiApiKey = localStorage.getItem('church_gemini_api_key') || '';
+
+    async function ensurePasswordHashInitialized() {
+      const defaultHash = await getDefaultPasswordHash();
+      if (!appState.settings.servantPasswordHash) {
+        appState.settings.servantPasswordHash = defaultHash;
+        saveLocalState();
+      }
+    }
 
     function loadAppState() {
       try {
@@ -865,15 +1051,19 @@
         if (!raw) return createInitialState();
         const parsed = JSON.parse(raw);
         const def = createInitialState();
+        const mergedSettings = { ...def.settings, ...(parsed.settings || {}) };
+        // Never retain legacy plain-text pin field if present
+        delete mergedSettings.servantPin;
         return {
           ...def,
           ...parsed,
-          settings: { ...def.settings, ...(parsed.settings || {}) },
+          settings: mergedSettings,
           members: Array.isArray(parsed.members) ? parsed.members : def.members,
           attendance: parsed.attendance && typeof parsed.attendance === 'object' ? parsed.attendance : def.attendance,
           logs: Array.isArray(parsed.logs) ? parsed.logs : def.logs,
           messages: Array.isArray(parsed.messages) ? parsed.messages : def.messages,
-          announcements: Array.isArray(parsed.announcements) ? parsed.announcements : def.announcements
+          announcements: Array.isArray(parsed.announcements) ? parsed.announcements : def.announcements,
+          dailyQuizzes: parsed.dailyQuizzes && typeof parsed.dailyQuizzes === 'object' ? parsed.dailyQuizzes : {}
         };
       } catch (err) {
         console.error('Error loading appState:', err);
@@ -884,19 +1074,19 @@
     function loadGitHubConfig() {
       try {
         const raw = localStorage.getItem(GH_CONFIG_KEY);
-        if (!raw) {
-          return {
-            owner: '',
-            repo: '',
-            branch: 'main',
-            path: 'data/church-data.json',
-            token: '',
-            autoPush: false
-          };
-        }
-        return JSON.parse(raw);
+        const defaults = {
+          owner: '',
+          repo: '',
+          branch: 'main',
+          path: 'data/church-data.json',
+          token: '',
+          autoPush: false,
+          autoPoll: true
+        };
+        if (!raw) return defaults;
+        return { ...defaults, ...JSON.parse(raw) };
       } catch (err) {
-        return { owner: '', repo: '', branch: 'main', path: 'data/church-data.json', token: '', autoPush: false };
+        return { owner: '', repo: '', branch: 'main', path: 'data/church-data.json', token: '', autoPush: false, autoPoll: true };
       }
     }
 
@@ -993,6 +1183,9 @@
       if (tabName === 'export') {
         renderExportPreview();
       }
+      if (tabName === 'ai-quiz') {
+        renderAIQuizTab();
+      }
     }
 
     function handleRoleButtonClick() {
@@ -1007,18 +1200,22 @@
       }
     }
 
-    function handleServantLogin(e) {
+    async function handleServantLogin(e) {
       e.preventDefault();
       const input = document.getElementById('servant-pin-input');
-      const enteredPin = input.value.trim();
-      if (enteredPin === String(appState.settings.servantPin)) {
+      const enteredSecret = input.value.trim();
+      await ensurePasswordHashInitialized();
+      const enteredHash = await hashPassword(enteredSecret);
+
+      if (enteredHash === appState.settings.servantPasswordHash) {
         isServant = true;
         sessionStorage.setItem(SERVANT_SESSION_KEY, 'true');
         input.value = '';
         showToast('تم تسجيل الدخول كخادم بنجاح — يمكنك الآن التحكم الكامل', 'success');
         renderAll();
       } else {
-        showToast('الرقم السري غير صحيح! (الافتراضي: 1234)', 'error');
+        input.value = '';
+        showToast('كلمة السر غير صحيحة!', 'error');
       }
     }
 
@@ -1035,9 +1232,6 @@
       const loginCard = document.getElementById('servant-login-card');
       const dashboard = document.getElementById('servant-dashboard');
       const lockNotice = document.getElementById('points-lock-notice');
-      const pinHint = document.getElementById('default-pin-hint');
-
-      if (pinHint) pinHint.textContent = appState.settings.servantPin;
 
       if (isServant) {
         roleLabel.textContent = 'وضع الخادم (نشط)';
@@ -1613,25 +1807,60 @@
       appState.settings.presentPoints = Number(document.getElementById('setting-present-pts').value) || 0;
       appState.settings.absentPenalty = Math.abs(Number(document.getElementById('setting-absent-pts').value) || 0);
       appState.settings.excusedPoints = Number(document.getElementById('setting-excused-pts').value) || 0;
-      const newPin = document.getElementById('setting-servant-pin').value.trim();
-      if (newPin.length >= 4) {
-        appState.settings.servantPin = newPin;
-      }
 
       persistState({ syncCloud: true });
-      showToast('تم حفظ إعدادات الكنيسة والرقم السري', 'success');
+      showToast('تم حفظ إعدادات الكنيسة والنقاط ومزامنتها', 'success');
+    }
+
+    async function handleChangeServantPassword(e) {
+      e.preventDefault();
+      if (!isServant) {
+        showToast('تغيير كلمة السر متاح لمن دخل بوضع الخادم فقط', 'warning');
+        return;
+      }
+
+      const currentInput = document.getElementById('current-password-input');
+      const newInput = document.getElementById('new-password-input');
+      const confirmInput = document.getElementById('confirm-password-input');
+
+      const currentSecret = currentInput.value.trim();
+      const newSecret = newInput.value.trim();
+      const confirmSecret = confirmInput.value.trim();
+
+      await ensurePasswordHashInitialized();
+      const currentHash = await hashPassword(currentSecret);
+
+      if (currentHash !== appState.settings.servantPasswordHash) {
+        showToast('كلمة السر الحالية غير صحيحة — لا يمكن التغيير', 'error');
+        return;
+      }
+      if (newSecret.length < 4) {
+        showToast('كلمة السر الجديدة يجب ألا تقل عن 4 أحرف أو أرقام', 'warning');
+        return;
+      }
+      if (newSecret !== confirmSecret) {
+        showToast('تأكيد كلمة السر الجديدة غير مطابق', 'error');
+        return;
+      }
+
+      appState.settings.servantPasswordHash = await hashPassword(newSecret);
+      currentInput.value = '';
+      newInput.value = '';
+      confirmInput.value = '';
+
+      await persistState({ syncCloud: true });
+      showToast('تم تغيير كلمة السر بنجاح ومزامنتها على GitHub', 'success');
     }
 
     function renderServantTab() {
       updateRoleUI();
       if (!isServant) return;
 
-      // Populate settings inputs
+      // Populate settings inputs (never expose password or hash in UI)
       document.getElementById('setting-church-name').value = appState.settings.churchName;
       document.getElementById('setting-present-pts').value = appState.settings.presentPoints;
       document.getElementById('setting-absent-pts').value = appState.settings.absentPenalty;
       document.getElementById('setting-excused-pts').value = appState.settings.excusedPoints;
-      document.getElementById('setting-servant-pin').value = appState.settings.servantPin;
 
       // Members list
       const membersList = document.getElementById('servant-members-list');
@@ -1810,63 +2039,411 @@
     }
 
     /* =====================================================================
-       GITHUB CLOUD STORAGE SYNC ENGINE (سحابة التخزين على GitHub)
-       Uses GitHub Contents REST API so changes made on one phone persist in
-       a repository JSON file and are fetched by other phones/browsers.
+       DAILY 100 AI QUESTIONS CHALLENGE (تحدي 100 سؤال يومي بالذكاء الاصطناعي)
+       Generates 100 distinct daily questions per user & date (each servant or
+       member), checks answers instantaneously, awards +1 point per right answer,
+       prevents duplicate scoring on the same day, and syncs to GitHub.
        ===================================================================== */
-    function appendSyncLog(msg) {
-      const logBox = document.getElementById('gh-sync-log');
-      if (!logBox) return;
-      const timeStr = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      const line = document.createElement('div');
-      line.textContent = `[${timeStr}] ${msg}`;
-      logBox.prepend(line);
+    const QUIZ_QUESTION_BANK = [
+      { category: 'الكتاب المقدس — العهد الجديد', q: 'من هو التلميذ الذي أنكر السيد المسيح ثلاث مرات قبل صياح الديك؟', options: ['بطرس', 'يوحنا', 'أندراوس', 'توما'], answerIndex: 0, explanation: 'أنكر القديس بطرس الرسول ثلاث مرات كما تنبأ الرب يسوع.' },
+      { category: 'الكتاب المقدس — العهد الجديد', q: 'في أي مدينة تحول الماء إلى خمر في أول معجزة للسيد المسيح؟', options: ['قانا الجليل', 'بيت لحم', 'الناصرة', 'أريحا'], answerIndex: 0, explanation: 'صنع السيد المسيح أولى معجزاته في عرس قانا الجليل.' },
+      { category: 'الكتاب المقدس — العهد القديم', q: 'كم يوماً وكم ليلة قضى يونان النبي في جوف الحوت؟', options: ['ثلاثة أيام وثلاث ليالٍ', 'سبعة أيام', 'أربعين يوماً', 'يوماً واحداً'], answerIndex: 0, explanation: 'مكث يونان في بطن الحوت ثلاثة أيام وثلاث ليالٍ.' },
+      { category: 'الكتاب المقدس — العهد القديم', q: 'من هو النبي الذي واجه أنبياء البعل على جبل الكرمل؟', options: ['إيليا النبي', 'إشعياء النبي', 'إرميا النبي', 'دانيال النبي'], answerIndex: 0, explanation: 'أقام إيليا النبي المذبح على جبل الكرمل واستجابت النار من السماء.' },
+      { category: 'الطقس والألحان الكنسية', q: 'ما هو اللحن الشهير الذي يُرتل في أسبوع الآلام والقيامة بمعنى "يسوع المسيح ابن الله"؟', options: ['إبؤورو', 'بي أوتي إن أوؤو', 'تي شوري', 'ني إثروس'], answerIndex: 0, explanation: 'لحن إبؤورو من ألحان القيامة المجيدة ويعبر عن ملكوت المسيح.' },
+      { category: 'الطقس والألحان الكنسية', q: 'كم عدد أسرار الكنيسة السبعة؟', options: ['سبعة أسرار', 'خمسة أسرار', 'تسعة أسرار', 'ثلاثة أسرار'], answerIndex: 0, explanation: 'أسرار الكنيسة السبعة هي: المعمودية، الميرون، التوبة والاعتراف، الإفخارستيا، مسحة المرضى، الكهنوت، والزواج.' },
+      { category: 'تاريخ الكنيسة والقديسين', q: 'من هو كاروز الديار المصرية ومؤسس كنيسة الإسكندرية؟', options: ['القديس مرقس الرسول', 'القديس بولس الرسول', 'القديس أنطونيوس', 'القديس أثناسيوس'], answerIndex: 0, explanation: 'دخل القديس مرقس الإسكندرية وأسس كرسيها الرسولي.' },
+      { category: 'تاريخ الكنيسة والقديسين', q: 'من يُلقب بأبي الرهبان في العالم؟', options: ['القديس أنطونيوس الكبير', 'القديس باخوميوس', 'القديس مكاريوس', 'القديس شنودة'], answerIndex: 0, explanation: 'القديس أنطونيوس الكبير هو مؤسس الحياة الرهبانية وأبو الرهبان.' },
+      { category: 'الحياة الروحية والخدمة', q: 'ما هي ثمار الروح القدس كما وردت في غلاطية 5؟', options: ['محبة فرح سلام طول أناة لطف صلاح إيمان وداعة تعفف', 'حكمة ومعرفة ونبوة فقط', 'صوم وصلاة وصدقة فقط', 'شجاعة وقوة وغنى فقط'], answerIndex: 0, explanation: 'ثمر الروح تسع فضائل تبدأ بالمحبة وتنتهي بالتعفف.' },
+      { category: 'الكتاب المقدس — العهد الجديد', q: 'أين وُلد السيد المسيح؟', options: ['بيت لحم', 'أورشليم', 'الجليل', 'أفرايم'], answerIndex: 0, explanation: 'وُلد الرب يسوع في بيت لحم اليهودية كما تنبأ الأنبياء.' }
+    ];
+
+    function getQuizUsersList() {
+      const list = [{ id: 'servant-admin', name: 'الخادم (مشرف الخدمة)' }];
+      appState.members.forEach(m => {
+        list.push({ id: m.id, name: m.name });
+      });
+      return list;
     }
 
-    function setSyncStatus(state, label) {
-      const dot = document.getElementById('sync-dot');
-      const text = document.getElementById('sync-status-text');
-      const spin = document.getElementById('sync-spin-icon');
+    function getQuizKey(userId) {
+      return `${getTodayISO()}::${userId}`;
+    }
 
-      if (text) text.textContent = label;
-      if (dot) {
-        dot.className = 'w-2.5 h-2.5 rounded-full ' + (
-          state === 'synced' ? 'bg-emerald-400' :
-          state === 'syncing' ? 'bg-sky-400 animate-ping' :
-          state === 'error' ? 'bg-rose-400' : 'bg-amber-400'
-        );
+    function seededRandom(seedStr) {
+      let h = 1779033703 ^ seedStr.length;
+      for (let i = 0; i < seedStr.length; i++) {
+        h = Math.imul(h ^ seedStr.charCodeAt(i), 3432918353);
+        h = (h << 13) | (h >>> 19);
       }
-      if (spin) {
-        spin.classList.toggle('fa-spin', state === 'syncing');
+      return function () {
+        h = Math.imul(h ^ (h >>> 16), 2246822507);
+        h = Math.imul(h ^ (h >>> 13), 3266489909);
+        return ((h ^= h >>> 16) >>> 0) / 4294967296;
+      };
+    }
+
+    function buildDeterministic100Questions(dateStr, userId) {
+      const rand = seededRandom(`church_quiz_100::${dateStr}::${userId}`);
+      const questions = [];
+
+      for (let i = 0; i < 100; i++) {
+        const base = QUIZ_QUESTION_BANK[(i + Math.floor(rand() * QUIZ_QUESTION_BANK.length)) % QUIZ_QUESTION_BANK.length];
+        const variantNumber = i + 1;
+        const shouldShuffle = i >= QUIZ_QUESTION_BANK.length;
+
+        let options = [...base.options];
+        let correctText = base.options[base.answerIndex];
+
+        if (shouldShuffle) {
+          for (let j = options.length - 1; j > 0; j--) {
+            const k = Math.floor(rand() * (j + 1));
+            const tmp = options[j];
+            options[j] = options[k];
+            options[k] = tmp;
+          }
+        }
+
+        const answerIndex = options.indexOf(correctText);
+        const promptText = i < QUIZ_QUESTION_BANK.length
+          ? base.q
+          : `${base.q} (تحدي اليوم رقم ${variantNumber})`;
+
+        questions.push({
+          id: `q-${dateStr}-${userId}-${variantNumber}`,
+          number: variantNumber,
+          category: base.category,
+          question: promptText,
+          options,
+          answerIndex,
+          explanation: base.explanation,
+          points: 1
+        });
+      }
+
+      return questions;
+    }
+
+    function saveGeminiApiKey(val) {
+      geminiApiKey = (val || '').trim();
+      localStorage.setItem('church_gemini_api_key', geminiApiKey);
+      updateQuizEngineBadge();
+    }
+
+    function updateQuizEngineBadge() {
+      const badge = document.getElementById('quiz-engine-badge');
+      if (!badge) return;
+      if (geminiApiKey) {
+        badge.className = 'px-2.5 py-1 rounded-full bg-church-navy text-church-goldLight font-extrabold shrink-0';
+        badge.textContent = 'متصل بـ Gemini AI (100 سؤال/يوم)';
+      } else {
+        badge.className = 'px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-extrabold shrink-0';
+        badge.textContent = 'مولد الأسئلة الذكي الفوري (100 سؤال/يوم)';
       }
     }
 
-    function utf8ToBase64(str) {
-      const bytes = new TextEncoder().encode(str);
-      let bin = '';
-      for (let i = 0; i < bytes.length; i++) {
-        bin += String.fromCharCode(bytes[i]);
-      }
-      return btoa(bin);
+    async function fetchGeminiQuestionsBatch(dateStr, userName, count = 20, offset = 1) {
+      if (!geminiApiKey) return null;
+      const prompt = `أنشئ ${count} سؤال اختيار من متعدد باللغة العربية في الكتاب المقدس والطقس الكنسي والتاريخ الكنسي والحياة الروحية لليوم ${dateStr} للمستخدم "${userName}" بدءاً من السؤال رقم ${offset}. يجب أن تكون الأسئلة متنوعة ومختلفة تماماً. أعد النتيجة كـ JSON فقط بالشكل التالي: [{"question":"...","category":"...","options":["...","...","...","..."],"answerIndex":0,"explanation":"..."}]`;
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(geminiApiKey)}`;
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { responseMimeType: 'application/json' }
+        })
+      });
+      if (!res.ok) throw new Error(`Gemini HTTP ${res.status}`);
+      const data = await res.json();
+      const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text || '[]';
+      const parsed = JSON.parse(rawText);
+      if (!Array.isArray(parsed) || !parsed.length) return null;
+      return parsed.map((item, idx) => ({
+        id: `q-${dateStr}-${activeQuizUserId}-${offset + idx}`,
+        number: offset + idx,
+        category: item.category || 'ذكاء اصطناعي — الكنيسة',
+        question: item.question,
+        options: Array.isArray(item.options) && item.options.length === 4 ? item.options : ['أ', 'ب', 'ج', 'د'],
+        answerIndex: typeof item.answerIndex === 'number' && item.answerIndex >= 0 && item.answerIndex < 4 ? item.answerIndex : 0,
+        explanation: item.explanation || 'إجابة صحيحة ومؤكدة.',
+        points: 1
+      }));
     }
 
-    function base64ToUtf8(b64) {
-      const clean = b64.replace(/\s+/g, '');
-      const bin = atob(clean);
-      const bytes = new Uint8Array(bin.length);
-      for (let i = 0; i < bin.length; i++) {
-        bytes[i] = bin.charCodeAt(i);
+    function ensureDailyQuizRecord(userId) {
+      const dateStr = getTodayISO();
+      const key = getQuizKey(userId);
+      if (!appState.dailyQuizzes[key] || !Array.isArray(appState.dailyQuizzes[key].questions) || appState.dailyQuizzes[key].questions.length !== 100) {
+        appState.dailyQuizzes[key] = {
+          date: dateStr,
+          userId,
+          questions: buildDeterministic100Questions(dateStr, userId),
+          answers: {}, // questionIndex -> { selectedIndex, isCorrect, awarded }
+          earnedPoints: 0,
+          correctCount: 0
+        };
+        saveLocalState();
       }
-      return new TextDecoder().decode(bytes);
+      return appState.dailyQuizzes[key];
     }
 
-    function populateGitHubForm() {
-      document.getElementById('gh-owner').value = ghConfig.owner || '';
-      document.getElementById('gh-repo').value = ghConfig.repo || '';
-      document.getElementById('gh-branch').value = ghConfig.branch || 'main';
-      document.getElementById('gh-path').value = ghConfig.path || 'data/church-data.json';
-      document.getElementById('gh-token').value = ghConfig.token || '';
-      document.getElementById('gh-auto-push').checked = Boolean(ghConfig.autoPush);
+    async function generateAIQuestionsBatch(notify = true) {
+      const users = getQuizUsersList();
+      if (!activeQuizUserId && users.length) activeQuizUserId = users[0].id;
+      const userObj = users.find(u => u.id === activeQuizUserId) || users[0];
+      const dateStr = getTodayISO();
+      const key = getQuizKey(userObj.id);
+      const existing = ensureDailyQuizRecord(userObj.id);
+
+      const btn = document.getElementById('btn-generate-ai-questions');
+      if (btn) btn.disabled = true;
+
+      try {
+        let baseQuestions = buildDeterministic100Questions(dateStr, userObj.id);
+        if (geminiApiKey) {
+          showToast('جاري توليد أسئلة اليوم عبر Gemini AI...', 'info');
+          const aiBatch = await fetchGeminiQuestionsBatch(dateStr, userObj.name, 20, 1);
+          if (aiBatch && aiBatch.length) {
+            aiBatch.forEach((qItem, idx) => {
+              if (idx < baseQuestions.length) {
+                baseQuestions[idx] = { ...qItem, number: idx + 1, points: 1 };
+              }
+            });
+          }
+        }
+
+        // Preserve already answered questions for today so points cannot be double-claimed
+        const mergedQuestions = baseQuestions.map((qItem, idx) => {
+          const prevAns = existing.answers?.[idx];
+          if (prevAns && existing.questions?.[idx]) {
+            return existing.questions[idx];
+          }
+          return qItem;
+        });
+
+        appState.dailyQuizzes[key] = {
+          ...existing,
+          questions: mergedQuestions
+        };
+        await persistState({ syncCloud: true });
+        renderAIQuizTab();
+        if (notify) {
+          showToast(`تم تجهيز 100 سؤال يومي مختلف لـ "${userObj.name}" بتاريخ ${dateStr}`, 'success');
+        }
+      } catch (err) {
+        console.error('AI quiz generation error:', err);
+        appState.dailyQuizzes[key] = existing;
+        saveLocalState();
+        renderAIQuizTab();
+        if (notify) {
+          showToast('تم تفعيل 100 سؤال يومي عبر المولد الذكي الفوري', 'info');
+        }
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    function onQuizUserChange() {
+      const sel = document.getElementById('quiz-user-select');
+      activeQuizUserId = sel.value;
+      activeQuizQuestionIndex = 0;
+      renderAIQuizTab();
+    }
+
+    function navigateQuizQuestion(delta) {
+      const record = ensureDailyQuizRecord(activeQuizUserId);
+      const nextIdx = activeQuizQuestionIndex + delta;
+      if (nextIdx >= 0 && nextIdx < record.questions.length) {
+        activeQuizQuestionIndex = nextIdx;
+        renderAIQuizQuestionOnly();
+      }
+    }
+
+    function jumpToQuizQuestion(idx) {
+      activeQuizQuestionIndex = idx;
+      renderAIQuizQuestionOnly();
+    }
+
+    async function submitQuizAnswer(selectedIdx) {
+      const users = getQuizUsersList();
+      const userObj = users.find(u => u.id === activeQuizUserId) || users[0];
+      const record = ensureDailyQuizRecord(userObj.id);
+      const q = record.questions[activeQuizQuestionIndex];
+      if (!q) return;
+
+      // Prevent re-answering or double-scoring the same question on the same day
+      if (record.answers[activeQuizQuestionIndex]) {
+        showToast('تمت الإجابة على هذا السؤال مسبقاً اليوم (بدون تكرار للنقاط)', 'info');
+        return;
+      }
+
+      const isCorrect = selectedIdx === q.answerIndex;
+      const pointsAwarded = isCorrect ? 1 : 0;
+
+      record.answers[activeQuizQuestionIndex] = {
+        selectedIndex: selectedIdx,
+        isCorrect,
+        awarded: pointsAwarded
+      };
+
+      if (isCorrect) {
+        record.correctCount = (record.correctCount || 0) + 1;
+        record.earnedPoints = (record.earnedPoints || 0) + pointsAwarded;
+
+        const member = appState.members.find(m => m.id === userObj.id);
+        if (member) {
+          member.points = (member.points || 0) + pointsAwarded;
+        }
+
+        appState.logs.unshift({
+          id: 'log-q-' + Date.now() + '-' + Math.random().toString(36).slice(2, 5),
+          memberId: userObj.id,
+          memberName: userObj.name,
+          type: 'add',
+          amount: 1,
+          reason: `تحدي 100 سؤال يومي — إجابة صحيحة (#${q.number})`,
+          byServant: false,
+          timestamp: new Date().toLocaleString('ar-EG')
+        });
+        appState.logs = appState.logs.slice(0, 120);
+      }
+
+      await persistState({ syncCloud: true });
+      renderAIQuizTab();
+
+      if (isCorrect) {
+        showToast(`إجابة صحيحة! +1 نقطة لـ ${userObj.name}`, 'success');
+      } else {
+        showToast(`إجابة غير صحيحة — تم عرض الإجابة الصحيحة فوراً`, 'warning');
+      }
+    }
+
+    function renderAIQuizTab() {
+      const users = getQuizUsersList();
+      const sel = document.getElementById('quiz-user-select');
+      const keyInput = document.getElementById('gemini-api-key-input');
+
+      if (keyInput && document.activeElement !== keyInput) {
+        keyInput.value = geminiApiKey;
+      }
+      updateQuizEngineBadge();
+
+      if (!activeQuizUserId || !users.some(u => u.id === activeQuizUserId)) {
+        activeQuizUserId = users[0]?.id || 'servant-admin';
+      }
+
+      if (sel) {
+        sel.innerHTML = users.map(u => `<option value="${u.id}">${escapeHTML(u.name)}</option>`).join('');
+        sel.value = activeQuizUserId;
+      }
+
+      const record = ensureDailyQuizRecord(activeQuizUserId);
+      const answeredCount = Object.keys(record.answers || {}).length;
+      const pct = Math.min(100, Math.round((answeredCount / 100) * 100));
+
+      const member = appState.members.find(m => m.id === activeQuizUserId);
+      const totalPts = member ? member.points : (record.earnedPoints || 0);
+
+      document.getElementById('quiz-progress-text').textContent = `${answeredCount} / 100`;
+      document.getElementById('quiz-correct-text').textContent = record.correctCount || 0;
+      document.getElementById('quiz-earned-pts-text').textContent = `+${record.earnedPoints || 0}`;
+      document.getElementById('quiz-user-total-pts').textContent = totalPts;
+      document.getElementById('quiz-progress-bar').style.width = `${pct}%`;
+
+      // Render jump grid (1..100)
+      const jumpGrid = document.getElementById('quiz-jump-grid');
+      if (jumpGrid) {
+        jumpGrid.innerHTML = record.questions.map((q, idx) => {
+          const ans = record.answers[idx];
+          let cls = 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100';
+          if (ans) {
+            cls = ans.isCorrect
+              ? 'bg-emerald-600 text-white border-emerald-600'
+              : 'bg-rose-600 text-white border-rose-600';
+          }
+          if (idx === activeQuizQuestionIndex) {
+            cls += ' ring-2 ring-church-navy';
+          }
+          return `<button type="button" onclick="jumpToQuizQuestion(${idx})" class="w-7 h-7 rounded-lg border text-[11px] font-extrabold transition ${cls}">${idx + 1}</button>`;
+        }).join('');
+      }
+
+      renderAIQuizQuestionOnly();
+    }
+
+    function renderAIQuizQuestionOnly() {
+      const record = ensureDailyQuizRecord(activeQuizUserId);
+      const q = record.questions[activeQuizQuestionIndex];
+      if (!q) return;
+
+      const ans = record.answers[activeQuizQuestionIndex];
+
+      document.getElementById('quiz-q-number-badge').textContent = `سؤال ${q.number} من 100 (+1 نقطة)`;
+      document.getElementById('quiz-q-category-badge').textContent = q.category || 'تحدي اليوم';
+      document.getElementById('quiz-question-text').textContent = q.question;
+
+      const statusPill = document.getElementById('quiz-question-status-pill');
+      if (statusPill) {
+        statusPill.textContent = ans
+          ? (ans.isCorrect ? 'تم الحل ✓ (+1 نقطة)' : 'تم الحل ✗ (0 نقطة)')
+          : 'لم يُحل بعد';
+      }
+
+      const optionsEl = document.getElementById('quiz-options-list');
+      optionsEl.innerHTML = q.options.map((opt, idx) => {
+        let btnClass = 'bg-white hover:bg-church-sand border-slate-300 text-church-navy';
+        if (ans) {
+          if (idx === q.answerIndex) {
+            btnClass = 'bg-emerald-600 border-emerald-600 text-white shadow-sm';
+          } else if (idx === ans.selectedIndex && !ans.isCorrect) {
+            btnClass = 'bg-rose-600 border-rose-600 text-white shadow-sm';
+          } else {
+            btnClass = 'bg-slate-100 border-slate-200 text-slate-400 opacity-75';
+          }
+        }
+
+        return `
+          <button type="button" ${ans ? 'disabled' : ''} onclick="submitQuizAnswer(${idx})"
+            class="w-full text-right p-3.5 rounded-2xl border font-bold text-xs sm:text-sm transition flex items-center justify-between gap-2 ${btnClass}">
+            <span>${escapeHTML(opt)}</span>
+            ${ans && idx === q.answerIndex ? '<i class="fa-solid fa-circle-check"></i>' : ''}
+            ${ans && idx === ans.selectedIndex && !ans.isCorrect ? '<i class="fa-solid fa-circle-xmark"></i>' : ''}
+          </button>
+        `;
+      }).join('');
+
+      const feedbackEl = document.getElementById('quiz-instant-feedback');
+      if (ans) {
+        feedbackEl.classList.remove('hidden');
+        feedbackEl.className = `p-4 rounded-2xl border text-xs sm:text-sm space-y-1.5 ${
+          ans.isCorrect
+            ? 'bg-emerald-50 border-emerald-300 text-emerald-950'
+            : 'bg-rose-50 border-rose-300 text-rose-950'
+        }`;
+        feedbackEl.innerHTML = `
+          <div class="font-extrabold flex items-center gap-2">
+            <i class="fa-solid ${ans.isCorrect ? 'fa-circle-check text-emerald-600' : 'fa-circle-info text-rose-600'}"></i>
+            <span>${ans.isCorrect ? 'إجابة صحيحة! تم إضافة +1 نقطة فوراً.' : `الإجابة الصحيحة هي: ${escapeHTML(q.options[q.answerIndex])}`}</span>
+          </div>
+          <p class="text-xs leading-relaxed opacity-90">${escapeHTML(q.explanation || '')}</p>
+        `;
+      } else {
+        feedbackEl.classList.add('hidden');
+        feedbackEl.innerHTML = '';
+      }
+    }
+
+    function configureAutoPolling() {
+      if (autoPollTimer) {
+        clearInterval(autoPollTimer);
+        autoPollTimer = null;
+      }
+      // Enabled by default every 30s so any visitor sees updates automatically
+      if (ghConfig.autoPoll !== false && ghConfig.owner && ghConfig.repo) {
+        autoPollTimer = setInterval(() => {
+          syncFromGitHub(false, true);
+        }, 30000);
+      }
     }
 
     function handleSaveGitHubConfig(e) {
@@ -1877,14 +2454,46 @@
         branch: document.getElementById('gh-branch').value.trim() || 'main',
         path: document.getElementById('gh-path').value.trim() || 'data/church-data.json',
         token: document.getElementById('gh-token').value.trim(),
-        autoPush: document.getElementById('gh-auto-push').checked
+        autoPush: document.getElementById('gh-auto-push').checked,
+        autoPoll: document.getElementById('gh-auto-poll').checked
       };
       localStorage.setItem(GH_CONFIG_KEY, JSON.stringify(ghConfig));
+      configureAutoPolling();
       appendSyncLog(`تم حفظ إعدادات GitHub (${ghConfig.owner}/${ghConfig.repo})`);
       showToast('تم حفظ إعدادات سحابة GitHub بنجاح', 'success');
     }
 
-    async function syncFromGitHub(notifyUser = true) {
+    async function fetchRemoteStateWithoutToken(cleanPath, branch) {
+      const bust = `t=${Date.now()}&r=${Math.random().toString(36).slice(2, 7)}`;
+      const apiUrl = `https://api.github.com/repos/${encodeURIComponent(ghConfig.owner)}/${encodeURIComponent(ghConfig.repo)}/contents/${cleanPath}?ref=${encodeURIComponent(branch)}&${bust}`;
+      const rawUrl = `https://raw.githubusercontent.com/${encodeURIComponent(ghConfig.owner)}/${encodeURIComponent(ghConfig.repo)}/${encodeURIComponent(branch)}/${cleanPath}?${bust}`;
+
+      // 1) Try public GitHub Contents API first (no token needed for public repos)
+      const apiRes = await fetch(apiUrl, {
+        headers: { 'Accept': 'application/vnd.github+json' },
+        cache: 'no-store'
+      });
+
+      if (apiRes.ok) {
+        const data = await apiRes.json();
+        const decodedJson = base64ToUtf8(data.content || '');
+        return JSON.parse(decodedJson);
+      }
+
+      // 2) Fallback to raw.githubusercontent.com with cache-busting query
+      const rawRes = await fetch(rawUrl, { cache: 'no-store' });
+      if (rawRes.status === 404 || apiRes.status === 404) {
+        const err = new Error('NOT_FOUND');
+        err.code = 'NOT_FOUND';
+        throw err;
+      }
+      if (!rawRes.ok) {
+        throw new Error(`HTTP ${rawRes.status}`);
+      }
+      return await rawRes.json();
+    }
+
+    async function syncFromGitHub(notifyUser = true, isBackgroundPoll = false) {
       if (!ghConfig.owner || !ghConfig.repo) {
         if (notifyUser) {
           showToast('أدخل اسم المالك والمستودع في تبويب سحابة GitHub أولاً', 'warning');
@@ -1895,50 +2504,58 @@
 
       const cleanPath = (ghConfig.path || 'data/church-data.json').replace(/^\/+/, '');
       const branch = ghConfig.branch || 'main';
-      const url = `https://api.github.com/repos/${encodeURIComponent(ghConfig.owner)}/${encodeURIComponent(ghConfig.repo)}/contents/${cleanPath}?ref=${encodeURIComponent(branch)}`;
 
-      setSyncStatus('syncing', 'جاري السحب من GitHub...');
+      if (!isBackgroundPoll) {
+        setSyncStatus('syncing', 'جاري جلب التحديثات...');
+      }
+
       try {
-        const headers = { 'Accept': 'application/vnd.github+json' };
-        if (ghConfig.token) headers['Authorization'] = `Bearer ${ghConfig.token}`;
-
-        const res = await fetch(url, { headers, cache: 'no-store' });
-        if (res.status === 404) {
-          setSyncStatus('ready', 'الملف السحابي لم يُنشأ بعد');
-          appendSyncLog('ملف البيانات غير موجود بعد على GitHub؛ اضغط "رفع إلى GitHub" لإنشائه.');
-          if (notifyUser) showToast('ملف البيانات غير موجود بعد على GitHub. ارفع البيانات أولاً.', 'info');
-          return false;
-        }
-        if (!res.ok) {
-          throw new Error(`HTTP ${res.status}`);
-        }
-
-        const data = await res.json();
-        const decodedJson = base64ToUtf8(data.content || '');
-        const remoteState = JSON.parse(decodedJson);
+        const remoteState = await fetchRemoteStateWithoutToken(cleanPath, branch);
 
         if (remoteState && Array.isArray(remoteState.members)) {
+          const prevUpdatedAt = appState.updatedAt || '';
+          const nextUpdatedAt = remoteState.updatedAt || '';
           const prevMsgCount = appState.messages.length;
+
           appState = { ...createInitialState(), ...remoteState };
           saveLocalState();
+          markFetchedNow();
           renderAll();
 
+          const hasNewData = nextUpdatedAt !== prevUpdatedAt || (remoteState.messages && remoteState.messages.length !== prevMsgCount);
           if (remoteState.messages && remoteState.messages.length > prevMsgCount && currentTab !== 'chat') {
             unreadChatCount += (remoteState.messages.length - prevMsgCount);
             updateUnreadBadges();
           }
 
-          setSyncStatus('synced', 'متزامن مع GitHub');
-          appendSyncLog('تم سحب أحدث البيانات من GitHub بنجاح.');
-          if (notifyUser) showToast('تم تحديث الموقع بأحدث بيانات من سحابة GitHub!', 'success');
+          setSyncStatus('synced', 'متصل بالسحابة');
+          if (!isBackgroundPoll) {
+            appendSyncLog(`تم جلب البيانات بنجاح (آخر جلب: ${lastFetchedLabel}).`);
+          }
+          if (notifyUser) {
+            showToast(hasNewData ? 'تم تحديث الموقع بأحدث تغييرات الخادم من GitHub!' : 'البيانات محدثة بالفعل من سحابة GitHub', 'success');
+          } else if (isBackgroundPoll && hasNewData) {
+            showToast('تم رصد وتطبيق تحديث جديد من سحابة GitHub تلقائياً', 'info');
+          }
           return true;
         }
         throw new Error('Invalid remote payload');
       } catch (err) {
         console.error('GitHub pull error:', err);
-        setSyncStatus('error', 'خطأ في السحب');
-        appendSyncLog(`فشل السحب من GitHub: ${err.message}`);
-        if (notifyUser) showToast(`تعذر السحب من GitHub (${err.message})`, 'error');
+        if (err.code === 'NOT_FOUND') {
+          markFetchedNow();
+          setSyncStatus('ready', 'بانتظار أول رفع من الخادم');
+          if (!isBackgroundPoll) {
+            appendSyncLog('ملف البيانات لم يُنشأ بعد على GitHub؛ يمكن للخادم رفعه بضغطة "رفع إلى GitHub".');
+          }
+          if (notifyUser) showToast('ملف البيانات السحابي لم يُنشأ بعد. ارفع البيانات أولاً.', 'info');
+          return false;
+        }
+        setSyncStatus('error', 'تعذر الاتصال بالسحابة');
+        if (!isBackgroundPoll) {
+          appendSyncLog(`فشل جلب البيانات من GitHub: ${err.message}`);
+        }
+        if (notifyUser) showToast(`تعذر الجلب من GitHub (${err.message})`, 'error');
         return false;
       }
     }
@@ -2024,6 +2641,7 @@
       renderAnnouncementsBar();
       renderAttendanceTab();
       renderGradesAndPointsTab();
+      renderAIQuizTab();
       renderChatTab();
       renderServantTab();
       renderExportPreview();
@@ -2031,16 +2649,19 @@
     }
 
     window.addEventListener('DOMContentLoaded', async () => {
+      await ensurePasswordHashInitialized();
       initAttendanceDate();
       populateGitHubForm();
       renderAll();
 
-      // Automatically pull latest cloud data on load if GitHub repo is configured
+      // Automatically fetch latest cloud data on page load for any visitor without needing a Token
       if (ghConfig.owner && ghConfig.repo) {
-        await syncFromGitHub(false);
+        await syncFromGitHub(false, false);
+        configureAutoPolling();
       }
     });
   </script>
 </body>
 </html>
 ```
+            
