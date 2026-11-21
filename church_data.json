@@ -1,0 +1,29 @@
+{
+  "churchName": "خدمة الكنيسة",
+  "members": [
+    {
+      "id": "m_1795297051261",
+      "name": "Fady",
+      "phone": "01280234499",
+      "group": "ثانوى",
+      "points": 20,
+      "attendance": {
+        "2026-11-21": "present"
+      }
+    }
+  ],
+  "messages": [
+    {
+      "id": "msg1",
+      "sender": "خادم الخدمة",
+      "text": "سلام ونعمة للجميع! أهلاً بكم في تطبيق الكنيسة الجديد.",
+      "time": "10:00 ص",
+      "isAdmin": true
+    }
+  ],
+  "adminPass": "123456",
+  "publicRepo": {
+    "owner": "fady-12",
+    "repo": "The-church-"
+  }
+}
