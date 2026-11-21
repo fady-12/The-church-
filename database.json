@@ -1,6 +1,15 @@
 {
   "churchName": "خدمة الكنيسة",
-  "members": [],
+  "members": [
+    {
+      "id": "m_1795297051261",
+      "name": "Fady",
+      "phone": "01280234499",
+      "group": "ثانوى",
+      "points": 10,
+      "attendance": {}
+    }
+  ],
   "messages": [
     {
       "id": "msg1",
