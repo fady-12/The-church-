@@ -86,27 +86,27 @@
       from { opacity: 0; transform: translateY(14px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    .animate-slide-up {
-      animation: slideUp 0.25s ease-out forwards;
-    }
-  </style>
-</head>
+  <!-- نافذة تأكيد مخصصة داخل التطبيق (مع دعم تأكيد مزدوج أو كتابة كلمة تأكيد لعمليات إعادة الضبط) -->
+  <div id="confirmModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/65 backdrop-blur-xs p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 animate-slide-up">
+      <div class="flex items-center gap-2.5 mb-2">
+        <span id="confirmIconBadge" class="w-9 h-9 rounded-xl bg-amber-100 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 flex items-center justify-center text-lg font-extrabold">⚠️</span>
+        <h3 id="confirmTitle" class="text-lg font-extrabold text-slate-900 dark:text-white">تأكيد الإجراء</h3>
+      </div>
+      <p id="confirmMessage" class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mb-4 leading-relaxed"></p>
 
-<body class="bg-[#f7f8fc] text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col">
+      <!-- حقل تأكيد كتابي اختياري للعمليات الحساسة (مثل إعادة ضبط المصنع) -->
+      <div id="confirmChallengeBox" class="hidden mb-4 space-y-1.5 bg-rose-50/80 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800/50 rounded-2xl p-3">
+        <label id="confirmChallengeLabel" for="confirmChallengeInput" class="block text-xs font-extrabold text-rose-800 dark:text-rose-300"></label>
+        <input id="confirmChallengeInput" type="text" autocomplete="off"
+          class="w-full px-3 py-2 rounded-xl border border-rose-300 dark:border-rose-700 bg-white dark:bg-slate-900 text-xs sm:text-sm font-bold outline-none focus:ring-2 focus:ring-rose-500" />
+      </div>
 
-  <!-- حاوية الإشعارات العائمة (Toast) بدلاً من alert/confirm -->
-  <div id="toastContainer" class="fixed bottom-20 md:bottom-6 left-4 right-4 md:left-6 md:right-auto z-50 flex flex-col gap-2 max-w-md pointer-events-none"></div>
-
-  <!-- نافذة تأكيد مخصصة داخل التطبيق -->
-  <div id="confirmModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4">
-    <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 animate-slide-up">
-      <h3 id="confirmTitle" class="text-lg font-bold text-slate-900 dark:text-white mb-2">تأكيد الإجراء</h3>
-      <p id="confirmMessage" class="text-sm text-slate-600 dark:text-slate-300 mb-6 leading-relaxed"></p>
-      <div class="flex items-center justify-end gap-3">
-        <button id="confirmCancelBtn" class="px-4 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition">
+      <div class="flex items-center justify-end gap-2.5 pt-1">
+        <button id="confirmCancelBtn" type="button" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition">
           إلغاء
         </button>
-        <button id="confirmOkBtn" class="px-4 py-2.5 rounded-xl text-sm font-semibold bg-rose-600 hover:bg-rose-700 text-white transition">
+        <button id="confirmOkBtn" type="button" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-rose-600 hover:bg-rose-700 text-white transition shadow-sm">
           تأكيد
         </button>
       </div>
@@ -811,16 +811,154 @@
                 <span>مزامنة تلقائية عند كل تغيير جديد</span>
               </label>
 
-              <div class="flex items-center gap-2">
-                <button type="button" onclick="resetLocalDemoData()" class="px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 text-xs font-bold transition">
-                  إعادة ضبط البيانات التجريبية
-                </button>
-                <button type="submit" class="px-5 py-2 rounded-xl bg-blue-900 hover:bg-blue-800 dark:bg-blue-700 dark:hover:bg-blue-600 text-white text-xs font-bold transition">
-                  حفظ إعدادات GitHub
+              <button type="submit" class="px-5 py-2 rounded-xl bg-blue-900 hover:bg-blue-800 dark:bg-blue-700 dark:hover:bg-blue-600 text-white text-xs font-bold transition">
+                حفظ إعدادات GitHub
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- مركز إعادة الضبط المتدرج والآمن للقائد -->
+        <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 shadow-soft border border-rose-200/80 dark:border-rose-900/50 space-y-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-800 pb-4">
+            <div>
+              <h3 class="text-lg font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                <span>♻️</span>
+                <span>مركز إعادة الضبط المتدرج وإدارة النسخ</span>
+              </h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">
+                اختر نطاق إعادة الضبط بدقة؛ كل عملية تتطلب تأكيداً واضحاً لمنع المسح بالخطأ على الجوال، مع إمكانية حفظ نسخة احتياطية قبل تصفير النقاط.
+              </p>
+            </div>
+            <button type="button" onclick="downloadJsonBackupSnapshot()"
+              class="px-3.5 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/50 dark:hover:bg-blue-900/60 text-blue-900 dark:text-blue-200 border border-blue-200 dark:border-blue-800/60 text-xs font-extrabold transition shrink-0">
+              💾 تنزيل نسخة احتياطية (JSON)
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- 1. إعادة ضبط الأسئلة اليومية فقط -->
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/80 dark:border-slate-700/70 flex flex-col justify-between gap-3">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1">
+                  <span class="font-extrabold text-sm text-slate-900 dark:text-white">🧠 إعادة ضبط الأسئلة اليومية فقط</span>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300">اختبار اليوم</span>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                  يمسح إجابات اليوم ومحاولة اختبار اليوم ويسمح بإعادة المحاولة فوراً، مع الإبقاء على النقاط والحضور والبيانات الأخرى.
+                </p>
+              </div>
+              <div class="flex items-center justify-between gap-2 pt-1">
+                <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400">النقاط والحضور محفوظة</span>
+                <button type="button" onclick="requestResetDailyQuizOnly()"
+                  class="px-3.5 py-2 rounded-xl bg-blue-800 hover:bg-blue-900 text-white text-xs font-bold transition">
+                  إعادة ضبط الأسئلة اليومية
                 </button>
               </div>
             </div>
-          </form>
+
+            <!-- 2. إعادة ضبط الحضور والغياب فقط -->
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/80 dark:border-slate-700/70 flex flex-col justify-between gap-3">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1">
+                  <span class="font-extrabold text-sm text-slate-900 dark:text-white">📋 إعادة ضبط الحضور والغياب فقط</span>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300">سجل الحضور</span>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                  اختر مسح سجل اليوم المحدد فقط أو مسح كافة سجلات الحضور والغياب، دون حذف أسماء المخدومين أو نقاطهم.
+                </p>
+              </div>
+              <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+                <select id="resetAttendanceScopeSelect"
+                  class="px-2.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs font-bold outline-none">
+                  <option value="selected_day">اليوم المحدد فقط</option>
+                  <option value="all_days">كافة الأيام والسجلات</option>
+                </select>
+                <button type="button" onclick="requestResetAttendanceOnly()"
+                  class="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition">
+                  إعادة ضبط الحضور
+                </button>
+              </div>
+            </div>
+
+            <!-- 3. إعادة ضبط النقاط ولوحة الشرف فقط -->
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/80 dark:border-slate-700/70 flex flex-col justify-between gap-3">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1">
+                  <span class="font-extrabold text-sm text-slate-900 dark:text-white">🏆 إعادة ضبط النقاط ولوحة الشرف فقط</span>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-950/60 text-indigo-800 dark:text-indigo-300">النقاط والترتيب</span>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                  يصفر نقاط المخدومين ولوحة الشرف مع خيار حفظ نسخة احتياطية تلقائية قبل التصفير وإبقاء سجل الحضور والأسئلة.
+                </p>
+              </div>
+              <div class="space-y-2 pt-1">
+                <label class="flex items-center gap-2 text-[11px] font-bold text-slate-700 dark:text-slate-300 cursor-pointer">
+                  <input id="backupBeforePointsResetCheckbox" type="checkbox" checked class="rounded text-indigo-600 w-4 h-4" />
+                  <span>حفظ نسخة احتياطية قبل تصفير النقاط</span>
+                </label>
+                <div class="flex justify-end">
+                  <button type="button" onclick="requestResetPointsOnly()"
+                    class="px-3.5 py-2 rounded-xl bg-indigo-700 hover:bg-indigo-800 text-white text-xs font-bold transition">
+                    تصفير النقاط ولوحة الشرف
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. إعادة ضبط الدردشة فقط -->
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/80 dark:border-slate-700/70 flex flex-col justify-between gap-3">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1">
+                  <span class="font-extrabold text-sm text-slate-900 dark:text-white">💬 إعادة ضبط الدردشة فقط</span>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300">وتساب الكنيسة</span>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                  يمسح كافة رسائل الدردشة الجماعية والرسالة المثبتة بعد تأكيد مزدوج، دون المساس بالحضور أو النقاط أو الأسئلة.
+                </p>
+              </div>
+              <div class="flex items-center justify-between gap-2 pt-1">
+                <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400">يتطلب تأكيداً مزدوجاً</span>
+                <button type="button" onclick="requestResetChatOnly()"
+                  class="px-3.5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition">
+                  مسح رسائل الدردشة
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. إعادة ضبط المصنع الكاملة + خيار إعادة تعيين كلمة سر القائد -->
+          <div class="p-4 sm:p-5 rounded-2xl bg-rose-50/80 dark:bg-rose-950/25 border border-rose-200 dark:border-rose-800/60 space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <h4 class="text-sm sm:text-base font-extrabold text-rose-900 dark:text-rose-200 flex items-center gap-1.5">
+                  <span>🏭</span>
+                  <span>إعادة ضبط المصنع الكاملة (Factory Reset)</span>
+                </h4>
+                <p class="text-xs text-rose-800/85 dark:text-rose-300/90 mt-0.5 leading-relaxed">
+                  يمسح كافة البيانات المحلية (الحضور، النقاط، الأسئلة، الدردشة، الإعلانات والسجل) ويعيد التطبيق لحالته الابتدائية النظيفة، مع خيار منفصل لاستعادة كلمة السر الافتراضية المشفرة بـ SHA-256.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
+              <label class="flex items-center gap-2 text-xs font-extrabold text-rose-900 dark:text-rose-200 cursor-pointer">
+                <input id="factoryResetPasswordCheckbox" type="checkbox" checked class="rounded text-rose-600 w-4 h-4" />
+                <span>إعادة تعيين كلمة سر القائد إلى الافتراضي (مشفرة بـ SHA-256)</span>
+              </label>
+
+              <div class="flex flex-wrap items-center gap-2">
+                <button type="button" onclick="requestResetServantSecretOnly()"
+                  class="px-3.5 py-2 rounded-xl bg-white dark:bg-slate-900 hover:bg-rose-100 dark:hover:bg-rose-950/50 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-700 text-xs font-extrabold transition">
+                  🔑 إعادة تعيين كلمة السر فقط
+                </button>
+                <button type="button" onclick="requestFactoryReset()"
+                  class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-extrabold shadow-sm transition">
+                  🏭 إعادة ضبط المصنع الكاملة
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -988,341 +1126,341 @@
         ],
         github: {
           owner: '',
-          repo: '',
-          branch: 'main',
-          path: 'church-community-data.json',
-          token: '',
-          sha: '',
-          autoSync: false,
-        }
-      };
-    }
-
-    let appState = loadLocalState();
-    let activeTab = 'attendance';
-    let attendanceFilter = 'all';
-    let quizCategory = 'all';
-    let currentQuestionIndex = 0;
-    let manualDailySalt = 0;
-    let quizListMode = false;
-
-    function loadLocalState() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return createDefaultState();
-        const parsed = JSON.parse(raw);
-        const def = createDefaultState();
-        return {
-          ...def,
-          ...parsed,
-          currentUser: { ...def.currentUser, ...(parsed.currentUser || {}) },
-          pointSettings: { ...def.pointSettings, ...(parsed.pointSettings || {}) },
-          github: { ...def.github, ...(parsed.github || {}) },
-        };
-      } catch (err) {
-        console.error('خطأ في قراءة التخزين المحلي:', err);
-        return createDefaultState();
-      }
-    }
-
-    async function ensureDefaultSecretInitialized() {
-      if (!appState.servantSecretHash) {
-        appState.servantSecretHash = await hashSecretSHA256(DEFAULT_SERVANT_SECRET);
-        saveLocalState(false);
-      }
-    }
-
-    function saveLocalState(triggerAutoSync = true) {
-      try {
-        appState.updatedAt = new Date().toISOString();
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
-        updateKnownMembersDatalist();
-        if (triggerAutoSync && appState.github.autoSync && appState.github.token && appState.github.owner && appState.github.repo) {
-          syncWithGitHub('push', true);
-        }
-      } catch (err) {
-        console.error('خطأ في حفظ البيانات محلياً:', err);
-      }
-    }
-
-    /* =========================================================================
-       2. آية اليوم والتأمل اليومي وإعلانات الخدمة
-       ========================================================================= */
-    const DAILY_VERSES = [
-      {
-        verse: '«لِأَنَّهُ حَيْثُمَا اجْتَمَعَ اثْنَانِ أَوْ ثَلَاثَةٌ بِاسْمِي، فَهُنَاكَ أَكُونُ فِي وَسَطِهِمْ»',
-        ref: 'متى ١٨ : ٢٠',
-        reflection: 'حضور المسيح في وسط المجتمعين هو مصدر السلام والرجاء؛ فاحرص أن يكون قلبك حاضراً قبل حضورك الجسدي.'
-      },
-      {
-        verse: '«أَنَا هُوَ نُورُ الْعَالَمِ. مَنْ يَتْبَعْنِي فَلَا يَمْشِي فِي الظُّلْمَةِ بَلْ يَكُونُ لَهُ نُورُ الْحَيَاةِ»',
-        ref: 'يوحنا ٨ : ١٢',
-        reflection: 'نور المسيح يضيء طريقنا اليومي ويجعلنا نورًا وشهادة حية لكل من يلتقي بنا في الخدمة والبيت.'
-      },
-      {
-        verse: '«لِتَصِرْ كُلُّ أُمُورِكُمْ فِي مَحَبَّةٍ»',
-        ref: '١ كورنثوس ١٦ : ١٤',
-        reflection: 'المحبة هي لغة الخدمة الحقيقية التي تجمع القلوب وتبني النفوس وتداوي كل فتور.'
-      },
-      {
-        verse: '«فَرِحِينَ فِي الرَّجَاءِ، صَابِرِينَ فِي الْمُضَايَقَةِ، مُواظِبِينَ عَلَى الصَّلَاةِ»',
-        ref: 'رومية ١٢ : ١٢',
-        reflection: 'الرجاء في الله يجدد قوتنا كل صباح، والصلاة المستمرة تحفظ خطواتنا وسط تحديات اليوم.'
-      },
-      {
-        verse: '«اِفْتَقِدُوا بَعْضُكُمْ بَعْضاً بِمَحَبَّةٍ أَخَوِيَّةٍ»',
-        ref: 'رومية ١٢ : ١٠',
-        reflection: 'سؤال بسيط أو كلمة تشجيع قد ترفع نفساً متعبة وتعيد إليها الفرح والانتماء.'
-      }
-    ];
-
-    function getDailyVersePack(dateStr = getTodayISO()) {
-      let sum = 0;
-      for (let i = 0; i < dateStr.length; i++) sum += dateStr.charCodeAt(i);
-      return DAILY_VERSES[sum % DAILY_VERSES.length];
-    }
-
-    function renderDailyVerseAndAnnouncements() {
-      const today = getTodayISO();
-      const pack = getDailyVersePack(today);
-      document.getElementById('dailyVerseText').textContent = pack.verse;
-      document.getElementById('dailyVerseRef').textContent = pack.ref;
-      document.getElementById('dailyReflectionText').textContent = pack.reflection;
-      document.getElementById('dailyReflectionDate').textContent = today;
-
-      const listEl = document.getElementById('announcementsListContainer');
-      const badgeEl = document.getElementById('announcementsCountBadge');
-      const list = appState.announcements || [];
-      badgeEl.textContent = `${list.length} إعلان`;
-
-      if (!list.length) {
-        listEl.innerHTML = `<div class="text-xs text-slate-400 py-3">لا توجد إعلانات منشورة حالياً.</div>`;
-        return;
-      }
-
-      listEl.innerHTML = list.map(ann => `
-        <div class="p-3 rounded-2xl bg-amber-50/60 dark:bg-slate-800/70 border border-amber-200/60 dark:border-slate-700/60 flex items-start justify-between gap-2">
-          <div class="min-w-0">
-            <div class="flex items-center gap-2 flex-wrap">
-              <span class="font-extrabold text-xs sm:text-sm text-slate-900 dark:text-white">${escapeHTML(ann.title)}</span>
-              <span class="text-[10px] text-slate-400 font-bold">${escapeHTML(ann.date || today)}</span>
-            </div>
-            <p class="text-xs text-slate-600 dark:text-slate-300 mt-0.5 leading-relaxed">${escapeHTML(ann.body)}</p>
-          </div>
-          ${appState.currentUser.isServantAuthenticated ? `<button onclick="deleteAnnouncement('${ann.id}')" title="حذف الإعلان" class="text-xs text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/50 px-2 py-1 rounded-lg shrink-0">✕</button>` : ''}
-        </div>
-      `).join('');
-    }
-
-    document.getElementById('addAnnouncementForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      if (!appState.currentUser.isServantAuthenticated) {
-        showToast('إضافة الإعلانات متاحة للخادم فقط', 'warning');
-        return;
-      }
-      const title = document.getElementById('announcementTitleInput').value.trim();
-      const body = document.getElementById('announcementBodyInput').value.trim();
-      if (!title || !body) return;
-
-      appState.announcements.unshift({
-        id: 'ann_' + Date.now(),
-        title,
-        body,
-        date: getTodayISO(),
-      });
-      document.getElementById('announcementTitleInput').value = '';
-      document.getElementById('announcementBodyInput').value = '';
-      saveLocalState();
-      showToast('تم نشر الإعلان الجديد للمخدومين', 'success');
-      renderAll();
-    });
-
-    function deleteAnnouncement(annId) {
-      if (!appState.currentUser.isServantAuthenticated) return;
-      appState.announcements = appState.announcements.filter(a => a.id !== annId);
-      saveLocalState();
-      showToast('تم حذف الإعلان', 'info');
-      renderAll();
-    }
-
-    /* =========================================================================
-       3. الإشعارات العائمة (Toast) ونافذة التأكيد المخصصة
-       ========================================================================= */
-    const STORAGE_KEY = 'church_community_platform_v1';
-    const THEME_KEY = 'church_theme_mode';
-
-    function getTodayISO() {
-      const now = new Date();
-      const y = now.getFullYear();
-      const m = String(now.getMonth() + 1).padStart(2, '0');
-      const d = String(now.getDate()).padStart(2, '0');
-      return `${y}-${m}-${d}`;
-    }
-
-    function formatTimeNow() {
-      return new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
-    }
-
-    function createDefaultState() {
-      const today = getTodayISO();
-      return {
-        updatedAt: new Date().toISOString(),
-        currentUser: {
-          name: '',
-          role: 'served', // 'served' أو 'servant'
-          servantName: 'خادم الخدمة',
-          isServantAuthenticated: false,
-        },
-        servantPasscode: '1234',
-        pointSettings: {
-          pointsPerQuestion: 10,
-          pointsPerAttendance: 20,
-          pointsPerExcused: 10,
-          dailyQuizBonus: 100,
-        },
-        members: [
-          { id: 'm1', name: 'كيرلس أشرف', bonusPoints: 15, note: 'مشارك في الكورال' },
-          { id: 'm2', name: 'مارينا عادل', bonusPoints: 20, note: 'حفظ أصحاح الأسبوع' },
-          { id: 'm3', name: 'يوسف هاني', bonusPoints: 0, note: '' },
-          { id: 'm4', name: 'ساندرا ميلاد', bonusPoints: 10, note: '' },
-        ],
-        // attendance[date][memberId] = { status: 'present'|'absent'|'excused', note: string, time: string }
-        attendance: {
-          [today]: {
-            m1: { status: 'present', note: 'حضور مبكر', time: '06:15 م' },
-            m2: { status: 'present', note: '', time: '06:20 م' },
-            m3: { status: 'absent', note: 'لم يرد على الاتصال', time: '06:30 م' },
-            m4: { status: 'excused', note: 'امتحان جامعي', time: '06:10 م' },
-          }
-        },
-        sessionLabels: {
-          [today]: 'اجتماع الخدمة الأسبوعي'
-        },
-        messages: [
-          {
-            id: 'msg1',
-            sender: 'أ. مينا (خادم)',
-            senderRole: 'servant',
-            text: 'أهلاً بكم جميعاً في منصة الخدمة! سجلوا أسماءكم والحضور وأجيبوا على أسئلة اليوم الـ 100.',
-            time: '05:45 م',
-            date: today,
-          },
-          {
-            id: 'msg2',
-            sender: 'مارينا عادل',
-            senderRole: 'served',
-            text: 'سلام ونعمة يا خادم، سجلت حضوري وبدأت في حل أسئلة اليوم 🙏',
-            time: '06:02 م',
-            date: today,
-          }
-        ],
-        // quizProgress[date][memberName] = { answers: { [qIndex]: chosenIndex }, bonusAwarded: boolean }
-        quizProgress: {
-          [today]: {}
-        },
-        activityLog: [
-          {
-            id: 'act1',
-            memberName: 'مارينا عادل',
-            action: 'سجلت حضورها في اجتماع اليوم',
-            pointsChange: 20,
-            time: '06:02 م',
-            date: today,
-          }
-        ],
-        github: {
-          owner: '',
-          repo: '',
-          branch: 'main',
-          path: 'church-community-data.json',
-          token: '',
-          sha: '',
-          autoSync: false,
-        }
-      };
-    }
-
-    let appState = loadLocalState();
-    let activeTab = 'attendance';
-    let attendanceFilter = 'all';
-    let quizCategory = 'all';
-    let currentQuestionIndex = 0;
-    let manualDailySalt = 0;
-
-    function loadLocalState() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return createDefaultState();
-        const parsed = JSON.parse(raw);
-        const def = createDefaultState();
-        return {
-          ...def,
-          ...parsed,
-          currentUser: { ...def.currentUser, ...(parsed.currentUser || {}) },
-          pointSettings: { ...def.pointSettings, ...(parsed.pointSettings || {}) },
-          github: { ...def.github, ...(parsed.github || {}) },
-        };
-      } catch (err) {
-        console.error('خطأ في قراءة التخزين المحلي:', err);
-        return createDefaultState();
-      }
-    }
-
-    function saveLocalState(triggerAutoSync = true) {
-      try {
-        appState.updatedAt = new Date().toISOString();
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
-        updateKnownMembersDatalist();
-        if (triggerAutoSync && appState.github.autoSync && appState.github.token && appState.github.owner && appState.github.repo) {
-          syncWithGitHub('push', true);
-        }
-      } catch (err) {
-        console.error('خطأ في حفظ البيانات محلياً:', err);
-      }
-    }
-
-    /* =========================================================================
-       2. الإشعارات العائمة (Toast) ونافذة التأكيد المخصصة
-       ========================================================================= */
-    function showToast(message, type = 'info') {
-      const container = document.getElementById('toastContainer');
-      const colors = {
-        success: 'bg-emerald-600 text-white',
-        error: 'bg-rose-600 text-white',
-        warning: 'bg-amber-500 text-slate-950',
-        info: 'bg-slate-900 dark:bg-violet-600 text-white',
-      };
-      const toast = document.createElement('div');
-      toast.className = `pointer-events-auto px-4 py-3 rounded-2xl shadow-xl text-xs sm:text-sm font-bold flex items-center justify-between gap-3 animate-slide-up ${colors[type] || colors.info}`;
-      toast.innerHTML = `<span>${escapeHTML(message)}</span><button onclick="this.parentElement.remove()" class="opacity-80 hover:opacity-100">✕</button>`;
-      container.appendChild(toast);
-      setTimeout(() => {
-        if (toast.parentElement) toast.remove();
-      }, 3600);
-    }
-
-    function openConfirmModal(title, message, onConfirm) {
+    function openConfirmModal(title, message, onConfirm, options = {}) {
       const modal = document.getElementById('confirmModal');
       document.getElementById('confirmTitle').textContent = title;
       document.getElementById('confirmMessage').textContent = message;
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
 
+      const iconBadge = document.getElementById('confirmIconBadge');
+      iconBadge.textContent = options.icon || '⚠️';
+
+      const challengeBox = document.getElementById('confirmChallengeBox');
+      const challengeLabel = document.getElementById('confirmChallengeLabel');
+      const challengeInput = document.getElementById('confirmChallengeInput');
       const okBtn = document.getElementById('confirmOkBtn');
       const cancelBtn = document.getElementById('confirmCancelBtn');
+
+      okBtn.textContent = options.okText || 'تأكيد';
+      cancelBtn.textContent = options.cancelText || 'إلغاء';
+
+      const requiresPhrase = Boolean(options.requiredPhrase);
+      if (requiresPhrase) {
+        challengeBox.classList.remove('hidden');
+        challengeLabel.textContent = `للتأكيد النهائي ومنع المسح بالخطأ، اكتب الكلمة: "${options.requiredPhrase}"`;
+        challengeInput.value = '';
+        challengeInput.placeholder = options.requiredPhrase;
+      } else {
+        challengeBox.classList.add('hidden');
+        challengeInput.value = '';
+      }
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      if (requiresPhrase) {
+        setTimeout(() => challengeInput.focus(), 40);
+      }
 
       const cleanup = () => {
         modal.classList.add('hidden');
         modal.classList.remove('flex');
+        challengeBox.classList.add('hidden');
+        challengeInput.value = '';
         okBtn.onclick = null;
         cancelBtn.onclick = null;
       };
 
       cancelBtn.onclick = () => cleanup();
       okBtn.onclick = () => {
+        if (requiresPhrase && challengeInput.value.trim() !== options.requiredPhrase) {
+          showToast(`يجب كتابة كلمة "${options.requiredPhrase}" بدقة للتأكيد النهائي`, 'warning');
+          challengeInput.focus();
+          return;
+        }
         cleanup();
-        onConfirm();
+        if (typeof onConfirm === 'function') {
+          onConfirm();
+        }
       };
+    }
+
+    /* =========================================================================
+       2.5 نظام إعادة الضبط المتدرج والآمن والنسخ الاحتياطي للقائد
+       ========================================================================= */
+    function ensureServantAuthorizedForReset() {
+      if (!appState.currentUser.isServantAuthenticated) {
+        showToast('عمليات إعادة الضبط متاحة للقائد / الخادم فقط بعد تسجيل الدخول', 'warning');
+        openServantModal();
+        return false;
+      }
+      return true;
+    }
+
+    function buildBackupSnapshotPayload() {
+      return {
+        exportedAt: new Date().toISOString(),
+        date: getTodayISO(),
+        pointSettings: { ...appState.pointSettings },
+        members: JSON.parse(JSON.stringify(appState.members || [])),
+        attendance: JSON.parse(JSON.stringify(appState.attendance || {})),
+        quizProgress: JSON.parse(JSON.stringify(appState.quizProgress || {})),
+        messages: JSON.parse(JSON.stringify(appState.messages || [])),
+        announcements: JSON.parse(JSON.stringify(appState.announcements || [])),
+      };
+    }
+
+    function downloadJsonBackupSnapshot(customPrefix = 'church-backup') {
+      try {
+        const snapshot = buildBackupSnapshotPayload();
+        const blob = new Blob([JSON.stringify(snapshot, null, 2)], { type: 'application/json;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${customPrefix}-${getTodayISO()}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('تم حفظ نسخة احتياطية (JSON) بنجاح', 'success');
+      } catch (err) {
+        console.error('فشل حفظ النسخة الاحتياطية:', err);
+        showToast('تعذر حفظ النسخة الاحتياطية محلياً', 'error');
+      }
+    }
+
+    // 1. إعادة ضبط الأسئلة اليومية فقط (محاولة اختبار اليوم مع الحفاظ على النقاط والحضور)
+    function requestResetDailyQuizOnly() {
+      if (!ensureServantAuthorizedForReset()) return;
+      const today = getTodayISO();
+      openConfirmModal(
+        'إعادة ضبط الأسئلة اليومية فقط',
+        `سيتم مسح إجابات ومحاولات اختبار اليوم (${today}) والسماح بإعادة المحاولة فوراً، مع الإبقاء على رصيد النقاط المسجل وسجل الحضور والبيانات الأخرى.`,
+        () => {
+          openConfirmModal(
+            'تأكيد نهائي — الأسئلة اليومية',
+            `تأكيد نهائي: هل تريد مسح محاولة اختبار اليوم (${today}) الآن؟`,
+            () => {
+              if (!appState.quizProgress[today]) appState.quizProgress[today] = {};
+              const activeKey = getCurrentQuizMemberKey();
+              if (appState.quizProgress[today][activeKey]) {
+                appState.quizProgress[today][activeKey] = {
+                  answers: {},
+                  bonusAwarded: false,
+                  submittedToLeader: false,
+                  submittedPoints: 0,
+                };
+              } else {
+                appState.quizProgress[today] = {};
+              }
+              currentQuestionIndex = 0;
+              recordActivity(appState.currentUser.servantName || 'خادم', `أعاد ضبط أسئلة اليوم (${today}) مع الحفاظ على النقاط والحضور`, 0);
+              saveLocalState();
+              renderAll();
+              showToast('تمت إعادة ضبط الأسئلة اليومية ويمكن المحاولة من جديد فوراً (النقاط والحضور محفوظة)', 'success');
+            },
+            { icon: '🧠', okText: 'مسح محاولة اليوم' }
+          );
+        },
+        { icon: '🧠', okText: 'متابعة التأكيد' }
+      );
+    }
+
+    // 2. إعادة ضبط الحضور والغياب فقط (اليوم المحدد أو الكل دون حذف أسماء المخدومين أو نقاطهم)
+    function requestResetAttendanceOnly() {
+      if (!ensureServantAuthorizedForReset()) return;
+      const scopeEl = document.getElementById('resetAttendanceScopeSelect');
+      const scope = scopeEl ? scopeEl.value : 'selected_day';
+      const dateKey = getSelectedAttendanceDate();
+      const isAllDays = scope === 'all_days';
+
+      const firstMsg = isAllDays
+        ? 'سيتم مسح كافة سجلات الحضور والغياب في جميع الأيام، مع الإبقاء على أسماء المخدومين ونقاطهم وسجل الأسئلة والدردشة.'
+        : `سيتم مسح سجل الحضور والغياب ليوم (${dateKey}) فقط، مع الإبقاء على أسماء المخدومين ونقاطهم.`;
+
+      openConfirmModal(
+        'إعادة ضبط الحضور والغياب فقط',
+        firstMsg,
+        () => {
+          openConfirmModal(
+            'تأكيد نهائي — سجل الحضور والغياب',
+            isAllDays
+              ? 'تأكيد نهائي: سيتم تصفير كل سجلات الحضور والغياب السابقة. هل أنت متأكد؟'
+              : `تأكيد نهائي: سيتم مسح حضور وغياب يوم (${dateKey}). هل أنت متأكد؟`,
+            () => {
+              if (isAllDays) {
+                appState.attendance = { [getTodayISO()]: {} };
+                recordActivity(appState.currentUser.servantName || 'خادم', 'أعاد ضبط كافة سجلات الحضور والغياب مع إبقاء الأسماء والنقاط', 0);
+              } else {
+                appState.attendance[dateKey] = {};
+                recordActivity(appState.currentUser.servantName || 'خادم', `أعاد ضبط حضور وغياب يوم (${dateKey})`, 0);
+              }
+              saveLocalState();
+              renderAll();
+              showToast(
+                isAllDays
+                  ? 'تمت إعادة ضبط كافة سجلات الحضور والغياب بنجاح'
+                  : `تمت إعادة ضبط حضور وغياب يوم (${dateKey}) بنجاح`,
+                'success'
+              );
+            },
+            { icon: '📋', okText: 'تأكيد المسح' }
+          );
+        },
+        { icon: '📋', okText: 'متابعة التأكيد' }
+      );
+    }
+
+    // 3. إعادة ضبط النقاط ولوحة الشرف فقط (مع خيار حفظ نسخة احتياطية وإبقاء الحضور والأسئلة)
+    function requestResetPointsOnly() {
+      if (!ensureServantAuthorizedForReset()) return;
+      const saveBackup = Boolean(document.getElementById('backupBeforePointsResetCheckbox')?.checked);
+
+      openConfirmModal(
+        'إعادة ضبط النقاط ولوحة الشرف فقط',
+        `سيتم تصفير نقاط المخدومين ولوحة الشرف${saveBackup ? ' بعد حفظ نسخة احتياطية تلقائية' : ''}، مع الإبقاء على سجل الحضور والغياب والأسئلة والدردشة.`,
+        () => {
+          openConfirmModal(
+            'تأكيد نهائي — تصفير النقاط ولوحة الشرف',
+            'تأكيد نهائي: هل تريد تصفير جميع النقاط وتحديث لوحة الشرف الآن؟',
+            () => {
+              if (saveBackup) {
+                downloadJsonBackupSnapshot('church-points-backup');
+              }
+
+              // تصفير نقاط التعديل الإضافية للأعضاء
+              appState.members = (appState.members || []).map(m => ({
+                ...m,
+                bonusPoints: 0,
+              }));
+
+              // تصفير النقاط المكتسبة من سجلات الأسئلة مع الاحتفاظ بسجل المحاولات نفسها
+              Object.keys(appState.quizProgress || {}).forEach(dateKey => {
+                const dayMap = appState.quizProgress[dateKey] || {};
+                Object.keys(dayMap).forEach(userKey => {
+                  if (dayMap[userKey]) {
+                    dayMap[userKey].bonusAwarded = false;
+                    dayMap[userKey].submittedPoints = 0;
+                    dayMap[userKey].submittedToLeader = false;
+                  }
+                });
+              });
+
+              // استبعاد نقاط الحضور التلقائية القديمة عبر حفظ نقطة بداية للتصفير
+              appState.pointSettings.pointsPerAttendance = 0;
+              appState.pointSettings.pointsPerExcused = 0;
+              appState.pointSettings.pointsPerQuestion = 0;
+              appState.pointSettings.dailyQuizBonus = 0;
+
+              recordActivity(appState.currentUser.servantName || 'خادم', 'صفّر النقاط ولوحة الشرف مع الإبقاء على سجل الحضور والأسئلة', 0);
+              saveLocalState();
+              renderAll();
+              showToast('تمت إعادة ضبط النقاط ولوحة الشرف بنجاح مع إبقاء سجل الحضور والأسئلة', 'success');
+            },
+            { icon: '🏆', okText: 'تصفير النقاط الآن' }
+          );
+        },
+        { icon: '🏆', okText: 'متابعة التأكيد' }
+      );
+    }
+
+    // 4. إعادة ضبط الدردشة فقط (بعد تأكيد مزدوج)
+    function requestResetChatOnly() {
+      if (!ensureServantAuthorizedForReset()) return;
+
+      openConfirmModal(
+        'إعادة ضبط الدردشة فقط (الخطوة ١ من ٢)',
+        'سيتم مسح جميع رسائل الدردشة الجماعية وإلغاء تثبيت الرسالة الحالية، دون التأثير على الحضور أو النقاط أو الأسئلة.',
+        () => {
+          openConfirmModal(
+            'تأكيد مزدوج نهائي — مسح الدردشة (الخطوة ٢ من ٢)',
+            'هذا هو التأكيد الثاني والأخير: بمجرد الضغط على "مسح الدردشة نهائياً" سيتم حذف سجل الرسائل بالكامل.',
+            () => {
+              appState.messages = [];
+              appState.pinnedMessageId = null;
+              appState.replyToMessageId = null;
+              appState.lastReadMessageCount = 0;
+              clearReplyTarget();
+              recordActivity(appState.currentUser.servantName || 'خادم', 'مسح كافة رسائل الدردشة الجماعية', 0);
+              saveLocalState();
+              renderAll();
+              showToast('تمت إعادة ضبط الدردشة ومسح الرسائل بنجاح', 'success');
+            },
+            { icon: '💬', okText: 'مسح الدردشة نهائياً' }
+          );
+        },
+        { icon: '💬', okText: 'التأكيد الأول' }
+      );
+    }
+
+    // إعادة تعيين كلمة سر القائد المشفرة بـ SHA-256 بشكل مستقل
+    function requestResetServantSecretOnly() {
+      if (!ensureServantAuthorizedForReset()) return;
+
+      openConfirmModal(
+        'إعادة تعيين كلمة سر القائد (مشفرة بـ SHA-256)',
+        'سيتم استعادة كلمة السر الافتراضية المشفرة بـ SHA-256 لتتمكن من تسجيل الدخول أو تغييرها إلى كلمة سر جديدة من لوحة القائد.',
+        async () => {
+          appState.servantSecretHash = await hashSecretSHA256(DEFAULT_SERVANT_SECRET);
+          saveLocalState();
+          showToast('تمت إعادة تعيين كلمة سر القائد وتشفيرها بـ SHA-256 بنجاح', 'success');
+        },
+        { icon: '🔑', okText: 'إعادة تعيين كلمة السر' }
+      );
+    }
+
+    // 5. إعادة ضبط المصنع الكاملة (Factory Reset) مع كتابة كلمة تأكيد واضحة
+    function requestFactoryReset() {
+      if (!ensureServantAuthorizedForReset()) return;
+      const resetPasswordToo = Boolean(document.getElementById('factoryResetPasswordCheckbox')?.checked);
+
+      openConfirmModal(
+        'إعادة ضبط المصنع الكاملة (Factory Reset)',
+        'تحذير: سيتم مسح كافة البيانات المحلية (الحضور، النقاط، الـ ١٠٠ سؤال، الدردشة، الإعلانات والسجل) وإعادة التطبيق لحالته الابتدائية النظيفة.',
+        () => {
+          openConfirmModal(
+            'تأكيد نهائي لإعادة ضبط المصنع',
+            'سيتم مسح جميع البيانات المحلية فوراً ولا يمكن التراجع عن هذا الإجراء بعد التنفيذ.',
+            async () => {
+              const freshState = createDefaultState();
+              freshState.servantSecretHash = resetPasswordToo
+                ? await hashSecretSHA256(DEFAULT_SERVANT_SECRET)
+                : (appState.servantSecretHash || await hashSecretSHA256(DEFAULT_SERVANT_SECRET));
+
+              // الحفاظ على إعدادات سحابة GitHub للخادم إن وجدت
+              freshState.github = {
+                ...freshState.github,
+                owner: appState.github.owner || '',
+                repo: appState.github.repo || '',
+                branch: appState.github.branch || 'main',
+                path: appState.github.path || 'church-community-data.json',
+                token: appState.github.token || '',
+                autoSync: Boolean(appState.github.autoSync),
+              };
+              freshState.currentUser.isServantAuthenticated = true;
+              freshState.currentUser.role = 'servant';
+              freshState.currentUser.servantName = appState.currentUser.servantName || 'خادم الخدمة';
+
+              appState = freshState;
+              currentQuestionIndex = 0;
+              manualDailySalt = 0;
+              clearReplyTarget();
+              saveLocalState(false);
+              renderAll();
+              showToast(
+                resetPasswordToo
+                  ? 'تمت إعادة ضبط المصنع الكاملة واستعادة كلمة السر المشفرة بـ SHA-256'
+                  : 'تمت إعادة ضبط المصنع الكاملة بنجاح مع الإبقاء على كلمة السر الحالية',
+                'success'
+              );
+            },
+            {
+              icon: '🏭',
+              okText: 'تنفيذ إعادة ضبط المصنع',
+              requiredPhrase: 'إعادة ضبط'
+            }
+          );
+        },
+        { icon: '🏭', okText: 'متابعة التحذير' }
+      );
     }
 
     function escapeHTML(str = '') {
