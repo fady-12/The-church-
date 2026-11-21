@@ -6,8 +6,10 @@
       "name": "Fady",
       "phone": "01280234499",
       "group": "ثانوى",
-      "points": 10,
-      "attendance": {}
+      "points": 20,
+      "attendance": {
+        "2026-11-21": "present"
+      }
     }
   ],
   "messages": [
