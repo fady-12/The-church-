@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>بوابة خدمة الكنيسة - الحضور والمسابقة اليومية (150 سؤال متجدد)</title>
+  <title>بوابة خدمة الكنيسة - الحضور والمسابقة اليومية (150 سؤال عربي متجدد)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -243,17 +243,17 @@
       </div>
     </section>
 
-    <!-- 2. تبويب مسابقة اليوم (150 سؤال مختلف كل يوم من الإنترنت) -->
+    <!-- 2. تبويب مسابقة اليوم (150 سؤال عربي مختلف كل يوم) -->
     <section id="view-quiz" class="hidden space-y-6">
       <div class="classic-card p-6">
         <div class="flex flex-wrap items-center justify-between gap-3 border-b border-amber-200 pb-4 mb-4">
           <div>
-            <h2 class="text-2xl font-bold font-classic text-[#0f233c]">📖 مسابقة اليوم (150 سؤال متجدد يومياً من الإنترنت)</h2>
-            <p id="quizSourceStatus" class="text-xs text-slate-600">يتم جلب وتجهيز 150 سؤالاً مختلفاً لكل يوم جديد (+10 نقاط لكل إجابة صحيحة)</p>
+            <h2 class="text-2xl font-bold font-classic text-[#0f233c]">📖 مسابقة اليوم (150 سؤال عربي متجدد يومياً)</h2>
+            <p id="quizSourceStatus" class="text-xs text-slate-600">150 سؤالاً عربياً كتابياً وطقسياً متجدداً لكل يوم جديد (+10 نقاط لكل إجابة صحيحة)</p>
           </div>
           <div class="flex flex-wrap items-center gap-2">
-            <button onclick="refreshDailyWebQuestions(true)" class="navy-btn px-3 py-1.5 rounded-lg text-xs font-bold">
-              🌐 تحديث حزمة اليوم من الإنترنت
+            <button onclick="refreshDailyArabicQuestions(true)" class="navy-btn px-3 py-1.5 rounded-lg text-xs font-bold">
+              🔄 توليد حزمة عربية جديدة لليوم
             </button>
             <span class="bg-emerald-50 border border-emerald-300 px-3 py-1.5 rounded-lg text-xs font-bold text-emerald-800">
               أجبت اليوم: <span id="todaySolvedCount">0</span> / 150
@@ -458,19 +458,13 @@
       };
     }
 
-    function decodeHtmlEntities(str = "") {
-      const txt = document.createElement("textarea");
-      txt.innerHTML = str;
-      return txt.value;
-    }
-
     // ==========================================
-    // 2. جلب وتوليد 150 سؤالاً مختلفاً كل يوم من الإنترنت
+    // 2. مولّد 150 سؤالاً عربياً متجدداً يومياً
     // ==========================================
-    function buildDailyFallback150(dateKey) {
-      let seed = 0;
+    function buildDailyArabic150(dateKey, salt = 0) {
+      let seed = salt * 9973;
       for (let i = 0; i < dateKey.length; i++) {
-        seed += dateKey.charCodeAt(i) * (i + 13);
+        seed += dateKey.charCodeAt(i) * (i + 17);
       }
       const rand = () => {
         seed = (seed * 1664525 + 1013904223) % 4294967296;
@@ -478,67 +472,94 @@
       };
 
       const books = [
-        { name: "سفر التكوين", part: "العهد القديم", chapters: 50 },
-        { name: "سفر الخروج", part: "العهد القديم", chapters: 40 },
-        { name: "سفر اللاويين", part: "العهد القديم", chapters: 27 },
-        { name: "سفر العدد", part: "العهد القديم", chapters: 36 },
-        { name: "سفر التثنية", part: "العهد القديم", chapters: 34 },
-        { name: "سفر يشوع", part: "العهد القديم", chapters: 24 },
-        { name: "سفر القضاة", part: "العهد القديم", chapters: 21 },
-        { name: "سفر راعوث", part: "العهد القديم", chapters: 4 },
-        { name: "سفر صموئيل الأول", part: "العهد القديم", chapters: 31 },
-        { name: "سفر الملوك الأول", part: "العهد القديم", chapters: 22 },
-        { name: "سفر المزامير", part: "العهد القديم", chapters: 150 },
-        { name: "سفر الأمثال", part: "العهد القديم", chapters: 31 },
-        { name: "سفر إشعياء", part: "العهد القديم", chapters: 66 },
-        { name: "سفر إرميا", part: "العهد القديم", chapters: 52 },
-        { name: "سفر حزقيال", part: "العهد القديم", chapters: 48 },
-        { name: "سفر دانيال", part: "العهد القديم", chapters: 12 },
-        { name: "إنجيل متى", part: "العهد الجديد", chapters: 28 },
-        { name: "إنجيل مرقس", part: "العهد الجديد", chapters: 16 },
-        { name: "إنجيل لوقا", part: "العهد الجديد", chapters: 24 },
-        { name: "إنجيل يوحنا", part: "العهد الجديد", chapters: 21 },
-        { name: "سفر أعمال الرسل", part: "العهد الجديد", chapters: 28 },
-        { name: "رسالة رومية", part: "العهد الجديد", chapters: 16 },
-        { name: "رسالة أفسس", part: "العهد الجديد", chapters: 6 },
-        { name: "رسالة فيلبي", part: "العهد الجديد", chapters: 4 },
-        { name: "رسالة العبرانيين", part: "العهد الجديد", chapters: 13 },
-        { name: "سفر الرؤيا", part: "العهد الجديد", chapters: 22 }
+        { name: "سفر التكوين", part: "العهد القديم", chapters: 50, category: "أسفار موسى الخمسة" },
+        { name: "سفر الخروج", part: "العهد القديم", chapters: 40, category: "أسفار موسى الخمسة" },
+        { name: "سفر اللاويين", part: "العهد القديم", chapters: 27, category: "أسفار موسى الخمسة" },
+        { name: "سفر العدد", part: "العهد القديم", chapters: 36, category: "أسفار موسى الخمسة" },
+        { name: "سفر التثنية", part: "العهد القديم", chapters: 34, category: "أسفار موسى الخمسة" },
+        { name: "سفر يشوع", part: "العهد القديم", chapters: 24, category: "الأسفار التاريخية" },
+        { name: "سفر القضاة", part: "العهد القديم", chapters: 21, category: "الأسفار التاريخية" },
+        { name: "سفر راعوث", part: "العهد القديم", chapters: 4, category: "الأسفار التاريخية" },
+        { name: "سفر صموئيل الأول", part: "العهد القديم", chapters: 31, category: "الأسفار التاريخية" },
+        { name: "سفر صموئيل الثاني", part: "العهد القديم", chapters: 24, category: "الأسفار التاريخية" },
+        { name: "سفر الملوك الأول", part: "العهد القديم", chapters: 22, category: "الأسفار التاريخية" },
+        { name: "سفر الملوك الثاني", part: "العهد القديم", chapters: 25, category: "الأسفار التاريخية" },
+        { name: "سفر نحميا", part: "العهد القديم", chapters: 13, category: "الأسفار التاريخية" },
+        { name: "سفر أستير", part: "العهد القديم", chapters: 10, category: "الأسفار التاريخية" },
+        { name: "سفر أيوب", part: "العهد القديم", chapters: 42, category: "الأسفار الشعرية والحكمة" },
+        { name: "سفر المزامير", part: "العهد القديم", chapters: 150, category: "الأسفار الشعرية والحكمة" },
+        { name: "سفر الأمثال", part: "العهد القديم", chapters: 31, category: "الأسفار الشعرية والحكمة" },
+        { name: "سفر الجامعة", part: "العهد القديم", chapters: 12, category: "الأسفار الشعرية والحكمة" },
+        { name: "سفر إشعياء", part: "العهد القديم", chapters: 66, category: "الأنبياء الكبار" },
+        { name: "سفر إرميا", part: "العهد القديم", chapters: 52, category: "الأنبياء الكبار" },
+        { name: "سفر حزقيال", part: "العهد القديم", chapters: 48, category: "الأنبياء الكبار" },
+        { name: "سفر دانيال", part: "العهد القديم", chapters: 12, category: "الأنبياء الكبار" },
+        { name: "سفر يونان", part: "العهد القديم", chapters: 4, category: "الأنبياء الصغار" },
+        { name: "إنجيل متى", part: "العهد الجديد", chapters: 28, category: "الأناجيل الأربعة" },
+        { name: "إنجيل مرقس", part: "العهد الجديد", chapters: 16, category: "الأناجيل الأربعة" },
+        { name: "إنجيل لوقا", part: "العهد الجديد", chapters: 24, category: "الأناجيل الأربعة" },
+        { name: "إنجيل يوحنا", part: "العهد الجديد", chapters: 21, category: "الأناجيل الأربعة" },
+        { name: "سفر أعمال الرسل", part: "العهد الجديد", chapters: 28, category: "سفر تاريخ الكنيسة الأولى" },
+        { name: "رسالة رومية", part: "العهد الجديد", chapters: 16, category: "رسائل بولس الرسول" },
+        { name: "رسالة أفسس", part: "العهد الجديد", chapters: 6, category: "رسائل بولس الرسول" },
+        { name: "رسالة فيلبي", part: "العهد الجديد", chapters: 4, category: "رسائل بولس الرسول" },
+        { name: "رسالة العبرانيين", part: "العهد الجديد", chapters: 13, category: "رسائل بولس الرسول" },
+        { name: "رسالة يعقوب", part: "العهد الجديد", chapters: 5, category: "الرسائل الكاثوليكون" },
+        { name: "سفر الرؤيا", part: "العهد الجديد", chapters: 22, category: "سفر الرؤيا" }
       ];
 
       const figures = [
-        { name: "موسى النبي", desc: "خرج بالشعب من أرض مصر وشق البحر الأحمر" },
-        { name: "داود النبي والملك", desc: "غلب جليات وكتب الكثير من المزامير" },
-        { name: "إيليا النبي", desc: "تحدى أنبياء البعل على جبل الكرمل وصعد في مركبة نارية" },
-        { name: "بطرس الرسول", desc: "اعترف بأن المسيح هو ابن الله الحي وأنكر ثلاث مرات ثم تاب" },
+        { name: "موسى النبي", desc: "قاد شعب الله للخروج من مصر وتسلم الوصايا العشر على جبل سيناء" },
+        { name: "داود النبي والملك", desc: "غلب جليات الجبار وكتب عدداً كبيراً من المزامير" },
+        { name: "سليمان الحكيم", desc: "اشتهر بالحكمة وبنى هيكل الرب في أورشليم" },
+        { name: "إيليا النبي", desc: "صعد إلى السماء في مركبة نارية وواجه أنبياء البعل على جبل الكرمل" },
+        { name: "أليشع النبي", desc: "تلمذ لإيليا النبي ونال ضعف روحه وصنع معجزات عديدة" },
+        { name: "يوسف الصديق", desc: "باعه إخوته فصار مدبراً في مصر وعفا عنهم بحكمة ومحبة" },
+        { name: "دانيال النبي", desc: "حفظه الله في جب الأسود بسبب أمانته وصلاته الدائمة" },
+        { name: "يوحنا المعمدان", desc: "أعد الطريق أمام السيد المسيح وعمّده في نهر الأردن" },
+        { name: "بطرس الرسول", desc: "اعترف بأن المسيح هو ابن الله الحي، وأنكر ثلاث مرات ثم تاب بدموع" },
         { name: "بولس الرسول", desc: "رسول الأمم الذي كتب 14 رسالة في العهد الجديد" },
-        { name: "يوحنا المعمدان", desc: "الذي عمّد السيد المسيح في نهر الأردن" },
-        { name: "يوسف الصديق", desc: "الذي صار مدبراً لمصر وسامح إخوته" },
-        { name: "دانيال النبي", desc: "الذي أُلقي في جب الأسود وحفظه الله" },
-        { name: "مارمرقس الرسول", desc: "كاروز الديار المصرية وكاتب ثاني الأناجيل" },
-        { name: "القديس أثناسيوس الرسولي", desc: "حامي الإيمان في مجمع نيقية" }
+        { name: "مارمرقس الرسول", desc: "كاروز الديار المصرية ومؤسس كنيسة الإسكندرية" },
+        { name: "القديس أثناسيوس الرسولي", desc: "بطل مجمع نيقية والمدافع عن الإيمان المستقيم" },
+        { name: "الأنبا أنطونيوس الكبير", desc: "أبو الرهبان ومؤسس حياة الرهبنة في العالم" },
+        { name: "الشهيد العظيم مارجرجس", desc: "الملقب بأمير الشهداء وثبت على الإيمان حتى الاستشهاد" },
+        { name: "القديس مارمينا العجايبي", desc: "شفيع مريوط وصاحب المعجزات الشهيرة في الكنيسة القبطية" }
+      ];
+
+      const liturgyFacts = [
+        { q: "ما اسم الكتاب الذي يحتوي على صلوات السواعي السبعة في الكنيسة القبطية؟", ans: "الأجبية", opts: ["الأجبية", "السنكسار", "القطمارس", "الدفنار"] },
+        { q: "ما اسم الكتاب الذي يضم سير القديسين والشهداء حسب أيام السنة؟", ans: "السنكسار", opts: ["السنكسار", "الأجبية", "الخولاجي", "الإبصلمودية"] },
+        { q: "ما اسم الكتاب الذي يضم قراءات الكنيسة اليومية من الكتاب المقدس؟", ans: "القطمارس", opts: ["القطمارس", "الأجبية", "السنكسار", "البصخة"] },
+        { q: "كم عدد الأسرار الكنسية السبعة في الكنيسة القبطية الأرثوذكسية؟", ans: "7 أسرار", opts: ["7 أسرار", "5 أسرار", "3 أسرار", "9 أسرار"] },
+        { q: "كم يوماً يستمر الصوم الكبير شاملاً أسبوع الآلام؟", ans: "55 يوماً", opts: ["55 يوماً", "40 يوماً", "43 يوماً", "28 يوماً"] },
+        { q: "كم يوماً يستمر صوم السيدة العذراء مريم؟", ans: "15 يوماً", opts: ["15 يوماً", "40 يوماً", "7 أيام", "21 يوماً"] },
+        { q: "في أي مدينة وُلد السيد المسيح؟", ans: "بيت لحم", opts: ["بيت لحم", "الناصرة", "أورشليم", "كفرناحوم"] },
+        { q: "ما اسم النهر الذي اعتمد فيه السيد المسيح؟", ans: "نهر الأردن", opts: ["نهر الأردن", "نهر النيل", "نهر الفرات", "نهر دجلة"] },
+        { q: "ما اسم البستان الذي صلى فيه السيد المسيح قبل القبض عليه؟", ans: "جثسيماني", opts: ["جثسيماني", "عدن", "أريحا", "بيت عنيا"] },
+        { q: "من هو أول شهيد في المسيحية؟", ans: "إسطفانوس", opts: ["إسطفانوس", "يعقوب", "بطرس", "بولس"] }
       ];
 
       const pool = [];
       for (let i = 0; i < 150; i++) {
         const b = books[Math.floor(rand() * books.length)];
         const f = figures[Math.floor(rand() * figures.length)];
-        const mode = i % 3;
+        const lf = liturgyFacts[Math.floor(rand() * liturgyFacts.length)];
+        const mode = i % 4;
 
         if (mode === 0) {
           const isOld = b.part === "العهد القديم";
           pool.push({
-            q: `[${dateKey} #${i + 1}] إلى أي عهد ينتمي "${b.name}"؟`,
+            q: `إلى أي عهد من الكتاب المقدس ينتمي "${b.name}"؟`,
             options: isOld
               ? ["العهد القديم", "العهد الجديد", "السنكسار", "الأجبية"]
               : ["العهد الجديد", "العهد القديم", "السنكسار", "الأجبية"],
             a: 0,
-            source: "متجدد يومياً"
+            tag: "الكتاب المقدس"
           });
         } else if (mode === 1) {
           const ch = b.chapters;
           pool.push({
-            q: `[${dateKey} #${i + 1}] كم عدد فصول "${b.name}" في الكتاب المقدس؟`,
+            q: `كم عدد فصول "${b.name}" في الكتاب المقدس؟`,
             options: [
               `${ch} فصلاً`,
               `${Math.max(1, ch + 4)} فصلاً`,
@@ -546,16 +567,23 @@
               `${ch + 9} فصلاً`
             ],
             a: 0,
-            source: "متجدد يومياً"
+            tag: b.category
           });
-        } else {
+        } else if (mode === 2) {
           const other = figures.filter(x => x.name !== f.name);
           const pick3 = other.sort(() => rand() - 0.5).slice(0, 3).map(x => x.name);
           pool.push({
-            q: `[${dateKey} #${i + 1}] من الشخصية الكتابية أو الكنسية التي يُعرف عنها: (${f.desc})؟`,
+            q: `من الشخصية الكتابية أو الكنسية التي يُعرف عنها: (${f.desc})؟`,
             options: [f.name, ...pick3],
             a: 0,
-            source: "متجدد يومياً"
+            tag: "شخصيات وقديسون"
+          });
+        } else {
+          pool.push({
+            q: lf.q,
+            options: [...lf.opts],
+            a: lf.opts.indexOf(lf.ans),
+            tag: "طقس وعقيدة"
           });
         }
       }
@@ -571,70 +599,33 @@
       });
     }
 
-    async function fetchInternetQuestions150(dateKey) {
-      const baseList = buildDailyFallback150(dateKey);
-      const webQuestions = [];
-
-      try {
-        const res = await fetch(`https://opentdb.com/api.php?amount=50&type=multiple&cb=${Date.now()}`, {
-          cache: "no-store"
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (Array.isArray(data.results)) {
-            data.results.forEach((row, idx) => {
-              const qText = decodeHtmlEntities(row.question || "");
-              const correct = decodeHtmlEntities(row.correct_answer || "");
-              const incorrects = (row.incorrect_answers || []).map(x => decodeHtmlEntities(x));
-              if (qText && correct && incorrects.length >= 3) {
-                const opts = [correct, ...incorrects.slice(0, 3)].sort(() => Math.random() - 0.5);
-                webQuestions.push({
-                  q: `[سؤال إنترنت متجدد #${idx + 1}] ${qText}`,
-                  options: opts,
-                  a: opts.indexOf(correct),
-                  source: "الإنترنت (Open Trivia)"
-                });
-              }
-            });
-          }
-        }
-      } catch (_) {}
-
-      const combined = [...webQuestions, ...baseList].slice(0, 150);
-      while (combined.length < 150) {
-        combined.push(baseList[combined.length % baseList.length]);
-      }
-      return combined;
-    }
-
     async function getOrCreateDaily150Questions(forceRefresh = false) {
       const today = getTodayKey();
       document.getElementById("quizDateLabel").textContent = new Date().toLocaleDateString("ar-EG");
 
       if (!forceRefresh && Array.isArray(db.dailyQuestionsCache?.[today]) && db.dailyQuestionsCache[today].length === 150) {
         document.getElementById("quizSourceStatus").textContent =
-          `تم تحميل 150 سؤالاً متجدداً ليوم (${today}) ومتزامنة مع الجميع (+10 نقاط لكل إجابة صحيحة)`;
+          `تم تحميل 150 سؤالاً عربياً متجدداً ليوم (${today}) ومتزامنة مع الجميع (+10 نقاط لكل إجابة صحيحة)`;
         return db.dailyQuestionsCache[today];
       }
 
-      document.getElementById("quizSourceStatus").textContent = "🌐 جاري جلب 150 سؤالاً جديداً من الإنترنت لهذا اليوم...";
-      const generated = await fetchInternetQuestions150(today);
+      const salt = forceRefresh ? Math.floor(Date.now() / 1000) % 1000 : 1;
+      const generated = buildDailyArabic150(today, salt);
 
-      const freshCache = { [today]: generated };
       await commitCloudChange((cloudDb) => {
-        cloudDb.dailyQuestionsCache = freshCache;
-        addActivityLog(cloudDb, `🌐 تم تجهيز حزمة 150 سؤالاً جديداً ليوم (${today}) من الإنترنت`);
+        cloudDb.dailyQuestionsCache = { [today]: generated };
+        addActivityLog(cloudDb, `📖 تم تجهيز حزمة 150 سؤالاً عربياً جديداً ليوم (${today})`);
       });
 
       document.getElementById("quizSourceStatus").textContent =
-        `تم تجهيز 150 سؤالاً جديداً ليوم (${today}) وحفظها في السحابة (+10 نقاط لكل إجابة صحيحة)`;
+        `تم تجهيز 150 سؤالاً عربياً جديداً ليوم (${today}) وحفظها في السحابة (+10 نقاط لكل إجابة صحيحة)`;
       return generated;
     }
 
-    async function refreshDailyWebQuestions(showMsg = false) {
+    async function refreshDailyArabicQuestions(showMsg = false) {
       await getOrCreateDaily150Questions(true);
       renderAllUI();
-      if (showMsg) showToast("🌐 تم تحديث 150 سؤالاً جديداً لليوم ومزامنتها");
+      if (showMsg) showToast("✓ تم توليد 150 سؤالاً عربياً جديداً لليوم ومزامنتها");
     }
 
     // ==========================================
@@ -1185,7 +1176,7 @@
 
       const allDailyQs = Array.isArray(db.dailyQuestionsCache?.[today]) && db.dailyQuestionsCache[today].length === 150
         ? db.dailyQuestionsCache[today]
-        : buildDailyFallback150(today);
+        : buildDailyArabic150(today, 1);
 
       const freshUser = currentUser ? db.members.find(m => m.id === currentUser.id) : null;
       const answeredToday = (freshUser && freshUser.answeredDates && freshUser.answeredDates[today]) || [];
@@ -1209,7 +1200,7 @@
       const pageSlice = allDailyQs.slice(currentQuizPage * QUESTIONS_PER_PAGE, (currentQuizPage + 1) * QUESTIONS_PER_PAGE);
       const visibleSlice = hideAnswered ? pageSlice.filter((_, idx) => !answeredToday.includes(currentQuizPage * QUESTIONS_PER_PAGE + idx)) : pageSlice;
 
-      document.getElementById("quizPageIndicator").textContent = `صفحة ${currentQuizPage + 1} من ${totalPages} (إجمالي 150 سؤال يومياً)`;
+      document.getElementById("quizPageIndicator").textContent = `صفحة ${currentQuizPage + 1} من ${totalPages} (إجمالي 150 سؤال عربي يومياً)`;
       document.getElementById("prevQuizPageBtn").disabled = currentQuizPage === 0;
       document.getElementById("nextQuizPageBtn").disabled = currentQuizPage >= totalPages - 1;
 
@@ -1224,7 +1215,7 @@
           return `
             <div class="p-4 rounded-xl border ${isAnswered ? "bg-emerald-50/60 border-emerald-200" : "bg-[#faf7f0] border-amber-200"}">
               <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-bold text-[#c59b27]">السؤال ${displayNum} من 150 • ${item.source || "متجدد"}</span>
+                <span class="text-xs font-bold text-[#c59b27]">السؤال ${displayNum} من 150 • ${item.tag || "عربي"}</span>
                 ${isAnswered ? `<span class="text-xs font-bold text-emerald-700">✓ تمت الإجابة اليوم</span>` : ""}
               </div>
               <p class="font-bold text-[#0f233c] mb-3">${item.q}</p>
