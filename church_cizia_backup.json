@@ -1,26 +1,46 @@
 {
   "church": "الكنيسة الرسولية الأولى بالعزية",
-  "exportedAt": "2026-11-22T12:33:24.827Z",
+  "exportedAt": "2026-11-22T12:38:00.006Z",
   "members": [
     {
-      "id": "mem_1795350804812",
-      "name": "Fady",
-      "phone": "01280234499",
-      "group": "اجتماع الشباب",
-      "role": "عضو",
-      "address": "العزية",
-      "passwordHash": "12cc45d3f33cd8d2819609d230111b56cfb71d8620500a4f4a3bdc01f43d5a36",
-      "createdAt": 1795350463513
+      "id": "local_0",
+      "name": "مينا جرجس عياد",
+      "phone": "01200000001",
+      "group": "اجتماع الخدام",
+      "role": "خادم",
+      "address": "العزية - بحري",
+      "passwordHash": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
+      "createdAt": 1795351007663
     },
     {
-      "id": "mem_1795350463513",
-      "name": "Fady",
-      "phone": "01280234499",
+      "id": "local_1",
+      "name": "مارينا صموئيل فهيم",
+      "phone": "01200000002",
       "group": "اجتماع الشباب",
       "role": "عضو",
-      "address": "العزية",
-      "passwordHash": "12cc45d3f33cd8d2819609d230111b56cfb71d8620500a4f4a3bdc01f43d5a36",
-      "createdAt": 1795350463513
+      "address": "العزية - وسط",
+      "passwordHash": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
+      "createdAt": 1795351017664
+    },
+    {
+      "id": "local_2",
+      "name": "بيشوي كمال رزق",
+      "phone": "01200000003",
+      "group": "اجتماع الشباب",
+      "role": "عضو",
+      "address": "العزية - قبلي",
+      "passwordHash": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
+      "createdAt": 1795351027664
+    },
+    {
+      "id": "local_3",
+      "name": "تاسوني سارة ميلاد",
+      "phone": "01200000004",
+      "group": "مدارس الأحد",
+      "role": "خادم",
+      "address": "العزية - شارع الكنيسة",
+      "passwordHash": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
+      "createdAt": 1795351037664
     }
   ],
   "attendance": [
@@ -37,14 +57,6 @@
       "memberName": "بيشوي كمال رزق",
       "date": "2026-11-22",
       "status": "غائب بدون عذر"
-    },
-    {
-      "id": "2026-11-22_mem_1795350463513",
-      "memberId": "mem_1795350463513",
-      "memberName": "Fady",
-      "date": "2026-11-22",
-      "status": "حاضر",
-      "updatedAt": 1795350504349
     }
   ],
   "quizScores": []
