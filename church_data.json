@@ -8,7 +8,7 @@
       "phone": "01280234499",
       "stage": "ثانوي",
       "passwordHash": "12cc45d3f33cd8d2819609d230111b56cfb71d8620500a4f4a3bdc01f43d5a36",
-      "points": 5,
+      "points": 10,
       "isWeak": false,
       "createdAt": "2026-11-22"
     }
@@ -26,9 +26,10 @@
     },
     "m_1795345205910__2026-11-22": {
       "answered": {
-        "0": 1
+        "0": 1,
+        "1": 3
       },
-      "score": 5
+      "score": 10
     }
   },
   "messages": [
@@ -40,5 +41,5 @@
       "timestamp": "١٢:٥٧ م"
     }
   ],
-  "lastUpdated": 1795345219422
+  "lastUpdated": 1795345222762
 }
