@@ -1,29 +1,22 @@
 {
-  "churchName": "خدمة الكنيسة",
-  "members": [
-    {
-      "id": "m_1795297051261",
-      "name": "Fady",
-      "phone": "01280234499",
-      "group": "ثانوى",
-      "points": 30,
-      "attendance": {
-        "2026-11-21": "حاضر"
-      }
+  "adminPasswordHash": "158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab",
+  "whatsappGroupUrl": "https://wa.me/",
+  "members": [],
+  "attendance": {},
+  "quizProgress": {
+    "admin_1795345066480__2026-11-22": {
+      "answered": {},
+      "score": 0
     }
-  ],
+  },
   "messages": [
     {
-      "id": "msg1",
-      "sender": "خادم الخدمة",
-      "text": "سلام ونعمة للجميع! أهلاً بكم في تطبيق الكنيسة الجديد.",
-      "time": "10:00 ص",
-      "isAdmin": true
+      "id": "msg_1",
+      "senderName": "إدارة الكنيسة",
+      "senderRole": "admin",
+      "text": "سلام ونعمة لجميع إخوتنا في الكنيسة الرسولية الأولى بالعزية! أهلاً بكم في منصتكم الروحية.",
+      "timestamp": "١٢:٥٧ م"
     }
   ],
-  "adminPass": "FADY",
-  "publicRepo": {
-    "owner": "fady-12",
-    "repo": "The-church-"
-  }
+  "lastUpdated": 1795345097237
 }
