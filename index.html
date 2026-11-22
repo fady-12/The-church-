@@ -435,7 +435,7 @@
       activities: [],
       announcement: "أهلاً بكم في بوابة خدمة الكنيسة — شارك في مسابقة الـ 150 سؤال اليومية وسجل حضورك!",
       servantPin: DEFAULT_SERVANT_PIN,
-      dailyQuestionsCache: {}, // يخزن 150 سؤالاً لكل تاريخ YYYY-MM-DD لتتجدد يومياً وتكون موحدة للجميع
+      dailyQuestionsCache: {},
       lastUpdated: 0
     };
 
@@ -560,7 +560,6 @@
         }
       }
 
-      // خلط ترتيب الخيارات لكل سؤال بحسب يوم اليوم
       return pool.map(item => {
         const correctText = item.options[item.a];
         const shuffledOpts = [...item.options].sort(() => rand() - 0.5);
@@ -576,7 +575,6 @@
       const baseList = buildDailyFallback150(dateKey);
       const webQuestions = [];
 
-      // جلب أسئلة متجددة من الإنترنت عبر Open Trivia DB API
       try {
         const res = await fetch(`https://opentdb.com/api.php?amount=50&type=multiple&cb=${Date.now()}`, {
           cache: "no-store"
@@ -602,7 +600,6 @@
         }
       } catch (_) {}
 
-      // دمج أسئلة الإنترنت الجديدة مع باقي أسئلة اليوم ليصبح العدد 150 سؤالاً مختلفاً كل يوم
       const combined = [...webQuestions, ...baseList].slice(0, 150);
       while (combined.length < 150) {
         combined.push(baseList[combined.length % baseList.length]);
@@ -623,7 +620,6 @@
       document.getElementById("quizSourceStatus").textContent = "🌐 جاري جلب 150 سؤالاً جديداً من الإنترنت لهذا اليوم...";
       const generated = await fetchInternetQuestions150(today);
 
-      // تنظيف الأيام القديمة لتقليل حجم ملف السحابة وحفظ أسئلة اليوم فقط
       const freshCache = { [today]: generated };
       await commitCloudChange((cloudDb) => {
         cloudDb.dailyQuestionsCache = freshCache;
