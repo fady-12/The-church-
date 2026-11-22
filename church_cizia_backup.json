@@ -1,18 +1,7 @@
 {
   "church": "الكنيسة الرسولية الأولى بالعزية",
-  "exportedAt": "2026-11-22T12:47:15.841Z",
-  "members": [
-    {
-      "id": "local_0",
-      "name": "مينا جرجس عياد",
-      "phone": "01200000001",
-      "group": "اجتماع الخدام",
-      "role": "خادم",
-      "address": "العزية - بحري",
-      "passwordHash": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
-      "createdAt": 1795351540101
-    }
-  ],
+  "exportedAt": "2026-11-22T12:47:21.257Z",
+  "members": [],
   "attendance": [
     {
       "id": "att_1",
