@@ -1,7 +1,7 @@
 {
   "announcement": "أهلاً بكم في بوابة الكنيسة الرسولية الأولى بالعزية — صلوا لأجل الخدمة والافتقاد.",
   "adminPinHash": "158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab",
-  "lastUpdated": "2026-11-22T12:48:59.736Z",
+  "lastUpdated": "2026-11-22T12:49:09.977Z",
   "members": [
     {
       "id": "m_1795351689261",
@@ -32,16 +32,6 @@
       "passHash": "demo",
       "absences": 0,
       "lastAtt": ""
-    },
-    {
-      "id": "m3",
-      "name": "كيرلس هاني رزق",
-      "phone": "01200000003",
-      "group": "اجتماع الشباب",
-      "address": "العزية - شرق",
-      "passHash": "demo",
-      "absences": 2,
-      "lastAtt": "منذ أسبوعين"
     }
   ],
   "attendance": {},
