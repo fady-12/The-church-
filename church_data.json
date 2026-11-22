@@ -5,7 +5,9 @@
   "attendance": {},
   "quizProgress": {
     "admin_1795345066480__2026-11-22": {
-      "answered": {},
+      "answered": {
+        "0": 3
+      },
       "score": 0
     }
   },
@@ -18,5 +20,5 @@
       "timestamp": "١٢:٥٧ م"
     }
   ],
-  "lastUpdated": 1795345097806
+  "lastUpdated": 1795345122737
 }
