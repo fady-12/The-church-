@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>بوابة خدمة الكنيسة - الحضور والمسابقة اليومية (150 سؤال)</title>
+  <title>بوابة خدمة الكنيسة - الحضور والمسابقة اليومية (150 سؤال متجدد)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -96,9 +96,12 @@
 
       <!-- حالة السحابة والمزامنة الفورية -->
       <div class="flex items-center gap-3 bg-[#0b192c]/80 px-3 py-2 rounded-xl border border-[#c59b27]/40">
-        <div class="flex items-center gap-2 text-xs">
-          <span id="syncDot" class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span id="syncStatusText" class="text-slate-200 font-semibold">متصل بالسحابة (تحديث تلقائي)</span>
+        <div class="flex flex-col text-xs">
+          <div class="flex items-center gap-2">
+            <span id="syncDot" class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+            <span id="syncStatusText" class="text-slate-200 font-semibold">جاري الاتصال بالسحابة...</span>
+          </div>
+          <span id="gistIdBadge" class="text-[10px] text-[#e6c665]/80 mt-0.5">Gist: جاري التحديد</span>
         </div>
         <button onclick="manualSync()" id="syncBtn" class="gold-btn text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 shadow">
           <span id="syncIcon">🔄</span>
@@ -129,11 +132,10 @@
     <!-- 1. تبويب الرئيسية والتسجيل الفوري -->
     <section id="view-home" class="space-y-6">
       <div class="grid md:grid-cols-3 gap-6">
-        <!-- بطاقة تسجيل الدخول / إضافة عضو جديد -->
         <div class="classic-card p-6 md:col-span-2 space-y-4">
           <div class="flex items-center justify-between border-b border-amber-200/70 pb-3">
             <h2 class="text-xl font-bold font-classic text-[#0f233c]">✨ دخول سريع أو تسجيل عضو جديد</h2>
-            <span class="text-xs bg-amber-100 text-amber-900 px-2.5 py-1 rounded-full font-bold">يظهر للجميع فوراً</span>
+            <span class="text-xs bg-amber-100 text-amber-900 px-2.5 py-1 rounded-full font-bold">يظهر لكل الهواتف فوراً</span>
           </div>
 
           <div id="activeUserBox" class="hidden bg-emerald-50 border border-emerald-200 rounded-xl p-4 flex flex-wrap items-center justify-between gap-3">
@@ -175,7 +177,6 @@
             </div>
           </form>
 
-          <!-- إحصائيات سريعة -->
           <div class="grid grid-cols-3 gap-3 pt-2">
             <div class="bg-[#faf7f0] border border-amber-200/80 p-3 rounded-xl text-center">
               <span class="block text-xs text-slate-500">إجمالي المسجلين</span>
@@ -191,7 +192,6 @@
             </div>
           </div>
 
-          <!-- تغيير كلمة السر من الرئيسية مباشرة -->
           <div class="bg-[#faf7f0] p-4 rounded-xl border border-amber-200/90 space-y-2">
             <label class="block text-xs font-bold text-[#0f233c]">🔑 تغيير كلمة سر لوحة الخدام (مباشرة من الرئيسية):</label>
             <div class="grid sm:grid-cols-3 gap-2">
@@ -206,7 +206,6 @@
           </div>
         </div>
 
-        <!-- آية اليوم -->
         <div class="classic-card p-6 flex flex-col justify-between bg-gradient-to-b from-[#0f233c] to-[#173357] text-white">
           <div>
             <div class="text-[#e6c665] text-sm font-bold mb-2 flex items-center gap-2">
@@ -218,16 +217,15 @@
             <p id="dailyVerseRef" class="text-xs text-[#e6c665] font-bold">(فيلبي 4: 13)</p>
           </div>
           <div class="ornament-divider my-3"><span>✝</span></div>
-          <p class="text-xs text-slate-300 text-center">كل تحديث يتم هنا يظهر فوراً لجميع الخدام والمخدومين</p>
+          <p class="text-xs text-slate-300 text-center">كل تحديث يتم هنا يظهر فوراً لجميع الهواتف</p>
         </div>
       </div>
 
-      <!-- آخر التحديثات الحية والمنضمين الجدد -->
       <div class="grid md:grid-cols-2 gap-6">
         <div class="classic-card p-5">
           <h3 class="text-lg font-bold font-classic text-[#0f233c] border-b border-amber-200 pb-2 mb-3 flex items-center justify-between">
             <span>🔔 آخر التحديثات المباشرة في الموقع</span>
-            <span class="text-xs font-normal text-slate-500">تحديث تلقائي كل 10 ثوانٍ</span>
+            <span class="text-xs font-normal text-slate-500">تحديث تلقائي كل 5 ثوانٍ</span>
           </h3>
           <ul id="activityFeedList" class="space-y-2.5 max-h-72 overflow-y-auto text-sm">
             <li class="text-slate-400 text-center py-4">جاري تحميل التحديثات من السحابة...</li>
@@ -245,15 +243,18 @@
       </div>
     </section>
 
-    <!-- 2. تبويب مسابقة اليوم (150 سؤال يومياً) -->
+    <!-- 2. تبويب مسابقة اليوم (150 سؤال مختلف كل يوم من الإنترنت) -->
     <section id="view-quiz" class="hidden space-y-6">
       <div class="classic-card p-6">
         <div class="flex flex-wrap items-center justify-between gap-3 border-b border-amber-200 pb-4 mb-4">
           <div>
-            <h2 class="text-2xl font-bold font-classic text-[#0f233c]">📖 مسابقة الكتاب المقدس والطقس (150 سؤال يومياً)</h2>
-            <p class="text-xs text-slate-600">يُتاح لك جميع الـ 150 سؤالاً بترتيب متجدد كل يوم (+10 نقاط لكل إجابة صحيحة)</p>
+            <h2 class="text-2xl font-bold font-classic text-[#0f233c]">📖 مسابقة اليوم (150 سؤال متجدد يومياً من الإنترنت)</h2>
+            <p id="quizSourceStatus" class="text-xs text-slate-600">يتم جلب وتجهيز 150 سؤالاً مختلفاً لكل يوم جديد (+10 نقاط لكل إجابة صحيحة)</p>
           </div>
           <div class="flex flex-wrap items-center gap-2">
+            <button onclick="refreshDailyWebQuestions(true)" class="navy-btn px-3 py-1.5 rounded-lg text-xs font-bold">
+              🌐 تحديث حزمة اليوم من الإنترنت
+            </button>
             <span class="bg-emerald-50 border border-emerald-300 px-3 py-1.5 rounded-lg text-xs font-bold text-emerald-800">
               أجبت اليوم: <span id="todaySolvedCount">0</span> / 150
             </span>
@@ -356,7 +357,6 @@
 
     <!-- 5. تبويب لوحة تحكم الخدام -->
     <section id="view-servants" class="hidden space-y-6">
-      <!-- شاشة قفل الخدام -->
       <div id="servantLoginBox" class="classic-card p-8 max-w-md mx-auto text-center space-y-4">
         <div class="w-14 h-14 rounded-full bg-[#0f233c] text-[#e6c665] flex items-center justify-center text-2xl mx-auto">🛡️</div>
         <h2 class="text-xl font-bold font-classic text-[#0f233c]">دخول لوحة تحكم الخدام</h2>
@@ -366,7 +366,6 @@
         <button onclick="unlockServantPanel()" class="navy-btn w-full py-2.5 rounded-lg font-bold text-sm">فتح لوحة الخدام</button>
       </div>
 
-      <!-- محتوى لوحة الخدام بعد الفتح -->
       <div id="servantDashboard" class="hidden space-y-6">
         <div class="classic-card p-6 space-y-5">
           <div class="flex items-center justify-between border-b border-amber-200 pb-3">
@@ -374,7 +373,6 @@
             <button onclick="lockServantPanel()" class="text-xs text-red-600 font-bold underline">قفل اللوحة</button>
           </div>
 
-          <!-- نشر تنبيه عام + تغيير كلمة سر الخدام -->
           <div class="grid md:grid-cols-2 gap-4">
             <div class="bg-[#faf7f0] p-4 rounded-xl border border-amber-200 space-y-2">
               <label class="block text-xs font-bold text-[#0f233c]">📢 نشر تنبيه عام يظهر أعلى الموقع للجميع:</label>
@@ -395,7 +393,6 @@
             </div>
           </div>
 
-          <!-- جدول التحكم في الأعضاء واعتماد الحضور -->
           <div class="overflow-x-auto">
             <table class="w-full text-sm text-right border-collapse">
               <thead>
@@ -417,19 +414,18 @@
 
   </main>
 
-  <!-- إشعار منبثق -->
   <div id="toast" class="fixed bottom-5 left-5 bg-[#0f233c] text-white border border-[#c59b27] px-4 py-3 rounded-xl shadow-xl text-sm font-bold transform translate-y-24 opacity-0 transition-all duration-300 z-50"></div>
 
   <script>
     // ==========================================
-    // 1. إعدادات السحابة (GitHub Cloud Sync)
+    // 1. إعدادات السحابة الموحدة لكل الهواتف
     // ==========================================
     const GITHUB_TOKEN = "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";
     const GIST_FILENAME = "church_service_cloud_db.json";
     const GIST_DESCRIPTION = "Church Service Portal Live Sync DB";
     const DEFAULT_SERVANT_PIN = "1234";
 
-    let cachedGistId = localStorage.getItem("church_gist_id") || null;
+    let activeGistId = localStorage.getItem("church_active_gist_id") || null;
     let isSyncing = false;
     let currentQuizPage = 0;
     const QUESTIONS_PER_PAGE = 10;
@@ -439,7 +435,8 @@
       activities: [],
       announcement: "أهلاً بكم في بوابة خدمة الكنيسة — شارك في مسابقة الـ 150 سؤال اليومية وسجل حضورك!",
       servantPin: DEFAULT_SERVANT_PIN,
-      lastUpdated: Date.now()
+      dailyQuestionsCache: {}, // يخزن 150 سؤالاً لكل تاريخ YYYY-MM-DD لتتجدد يومياً وتكون موحدة للجميع
+      lastUpdated: 0
     };
 
     let currentUser = JSON.parse(localStorage.getItem("church_current_user") || "null");
@@ -448,174 +445,212 @@
       return (db && db.servantPin) ? String(db.servantPin) : DEFAULT_SERVANT_PIN;
     }
 
-    // ==========================================
-    // 2. بنك الـ 150 سؤال كتابي وطقسي كامل
-    // ==========================================
-    const BASE_QUESTIONS = [
-      { q: "من هو أول ملك مسحه صموئيل النبي على شعب إسرائيل؟", options: ["داود", "شاول", "سليمان", "حزقيا"], a: 1 },
-      { q: "كم يوماً صامها السيد المسيح في البرية؟", options: ["20 يوماً", "30 يوماً", "40 يوماً", "50 يوماً"], a: 2 },
-      { q: "ما هو أول سفر في الكتاب المقدس؟", options: ["الخروج", "التكوين", "متى", "المزامير"], a: 1 },
-      { q: "من هو التلميذ الذي أنكر السيد المسيح ثلاث مرات؟", options: ["يوحنا", "بطرس", "توما", "أندراوس"], a: 1 },
-      { q: "في أي مدينة وُلد السيد المسيح؟", options: ["الناصرة", "أورشليم", "بيت لحم", "كفرناحوم"], a: 2 },
-      { q: "من هو النبي الذي ابتلعه الحوت وبقي في جوفه ثلاثة أيام؟", options: ["إيليا", "يونان", "دانيال", "إرميا"], a: 1 },
-      { q: "كم عدد تلاميذ السيد المسيح (الرسل)؟", options: ["7", "10", "12", "70"], a: 2 },
-      { q: "ما هي أول معجزة صنعها السيد المسيح؟", options: ["إقامة لعازر", "تحويل الماء إلى خمر", "إشباع الجموع", "المشي على الماء"], a: 1 },
-      { q: "من هو أقوى رجل ذكر في الكتاب المقدس؟", options: ["شمشون", "جليات", "يوناثان", "جدعون"], a: 0 },
-      { q: "من هي أم يوحنا المعمدان؟", options: ["مريم", "أليصابات", "حنة", "مرثا"], a: 1 },
-      { q: "ما اسم الجبل الذي استلم عليه موسى النبي الوصايا العشر؟", options: ["جبل الكرمل", "جبل الزيتون", "جبل سيناء", "جبل طابور"], a: 2 },
-      { q: "كم عدد أسفار العهد الجديد؟", options: ["27 سفراً", "39 سفراً", "66 سفراً", "46 سفراً"], a: 0 },
-      { q: "من هو كاتب سفر أعمال الرسل؟", options: ["بولس الرسول", "لوقا البشير", "مرقس الرسول", "بطرس الرسول"], a: 1 },
-      { q: "من هو كاروز الديار المصرية ومؤسس الكنيسة القبطية؟", options: ["القديس أثناسيوس", "مارمرقس الرسول", "القديس كيرلس", "الأنبا أنطونيوس"], a: 1 },
-      { q: "ما هو أطول مزمور في سفر المزامير؟", options: ["مزمور 23", "مزمور 50", "مزمور 119", "مزمور 150"], a: 2 },
-      { q: "من هو النبي الذي أُلقي في جب الأسود؟", options: ["يوسف", "دانيال", "حزقيال", "إشعياء"], a: 1 },
-      { q: "من هو مؤسس الرهبنة في العالم كله؟", options: ["الأنبا باخوميوس", "الأنبا أنطونيوس", "الأنبا مقار", "الأنبا شنودة"], a: 1 },
-      { q: "ما اسم النهر الذي اعتمد فيه السيد المسيح؟", options: ["نهر النيل", "نهر الفرات", "نهر الأردن", "نهر دجلة"], a: 2 },
-      { q: "كم عدد الأسرار الكنسية في الكنيسة الأرثوذكسية؟", options: ["5 أسرار", "7 أسرار", "3 أسرار", "9 أسرار"], a: 1 },
-      { q: "من هو الذي صعد إلى شجرة الجميز ليرى السيد المسيح؟", options: ["نيقوديموس", "زكا العشار", "برتيماوس", "لعازر"], a: 1 },
-      { q: "من هو أب الآباء وبطل الإيمان؟", options: ["إبراهيم", "إسحق", "يعقوب", "نوح"], a: 0 },
-      { q: "كم يوماً استمر الطوفان في أيام نوح؟", options: ["7 أيام", "40 يوماً وليلة", "100 يوم", "12 يوماً"], a: 1 },
-      { q: "ما اسم الملاك الذي بشّر السيدة العذراء بميلاد المسيح؟", options: ["ميخائيل", "غبريال", "رافائيل", "سوريال"], a: 1 },
-      { q: "من هو التلميذ الذي شك في قيامة المسيح حتى لمس جراحه؟", options: ["فيلبس", "توما", "متى", "يعقوب"], a: 1 },
-      { q: "من هو الملك الحكيم الذي بنى هيكل الرب في أورشليم؟", options: ["داود", "سليمان", "رحبعام", "آسا"], a: 1 },
-      { q: "في أي سفر توجد الوصايا العشر لأول مرة؟", options: ["التكوين", "الخروج", "اللاويين", "العدد"], a: 1 },
-      { q: "من هو أول شهيد في المسيحية؟", options: ["يعقوب", "إسطفانوس", "بولس", "بطرس"], a: 1 },
-      { q: "ما اسم البستان الذي صلى فيه السيد المسيح قبل القبض عليه؟", options: ["عدن", "جثسيماني", "أريحا", "بيت عنيا"], a: 1 },
-      { q: "كم عدد أرغفة الخبز التي أشبع بها المسيح الخمسة آلاف؟", options: ["3 أرغفة", "5 أرغفة", "7 أرغفة", "12 رغيفاً"], a: 1 },
-      { q: "من هو القديس الملقب بحامي الإيمان؟", options: ["البابا كيرلس", "البابا أثناسيوس الرسولي", "الأنبا بيشوي", "مارجرجس"], a: 1 },
-      { q: "كم عدد فصول سفر التكوين؟", options: ["40", "50", "30", "28"], a: 1 },
-      { q: "كم عدد فصول إنجيل متى؟", options: ["24", "28", "16", "21"], a: 1 },
-      { q: "كم عدد فصول إنجيل مرقس؟", options: ["16", "20", "24", "14"], a: 0 },
-      { q: "كم عدد فصول إنجيل لوقا؟", options: ["21", "24", "28", "18"], a: 1 },
-      { q: "كم عدد فصول إنجيل يوحنا؟", options: ["19", "21", "25", "16"], a: 1 },
-      { q: "كم عدد فصول سفر أعمال الرسل؟", options: ["24", "28", "30", "22"], a: 1 },
-      { q: "كم عدد فصول سفر الرؤيا؟", options: ["20", "22", "24", "18"], a: 1 },
-      { q: "من هو والد يوحنا المعمدان؟", options: ["زكريا الكاهن", "يوسف النجار", "سمعان الشيخ", "حنانيا"], a: 0 },
-      { q: "من هو شقيق موسى النبي الأكبر؟", options: ["يشوع", "هارون", "كالب", "يثرون"], a: 1 },
-      { q: "من هي أخت موسى النبي؟", options: ["مريم", "راحاب", "راعوث", "أستير"], a: 0 },
-      { q: "ما اسم الملكة التي أنقذت شعبها في سفر أستير؟", options: ["راعوث", "أستير", "دبورة", "حنة"], a: 1 },
-      { q: "من هو النبي الذي صعد إلى السماء في مركبة نارية؟", options: ["أليشع", "إيليا", "أخنوخ", "صموئيل"], a: 1 },
-      { q: "كم سنة عاش متوشالح أطول إنسان عمراً؟", options: ["900 سنة", "969 سنة", "850 سنة", "777 سنة"], a: 1 },
-      { q: "كم عدد أبناء يعقوب (أسباط إسرائيل)؟", options: ["10", "12", "7", "14"], a: 1 },
-      { q: "من هو ابن يعقوب الذي بيع عبداً في مصر وصار وزيراً؟", options: ["يهوذا", "يوسف", "بنيامين", "رأوبين"], a: 1 },
-      { q: "ما اسم المكان الذي صُلب فيه السيد المسيح؟", options: ["الجلجثة", "بيت لحم", "قانا", "الناصرة"], a: 0 },
-      { q: "من الذي ساعد السيد المسيح في حمل الصليب؟", options: ["يوسف الرامي", "سمعان القيرواني", "نيقوديموس", "لعازر"], a: 1 },
-      { q: "كم قطعة من الفضة أخذها يهوذا ليسلم السيد المسيح؟", options: ["20", "30", "40", "50"], a: 1 },
-      { q: "ما اسم السفر الذي يبدأ بـ (في البدء كان الكلمة)؟", options: ["إنجيل متى", "إنجيل يوحنا", "سفر التكوين", "سفر الرؤيا"], a: 1 },
-      { q: "من هو رسول الأمم الذي كتب 14 رسالة في العهد الجديد؟", options: ["بطرس", "بولس", "يوحنا", "يعقوب"], a: 1 },
-      { q: "في أي مدينة دُعي التلاميذ مسيحيين أولاً؟", options: ["أورشليم", "أنطاكية", "روما", "الإسكندرية"], a: 1 },
-      { q: "ما هو أول عيد سيدي كبير في السنة الكنسية؟", options: ["عيد البشارة", "عيد الميلاد", "عيد القيامة", "عيد الغطاس"], a: 0 },
-      { q: "كم يوماً نصوم في الصوم الكبير (شاملاً أسبوع الآلام)؟", options: ["40 يوماً", "55 يوماً", "43 يوماً", "15 يوماً"], a: 1 },
-      { q: "كم يوماً نصوم في صوم السيدة العذراء مريم؟", options: ["15 يوماً", "40 يوماً", "7 أيام", "30 يوماً"], a: 0 },
-      { q: "ما اسم الكتاب الذي يضم صلوات السواعي السبعة؟", options: ["الخولاجي", "الأجبية", "السنكسار", "الإبصلمودية"], a: 1 },
-      { q: "ما اسم الكتاب الذي يضم سير القديسين والشهداء اليومية؟", options: ["السنكسار", "القطمارس", "الدفنار", "الخولاجي"], a: 0 },
-      { q: "ما اسم الكتاب الذي يضم قراءات الكنيسة اليومية؟", options: ["القطمارس", "الأجبية", "البصخة", "السنكسار"], a: 0 },
-      { q: "كم عدد صلوات الأجبية في اليوم؟", options: ["5 صلوات", "7 صلوات", "3 صلوات", "9 صلوات"], a: 1 },
-      { q: "من هو القديس الذي لُقب بأمير الشهداء؟", options: ["مارمينا", "مارجرجس", "أبو سيفين", "القديس أبانوب"], a: 1 },
-      { q: "من هو القديس الملقب بالعجايبي؟", options: ["مارمينا", "الأنبا كاراس", "الأنبا ونس", "مارجرجس"], a: 0 }
-    ];
+    function getTodayKey() {
+      return new Date().toISOString().split("T")[0];
+    }
 
-    const QUESTION_BANK_150 = (() => {
-      const list = [...BASE_QUESTIONS];
-      const otBooks = [
-        "سفر اللاويين", "سفر العدد", "سفر التثنية", "سفر يشوع", "سفر القضاة", "سفر راعوث",
-        "سفر صموئيل الأول", "سفر صموئيل الثاني", "سفر الملوك الأول", "سفر الملوك الثاني",
-        "سفر أخبار الأيام الأول", "سفر أخبار الأيام الثاني", "سفر عزرا", "سفر نحميا", "سفر أيوب",
-        "سفر المزامير", "سفر الأمثال", "سفر الجامعة", "سفر نشيد الأنشاد", "سفر إشعياء",
-        "سفر إرميا", "سفر مراثي إرميا", "سفر حزقيال", "سفر دانيال", "سفر هوشع",
-        "سفر يوئيل", "سفر عاموس", "سفر عوبديا", "سفر يونان", "سفر ميخا",
-        "سفر ناحوم", "سفر حبقوق", "سفر صفنيا", "سفر حجي", "سفر زكريا", "سفر ملاخي"
-      ];
-      const ntBooks = [
-        "رسالة رومية", "رسالة كورنثوس الأولى", "رسالة كورنثوس الثانية", "رسالة غلاطية",
-        "رسالة أفسس", "رسالة فيلبي", "رسالة كولوسي", "رسالة تسالونيكي الأولى",
-        "رسالة تسالونيكي الثانية", "رسالة تيموثاوس الأولى", "رسالة تيموثاوس الثانية",
-        "رسالة تيطس", "رسالة فليمون", "رسالة العبرانيين", "رسالة يعقوب",
-        "رسالة بطرس الأولى", "رسالة بطرس الثانية", "رسالة يوحنا الأولى", "رسالة يهوذا"
-      ];
-      const prophetsAndApostles = [
-        { name: "أشعياء", role: "نبي في العهد القديم" },
-        { name: "أرميا", role: "نبي في العهد القديم" },
-        { name: "حزقيال", role: "نبي في العهد القديم" },
-        { name: "مرقس", role: "إنجيلي ورسول في العهد الجديد" },
-        { name: "متى", role: "إنجيلي ورسول في العهد الجديد" },
-        { name: "لوقا", role: "إنجيلي وطبيب في العهد الجديد" },
-        { name: "تيموثاوس", role: "تلميذ بولس الرسول" },
-        { name: "تيطس", role: "تلميذ بولس الرسول" },
-        { name: "جدعون", role: "قاضٍ في العهد القديم" },
-        { name: "دبورة", role: "نبية وقاضية في العهد القديم" },
-        { name: "صموئيل", role: "آخر قضاة إسرائيل ونبي" },
-        { name: "أليشع", role: "تلميذ إيليا النبي" },
-        { name: "حزقيا", role: "ملك صالح على يهوذا" },
-        { name: "يوشيا", role: "ملك صالح رمم الهيكل" },
-        { name: "نحميا", role: "باني أسوار أورشليم" },
-        { name: "عزرا", role: "الكاتب والكاهن" },
-        { name: "برنابا", role: "رفيق بولس الرسول في الخدمة" },
-        { name: "سيلا", role: "رفيق بولس الرسول في السجن" },
-        { name: "أبولس", role: "معلم فصيح في العهد الجديد" },
-        { name: "فيلبس", role: "أحد الشمامسة السبعة" },
-        { name: "كرنيليوس", role: "قائد مئة آمن على يد بطرس" },
-        { name: "ليدية", role: "بائعة أرجوان آمنت في فيلبي" },
-        { name: "حنانيا الدمشقي", role: "الذي عمد شاول الطرسوسي" },
-        { name: "سمعان الشيخ", role: "الذي حمل الطفل يسوع في الهيكل" },
-        { name: "حنة النبية", role: "التي سبحت الرب في الهيكل" },
-        { name: "يوسف الرامي", role: "الذي كفن جسد الرب يسوع" },
-        { name: "نيقوديموس", role: "الفريسي الذي جاء ليسوع ليلاً" },
-        { name: "لعازر", role: "الذي أقامه يسوع بعد 4 أيام" },
-        { name: "مرثا", role: "أخت لعازر ومريم" },
-        { name: "بارتيماوس", role: "الأعمى الذي شفاه يسوع في أريحا" },
-        { name: "ناحمان السرياني", role: "القائد الذي شُفي من البرص في الأردن" },
-        { name: "راعوث الموآبية", role: "جدة داود الملك" },
-        { name: "حنة أم صموئيل", role: "التي صلت للرب في شيلوه" },
-        { name: "يوناثان", role: "صديق داود الوفي" },
-        { name: "كالب بن يفنة", role: "أحد الجاسوسين المؤمنين" }
+    function authHeaders() {
+      return {
+        "Authorization": `Bearer ${GITHUB_TOKEN}`,
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+        "Content-Type": "application/json"
+      };
+    }
+
+    function decodeHtmlEntities(str = "") {
+      const txt = document.createElement("textarea");
+      txt.innerHTML = str;
+      return txt.value;
+    }
+
+    // ==========================================
+    // 2. جلب وتوليد 150 سؤالاً مختلفاً كل يوم من الإنترنت
+    // ==========================================
+    function buildDailyFallback150(dateKey) {
+      let seed = 0;
+      for (let i = 0; i < dateKey.length; i++) {
+        seed += dateKey.charCodeAt(i) * (i + 13);
+      }
+      const rand = () => {
+        seed = (seed * 1664525 + 1013904223) % 4294967296;
+        return seed / 4294967296;
+      };
+
+      const books = [
+        { name: "سفر التكوين", part: "العهد القديم", chapters: 50 },
+        { name: "سفر الخروج", part: "العهد القديم", chapters: 40 },
+        { name: "سفر اللاويين", part: "العهد القديم", chapters: 27 },
+        { name: "سفر العدد", part: "العهد القديم", chapters: 36 },
+        { name: "سفر التثنية", part: "العهد القديم", chapters: 34 },
+        { name: "سفر يشوع", part: "العهد القديم", chapters: 24 },
+        { name: "سفر القضاة", part: "العهد القديم", chapters: 21 },
+        { name: "سفر راعوث", part: "العهد القديم", chapters: 4 },
+        { name: "سفر صموئيل الأول", part: "العهد القديم", chapters: 31 },
+        { name: "سفر الملوك الأول", part: "العهد القديم", chapters: 22 },
+        { name: "سفر المزامير", part: "العهد القديم", chapters: 150 },
+        { name: "سفر الأمثال", part: "العهد القديم", chapters: 31 },
+        { name: "سفر إشعياء", part: "العهد القديم", chapters: 66 },
+        { name: "سفر إرميا", part: "العهد القديم", chapters: 52 },
+        { name: "سفر حزقيال", part: "العهد القديم", chapters: 48 },
+        { name: "سفر دانيال", part: "العهد القديم", chapters: 12 },
+        { name: "إنجيل متى", part: "العهد الجديد", chapters: 28 },
+        { name: "إنجيل مرقس", part: "العهد الجديد", chapters: 16 },
+        { name: "إنجيل لوقا", part: "العهد الجديد", chapters: 24 },
+        { name: "إنجيل يوحنا", part: "العهد الجديد", chapters: 21 },
+        { name: "سفر أعمال الرسل", part: "العهد الجديد", chapters: 28 },
+        { name: "رسالة رومية", part: "العهد الجديد", chapters: 16 },
+        { name: "رسالة أفسس", part: "العهد الجديد", chapters: 6 },
+        { name: "رسالة فيلبي", part: "العهد الجديد", chapters: 4 },
+        { name: "رسالة العبرانيين", part: "العهد الجديد", chapters: 13 },
+        { name: "سفر الرؤيا", part: "العهد الجديد", chapters: 22 }
       ];
 
-      otBooks.forEach(book => {
-        if (list.length < 150) {
-          list.push({
-            q: `إلى أي قسم من الكتاب المقدس ينتمي "${book}"؟`,
-            options: ["العهد القديم", "العهد الجديد", "السنكسار", "القطمارس"],
-            a: 0
+      const figures = [
+        { name: "موسى النبي", desc: "خرج بالشعب من أرض مصر وشق البحر الأحمر" },
+        { name: "داود النبي والملك", desc: "غلب جليات وكتب الكثير من المزامير" },
+        { name: "إيليا النبي", desc: "تحدى أنبياء البعل على جبل الكرمل وصعد في مركبة نارية" },
+        { name: "بطرس الرسول", desc: "اعترف بأن المسيح هو ابن الله الحي وأنكر ثلاث مرات ثم تاب" },
+        { name: "بولس الرسول", desc: "رسول الأمم الذي كتب 14 رسالة في العهد الجديد" },
+        { name: "يوحنا المعمدان", desc: "الذي عمّد السيد المسيح في نهر الأردن" },
+        { name: "يوسف الصديق", desc: "الذي صار مدبراً لمصر وسامح إخوته" },
+        { name: "دانيال النبي", desc: "الذي أُلقي في جب الأسود وحفظه الله" },
+        { name: "مارمرقس الرسول", desc: "كاروز الديار المصرية وكاتب ثاني الأناجيل" },
+        { name: "القديس أثناسيوس الرسولي", desc: "حامي الإيمان في مجمع نيقية" }
+      ];
+
+      const pool = [];
+      for (let i = 0; i < 150; i++) {
+        const b = books[Math.floor(rand() * books.length)];
+        const f = figures[Math.floor(rand() * figures.length)];
+        const mode = i % 3;
+
+        if (mode === 0) {
+          const isOld = b.part === "العهد القديم";
+          pool.push({
+            q: `[${dateKey} #${i + 1}] إلى أي عهد ينتمي "${b.name}"؟`,
+            options: isOld
+              ? ["العهد القديم", "العهد الجديد", "السنكسار", "الأجبية"]
+              : ["العهد الجديد", "العهد القديم", "السنكسار", "الأجبية"],
+            a: 0,
+            source: "متجدد يومياً"
+          });
+        } else if (mode === 1) {
+          const ch = b.chapters;
+          pool.push({
+            q: `[${dateKey} #${i + 1}] كم عدد فصول "${b.name}" في الكتاب المقدس؟`,
+            options: [
+              `${ch} فصلاً`,
+              `${Math.max(1, ch + 4)} فصلاً`,
+              `${Math.max(1, ch - 3)} فصلاً`,
+              `${ch + 9} فصلاً`
+            ],
+            a: 0,
+            source: "متجدد يومياً"
+          });
+        } else {
+          const other = figures.filter(x => x.name !== f.name);
+          const pick3 = other.sort(() => rand() - 0.5).slice(0, 3).map(x => x.name);
+          pool.push({
+            q: `[${dateKey} #${i + 1}] من الشخصية الكتابية أو الكنسية التي يُعرف عنها: (${f.desc})؟`,
+            options: [f.name, ...pick3],
+            a: 0,
+            source: "متجدد يومياً"
           });
         }
-      });
+      }
 
-      ntBooks.forEach(book => {
-        if (list.length < 150) {
-          list.push({
-            q: `إلى أي قسم من الكتاب المقدس تنتمي "${book}"؟`,
-            options: ["العهد القديم", "العهد الجديد", "الخولاجي", "الأجبية"],
-            a: 1
-          });
-        }
+      // خلط ترتيب الخيارات لكل سؤال بحسب يوم اليوم
+      return pool.map(item => {
+        const correctText = item.options[item.a];
+        const shuffledOpts = [...item.options].sort(() => rand() - 0.5);
+        return {
+          ...item,
+          options: shuffledOpts,
+          a: shuffledOpts.indexOf(correctText)
+        };
       });
+    }
 
-      prophetsAndApostles.forEach(person => {
-        if (list.length < 150) {
-          const allRoles = ["نبي في العهد القديم", "إنجيلي ورسول في العهد الجديد", "تلميذ بولس الرسول", "قاضٍ في العهد القديم"];
-          const opts = [person.role];
-          for (const r of allRoles) {
-            if (opts.length < 4 && !opts.includes(r)) opts.push(r);
+    async function fetchInternetQuestions150(dateKey) {
+      const baseList = buildDailyFallback150(dateKey);
+      const webQuestions = [];
+
+      // جلب أسئلة متجددة من الإنترنت عبر Open Trivia DB API
+      try {
+        const res = await fetch(`https://opentdb.com/api.php?amount=50&type=multiple&cb=${Date.now()}`, {
+          cache: "no-store"
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data.results)) {
+            data.results.forEach((row, idx) => {
+              const qText = decodeHtmlEntities(row.question || "");
+              const correct = decodeHtmlEntities(row.correct_answer || "");
+              const incorrects = (row.incorrect_answers || []).map(x => decodeHtmlEntities(x));
+              if (qText && correct && incorrects.length >= 3) {
+                const opts = [correct, ...incorrects.slice(0, 3)].sort(() => Math.random() - 0.5);
+                webQuestions.push({
+                  q: `[سؤال إنترنت متجدد #${idx + 1}] ${qText}`,
+                  options: opts,
+                  a: opts.indexOf(correct),
+                  source: "الإنترنت (Open Trivia)"
+                });
+              }
+            });
           }
-          while (opts.length < 4) opts.push("ملك من ملوك بابل");
-          list.push({
-            q: `من هو "${person.name}" المذكور في الكتاب المقدس؟`,
-            options: opts,
-            a: 0
-          });
         }
+      } catch (_) {}
+
+      // دمج أسئلة الإنترنت الجديدة مع باقي أسئلة اليوم ليصبح العدد 150 سؤالاً مختلفاً كل يوم
+      const combined = [...webQuestions, ...baseList].slice(0, 150);
+      while (combined.length < 150) {
+        combined.push(baseList[combined.length % baseList.length]);
+      }
+      return combined;
+    }
+
+    async function getOrCreateDaily150Questions(forceRefresh = false) {
+      const today = getTodayKey();
+      document.getElementById("quizDateLabel").textContent = new Date().toLocaleDateString("ar-EG");
+
+      if (!forceRefresh && Array.isArray(db.dailyQuestionsCache?.[today]) && db.dailyQuestionsCache[today].length === 150) {
+        document.getElementById("quizSourceStatus").textContent =
+          `تم تحميل 150 سؤالاً متجدداً ليوم (${today}) ومتزامنة مع الجميع (+10 نقاط لكل إجابة صحيحة)`;
+        return db.dailyQuestionsCache[today];
+      }
+
+      document.getElementById("quizSourceStatus").textContent = "🌐 جاري جلب 150 سؤالاً جديداً من الإنترنت لهذا اليوم...";
+      const generated = await fetchInternetQuestions150(today);
+
+      // تنظيف الأيام القديمة لتقليل حجم ملف السحابة وحفظ أسئلة اليوم فقط
+      const freshCache = { [today]: generated };
+      await commitCloudChange((cloudDb) => {
+        cloudDb.dailyQuestionsCache = freshCache;
+        addActivityLog(cloudDb, `🌐 تم تجهيز حزمة 150 سؤالاً جديداً ليوم (${today}) من الإنترنت`);
       });
 
-      return list.slice(0, 150);
-    })();
+      document.getElementById("quizSourceStatus").textContent =
+        `تم تجهيز 150 سؤالاً جديداً ليوم (${today}) وحفظها في السحابة (+10 نقاط لكل إجابة صحيحة)`;
+      return generated;
+    }
+
+    async function refreshDailyWebQuestions(showMsg = false) {
+      await getOrCreateDaily150Questions(true);
+      renderAllUI();
+      if (showMsg) showToast("🌐 تم تحديث 150 سؤالاً جديداً لليوم ومزامنتها");
+    }
 
     // ==========================================
-    // 3. دوال الاتصال الفوري بـ GitHub Gist API
+    // 3. المزامنة الموثوقة بين كل الهواتف عبر GitHub Gist
     // ==========================================
     function setSyncUI(state, text) {
       const dot = document.getElementById("syncDot");
       const label = document.getElementById("syncStatusText");
+      const badge = document.getElementById("gistIdBadge");
       label.textContent = text;
+      badge.textContent = activeGistId ? `Gist: ${activeGistId.slice(0, 8)}...` : "Gist: غير متصل";
+
       if (state === "syncing") {
         dot.className = "w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping";
       } else if (state === "ok") {
@@ -625,33 +660,32 @@
       }
     }
 
-    async function findOrCreateGist() {
-      if (cachedGistId) return cachedGistId;
+    async function resolveSharedGistId() {
+      if (activeGistId) return activeGistId;
 
-      const res = await fetch("https://api.github.com/gists?per_page=50", {
-        headers: {
-          "Authorization": `token ${GITHUB_TOKEN}`,
-          "Accept": "application/vnd.github.v3+json"
-        }
+      const listRes = await fetch("https://api.github.com/gists?per_page=100", {
+        headers: authHeaders()
       });
 
-      if (res.ok) {
-        const gists = await res.json();
-        const found = gists.find(g => g.files && g.files[GIST_FILENAME]);
-        if (found) {
-          cachedGistId = found.id;
-          localStorage.setItem("church_gist_id", cachedGistId);
-          return cachedGistId;
-        }
+      if (!listRes.ok) {
+        const errData = await listRes.json().catch(() => ({}));
+        throw new Error(errData.message || `HTTP ${listRes.status}`);
+      }
+
+      const gists = await listRes.json();
+      const matches = gists
+        .filter(g => g.files && g.files[GIST_FILENAME])
+        .sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+
+      if (matches.length > 0) {
+        activeGistId = matches[0].id;
+        localStorage.setItem("church_active_gist_id", activeGistId);
+        return activeGistId;
       }
 
       const createRes = await fetch("https://api.github.com/gists", {
         method: "POST",
-        headers: {
-          "Authorization": `token ${GITHUB_TOKEN}`,
-          "Accept": "application/vnd.github.v3+json",
-          "Content-Type": "application/json"
-        },
+        headers: authHeaders(),
         body: JSON.stringify({
           description: GIST_DESCRIPTION,
           public: false,
@@ -663,86 +697,104 @@
         })
       });
 
-      if (createRes.ok) {
-        const created = await createRes.json();
-        cachedGistId = created.id;
-        localStorage.setItem("church_gist_id", cachedGistId);
-        return cachedGistId;
+      if (!createRes.ok) {
+        const errData = await createRes.json().catch(() => ({}));
+        throw new Error(errData.message || `HTTP ${createRes.status}`);
       }
-      throw new Error("فشل الاتصال بالسحابة");
+
+      const created = await createRes.json();
+      activeGistId = created.id;
+      localStorage.setItem("church_active_gist_id", activeGistId);
+      return activeGistId;
+    }
+
+    async function fetchRemoteDb() {
+      const gistId = await resolveSharedGistId();
+      const res = await fetch(`https://api.github.com/gists/${gistId}?cb=${Date.now()}`, {
+        headers: authHeaders(),
+        cache: "no-store"
+      });
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.message || `HTTP ${res.status}`);
+      }
+
+      const data = await res.json();
+      const rawContent = data.files?.[GIST_FILENAME]?.content;
+      if (!rawContent) {
+        return {
+          members: [],
+          activities: [],
+          announcement: db.announcement,
+          servantPin: DEFAULT_SERVANT_PIN,
+          dailyQuestionsCache: {},
+          lastUpdated: 0
+        };
+      }
+
+      const parsed = JSON.parse(rawContent);
+      return {
+        members: Array.isArray(parsed.members) ? parsed.members : [],
+        activities: Array.isArray(parsed.activities) ? parsed.activities : [],
+        announcement: parsed.announcement || db.announcement,
+        servantPin: parsed.servantPin ? String(parsed.servantPin) : DEFAULT_SERVANT_PIN,
+        dailyQuestionsCache: parsed.dailyQuestionsCache && typeof parsed.dailyQuestionsCache === "object" ? parsed.dailyQuestionsCache : {},
+        lastUpdated: Number(parsed.lastUpdated || 0)
+      };
     }
 
     async function pullFromCloud(silent = false) {
       if (isSyncing) return;
       isSyncing = true;
-      if (!silent) setSyncUI("syncing", "جاري جلب التحديثات...");
+      if (!silent) setSyncUI("syncing", "جاري سحب بيانات الهواتف...");
 
       try {
-        const gistId = await findOrCreateGist();
-        const res = await fetch(`https://api.github.com/gists/${gistId}?t=${Date.now()}`, {
-          headers: {
-            "Authorization": `token ${GITHUB_TOKEN}`,
-            "Accept": "application/vnd.github.v3+json"
-          }
-        });
+        const remote = await fetchRemoteDb();
+        db = remote;
+        localStorage.setItem("church_db_backup", JSON.stringify(db));
 
-        if (res.ok) {
-          const data = await res.json();
-          const rawContent = data.files?.[GIST_FILENAME]?.content;
-          if (rawContent) {
-            const parsed = JSON.parse(rawContent);
-            db = {
-              members: Array.isArray(parsed.members) ? parsed.members : [],
-              activities: Array.isArray(parsed.activities) ? parsed.activities : [],
-              announcement: parsed.announcement || db.announcement,
-              servantPin: parsed.servantPin ? String(parsed.servantPin) : DEFAULT_SERVANT_PIN,
-              lastUpdated: parsed.lastUpdated || Date.now()
-            };
-            localStorage.setItem("church_db_backup", JSON.stringify(db));
-
-            if (currentUser) {
-              const stillExists = db.members.find(m => m.id === currentUser.id);
-              if (!stillExists) {
-                currentUser = null;
-                localStorage.removeItem("church_current_user");
-                showToast("⚠️ تم تحديث القائمة بواسطة الخادم");
-              } else {
-                currentUser = stillExists;
-                localStorage.setItem("church_current_user", JSON.stringify(currentUser));
-              }
-            }
+        if (currentUser) {
+          const stillExists = db.members.find(m => m.id === currentUser.id);
+          if (!stillExists) {
+            currentUser = null;
+            localStorage.removeItem("church_current_user");
+          } else {
+            currentUser = stillExists;
+            localStorage.setItem("church_current_user", JSON.stringify(currentUser));
           }
-          setSyncUI("ok", "متصل بالسحابة (مُحدّث الآن)");
-          renderAllUI();
-        } else {
-          throw new Error("خطأ في القراءة");
         }
+
+        setSyncUI("ok", "متزامن مع كل الهواتف ✓");
+        renderAllUI();
       } catch (err) {
         const backup = localStorage.getItem("church_db_backup");
         if (backup) db = JSON.parse(backup);
-        setSyncUI("err", "وضع محلي (تعذر الوصول للسحابة)");
+        setSyncUI("err", `خطأ سحابة: ${err.message}`);
         renderAllUI();
       } finally {
         isSyncing = false;
       }
     }
 
-    async function pushToCloud() {
+    async function commitCloudChange(mutatorFn) {
       isSyncing = true;
-      setSyncUI("syncing", "جاري الحفظ في السحابة...");
-      db.lastUpdated = Date.now();
-      localStorage.setItem("church_db_backup", JSON.stringify(db));
-      renderAllUI();
+      setSyncUI("syncing", "جاري مزامنة التغيير مع الجميع...");
 
       try {
-        const gistId = await findOrCreateGist();
+        try {
+          db = await fetchRemoteDb();
+        } catch (_) {}
+
+        mutatorFn(db);
+        db.lastUpdated = Date.now();
+        localStorage.setItem("church_db_backup", JSON.stringify(db));
+        renderAllUI();
+
+        const gistId = await resolveSharedGistId();
         const res = await fetch(`https://api.github.com/gists/${gistId}`, {
           method: "PATCH",
-          headers: {
-            "Authorization": `token ${GITHUB_TOKEN}`,
-            "Accept": "application/vnd.github.v3+json",
-            "Content-Type": "application/json"
-          },
+          headers: authHeaders(),
           body: JSON.stringify({
             files: {
               [GIST_FILENAME]: {
@@ -752,13 +804,15 @@
           })
         });
 
-        if (res.ok) {
-          setSyncUI("ok", "تم الحفظ والمزامنة للجميع ✓");
-        } else {
-          throw new Error("فشل الحفظ");
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.message || `HTTP ${res.status}`);
         }
+
+        setSyncUI("ok", "تمت المزامنة مع كل الهواتف ✓");
       } catch (err) {
-        setSyncUI("err", "حُفظ محلياً — أعد المزامنة");
+        setSyncUI("err", `تعذر الحفظ بالسحابة: ${err.message}`);
+        showToast(`⚠️ لم يتم الحفظ بالسحابة: ${err.message}`);
       } finally {
         isSyncing = false;
       }
@@ -766,57 +820,57 @@
 
     function manualSync() {
       pullFromCloud(false);
-      showToast("🔄 تم تحديث البيانات من السحابة");
+      showToast("🔄 جاري التحديث من السحابة...");
     }
 
-    function addActivityLog(text) {
+    function addActivityLog(targetDb, text) {
       const now = new Date();
       const timeStr = now.toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit" });
-      db.activities.unshift({ text, time: timeStr, ts: Date.now() });
-      if (db.activities.length > 40) db.activities = db.activities.slice(0, 40);
+      targetDb.activities.unshift({ text, time: timeStr, ts: Date.now() });
+      if (targetDb.activities.length > 40) targetDb.activities = targetDb.activities.slice(0, 40);
     }
 
     // ==========================================
-    // 4. إدارة الأعضاء والحضور (اعتماد الخادم فقط) ومسابقة الـ 150 سؤال
+    // 4. إدارة الأعضاء والحضور والمسابقة
     // ==========================================
-    function getTodayKey() {
-      return new Date().toISOString().split("T")[0];
-    }
-
     async function handleRegisterOrLogin(e) {
       e.preventDefault();
       const name = document.getElementById("inputName").value.trim();
       const role = document.getElementById("inputRole").value;
       if (!name) return;
 
-      await pullFromCloud(true);
+      let loggedMember = null;
 
-      let member = db.members.find(m => m.name.toLowerCase() === name.toLowerCase());
-      if (!member) {
-        member = {
-          id: "m_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
-          name,
-          role,
-          points: 10,
-          joinedAt: new Date().toLocaleDateString("ar-EG"),
-          lastAttendanceDate: "",
-          lastAttendanceType: "مسجل جديد",
-          attendanceApprovedToday: false,
-          pendingAttendancePoints: 0,
-          answeredDates: {}
-        };
-        db.members.push(member);
-        addActivityLog(`✨ انضم ${name} (${role}) إلى بوابة الخدمة (+10 نقاط ترحيب)`);
-        showToast(`أهلاً بك يا ${name}! تم تسجيلك في السحابة`);
-      } else {
-        addActivityLog(`👋 دخل ${member.name} إلى الموقع الآن`);
-        showToast(`مرحباً بعودتك يا ${member.name}!`);
+      await commitCloudChange((cloudDb) => {
+        let member = cloudDb.members.find(m => m.name.toLowerCase() === name.toLowerCase());
+        if (!member) {
+          member = {
+            id: "m_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
+            name,
+            role,
+            points: 10,
+            joinedAt: new Date().toLocaleDateString("ar-EG"),
+            lastAttendanceDate: "",
+            lastAttendanceType: "مسجل جديد",
+            attendanceApprovedToday: false,
+            pendingAttendancePoints: 0,
+            answeredDates: {}
+          };
+          cloudDb.members.push(member);
+          addActivityLog(cloudDb, `✨ انضم ${name} (${role}) إلى بوابة الخدمة (+10 نقاط ترحيب)`);
+        } else {
+          addActivityLog(cloudDb, `👋 دخل ${member.name} إلى الموقع الآن`);
+        }
+        loggedMember = member;
+      });
+
+      if (loggedMember) {
+        currentUser = loggedMember;
+        localStorage.setItem("church_current_user", JSON.stringify(currentUser));
+        document.getElementById("inputName").value = "";
+        showToast(`أهلاً بك يا ${loggedMember.name}! تم المزامنة مع السحابة`);
+        renderAllUI();
       }
-
-      currentUser = member;
-      localStorage.setItem("church_current_user", JSON.stringify(currentUser));
-      document.getElementById("inputName").value = "";
-      await pushToCloud();
     }
 
     function logoutUser() {
@@ -825,7 +879,6 @@
       renderAllUI();
     }
 
-    // العضو يسجل حضوره فقط — ولا تُضاف النقاط إلا باعتماد الخادم
     async function recordAttendance(type, pts) {
       if (!currentUser) {
         showToast("⚠️ سجل اسمك أولاً في الرئيسية لتسجيل حضورك!");
@@ -833,70 +886,59 @@
         return;
       }
 
-      await pullFromCloud(true);
-      const member = db.members.find(m => m.id === currentUser.id);
-      if (!member) return;
-
       const today = getTodayKey();
       const attKey = `${today}_${type}`;
-      if (member.lastAttendanceKey === attKey) {
+      let alreadyRecorded = false;
+      let updatedMember = null;
+
+      await commitCloudChange((cloudDb) => {
+        const member = cloudDb.members.find(m => m.id === currentUser.id);
+        if (!member) return;
+
+        if (member.lastAttendanceKey === attKey) {
+          alreadyRecorded = true;
+          updatedMember = member;
+          return;
+        }
+
+        member.lastAttendanceDate = today;
+        member.lastAttendanceType = type;
+        member.lastAttendanceKey = attKey;
+        member.attendanceApprovedToday = false;
+        member.pendingAttendancePoints = pts;
+        updatedMember = member;
+
+        addActivityLog(cloudDb, `⛪ سجل ${member.name} حضور (${type}) — بانتظار اعتماد الخادم لإضافة +${pts} نقطة`);
+      });
+
+      if (updatedMember) {
+        currentUser = updatedMember;
+        localStorage.setItem("church_current_user", JSON.stringify(currentUser));
+      }
+
+      if (alreadyRecorded) {
         showToast(`✅ لقد سجلت حضور (${type}) اليوم بالفعل — بانتظار اعتماد الخادم!`);
-        return;
+      } else {
+        showToast(`📩 تم تسجيل حضورك في (${type}) — سيقوم الخادم باعتماد النقاط`);
       }
-
-      member.lastAttendanceDate = today;
-      member.lastAttendanceType = type;
-      member.lastAttendanceKey = attKey;
-      member.attendanceApprovedToday = false;
-      member.pendingAttendancePoints = pts;
-
-      currentUser = member;
-      localStorage.setItem("church_current_user", JSON.stringify(currentUser));
-
-      addActivityLog(`⛪ سجل ${member.name} حضور (${type}) — بانتظار اعتماد الخادم لإضافة +${pts} نقطة`);
-      showToast(`📩 تم تسجيل حضورك في (${type}) — سيقوم الخادم باعتماد النقاط`);
-      await pushToCloud();
     }
 
-    // الخادم يعتمد الحضور ويضيف نقاط الحضور
     async function approveAttendanceByServant(memberId) {
-      await pullFromCloud(true);
-      const member = db.members.find(m => m.id === memberId);
-      if (!member) return;
+      await commitCloudChange((cloudDb) => {
+        const member = cloudDb.members.find(m => m.id === memberId);
+        if (!member) return;
 
-      const today = getTodayKey();
-      if (member.lastAttendanceDate !== today) {
-        showToast("⚠️ العضو لم يسجل حضور اليوم بعد");
-        return;
-      }
-      if (member.attendanceApprovedToday) {
-        showToast("✅ تم اعتماد حضور هذا العضو اليوم بالفعل");
-        return;
-      }
+        const today = getTodayKey();
+        if (member.lastAttendanceDate !== today || member.attendanceApprovedToday) return;
 
-      const ptsToAdd = member.pendingAttendancePoints || 15;
-      member.points += ptsToAdd;
-      member.attendanceApprovedToday = true;
-      member.pendingAttendancePoints = 0;
+        const ptsToAdd = member.pendingAttendancePoints || 15;
+        member.points += ptsToAdd;
+        member.attendanceApprovedToday = true;
+        member.pendingAttendancePoints = 0;
 
-      addActivityLog(`✅ اعتمد الخادم حضور ${member.name} (${member.lastAttendanceType}) وأضاف +${ptsToAdd} نقطة`);
-      showToast(`✓ تم اعتماد حضور ${member.name} وإضافة +${ptsToAdd} نقطة`);
-      await pushToCloud();
-    }
-
-    function getAll150DailyQuestions() {
-      const today = getTodayKey();
-      document.getElementById("quizDateLabel").textContent = new Date().toLocaleDateString("ar-EG");
-      let seed = 0;
-      for (let i = 0; i < today.length; i++) seed += today.charCodeAt(i) * (i + 7);
-
-      const indexed = QUESTION_BANK_150.map((q, idx) => ({ ...q, globalIndex: idx }));
-      for (let i = indexed.length - 1; i > 0; i--) {
-        seed = (seed * 9301 + 49297) % 233280;
-        const j = Math.floor((seed / 233280) * (i + 1));
-        [indexed[i], indexed[j]] = [indexed[j], indexed[i]];
-      }
-      return indexed;
+        addActivityLog(cloudDb, `✅ اعتمد الخادم حضور ${member.name} (${member.lastAttendanceType}) وأضاف +${ptsToAdd} نقطة`);
+      });
+      showToast("✓ تم اعتماد الحضور وإضافة النقاط ومزامنتها مع الجميع");
     }
 
     function setQuizPage(pageIdx) {
@@ -919,36 +961,51 @@
         return;
       }
 
-      await pullFromCloud(true);
-      const member = db.members.find(m => m.id === currentUser.id);
-      if (!member) return;
-
       const today = getTodayKey();
-      if (!member.answeredDates) member.answeredDates = {};
-      if (!member.answeredDates[today]) member.answeredDates[today] = [];
+      let isCorrect = false;
+      let alreadySolved = false;
+      let updatedMember = null;
 
-      if (member.answeredDates[today].includes(qIdx)) {
-        showToast("لقد أجبت على هذا السؤال اليوم بالفعل!");
-        return;
+      await commitCloudChange((cloudDb) => {
+        const member = cloudDb.members.find(m => m.id === currentUser.id);
+        if (!member) return;
+
+        if (!member.answeredDates) member.answeredDates = {};
+        if (!member.answeredDates[today]) member.answeredDates[today] = [];
+
+        if (member.answeredDates[today].includes(qIdx)) {
+          alreadySolved = true;
+          updatedMember = member;
+          return;
+        }
+
+        member.answeredDates[today].push(qIdx);
+        if (selectedOption === correctOption) {
+          isCorrect = true;
+          member.points += 10;
+          addActivityLog(cloudDb, `📖 أجاب ${member.name} إجابة صحيحة في مسابقة اليوم (+10 نقاط)`);
+        } else {
+          addActivityLog(cloudDb, `📖 شارك ${member.name} في مسابقة اليوم`);
+        }
+        updatedMember = member;
+      });
+
+      if (updatedMember) {
+        currentUser = updatedMember;
+        localStorage.setItem("church_current_user", JSON.stringify(currentUser));
       }
 
-      member.answeredDates[today].push(qIdx);
-      if (selectedOption === correctOption) {
-        member.points += 10;
-        addActivityLog(`📖 أجاب ${member.name} إجابة صحيحة في مسابقة اليوم (+10 نقاط)`);
+      if (alreadySolved) {
+        showToast("لقد أجبت على هذا السؤال اليوم بالفعل!");
+      } else if (isCorrect) {
         showToast("👏 إجابة صحيحة! أُضيفت +10 نقاط لرصيدك");
       } else {
-        addActivityLog(`📖 شارك ${member.name} في مسابقة اليوم`);
         showToast("❌ إجابة غير صحيحة — انتقل للسؤال التالي");
       }
-
-      currentUser = member;
-      localStorage.setItem("church_current_user", JSON.stringify(currentUser));
-      await pushToCloud();
     }
 
     // ==========================================
-    // 5. لوحة تحكم الخدام + تغيير كلمة السر من الرئيسية أو اللوحة
+    // 5. لوحة تحكم الخدام + تغيير كلمة السر
     // ==========================================
     function unlockServantPanel() {
       const pin = document.getElementById("servantPinInput").value.trim();
@@ -974,8 +1031,6 @@
       const enteredCurrent = currentPinEl.value.trim();
       const newPin = newPinEl.value.trim();
 
-      await pullFromCloud(true);
-
       if (enteredCurrent !== getCurrentServantPin()) {
         showToast("❌ كلمة السر الحالية غير صحيحة");
         return;
@@ -985,12 +1040,14 @@
         return;
       }
 
-      db.servantPin = newPin;
+      await commitCloudChange((cloudDb) => {
+        cloudDb.servantPin = newPin;
+        addActivityLog(cloudDb, "🔑 تم تغيير كلمة سر الخدام من الصفحة الرئيسية وحفظها في السحابة");
+      });
+
       currentPinEl.value = "";
       newPinEl.value = "";
-      addActivityLog("🔑 تم تغيير كلمة سر الخدام من الصفحة الرئيسية وحفظها في السحابة");
       showToast("✅ تم تغيير كلمة السر وحفظها في السحابة بنجاح");
-      await pushToCloud();
     }
 
     async function changeServantPassword() {
@@ -1000,58 +1057,62 @@
         showToast("⚠️ اكتب كلمة سر جديدة (3 أحرف أو أرقام على الأقل)");
         return;
       }
-      await pullFromCloud(true);
-      db.servantPin = newPin;
+
+      await commitCloudChange((cloudDb) => {
+        cloudDb.servantPin = newPin;
+        addActivityLog(cloudDb, "🔑 تم تحديث كلمة سر لوحة تحكم الخدام في السحابة");
+      });
+
       inputEl.value = "";
-      addActivityLog("🔑 تم تحديث كلمة سر لوحة تحكم الخدام في السحابة");
       showToast("✅ تم تغيير كلمة السر وحفظها في السحابة بنجاح");
-      await pushToCloud();
     }
 
     async function adjustMemberPoints(memberId, delta) {
-      await pullFromCloud(true);
-      const member = db.members.find(m => m.id === memberId);
-      if (!member) return;
-
-      member.points = Math.max(0, member.points + delta);
-      const actionText = delta > 0 ? `أضاف الخادم +${delta} نقطة لـ ${member.name}` : `خصم الخادم ${Math.abs(delta)} نقطة من ${member.name}`;
-      addActivityLog(`🛡️ ${actionText}`);
-      showToast(`✓ ${actionText}`);
-      await pushToCloud();
+      await commitCloudChange((cloudDb) => {
+        const member = cloudDb.members.find(m => m.id === memberId);
+        if (!member) return;
+        member.points = Math.max(0, member.points + delta);
+        const actionText = delta > 0 ? `أضاف الخادم +${delta} نقطة لـ ${member.name}` : `خصم الخادم ${Math.abs(delta)} نقطة من ${member.name}`;
+        addActivityLog(cloudDb, `🛡️ ${actionText}`);
+      });
+      showToast("✓ تم تحديث النقاط ومزامنتها مع الجميع");
     }
 
     async function deleteMemberByServant(memberId) {
-      await pullFromCloud(true);
       const target = db.members.find(m => m.id === memberId);
       if (!target) return;
+      if (!confirm(`هل أنت متأكد من حذف (${target.name}) نهائياً من السحابة؟ سيختفي من كل الهواتف فوراً.`)) return;
 
-      if (!confirm(`هل أنت متأكد من حذف (${target.name}) نهائياً من السحابة؟ سيختفي من عند الجميع فوراً.`)) return;
+      await commitCloudChange((cloudDb) => {
+        cloudDb.members = cloudDb.members.filter(m => m.id !== memberId);
+        addActivityLog(cloudDb, `🗑️ قام الخادم بحذف العضو (${target.name}) من القائمة`);
+      });
 
-      db.members = db.members.filter(m => m.id !== memberId);
       if (currentUser && currentUser.id === memberId) {
         currentUser = null;
         localStorage.removeItem("church_current_user");
       }
-      addActivityLog(`🗑️ قام الخادم بحذف العضو (${target.name}) من القائمة`);
-      showToast(`تم حذف ${target.name} من السحابة وسيختفي عند الجميع`);
-      await pushToCloud();
+      showToast(`تم حذف ${target.name} ومزامنته مع الجميع`);
     }
 
     async function updateChurchAnnouncement() {
-      const text = document.getElementById("newAnnouncementInput").value.trim();
+      const inputEl = document.getElementById("newAnnouncementInput");
+      const text = inputEl.value.trim();
       if (!text) return;
-      await pullFromCloud(true);
-      db.announcement = text;
-      addActivityLog(`📢 نشر الخادم تنبيهاً جديداً: "${text}"`);
-      document.getElementById("newAnnouncementInput").value = "";
+
+      await commitCloudChange((cloudDb) => {
+        cloudDb.announcement = text;
+        addActivityLog(cloudDb, `📢 نشر الخادم تنبيهاً جديداً: "${text}"`);
+      });
+
+      inputEl.value = "";
       showToast("📢 تم نشر التنبيه للجميع");
-      await pushToCloud();
     }
 
     // ==========================================
     // 6. تحديث الواجهة والتبويبات
     // ==========================================
-    function switchTab(tabName) {
+    async function switchTab(tabName) {
       const tabs = ["home", "quiz", "attendance", "leaderboard", "servants"];
       tabs.forEach(t => {
         document.getElementById(`view-${t}`).classList.add("hidden");
@@ -1063,6 +1124,10 @@
       const activeBtn = document.getElementById(`tab-${tabName}`);
       activeBtn.classList.add("tab-active");
       activeBtn.classList.remove("text-slate-700");
+
+      if (tabName === "quiz") {
+        await getOrCreateDaily150Questions(false);
+      }
       renderAllUI();
     }
 
@@ -1122,7 +1187,10 @@
         `).join("");
       }
 
-      const allDailyQs = getAll150DailyQuestions();
+      const allDailyQs = Array.isArray(db.dailyQuestionsCache?.[today]) && db.dailyQuestionsCache[today].length === 150
+        ? db.dailyQuestionsCache[today]
+        : buildDailyFallback150(today);
+
       const freshUser = currentUser ? db.members.find(m => m.id === currentUser.id) : null;
       const answeredToday = (freshUser && freshUser.answeredDates && freshUser.answeredDates[today]) || [];
       document.getElementById("todaySolvedCount").textContent = answeredToday.length;
@@ -1143,7 +1211,7 @@
 
       const hideAnswered = document.getElementById("hideAnsweredToggle")?.checked;
       const pageSlice = allDailyQs.slice(currentQuizPage * QUESTIONS_PER_PAGE, (currentQuizPage + 1) * QUESTIONS_PER_PAGE);
-      const visibleSlice = hideAnswered ? pageSlice.filter(q => !answeredToday.includes(q.globalIndex)) : pageSlice;
+      const visibleSlice = hideAnswered ? pageSlice.filter((_, idx) => !answeredToday.includes(currentQuizPage * QUESTIONS_PER_PAGE + idx)) : pageSlice;
 
       document.getElementById("quizPageIndicator").textContent = `صفحة ${currentQuizPage + 1} من ${totalPages} (إجمالي 150 سؤال يومياً)`;
       document.getElementById("prevQuizPageBtn").disabled = currentQuizPage === 0;
@@ -1154,18 +1222,19 @@
         quizContainer.innerHTML = `<div class="text-center py-8 text-emerald-700 font-bold">🎉 أحسنت! لقد أجبت على جميع أسئلة هذه المجموعة اليوم. انتقل للمجموعة التالية!</div>`;
       } else {
         quizContainer.innerHTML = visibleSlice.map((item, idx) => {
-          const displayNum = currentQuizPage * QUESTIONS_PER_PAGE + idx + 1;
-          const isAnswered = answeredToday.includes(item.globalIndex);
+          const globalQIdx = currentQuizPage * QUESTIONS_PER_PAGE + idx;
+          const displayNum = globalQIdx + 1;
+          const isAnswered = answeredToday.includes(globalQIdx);
           return `
             <div class="p-4 rounded-xl border ${isAnswered ? "bg-emerald-50/60 border-emerald-200" : "bg-[#faf7f0] border-amber-200"}">
               <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-bold text-[#c59b27]">السؤال ${displayNum} من 150</span>
+                <span class="text-xs font-bold text-[#c59b27]">السؤال ${displayNum} من 150 • ${item.source || "متجدد"}</span>
                 ${isAnswered ? `<span class="text-xs font-bold text-emerald-700">✓ تمت الإجابة اليوم</span>` : ""}
               </div>
               <p class="font-bold text-[#0f233c] mb-3">${item.q}</p>
               <div class="grid sm:grid-cols-2 gap-2">
                 ${item.options.map((opt, optIdx) => `
-                  <button ${isAnswered ? "disabled" : ""} onclick="submitQuizAnswer(${item.globalIndex}, ${optIdx}, ${item.a})"
+                  <button ${isAnswered ? "disabled" : ""} onclick="submitQuizAnswer(${globalQIdx}, ${optIdx}, ${item.a})"
                     class="text-right px-3.5 py-2 rounded-lg border text-sm font-semibold transition
                     ${isAnswered
                       ? (optIdx === item.a ? "bg-emerald-600 text-white border-emerald-600" : "bg-white text-slate-400 border-slate-200")
@@ -1281,11 +1350,15 @@
       }, 3200);
     }
 
-    window.addEventListener("DOMContentLoaded", () => {
-      pullFromCloud(false);
+    window.addEventListener("DOMContentLoaded", async () => {
+      renderAllUI();
+      await pullFromCloud(false);
+      await getOrCreateDaily150Questions(false);
+      renderAllUI();
+
       setInterval(() => {
         if (!document.hidden) pullFromCloud(true);
-      }, 10000);
+      }, 5000);
     });
   </script>
 </body>
