@@ -1,7 +1,7 @@
 {
   "announcement": "أهلاً بكم في بوابة الكنيسة الرسولية الأولى بالعزية — صلوا لأجل الخدمة والافتقاد.",
   "adminPinHash": "158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab",
-  "lastUpdated": "2026-11-22T12:49:41.331Z",
+  "lastUpdated": "2026-11-22T12:50:02.678Z",
   "members": [
     {
       "id": "m_1795351689261",
@@ -10,11 +10,15 @@
       "group": "اجتماع الشباب",
       "address": "F",
       "passHash": "12cc45d3f33cd8d2819609d230111b56cfb71d8620500a4f4a3bdc01f43d5a36",
-      "absences": 0,
+      "absences": 1,
       "lastAtt": "عضو جديد"
     }
   ],
-  "attendance": {},
+  "attendance": {
+    "2026-11-22": {
+      "m_1795351689261": "absent"
+    }
+  },
   "quizScores": [
     {
       "name": "مريم مجدي فؤاد",
