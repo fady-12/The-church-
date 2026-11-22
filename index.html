@@ -190,6 +190,20 @@
               <span class="text-2xl font-extrabold text-[#c59b27]">150</span>
             </div>
           </div>
+
+          <!-- تغيير كلمة السر من الرئيسية مباشرة -->
+          <div class="bg-[#faf7f0] p-4 rounded-xl border border-amber-200/90 space-y-2">
+            <label class="block text-xs font-bold text-[#0f233c]">🔑 تغيير كلمة سر لوحة الخدام (مباشرة من الرئيسية):</label>
+            <div class="grid sm:grid-cols-3 gap-2">
+              <input type="password" id="homeCurrentPinInput" placeholder="كلمة السر الحالية..."
+                class="px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white">
+              <input type="password" id="homeNewPinInput" placeholder="كلمة السر الجديدة..."
+                class="px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white">
+              <button type="button" onclick="changeServantPasswordFromHome()" class="navy-btn px-4 py-2 rounded-lg text-xs font-bold">
+                تغيير كلمة السر ☁️
+              </button>
+            </div>
+          </div>
         </div>
 
         <!-- آية اليوم -->
@@ -253,7 +267,6 @@
           ⚠️ من فضلك سجل اسمك في تبويب (الرئيسية والتسجيل) أولاً حتى تُضاف نقاط المسابقة إلى رصيدك في السحابة!
         </div>
 
-        <!-- شريط التنقل بين مجموعات الـ 150 سؤال (15 صفحة × 10 أسئلة) -->
         <div class="bg-[#faf7f0] p-3 rounded-xl border border-amber-200 mb-5 space-y-2">
           <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
             <span class="font-bold text-[#0f233c]">اختر مجموعة الأسئلة (من 1 إلى 150):</span>
@@ -267,7 +280,6 @@
 
         <div id="quizContainer" class="space-y-4"></div>
 
-        <!-- أزرار التالي والسابق أسفل الصفحة -->
         <div class="flex items-center justify-between mt-6 pt-4 border-t border-amber-200">
           <button onclick="changeQuizPage(-1)" id="prevQuizPageBtn" class="navy-btn px-4 py-2 rounded-lg text-xs font-bold disabled:opacity-40">
             ← المجموعة السابقة
@@ -286,25 +298,27 @@
         <h2 class="text-2xl font-bold font-classic text-[#0f233c] border-b border-amber-200 pb-3 mb-4">
           ⛪ تسجيل الحضور والاجتماعات الكنسية
         </h2>
-        <p class="text-sm text-slate-600 mb-5">سجل حضورك اليوم ليظهر عند الخادم ويُضاف لرصيد نقاطك فوراً في السحابة:</p>
+        <p class="text-sm text-slate-600 mb-5">
+          سجل حضورك اليوم ليظهر عند الخادم في لوحة التحكم — ويقوم الخادم باعتماد الحضور وإضافة النقاط لك في السحابة:
+        </p>
 
         <div class="grid sm:grid-cols-3 gap-4 mb-6">
           <button onclick="recordAttendance('القداس الإلهي', 20)" class="classic-card p-5 text-center hover:border-[#c59b27] hover:bg-amber-50/40 transition group">
             <div class="text-3xl mb-2">🕊️</div>
-            <h3 class="font-bold text-[#0f233c] group-hover:text-[#c59b27]">حضور القداس الإلهي</h3>
-            <span class="inline-block mt-2 text-xs bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full font-bold">+20 نقطة</span>
+            <h3 class="font-bold text-[#0f233c] group-hover:text-[#c59b27]">تسجيل حضور القداس الإلهي</h3>
+            <span class="inline-block mt-2 text-xs bg-amber-100 text-amber-900 px-2.5 py-1 rounded-full font-bold">يعتمد الخادم (+20 نقطة)</span>
           </button>
 
           <button onclick="recordAttendance('مدارس الأحد / الاجتماع', 15)" class="classic-card p-5 text-center hover:border-[#c59b27] hover:bg-amber-50/40 transition group">
             <div class="text-3xl mb-2">📖</div>
-            <h3 class="font-bold text-[#0f233c] group-hover:text-[#c59b27]">مدارس الأحد / الاجتماع</h3>
-            <span class="inline-block mt-2 text-xs bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full font-bold">+15 نقطة</span>
+            <h3 class="font-bold text-[#0f233c] group-hover:text-[#c59b27]">تسجيل مدارس الأحد / الاجتماع</h3>
+            <span class="inline-block mt-2 text-xs bg-amber-100 text-amber-900 px-2.5 py-1 rounded-full font-bold">يعتمد الخادم (+15 نقطة)</span>
           </button>
 
           <button onclick="recordAttendance('تسبحة / عشية', 15)" class="classic-card p-5 text-center hover:border-[#c59b27] hover:bg-amber-50/40 transition group">
             <div class="text-3xl mb-2">🕯️</div>
-            <h3 class="font-bold text-[#0f233c] group-hover:text-[#c59b27]">عشية أو تسبحة</h3>
-            <span class="inline-block mt-2 text-xs bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full font-bold">+15 نقطة</span>
+            <h3 class="font-bold text-[#0f233c] group-hover:text-[#c59b27]">تسجيل عشية أو تسبحة</h3>
+            <span class="inline-block mt-2 text-xs bg-amber-100 text-amber-900 px-2.5 py-1 rounded-full font-bold">يعتمد الخادم (+15 نقطة)</span>
           </button>
         </div>
 
@@ -335,10 +349,7 @@
             class="px-3 py-1.5 text-sm border border-slate-300 rounded-lg focus:outline-none focus:border-[#c59b27]">
         </div>
 
-        <!-- المراكز الثلاثة الأولى -->
         <div id="topThreeContainer" class="grid sm:grid-cols-3 gap-4 mb-6"></div>
-
-        <!-- باقي القائمة -->
         <div id="fullLeaderboardList" class="space-y-2"></div>
       </div>
     </section>
@@ -349,7 +360,7 @@
       <div id="servantLoginBox" class="classic-card p-8 max-w-md mx-auto text-center space-y-4">
         <div class="w-14 h-14 rounded-full bg-[#0f233c] text-[#e6c665] flex items-center justify-center text-2xl mx-auto">🛡️</div>
         <h2 class="text-xl font-bold font-classic text-[#0f233c]">دخول لوحة تحكم الخدام</h2>
-        <p class="text-xs text-slate-600">أدخل رمز الخدام للتحكم في النقاط وحذف الأعضاء ونشر التنبيهات (الرمز الافتراضي: 1234)</p>
+        <p class="text-xs text-slate-600">أدخل رمز الخدام لاعتماد الحضور وإضافة النقاط وحذف الأعضاء (الرمز الافتراضي: 1234)</p>
         <input type="password" id="servantPinInput" placeholder="أدخل رمز الخدام..."
           class="w-full px-4 py-2.5 text-center tracking-widest border border-slate-300 rounded-lg focus:outline-none focus:border-[#c59b27]">
         <button onclick="unlockServantPanel()" class="navy-btn w-full py-2.5 rounded-lg font-bold text-sm">فتح لوحة الخدام</button>
@@ -357,31 +368,43 @@
 
       <!-- محتوى لوحة الخدام بعد الفتح -->
       <div id="servantDashboard" class="hidden space-y-6">
-        <div class="classic-card p-6 space-y-4">
+        <div class="classic-card p-6 space-y-5">
           <div class="flex items-center justify-between border-b border-amber-200 pb-3">
-            <h2 class="text-xl font-bold font-classic text-[#0f233c]">🛡️ إدارة الخدام — تعديل النقاط وحذف الأعضاء</h2>
+            <h2 class="text-xl font-bold font-classic text-[#0f233c]">🛡️ إدارة الخدام — اعتماد الحضور والنقاط وحذف الأعضاء</h2>
             <button onclick="lockServantPanel()" class="text-xs text-red-600 font-bold underline">قفل اللوحة</button>
           </div>
 
-          <!-- نشر تنبيه عام للكنيسة -->
-          <div class="bg-[#faf7f0] p-4 rounded-xl border border-amber-200 space-y-2">
-            <label class="block text-xs font-bold text-[#0f233c]">📢 نشر تنبيه عام يظهر أعلى الموقع للجميع:</label>
-            <div class="flex gap-2">
-              <input type="text" id="newAnnouncementInput" placeholder="مثال: موعد القداس غداً الساعة 7 صباحاً..."
-                class="flex-1 px-3 py-2 text-sm border border-slate-300 rounded-lg">
-              <button onclick="updateChurchAnnouncement()" class="gold-btn px-4 py-2 rounded-lg text-xs font-bold">نشر التنبيه</button>
+          <!-- نشر تنبيه عام + تغيير كلمة سر الخدام -->
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="bg-[#faf7f0] p-4 rounded-xl border border-amber-200 space-y-2">
+              <label class="block text-xs font-bold text-[#0f233c]">📢 نشر تنبيه عام يظهر أعلى الموقع للجميع:</label>
+              <div class="flex gap-2">
+                <input type="text" id="newAnnouncementInput" placeholder="مثال: موعد القداس غداً الساعة 7 صباحاً..."
+                  class="flex-1 px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white">
+                <button onclick="updateChurchAnnouncement()" class="gold-btn px-4 py-2 rounded-lg text-xs font-bold">نشر التنبيه</button>
+              </div>
+            </div>
+
+            <div class="bg-[#faf7f0] p-4 rounded-xl border border-amber-200 space-y-2">
+              <label class="block text-xs font-bold text-[#0f233c]">🔑 تغيير كلمة سر لوحة الخدام (تُحفظ في السحابة):</label>
+              <div class="flex gap-2">
+                <input type="password" id="newServantPinInput" placeholder="اكتب كلمة السر الجديدة..."
+                  class="flex-1 px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white">
+                <button onclick="changeServantPassword()" class="navy-btn px-4 py-2 rounded-lg text-xs font-bold">حفظ الرمز</button>
+              </div>
             </div>
           </div>
 
-          <!-- جدول التحكم في الأعضاء (إضافة/خصم نقاط + حذف نهائي) -->
+          <!-- جدول التحكم في الأعضاء واعتماد الحضور -->
           <div class="overflow-x-auto">
             <table class="w-full text-sm text-right border-collapse">
               <thead>
                 <tr class="bg-[#0f233c] text-[#e6c665]">
                   <th class="p-3 rounded-tr-lg">الاسم</th>
                   <th class="p-3">الصفة</th>
+                  <th class="p-3">حالة وحضور اليوم</th>
                   <th class="p-3">النقاط</th>
-                  <th class="p-3">إضافة / خصم نقاط</th>
+                  <th class="p-3">اعتماد الحضور وتعديل النقاط</th>
                   <th class="p-3 rounded-tl-lg">حذف العضو</th>
                 </tr>
               </thead>
@@ -404,21 +427,26 @@
     const GITHUB_TOKEN = "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";
     const GIST_FILENAME = "church_service_cloud_db.json";
     const GIST_DESCRIPTION = "Church Service Portal Live Sync DB";
-    const SERVANT_PIN = "1234";
+    const DEFAULT_SERVANT_PIN = "1234";
 
     let cachedGistId = localStorage.getItem("church_gist_id") || null;
     let isSyncing = false;
-    let currentQuizPage = 0; // 0 إلى 14 (15 صفحة × 10 أسئلة = 150 سؤال يومياً)
+    let currentQuizPage = 0;
     const QUESTIONS_PER_PAGE = 10;
 
     let db = {
       members: [],
       activities: [],
       announcement: "أهلاً بكم في بوابة خدمة الكنيسة — شارك في مسابقة الـ 150 سؤال اليومية وسجل حضورك!",
+      servantPin: DEFAULT_SERVANT_PIN,
       lastUpdated: Date.now()
     };
 
     let currentUser = JSON.parse(localStorage.getItem("church_current_user") || "null");
+
+    function getCurrentServantPin() {
+      return (db && db.servantPin) ? String(db.servantPin) : DEFAULT_SERVANT_PIN;
+    }
 
     // ==========================================
     // 2. بنك الـ 150 سؤال كتابي وطقسي كامل
@@ -486,7 +514,6 @@
       { q: "من هو القديس الملقب بالعجايبي؟", options: ["مارمينا", "الأنبا كاراس", "الأنبا ونس", "مارجرجس"], a: 0 }
     ];
 
-    // استكمال الـ 150 سؤالاً بـ 90 سؤالاً متنوعاً في الكتاب المقدس والطقس
     const QUESTION_BANK_150 = (() => {
       const list = [...BASE_QUESTIONS];
       const otBooks = [
@@ -668,6 +695,7 @@
               members: Array.isArray(parsed.members) ? parsed.members : [],
               activities: Array.isArray(parsed.activities) ? parsed.activities : [],
               announcement: parsed.announcement || db.announcement,
+              servantPin: parsed.servantPin ? String(parsed.servantPin) : DEFAULT_SERVANT_PIN,
               lastUpdated: parsed.lastUpdated || Date.now()
             };
             localStorage.setItem("church_db_backup", JSON.stringify(db));
@@ -749,7 +777,7 @@
     }
 
     // ==========================================
-    // 4. إدارة الأعضاء والحضور ومسابقة الـ 150 سؤال اليومية
+    // 4. إدارة الأعضاء والحضور (اعتماد الخادم فقط) ومسابقة الـ 150 سؤال
     // ==========================================
     function getTodayKey() {
       return new Date().toISOString().split("T")[0];
@@ -773,6 +801,8 @@
           joinedAt: new Date().toLocaleDateString("ar-EG"),
           lastAttendanceDate: "",
           lastAttendanceType: "مسجل جديد",
+          attendanceApprovedToday: false,
+          pendingAttendancePoints: 0,
           answeredDates: {}
         };
         db.members.push(member);
@@ -795,6 +825,7 @@
       renderAllUI();
     }
 
+    // العضو يسجل حضوره فقط — ولا تُضاف النقاط إلا باعتماد الخادم
     async function recordAttendance(type, pts) {
       if (!currentUser) {
         showToast("⚠️ سجل اسمك أولاً في الرئيسية لتسجيل حضورك!");
@@ -809,23 +840,50 @@
       const today = getTodayKey();
       const attKey = `${today}_${type}`;
       if (member.lastAttendanceKey === attKey) {
-        showToast(`✅ لقد سجلت حضور (${type}) اليوم بالفعل!`);
+        showToast(`✅ لقد سجلت حضور (${type}) اليوم بالفعل — بانتظار اعتماد الخادم!`);
         return;
       }
 
-      member.points += pts;
       member.lastAttendanceDate = today;
       member.lastAttendanceType = type;
       member.lastAttendanceKey = attKey;
+      member.attendanceApprovedToday = false;
+      member.pendingAttendancePoints = pts;
+
       currentUser = member;
       localStorage.setItem("church_current_user", JSON.stringify(currentUser));
 
-      addActivityLog(`⛪ سجل ${member.name} حضور (${type}) وحصل على +${pts} نقطة`);
-      showToast(`🎉 تم تسجيل حضورك في ${type} (+${pts} نقطة)`);
+      addActivityLog(`⛪ سجل ${member.name} حضور (${type}) — بانتظار اعتماد الخادم لإضافة +${pts} نقطة`);
+      showToast(`📩 تم تسجيل حضورك في (${type}) — سيقوم الخادم باعتماد النقاط`);
       await pushToCloud();
     }
 
-    // إرجاع الـ 150 سؤالاً بالكامل بترتيب يومي متجدد كل يوم
+    // الخادم يعتمد الحضور ويضيف نقاط الحضور
+    async function approveAttendanceByServant(memberId) {
+      await pullFromCloud(true);
+      const member = db.members.find(m => m.id === memberId);
+      if (!member) return;
+
+      const today = getTodayKey();
+      if (member.lastAttendanceDate !== today) {
+        showToast("⚠️ العضو لم يسجل حضور اليوم بعد");
+        return;
+      }
+      if (member.attendanceApprovedToday) {
+        showToast("✅ تم اعتماد حضور هذا العضو اليوم بالفعل");
+        return;
+      }
+
+      const ptsToAdd = member.pendingAttendancePoints || 15;
+      member.points += ptsToAdd;
+      member.attendanceApprovedToday = true;
+      member.pendingAttendancePoints = 0;
+
+      addActivityLog(`✅ اعتمد الخادم حضور ${member.name} (${member.lastAttendanceType}) وأضاف +${ptsToAdd} نقطة`);
+      showToast(`✓ تم اعتماد حضور ${member.name} وإضافة +${ptsToAdd} نقطة`);
+      await pushToCloud();
+    }
+
     function getAll150DailyQuestions() {
       const today = getTodayKey();
       document.getElementById("quizDateLabel").textContent = new Date().toLocaleDateString("ar-EG");
@@ -833,7 +891,6 @@
       for (let i = 0; i < today.length; i++) seed += today.charCodeAt(i) * (i + 7);
 
       const indexed = QUESTION_BANK_150.map((q, idx) => ({ ...q, globalIndex: idx }));
-      // خلط حتمي يومي (Deterministic Daily Shuffle) ليتغير ترتيب الأسئلة كل يوم
       for (let i = indexed.length - 1; i > 0; i--) {
         seed = (seed * 9301 + 49297) % 233280;
         const j = Math.floor((seed / 233280) * (i + 1));
@@ -891,13 +948,14 @@
     }
 
     // ==========================================
-    // 5. لوحة تحكم الخدام (تعديل النقاط والحذف الفوري)
+    // 5. لوحة تحكم الخدام + تغيير كلمة السر من الرئيسية أو اللوحة
     // ==========================================
     function unlockServantPanel() {
       const pin = document.getElementById("servantPinInput").value.trim();
-      if (pin === SERVANT_PIN) {
+      if (pin === getCurrentServantPin()) {
         document.getElementById("servantLoginBox").classList.add("hidden");
         document.getElementById("servantDashboard").classList.remove("hidden");
+        document.getElementById("servantPinInput").value = "";
         renderAllUI();
       } else {
         showToast("❌ رمز الخدام غير صحيح");
@@ -908,6 +966,46 @@
       document.getElementById("servantLoginBox").classList.remove("hidden");
       document.getElementById("servantDashboard").classList.add("hidden");
       document.getElementById("servantPinInput").value = "";
+    }
+
+    async function changeServantPasswordFromHome() {
+      const currentPinEl = document.getElementById("homeCurrentPinInput");
+      const newPinEl = document.getElementById("homeNewPinInput");
+      const enteredCurrent = currentPinEl.value.trim();
+      const newPin = newPinEl.value.trim();
+
+      await pullFromCloud(true);
+
+      if (enteredCurrent !== getCurrentServantPin()) {
+        showToast("❌ كلمة السر الحالية غير صحيحة");
+        return;
+      }
+      if (!newPin || newPin.length < 3) {
+        showToast("⚠️ اكتب كلمة سر جديدة (3 أحرف أو أرقام على الأقل)");
+        return;
+      }
+
+      db.servantPin = newPin;
+      currentPinEl.value = "";
+      newPinEl.value = "";
+      addActivityLog("🔑 تم تغيير كلمة سر الخدام من الصفحة الرئيسية وحفظها في السحابة");
+      showToast("✅ تم تغيير كلمة السر وحفظها في السحابة بنجاح");
+      await pushToCloud();
+    }
+
+    async function changeServantPassword() {
+      const inputEl = document.getElementById("newServantPinInput");
+      const newPin = inputEl.value.trim();
+      if (!newPin || newPin.length < 3) {
+        showToast("⚠️ اكتب كلمة سر جديدة (3 أحرف أو أرقام على الأقل)");
+        return;
+      }
+      await pullFromCloud(true);
+      db.servantPin = newPin;
+      inputEl.value = "";
+      addActivityLog("🔑 تم تحديث كلمة سر لوحة تحكم الخدام في السحابة");
+      showToast("✅ تم تغيير كلمة السر وحفظها في السحابة بنجاح");
+      await pushToCloud();
     }
 
     async function adjustMemberPoints(memberId, delta) {
@@ -1024,7 +1122,6 @@
         `).join("");
       }
 
-      // عرض الـ 150 سؤالاً اليومية (مقسمة إلى 15 مجموعة × 10 أسئلة لسهولة التصفح)
       const allDailyQs = getAll150DailyQuestions();
       const freshUser = currentUser ? db.members.find(m => m.id === currentUser.id) : null;
       const answeredToday = (freshUser && freshUser.answeredDates && freshUser.answeredDates[today]) || [];
@@ -1082,7 +1179,6 @@
         }).join("");
       }
 
-      // جدول الحضور والغياب
       const attBody = document.getElementById("attendanceTableBody");
       attBody.innerHTML = db.members.length === 0
         ? `<tr><td colspan="5" class="p-4 text-center text-slate-400">لا يوجد أعضاء مسجلون بعد</td></tr>`
@@ -1094,7 +1190,9 @@
                 <td class="p-3 text-slate-600">${m.role}</td>
                 <td class="p-3">
                   ${presentToday
-                    ? `<span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-1 rounded-full">حاضر اليوم ✓</span>`
+                    ? (m.attendanceApprovedToday
+                        ? `<span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-1 rounded-full">حاضر ومعتمد ✓</span>`
+                        : `<span class="bg-amber-100 text-amber-900 text-xs font-bold px-2.5 py-1 rounded-full">سجل حضوره (بانتظار الخادم)</span>`)
                     : `<span class="bg-rose-100 text-rose-700 text-xs font-bold px-2.5 py-1 rounded-full">لم يسجل حضور اليوم</span>`}
                 </td>
                 <td class="p-3 text-xs text-slate-500">${m.lastAttendanceType || "-"}</td>
@@ -1103,7 +1201,6 @@
             `;
           }).join("");
 
-      // لوحة الشرف
       const query = (document.getElementById("searchMemberInput")?.value || "").trim().toLowerCase();
       const sorted = [...db.members]
         .filter(m => m.name.toLowerCase().includes(query))
@@ -1134,31 +1231,44 @@
         </div>
       `).join("");
 
-      // جدول لوحة تحكم الخدام
       const servantTable = document.getElementById("servantMembersTable");
       if (servantTable) {
         servantTable.innerHTML = db.members.length === 0
-          ? `<tr><td colspan="5" class="p-4 text-center text-slate-400">لا يوجد أعضاء</td></tr>`
-          : db.members.map(m => `
-              <tr>
-                <td class="p-3 font-bold text-[#0f233c]">${m.name}</td>
-                <td class="p-3 text-xs text-slate-600">${m.role}</td>
-                <td class="p-3 font-extrabold text-[#c59b27]">${m.points}</td>
-                <td class="p-3">
-                  <div class="flex flex-wrap items-center gap-1">
-                    <button onclick="adjustMemberPoints('${m.id}', 10)" class="bg-emerald-600 text-white text-xs px-2 py-1 rounded font-bold hover:bg-emerald-700">+10</button>
-                    <button onclick="adjustMemberPoints('${m.id}', 5)" class="bg-emerald-500 text-white text-xs px-2 py-1 rounded font-bold hover:bg-emerald-600">+5</button>
-                    <button onclick="adjustMemberPoints('${m.id}', -5)" class="bg-amber-600 text-white text-xs px-2 py-1 rounded font-bold hover:bg-amber-700">-5</button>
-                    <button onclick="adjustMemberPoints('${m.id}', -10)" class="bg-amber-700 text-white text-xs px-2 py-1 rounded font-bold hover:bg-amber-800">-10</button>
-                  </div>
-                </td>
-                <td class="p-3">
-                  <button onclick="deleteMemberByServant('${m.id}')" class="bg-rose-600 text-white text-xs px-3 py-1 rounded font-bold hover:bg-rose-700">
-                    حذف نهائي 🗑️
-                  </button>
-                </td>
-              </tr>
-            `).join("");
+          ? `<tr><td colspan="6" class="p-4 text-center text-slate-400">لا يوجد أعضاء</td></tr>`
+          : db.members.map(m => {
+              const presentToday = m.lastAttendanceDate === today;
+              const pendingPts = m.pendingAttendancePoints || 15;
+              return `
+                <tr>
+                  <td class="p-3 font-bold text-[#0f233c]">${m.name}</td>
+                  <td class="p-3 text-xs text-slate-600">${m.role}</td>
+                  <td class="p-3 text-xs">
+                    ${presentToday
+                      ? (m.attendanceApprovedToday
+                          ? `<span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-1 rounded">معتمد (${m.lastAttendanceType})</span>`
+                          : `<span class="bg-amber-100 text-amber-900 font-bold px-2 py-1 rounded">بانتظار الاعتماد (${m.lastAttendanceType})</span>`)
+                      : `<span class="text-slate-400">لم يسجل اليوم</span>`}
+                  </td>
+                  <td class="p-3 font-extrabold text-[#c59b27]">${m.points}</td>
+                  <td class="p-3">
+                    <div class="flex flex-wrap items-center gap-1">
+                      ${(presentToday && !m.attendanceApprovedToday)
+                        ? `<button onclick="approveAttendanceByServant('${m.id}')" class="bg-[#0f233c] text-[#e6c665] text-xs px-2.5 py-1 rounded font-bold hover:opacity-90">اعتماد الحضور (+${pendingPts}) ✓</button>`
+                        : ""}
+                      <button onclick="adjustMemberPoints('${m.id}', 10)" class="bg-emerald-600 text-white text-xs px-2 py-1 rounded font-bold hover:bg-emerald-700">+10</button>
+                      <button onclick="adjustMemberPoints('${m.id}', 5)" class="bg-emerald-500 text-white text-xs px-2 py-1 rounded font-bold hover:bg-emerald-600">+5</button>
+                      <button onclick="adjustMemberPoints('${m.id}', -5)" class="bg-amber-600 text-white text-xs px-2 py-1 rounded font-bold hover:bg-amber-700">-5</button>
+                      <button onclick="adjustMemberPoints('${m.id}', -10)" class="bg-amber-700 text-white text-xs px-2 py-1 rounded font-bold hover:bg-amber-800">-10</button>
+                    </div>
+                  </td>
+                  <td class="p-3">
+                    <button onclick="deleteMemberByServant('${m.id}')" class="bg-rose-600 text-white text-xs px-3 py-1 rounded font-bold hover:bg-rose-700">
+                      حذف نهائي 🗑️
+                    </button>
+                  </td>
+                </tr>
+              `;
+            }).join("");
       }
     }
 
