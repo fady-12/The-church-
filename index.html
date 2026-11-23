@@ -1,412 +1,550 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>بوابة خدمة الكنيسة - الحضور والمسابقة اليومية (150 سؤال عربي متجدد)</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>بوابة الكنيسة للخدام والمخدومين | المزامنة السحابية الفورية</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Cairo & Tajawal -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    :root {
-      --navy: #0f233c;
-      --navy-light: #1a365d;
-      --gold: #c59b27;
-      --gold-light: #e6c665;
-      --ivory: #faf7f0;
-      --cream: #f2ece1;
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            cairo: ['Cairo', 'sans-serif'],
+            tajawal: ['Tajawal', 'sans-serif'],
+          },
+          colors: {
+            church: {
+              navy: '#0f172a',
+              royal: '#1e3a8a',
+              gold: '#d97706',
+              amber: '#f59e0b',
+              cream: '#fdfbf7',
+              light: '#f1f5f9'
+            }
+          }
+        }
+      }
     }
+  </script>
+  <style>
     body {
       font-family: 'Cairo', sans-serif;
-      background-color: var(--ivory);
-      color: #1e293b;
-      background-image: radial-gradient(rgba(197, 155, 39, 0.12) 1px, transparent 1px);
-      background-size: 24px 24px;
+      background-color: #f8fafc;
+      color: #0f172a;
+      -webkit-tap-highlight-color: transparent;
+      padding-bottom: 88px;
     }
-    .font-classic {
-      font-family: 'Amiri', serif;
+    .gold-gradient {
+      background: linear-gradient(135deg, #b45309 0%, #d97706 50%, #f59e0b 100%);
     }
-    .classic-card {
-      background: #ffffff;
-      border: 1px solid rgba(197, 155, 39, 0.45);
-      box-shadow: 0 10px 25px -5px rgba(15, 35, 60, 0.08);
-      border-radius: 14px;
+    .royal-gradient {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
     }
-    .classic-header {
-      background: linear-gradient(135deg, #0b192c 0%, #163156 100%);
-      border-bottom: 3px solid var(--gold);
+    .card-shadow {
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06);
     }
-    .gold-btn {
-      background: linear-gradient(135deg, #c59b27 0%, #a88019 100%);
-      color: #fff;
-      transition: all 0.2s ease;
+    .pulse-dot {
+      animation: pulseAnim 2s infinite;
     }
-    .gold-btn:hover {
-      background: linear-gradient(135deg, #d4aa35 0%, #b88d1e 100%);
-      transform: translateY(-1px);
+    @keyframes pulseAnim {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
     }
-    .navy-btn {
-      background: var(--navy);
-      color: #fff;
-      transition: all 0.2s ease;
+    @keyframes marqueeRTL {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
     }
-    .navy-btn:hover {
-      background: var(--navy-light);
+    .animate-ticker {
+      display: inline-block;
+      white-space: nowrap;
+      animation: marqueeRTL 22s linear infinite;
     }
-    .tab-active {
-      background-color: var(--navy);
-      color: var(--gold-light);
-      border-bottom: 3px solid var(--gold);
+    .animate-ticker:hover {
+      animation-play-state: paused;
     }
-    .ornament-divider {
-      display: flex;
-      align-items: center;
-      text-align: center;
-      color: var(--gold);
-    }
-    .ornament-divider::before,
-    .ornament-divider::after {
-      content: '';
-      flex: 1;
-      border-bottom: 1px solid rgba(197, 155, 39, 0.4);
-    }
-    .ornament-divider span {
-      padding: 0 12px;
-      font-size: 1.2rem;
-    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-900 select-none">
 
-  <!-- الشريط العلوي الكلاسيكي -->
-  <header class="classic-header text-white shadow-lg sticky top-0 z-40">
-    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-full border-2 border-[#c59b27] bg-[#0b192c] flex items-center justify-center text-[#e6c665] text-2xl font-classic shadow">
-          ✝
-        </div>
-        <div>
-          <h1 class="text-2xl md:text-3xl font-bold font-classic text-[#e6c665] tracking-wide">
-            بوابة خدمة الكنيسة
-          </h1>
-          <p class="text-xs text-slate-300">نظام الحضور والافتقاد والمسابقة اليومية المتزامن</p>
-        </div>
-      </div>
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 w-[92%] max-w-md pointer-events-none"></div>
 
-      <!-- حالة السحابة والمزامنة الفورية -->
-      <div class="flex items-center gap-3 bg-[#0b192c]/80 px-3 py-2 rounded-xl border border-[#c59b27]/40">
-        <div class="flex flex-col text-xs">
-          <div class="flex items-center gap-2">
-            <span id="syncDot" class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
-            <span id="syncStatusText" class="text-slate-200 font-semibold">جاري الاتصال بالسحابة...</span>
+  <!-- Top Header & Live Cloud Status -->
+  <header class="royal-gradient text-white sticky top-0 z-40 shadow-lg rounded-b-3xl">
+    <div class="max-w-4xl mx-auto px-4 pt-4 pb-4">
+      <div class="flex items-center justify-between gap-2">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-11 h-11 rounded-2xl gold-gradient flex items-center justify-center shadow-md text-white text-xl font-bold shrink-0">
+            <i class="fa-solid fa-cross"></i>
           </div>
-          <span id="gistIdBadge" class="text-[10px] text-[#e6c665]/80 mt-0.5">Gist: جاري التحديد</span>
+          <div class="min-w-0">
+            <h1 id="header-church-title" class="text-base sm:text-xl font-extrabold tracking-tight leading-tight truncate">بوابة الكنيسة للخدام والمخدومين</h1>
+            <div class="flex items-center gap-2 text-[11px] sm:text-xs text-blue-200 mt-0.5">
+              <span id="sync-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-400 pulse-dot inline-block shrink-0"></span>
+              <span id="sync-status-text" class="truncate">متصل بالسحابة • مزامنة تلقائية</span>
+            </div>
+          </div>
         </div>
-        <button onclick="manualSync()" id="syncBtn" class="gold-btn text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 shadow">
-          <span id="syncIcon">🔄</span>
-          <span>مزامنة فورية</span>
-        </button>
-      </div>
-    </div>
 
-    <!-- شريط التنبيه العام للكنيسة -->
-    <div id="announcementBanner" class="bg-[#c59b27]/20 border-t border-[#c59b27]/30 text-[#faf7f0] text-sm py-1.5 px-4 text-center hidden">
-      <span class="font-bold text-[#e6c665]">📢 تنبيه الخدمة: </span>
-      <span id="announcementText"></span>
+        <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <!-- Manual Instant Sync Button -->
+          <button onclick="forceSyncNow()" id="btn-sync-now" title="مزامنة فورية الآن" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition text-white border border-white/15 flex items-center gap-1.5 text-xs font-bold">
+            <i id="sync-icon" class="fa-solid fa-rotate"></i>
+            <span class="hidden sm:inline">مزامنة فورية</span>
+          </button>
+
+          <!-- Servant Admin Mode Toggle -->
+          <button onclick="toggleServantMode()" id="btn-servant-mode" class="p-2.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-amber-300 active:scale-95 transition flex items-center gap-1.5 text-xs font-bold">
+            <i id="servant-lock-icon" class="fa-solid fa-lock"></i>
+            <span id="servant-mode-label">دخول الخدام</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Active User Bar (Quick Switch / Register) -->
+      <div class="mt-3.5 bg-white/10 backdrop-blur-md rounded-2xl p-2.5 border border-white/10 flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div id="current-user-avatar" class="w-9 h-9 rounded-xl bg-amber-500 text-slate-900 font-extrabold flex items-center justify-center text-base shrink-0">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div class="truncate">
+            <div id="current-user-name" class="text-xs sm:text-sm font-bold text-white truncate">زائر (سجّل اسمك الآن)</div>
+            <div id="current-user-meta" class="text-[11px] text-blue-200 truncate">اضغط على "سجّل نفسك" للانضمام والمنافسة</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button onclick="openSelectUserModal()" class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-xs font-bold text-white transition">
+            تبديل الحساب
+          </button>
+          <button onclick="openRegisterModal()" class="px-3 py-1.5 rounded-xl gold-gradient text-xs font-extrabold text-white shadow hover:opacity-95 active:scale-95 transition flex items-center gap-1">
+            <i class="fa-solid fa-user-plus"></i>
+            <span>سجّل نفسك</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Breaking News Ticker -->
+      <div class="mt-2.5 bg-slate-950/40 rounded-xl px-3 py-1.5 overflow-hidden flex items-center gap-2 border border-white/5">
+        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-extrabold shrink-0">مباشر</span>
+        <div class="overflow-hidden flex-1">
+          <div id="live-ticker-text" class="animate-ticker text-[11px] text-blue-100 font-semibold">
+            أهلاً بكم في بوابة الكنيسة السحابية • المزامنة الفورية مفعلة بين جميع الهواتف
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
-  <!-- المحتوى الرئيسي -->
-  <main class="max-w-6xl mx-auto w-full px-4 py-6 flex-1 space-y-6">
+  <!-- Main Content Container -->
+  <main class="max-w-4xl mx-auto px-4 pt-5 space-y-6">
 
-    <!-- شريط التبويبات -->
-    <nav class="classic-card p-1.5 grid grid-cols-2 md:grid-cols-5 gap-1.5 text-sm font-bold">
-      <button onclick="switchTab('home')" id="tab-home" class="tab-active py-2.5 px-3 rounded-lg transition">🏠 الرئيسية والتسجيل</button>
-      <button onclick="switchTab('quiz')" id="tab-quiz" class="py-2.5 px-3 rounded-lg text-slate-700 hover:bg-slate-100 transition">📖 مسابقة اليوم (150 سؤال)</button>
-      <button onclick="switchTab('attendance')" id="tab-attendance" class="py-2.5 px-3 rounded-lg text-slate-700 hover:bg-slate-100 transition">⛪ تسجيل الحضور</button>
-      <button onclick="switchTab('leaderboard')" id="tab-leaderboard" class="py-2.5 px-3 rounded-lg text-slate-700 hover:bg-slate-100 transition">🏆 لوحة الشرف والأعضاء</button>
-      <button onclick="switchTab('servants')" id="tab-servants" class="py-2.5 px-3 rounded-lg text-slate-700 hover:bg-slate-100 transition col-span-2 md:col-span-1">🛡️ لوحة الخدام</button>
-    </nav>
-
-    <!-- 1. تبويب الرئيسية والتسجيل الفوري -->
-    <section id="view-home" class="space-y-6">
-      <div class="grid md:grid-cols-3 gap-6">
-        <div class="classic-card p-6 md:col-span-2 space-y-4">
-          <div class="flex items-center justify-between border-b border-amber-200/70 pb-3">
-            <h2 class="text-xl font-bold font-classic text-[#0f233c]">✨ دخول سريع أو تسجيل عضو جديد</h2>
-            <span class="text-xs bg-amber-100 text-amber-900 px-2.5 py-1 rounded-full font-bold">يظهر لكل الهواتف فوراً</span>
-          </div>
-
-          <div id="activeUserBox" class="hidden bg-emerald-50 border border-emerald-200 rounded-xl p-4 flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p class="text-xs text-emerald-700 font-bold">مرحباً بك في الخدمة:</p>
-              <h3 id="currentUserName" class="text-lg font-extrabold text-[#0f233c]"></h3>
-              <p id="currentUserMeta" class="text-xs text-slate-600"></p>
-            </div>
-            <div class="flex items-center gap-3">
-              <div class="text-center bg-white px-4 py-2 rounded-lg border border-amber-300">
-                <span class="block text-xs text-slate-500">نقاطك الحالية</span>
-                <span id="currentUserPoints" class="text-xl font-extrabold text-[#c59b27]">0</span>
-              </div>
-              <button onclick="logoutUser()" class="text-xs text-red-600 underline font-bold">تبديل الحساب</button>
-            </div>
-          </div>
-
-          <form id="registerForm" onsubmit="handleRegisterOrLogin(event)" class="grid sm:grid-cols-3 gap-3">
-            <div class="sm:col-span-2">
-              <label class="block text-xs font-bold text-slate-700 mb-1">الاسم الثلاثي (مخدوم أو خادم)</label>
-              <input type="text" id="inputName" required placeholder="اكتب اسمك هنا ليظهر في السحابة..."
-                class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:border-[#c59b27]" />
-            </div>
-            <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">المرحلة / الصفة</label>
-              <select id="inputRole" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:border-[#c59b27]">
-                <option value="إعدادي">مرحلة إعدادي</option>
-                <option value="ثانوي">مرحلة ثانوي</option>
-                <option value="جامعيين">شباب جامعيين</option>
-                <option value="ابتدائي">مرحلة ابتدائي</option>
-                <option value="خادم">خادم / خادمة</option>
-              </select>
-            </div>
-            <div class="sm:col-span-3 flex flex-wrap items-center justify-between gap-2 pt-1">
-              <p class="text-xs text-slate-500">إذا كان اسمك مسجلاً من قبل سيتم فتح حسابك ونقاطك تلقائياً.</p>
-              <button type="submit" class="gold-btn px-6 py-2.5 rounded-lg font-bold text-sm shadow">
-                دخول وحفظ في السحابة ☁️
-              </button>
-            </div>
-          </form>
-
-          <div class="grid grid-cols-3 gap-3 pt-2">
-            <div class="bg-[#faf7f0] border border-amber-200/80 p-3 rounded-xl text-center">
-              <span class="block text-xs text-slate-500">إجمالي المسجلين</span>
-              <span id="statTotalMembers" class="text-2xl font-extrabold text-[#0f233c]">0</span>
-            </div>
-            <div class="bg-[#faf7f0] border border-amber-200/80 p-3 rounded-xl text-center">
-              <span class="block text-xs text-slate-500">حضور اليوم</span>
-              <span id="statTodayAttendance" class="text-2xl font-extrabold text-emerald-700">0</span>
-            </div>
-            <div class="bg-[#faf7f0] border border-amber-200/80 p-3 rounded-xl text-center">
-              <span class="block text-xs text-slate-500">أسئلة اليوم المتاحة</span>
-              <span class="text-2xl font-extrabold text-[#c59b27]">150</span>
-            </div>
-          </div>
-
-          <div class="bg-[#faf7f0] p-4 rounded-xl border border-amber-200/90 space-y-2">
-            <label class="block text-xs font-bold text-[#0f233c]">🔑 تغيير كلمة سر لوحة الخدام (مباشرة من الرئيسية):</label>
-            <div class="grid sm:grid-cols-3 gap-2">
-              <input type="password" id="homeCurrentPinInput" placeholder="كلمة السر الحالية..."
-                class="px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white">
-              <input type="password" id="homeNewPinInput" placeholder="كلمة السر الجديدة..."
-                class="px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white">
-              <button type="button" onclick="changeServantPasswordFromHome()" class="navy-btn px-4 py-2 rounded-lg text-xs font-bold">
-                تغيير كلمة السر ☁️
-              </button>
-            </div>
-          </div>
+    <!-- ==================== TAB 1: HOME & LIVE UPDATES ==================== -->
+    <section id="tab-home" class="space-y-5">
+      <!-- Quick Stats Banner -->
+      <div class="grid grid-cols-3 gap-3">
+        <div class="bg-white rounded-2xl p-3.5 card-shadow border border-slate-100 text-center">
+          <div class="text-blue-600 text-lg mb-1"><i class="fa-solid fa-users"></i></div>
+          <div id="stat-total-members" class="text-xl font-black text-slate-800">0</div>
+          <div class="text-[11px] font-semibold text-slate-500">إجمالي الأعضاء</div>
         </div>
-
-        <div class="classic-card p-6 flex flex-col justify-between bg-gradient-to-b from-[#0f233c] to-[#173357] text-white">
-          <div>
-            <div class="text-[#e6c665] text-sm font-bold mb-2 flex items-center gap-2">
-              <span>📜</span> آية اليوم للخدمة
-            </div>
-            <p id="dailyVerseText" class="font-classic text-xl leading-relaxed text-[#faf7f0] my-4">
-              "أَسْتَطِيعُ كُلَّ شَيْءٍ فِي الْمَسِيحِ الَّذِي يُقَوِّينِي."
-            </p>
-            <p id="dailyVerseRef" class="text-xs text-[#e6c665] font-bold">(فيلبي 4: 13)</p>
-          </div>
-          <div class="ornament-divider my-3"><span>✝</span></div>
-          <p class="text-xs text-slate-300 text-center">كل تحديث يتم هنا يظهر فوراً لجميع الهواتف</p>
+        <div class="bg-white rounded-2xl p-3.5 card-shadow border border-slate-100 text-center">
+          <div class="text-emerald-600 text-lg mb-1"><i class="fa-solid fa-calendar-check"></i></div>
+          <div id="stat-today-present" class="text-xl font-black text-slate-800">0</div>
+          <div class="text-[11px] font-semibold text-slate-500">حضور اليوم</div>
+        </div>
+        <div class="bg-white rounded-2xl p-3.5 card-shadow border border-slate-100 text-center">
+          <div class="text-amber-500 text-lg mb-1"><i class="fa-solid fa-trophy"></i></div>
+          <div id="stat-total-points" class="text-xl font-black text-slate-800">0</div>
+          <div class="text-[11px] font-semibold text-slate-500">مجموع النقاط</div>
         </div>
       </div>
 
-      <div class="grid md:grid-cols-2 gap-6">
-        <div class="classic-card p-5">
-          <h3 class="text-lg font-bold font-classic text-[#0f233c] border-b border-amber-200 pb-2 mb-3 flex items-center justify-between">
-            <span>🔔 آخر التحديثات المباشرة في الموقع</span>
-            <span class="text-xs font-normal text-slate-500">تحديث تلقائي كل 5 ثوانٍ</span>
-          </h3>
-          <ul id="activityFeedList" class="space-y-2.5 max-h-72 overflow-y-auto text-sm">
-            <li class="text-slate-400 text-center py-4">جاري تحميل التحديثات من السحابة...</li>
-          </ul>
-        </div>
-
-        <div class="classic-card p-5">
-          <h3 class="text-lg font-bold font-classic text-[#0f233c] border-b border-amber-200 pb-2 mb-3">
-            👥 آخر المنضمين والمتفاعلين الآن
-          </h3>
-          <div id="recentMembersList" class="space-y-2.5 max-h-72 overflow-y-auto">
-            <p class="text-slate-400 text-center py-4">لا يوجد أعضاء بعد</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 2. تبويب مسابقة اليوم (150 سؤال عربي مختلف كل يوم) -->
-    <section id="view-quiz" class="hidden space-y-6">
-      <div class="classic-card p-6">
-        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-amber-200 pb-4 mb-4">
-          <div>
-            <h2 class="text-2xl font-bold font-classic text-[#0f233c]">📖 مسابقة اليوم (150 سؤال عربي متجدد يومياً)</h2>
-            <p id="quizSourceStatus" class="text-xs text-slate-600">150 سؤالاً عربياً كتابياً وطقسياً متجدداً لكل يوم جديد (+10 نقاط لكل إجابة صحيحة)</p>
-          </div>
-          <div class="flex flex-wrap items-center gap-2">
-            <button onclick="refreshDailyArabicQuestions(true)" class="navy-btn px-3 py-1.5 rounded-lg text-xs font-bold">
-              🔄 توليد حزمة عربية جديدة لليوم
-            </button>
-            <span class="bg-emerald-50 border border-emerald-300 px-3 py-1.5 rounded-lg text-xs font-bold text-emerald-800">
-              أجبت اليوم: <span id="todaySolvedCount">0</span> / 150
-            </span>
-            <span class="bg-amber-50 border border-amber-300 px-3 py-1.5 rounded-lg text-xs font-bold text-[#0f233c]">
-              تاريخ اليوم: <span id="quizDateLabel"></span>
-            </span>
-          </div>
-        </div>
-
-        <div id="quizUserWarning" class="bg-amber-50 border border-amber-300 text-amber-900 p-4 rounded-xl mb-4 text-sm font-bold hidden">
-          ⚠️ من فضلك سجل اسمك في تبويب (الرئيسية والتسجيل) أولاً حتى تُضاف نقاط المسابقة إلى رصيدك في السحابة!
-        </div>
-
-        <div class="bg-[#faf7f0] p-3 rounded-xl border border-amber-200 mb-5 space-y-2">
-          <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
-            <span class="font-bold text-[#0f233c]">اختر مجموعة الأسئلة (من 1 إلى 150):</span>
-            <label class="flex items-center gap-1.5 cursor-pointer font-bold text-slate-700">
-              <input type="checkbox" id="hideAnsweredToggle" onchange="renderAllUI()" class="accent-[#0f233c]">
-              <span>إخفاء الأسئلة المجابة اليوم</span>
-            </label>
-          </div>
-          <div id="quizPaginationBar" class="flex flex-wrap gap-1.5"></div>
-        </div>
-
-        <div id="quizContainer" class="space-y-4"></div>
-
-        <div class="flex items-center justify-between mt-6 pt-4 border-t border-amber-200">
-          <button onclick="changeQuizPage(-1)" id="prevQuizPageBtn" class="navy-btn px-4 py-2 rounded-lg text-xs font-bold disabled:opacity-40">
-            ← المجموعة السابقة
-          </button>
-          <span id="quizPageIndicator" class="text-xs font-bold text-[#0f233c]"></span>
-          <button onclick="changeQuizPage(1)" id="nextQuizPageBtn" class="gold-btn px-4 py-2 rounded-lg text-xs font-bold disabled:opacity-40">
-            المجموعة التالية →
+      <!-- Verse of the Day & Church Announcement Card -->
+      <div class="bg-gradient-to-br from-amber-50 to-orange-50/70 rounded-3xl p-5 border border-amber-200/80 card-shadow relative overflow-hidden">
+        <div class="flex items-center justify-between mb-2">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 text-amber-800 text-xs font-extrabold">
+            <i class="fa-solid fa-book-bible"></i> آية اليوم وتنبيهات الكنيسة
+          </span>
+          <button onclick="openAnnouncementModal()" class="servant-only hidden text-xs font-bold text-amber-800 bg-amber-200/70 hover:bg-amber-200 px-3 py-1 rounded-xl transition">
+            <i class="fa-solid fa-pen-to-square"></i> تعديل التنبيه
           </button>
         </div>
-      </div>
-    </section>
-
-    <!-- 3. تبويب تسجيل الحضور والغياب -->
-    <section id="view-attendance" class="hidden space-y-6">
-      <div class="classic-card p-6">
-        <h2 class="text-2xl font-bold font-classic text-[#0f233c] border-b border-amber-200 pb-3 mb-4">
-          ⛪ تسجيل الحضور والاجتماعات الكنسية
-        </h2>
-        <p class="text-sm text-slate-600 mb-5">
-          سجل حضورك اليوم ليظهر عند الخادم في لوحة التحكم — ويقوم الخادم باعتماد الحضور وإضافة النقاط لك في السحابة:
+        <p id="daily-verse-text" class="text-base sm:text-lg font-extrabold text-slate-800 leading-relaxed mt-2">
+          "أَسْتَطِيعُ كُلَّ شَيْءٍ فِي الْمَسِيحِ الَّذِي يُقَوِّينِي." (فيلبي 4: 13)
         </p>
+        <div id="church-announcement-box" class="mt-3 pt-3 border-t border-amber-200/70 flex items-start gap-2.5 text-sm text-slate-700">
+          <i class="fa-solid fa-bullhorn text-amber-600 mt-1"></i>
+          <div>
+            <span class="font-bold text-amber-900">إعلان الخدمة: </span>
+            <span id="church-announcement-text">أهلاً بكل الخدام والمخدومين! سجل اسمك الآن وشارك في مسابقة الـ 150 سؤال اليومية لجمع النقاط.</span>
+          </div>
+        </div>
+      </div>
 
-        <div class="grid sm:grid-cols-3 gap-4 mb-6">
-          <button onclick="recordAttendance('القداس الإلهي', 20)" class="classic-card p-5 text-center hover:border-[#c59b27] hover:bg-amber-50/40 transition group">
-            <div class="text-3xl mb-2">🕊️</div>
-            <h3 class="font-bold text-[#0f233c] group-hover:text-[#c59b27]">تسجيل حضور القداس الإلهي</h3>
-            <span class="inline-block mt-2 text-xs bg-amber-100 text-amber-900 px-2.5 py-1 rounded-full font-bold">يعتمد الخادم (+20 نقطة)</span>
-          </button>
+      <!-- Quick Action Cards -->
+      <div class="grid grid-cols-2 gap-3">
+        <button onclick="switchTab('quiz')" class="bg-white hover:bg-blue-50/50 active:scale-[0.98] transition rounded-2xl p-4 card-shadow border border-slate-100 text-right flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-xl shrink-0">
+            <i class="fa-solid fa-circle-question"></i>
+          </div>
+          <div>
+            <div class="font-extrabold text-slate-800 text-sm sm:text-base">مسابقة الـ 150 سؤال</div>
+            <div class="text-xs text-slate-500 mt-0.5">اختبر معلوماتك واربح نقاط</div>
+          </div>
+        </button>
 
-          <button onclick="recordAttendance('مدارس الأحد / الاجتماع', 15)" class="classic-card p-5 text-center hover:border-[#c59b27] hover:bg-amber-50/40 transition group">
-            <div class="text-3xl mb-2">📖</div>
-            <h3 class="font-bold text-[#0f233c] group-hover:text-[#c59b27]">تسجيل مدارس الأحد / الاجتماع</h3>
-            <span class="inline-block mt-2 text-xs bg-amber-100 text-amber-900 px-2.5 py-1 rounded-full font-bold">يعتمد الخادم (+15 نقطة)</span>
-          </button>
+        <button onclick="openPrayerModal()" class="bg-white hover:bg-purple-50/50 active:scale-[0.98] transition rounded-2xl p-4 card-shadow border border-slate-100 text-right flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center text-xl shrink-0">
+            <i class="fa-solid fa-hands-praying"></i>
+          </div>
+          <div>
+            <div class="font-extrabold text-slate-800 text-sm sm:text-base">طلب صلاة / افتقاد</div>
+            <div class="text-xs text-slate-500 mt-0.5">اكتب طلبك ليصلي الجميع</div>
+          </div>
+        </button>
+      </div>
 
-          <button onclick="recordAttendance('تسبحة / عشية', 15)" class="classic-card p-5 text-center hover:border-[#c59b27] hover:bg-amber-50/40 transition group">
-            <div class="text-3xl mb-2">🕯️</div>
-            <h3 class="font-bold text-[#0f233c] group-hover:text-[#c59b27]">تسجيل عشية أو تسبحة</h3>
-            <span class="inline-block mt-2 text-xs bg-amber-100 text-amber-900 px-2.5 py-1 rounded-full font-bold">يعتمد الخادم (+15 نقطة)</span>
-          </button>
+      <!-- Real-Time Cloud Live Activity Feed -->
+      <div class="bg-white rounded-3xl p-5 card-shadow border border-slate-100">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 pulse-dot"></span>
+            <h2 class="font-extrabold text-base sm:text-lg text-slate-800">آخر التحديثات الفورية (مباشر)</h2>
+          </div>
+          <span id="last-sync-clock" class="text-[11px] font-semibold text-slate-400">يتم التحديث...</span>
         </div>
 
-        <h3 class="font-bold text-lg text-[#0f233c] mb-3">📋 سجل الحضور والغياب العام (يظهر للجميع):</h3>
-        <div class="overflow-x-auto">
-          <table class="w-full text-sm text-right border-collapse">
-            <thead>
-              <tr class="bg-[#0f233c] text-[#e6c665]">
-                <th class="p-3 rounded-tr-lg">الاسم</th>
-                <th class="p-3">المرحلة</th>
-                <th class="p-3">حالة اليوم</th>
-                <th class="p-3">آخر نشاط حضور</th>
-                <th class="p-3 rounded-tl-lg">النقاط</th>
-              </tr>
-            </thead>
-            <tbody id="attendanceTableBody" class="divide-y divide-slate-200 bg-white"></tbody>
-          </table>
+        <div id="live-activity-list" class="space-y-3 max-h-80 overflow-y-auto pr-1">
+          <div class="text-center py-6 text-slate-400 text-sm">جاري جلب آخر التحديثات من السحابة...</div>
+        </div>
+      </div>
+
+      <!-- Recent Prayer Requests -->
+      <div class="bg-white rounded-3xl p-5 card-shadow border border-slate-100">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-extrabold text-base text-slate-800 flex items-center gap-2">
+            <i class="fa-solid fa-heart text-rose-500"></i> طلبات الصلاة والافتقاد
+          </h2>
+          <button onclick="openPrayerModal()" class="text-xs font-bold text-blue-700 hover:underline">+ إضافة طلب</button>
+        </div>
+        <div id="prayer-requests-list" class="space-y-2.5">
+          <div class="text-xs text-slate-400 text-center py-3">لا توجد طلبات صلاة حالياً. كن أول من يشارك!</div>
         </div>
       </div>
     </section>
 
-    <!-- 4. تبويب لوحة الشرف وجميع الأعضاء -->
-    <section id="view-leaderboard" class="hidden space-y-6">
-      <div class="classic-card p-6">
-        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-amber-200 pb-3 mb-5">
-          <h2 class="text-2xl font-bold font-classic text-[#0f233c]">🏆 لوحة شرف الكنيسة وترتيب النقاط</h2>
-          <input type="text" id="searchMemberInput" oninput="renderAllUI()" placeholder="🔍 ابحث عن اسم..."
-            class="px-3 py-1.5 text-sm border border-slate-300 rounded-lg focus:outline-none focus:border-[#c59b27]">
+    <!-- ==================== TAB 2: MEMBERS & ATTENDANCE ==================== -->
+    <section id="tab-attendance" class="hidden space-y-5">
+      <!-- Date & Filter Controls -->
+      <div class="bg-white rounded-3xl p-4 card-shadow border border-slate-100 space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h2 class="text-lg font-extrabold text-slate-800">سجل الحضور والغياب وإدارة الأعضاء</h2>
+            <p class="text-xs text-slate-500">مزامنة فورية بين هواتف جميع الخدام والأعضاء</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="date" id="attendance-date" onchange="renderMembersList()" class="px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 bg-slate-50 focus:outline-none focus:border-blue-600">
+            <button onclick="openRegisterModal()" class="px-3.5 py-2 rounded-xl royal-gradient text-white text-xs font-bold shadow hover:opacity-95 flex items-center gap-1.5">
+              <i class="fa-solid fa-plus"></i> إضافة عضو
+            </button>
+          </div>
         </div>
 
-        <div id="topThreeContainer" class="grid sm:grid-cols-3 gap-4 mb-6"></div>
-        <div id="fullLeaderboardList" class="space-y-2"></div>
+        <!-- Search & Stage Filters -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div class="relative">
+            <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+            <input type="text" id="search-member-input" oninput="renderMembersList()" placeholder="ابحث بالاسم أو رقم الهاتف..." class="w-full pr-9 pl-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm focus:outline-none focus:border-blue-600">
+          </div>
+          <div class="flex gap-1.5 overflow-x-auto pb-1">
+            <button onclick="setStageFilter('ALL')" data-stage="ALL" class="stage-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-blue-900 text-white shrink-0">الكل</button>
+            <button onclick="setStageFilter('PRESENT_TODAY')" data-stage="PRESENT_TODAY" class="stage-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 shrink-0">الحاضرون اليوم</button>
+            <button onclick="setStageFilter('ABSENT_TODAY')" data-stage="ABSENT_TODAY" class="stage-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200 shrink-0">الغائبون (افتقاد)</button>
+            <button onclick="setStageFilter('ابتدائي')" data-stage="ابتدائي" class="stage-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 shrink-0">ابتدائي</button>
+            <button onclick="setStageFilter('إعدادي')" data-stage="إعدادي" class="stage-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 shrink-0">إعدادي</button>
+            <button onclick="setStageFilter('ثانوي')" data-stage="ثانوي" class="stage-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 shrink-0">ثانوي</button>
+            <button onclick="setStageFilter('جامعة')" data-stage="جامعة" class="stage-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 shrink-0">جامعة</button>
+            <button onclick="setStageFilter('خريجين')" data-stage="خريجين" class="stage-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 shrink-0">خريجين</button>
+            <button onclick="setStageFilter('خدام')" data-stage="خدام" class="stage-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 shrink-0">الخدام</button>
+          </div>
+        </div>
+
+        <!-- Servant Notice Banner -->
+        <div id="servant-hint-banner" class="bg-blue-50 border border-blue-200 rounded-2xl p-3 flex items-center justify-between gap-2 text-xs text-blue-900">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-circle-info text-blue-600 text-base"></i>
+            <span>لتسجيل الحضور والغياب أو <strong>حذف/تعديل الأعضاء</strong> وتغيير كلمة السر، فعّل <strong>وضع الخدام</strong>.</span>
+          </div>
+          <button onclick="toggleServantMode()" class="px-3 py-1.5 rounded-xl bg-blue-700 text-white font-bold shrink-0">دخول الخدام</button>
+        </div>
+
+        <!-- Servant Quick Bulk Actions Bar -->
+        <div class="servant-only hidden bg-slate-900 text-white rounded-2xl p-3 flex flex-wrap items-center justify-between gap-2">
+          <div class="text-xs font-bold text-amber-300 flex items-center gap-1.5">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> أدوات الخدام السريعة:
+          </div>
+          <div class="flex flex-wrap items-center gap-1.5">
+            <button onclick="switchTab('settings')" class="px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-xs font-bold flex items-center gap-1">
+              <i class="fa-solid fa-key text-amber-400"></i> تغيير كلمة السر والإعدادات
+            </button>
+            <button onclick="confirmBulkResetPoints()" class="px-3 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 border border-rose-400/30 text-xs font-bold flex items-center gap-1">
+              <i class="fa-solid fa-rotate-left"></i> تصفير نقاط الجميع
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Members List Container -->
+      <div id="members-list-container" class="space-y-3">
+        <!-- Rendered dynamically -->
       </div>
     </section>
 
-    <!-- 5. تبويب لوحة تحكم الخدام -->
-    <section id="view-servants" class="hidden space-y-6">
-      <div id="servantLoginBox" class="classic-card p-8 max-w-md mx-auto text-center space-y-4">
-        <div class="w-14 h-14 rounded-full bg-[#0f233c] text-[#e6c665] flex items-center justify-center text-2xl mx-auto">🛡️</div>
-        <h2 class="text-xl font-bold font-classic text-[#0f233c]">دخول لوحة تحكم الخدام</h2>
-        <p class="text-xs text-slate-600">أدخل رمز الخدام لاعتماد الحضور وإضافة النقاط وحذف الأعضاء (الرمز الافتراضي: 1234)</p>
-        <input type="password" id="servantPinInput" placeholder="أدخل رمز الخدام..."
-          class="w-full px-4 py-2.5 text-center tracking-widest border border-slate-300 rounded-lg focus:outline-none focus:border-[#c59b27]">
-        <button onclick="unlockServantPanel()" class="navy-btn w-full py-2.5 rounded-lg font-bold text-sm">فتح لوحة الخدام</button>
+    <!-- ==================== TAB 3: 150-QUESTION DAILY QUIZ ==================== -->
+    <section id="tab-quiz" class="hidden space-y-5">
+      <div class="royal-gradient text-white rounded-3xl p-6 card-shadow relative overflow-hidden">
+        <div class="relative z-10">
+          <span class="inline-block px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 text-xs font-extrabold mb-2">
+            <i class="fa-solid fa-star"></i> بنك الأسئلة الشامل (150 سؤال متنوع بالشواهد)
+          </span>
+          <h2 class="text-2xl font-black">المسابقة الكتابية والكنسية اليومية</h2>
+          <p class="text-sm text-blue-100 mt-1">اختر تحدي اليوم (10 أسئلة متجددة يومياً) أو تدرب في الوضع الحر من أصل 150 سؤالاً، وتُضاف نقاطك تلقائياً للسحابة!</p>
+
+          <div class="mt-4 flex flex-wrap items-center gap-2.5">
+            <button onclick="startQuiz('daily')" class="px-5 py-3 rounded-2xl gold-gradient text-white font-extrabold text-sm shadow-lg hover:opacity-95 active:scale-95 transition flex items-center gap-2">
+              <i class="fa-solid fa-bolt"></i> ابدأ تحدي اليوم (10 أسئلة)
+            </button>
+            <button onclick="startQuiz('marathon')" class="px-4 py-3 rounded-2xl bg-white/15 hover:bg-white/25 text-white font-bold text-sm border border-white/20 active:scale-95 transition flex items-center gap-2">
+              <i class="fa-solid fa-infinity"></i> تدريب حر من الـ 150 سؤال
+            </button>
+          </div>
+        </div>
+        <i class="fa-solid fa-scroll text-white/5 text-9xl absolute -bottom-4 -left-4 pointer-events-none"></i>
       </div>
 
-      <div id="servantDashboard" class="hidden space-y-6">
-        <div class="classic-card p-6 space-y-5">
-          <div class="flex items-center justify-between border-b border-amber-200 pb-3">
-            <h2 class="text-xl font-bold font-classic text-[#0f233c]">🛡️ إدارة الخدام — اعتماد الحضور والنقاط وحذف الأعضاء</h2>
-            <button onclick="lockServantPanel()" class="text-xs text-red-600 font-bold underline">قفل اللوحة</button>
+      <!-- Quiz Active Arena -->
+      <div id="quiz-arena" class="hidden bg-white rounded-3xl p-5 sm:p-6 card-shadow border border-slate-100 space-y-5">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div class="flex items-center gap-2">
+            <span id="quiz-progress-badge" class="px-3 py-1 rounded-xl bg-blue-100 text-blue-800 text-xs font-extrabold">سؤال 1 من 10</span>
+            <span id="quiz-category-badge" class="px-2.5 py-1 rounded-xl bg-amber-100 text-amber-800 text-xs font-bold">العهد القديم</span>
+          </div>
+          <div class="text-sm font-extrabold text-emerald-600">
+            النقاط المكتسبة: <span id="quiz-session-score">0</span>
+          </div>
+        </div>
+
+        <div>
+          <h3 id="quiz-question-text" class="text-lg sm:text-xl font-extrabold text-slate-800 leading-relaxed">
+            نص السؤال يظهر هنا؟
+          </h3>
+        </div>
+
+        <div id="quiz-options-container" class="grid grid-cols-1 gap-3">
+          <!-- Options injected here -->
+        </div>
+
+        <div id="quiz-feedback-box" class="hidden rounded-2xl p-4 text-sm font-bold leading-relaxed"></div>
+
+        <div class="flex items-center justify-between pt-2">
+          <button onclick="quitQuiz()" class="text-xs font-bold text-slate-400 hover:text-slate-600">إنهاء المسابقة</button>
+          <button id="btn-next-question" onclick="nextQuizQuestion()" class="hidden px-6 py-2.5 rounded-xl royal-gradient text-white font-bold text-sm shadow">
+            السؤال التالي <i class="fa-solid fa-arrow-left mr-1"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quiz Summary Result Card -->
+      <div id="quiz-result-card" class="hidden bg-white rounded-3xl p-6 card-shadow border border-slate-100 text-center space-y-4">
+        <div class="w-20 h-20 rounded-full gold-gradient text-white text-4xl flex items-center justify-center mx-auto shadow-lg">
+          <i class="fa-solid fa-award"></i>
+        </div>
+        <h3 class="text-2xl font-black text-slate-800">مبروك! أنهيت المسابقة</h3>
+        <p id="quiz-result-summary" class="text-slate-600 font-semibold text-sm">أجبت على 8 من 10 إجابات صحيحة</p>
+        <div class="inline-block px-6 py-3 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 font-black text-lg">
+          +<span id="quiz-earned-points">40</span> نقطة أُضيفت لحسابك السحابي!
+        </div>
+        <div class="pt-2">
+          <button onclick="startQuiz('marathon')" class="px-6 py-3 rounded-2xl royal-gradient text-white font-bold text-sm shadow">
+            العب جولة أخرى من الـ 150 سؤال
+          </button>
+        </div>
+      </div>
+
+      <!-- Question Bank Explorer Preview -->
+      <div class="bg-white rounded-3xl p-5 card-shadow border border-slate-100">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-extrabold text-base text-slate-800">إحصائيات بنك الأسئلة السحابي</h3>
+          <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-extrabold">150 سؤال جاهز</span>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-center text-xs">
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100">
+            <div class="font-black text-blue-800 text-base">45</div>
+            <div class="text-slate-500 font-semibold">العهد القديم</div>
+          </div>
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100">
+            <div class="font-black text-blue-800 text-base">45</div>
+            <div class="text-slate-500 font-semibold">العهد الجديد</div>
+          </div>
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100">
+            <div class="font-black text-amber-600 text-base">30</div>
+            <div class="text-slate-500 font-semibold">الطقس وتاريخ الكنيسة</div>
+          </div>
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100">
+            <div class="font-black text-emerald-600 text-base">30</div>
+            <div class="text-slate-500 font-semibold">القديسين والقيم</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 4: LEADERBOARD ==================== -->
+    <section id="tab-leaderboard" class="hidden space-y-5">
+      <div class="bg-white rounded-3xl p-5 card-shadow border border-slate-100">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-xl font-black text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-crown text-amber-500"></i> لوحة الشرف والمتصدرين
+            </h2>
+            <p class="text-xs text-slate-500">ترتيب الأعضاء حسب مجموع نقاط الحضور والمسابقات والأوسمة</p>
+          </div>
+          <select id="leaderboard-stage-filter" onchange="renderLeaderboard()" class="px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold bg-slate-50">
+            <option value="ALL">جميع المراحل</option>
+            <option value="ابتدائي">ابتدائي</option>
+            <option value="إعدادي">إعدادي</option>
+            <option value="ثانوي">ثانوي</option>
+            <option value="جامعة">جامعة</option>
+            <option value="خريجين">خريجين</option>
+            <option value="خدام">الخدام</option>
+          </select>
+        </div>
+
+        <!-- Top 3 Podium -->
+        <div id="podium-container" class="grid grid-cols-3 gap-2 sm:gap-4 items-end pt-4 pb-6 border-b border-slate-100">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <!-- Full Ranked List -->
+        <div id="leaderboard-list" class="mt-4 space-y-2.5">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 5: SERVANT SECURITY & SETTINGS ==================== -->
+    <section id="tab-settings" class="hidden space-y-5">
+      <!-- Locked Notice if not Servant -->
+      <div id="settings-locked-view" class="bg-white rounded-3xl p-8 card-shadow border border-slate-100 text-center space-y-4">
+        <div class="w-16 h-16 rounded-2xl bg-amber-100 text-amber-600 text-3xl flex items-center justify-center mx-auto">
+          <i class="fa-solid fa-user-shield"></i>
+        </div>
+        <h2 class="text-xl font-black text-slate-800">إعدادات الأمان وإدارة الموقع (للخدام فقط)</h2>
+        <p class="text-xs sm:text-sm text-slate-500 max-w-md mx-auto">
+          سجّل الدخول كخادم لتتمكن من تغيير كلمة سر الخدام السحابية، تعديل اسم الكنيسة، وضبط نقاط الحضور والمسابقات.
+        </p>
+        <button onclick="toggleServantMode()" class="px-6 py-3 rounded-2xl royal-gradient text-white font-extrabold text-sm shadow">
+          <i class="fa-solid fa-lock-open ml-1"></i> فتح لوحة تحكم الخدام
+        </button>
+      </div>
+
+      <!-- Unlocked Servant Settings Panel -->
+      <div id="settings-unlocked-view" class="hidden space-y-5">
+        <!-- Change Servant Password Card -->
+        <div class="bg-white rounded-3xl p-5 sm:p-6 card-shadow border border-slate-100 space-y-4">
+          <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
+            <div class="w-11 h-11 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center text-xl shrink-0">
+              <i class="fa-solid fa-key"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-black text-slate-800">تغيير كلمة سر الخدام (متزامنة سحابياً)</h3>
+              <p class="text-xs text-slate-500">عند تغيير كلمة السر هنا، يتم تحديثها في السحابة وتُطبق فوراً على هواتف جميع الخدام</p>
+            </div>
           </div>
 
-          <div class="grid md:grid-cols-2 gap-4">
-            <div class="bg-[#faf7f0] p-4 rounded-xl border border-amber-200 space-y-2">
-              <label class="block text-xs font-bold text-[#0f233c]">📢 نشر تنبيه عام يظهر أعلى الموقع للجميع:</label>
-              <div class="flex gap-2">
-                <input type="text" id="newAnnouncementInput" placeholder="مثال: موعد القداس غداً الساعة 7 صباحاً..."
-                  class="flex-1 px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white">
-                <button onclick="updateChurchAnnouncement()" class="gold-btn px-4 py-2 rounded-lg text-xs font-bold">نشر التنبيه</button>
-              </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">كلمة السر الحالية *</label>
+              <input type="password" id="sec-old-pin" placeholder="••••" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:border-blue-600">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">كلمة السر الجديدة *</label>
+              <input type="password" id="sec-new-pin" placeholder="أدخل الرمز الجديد" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:border-blue-600">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">تأكيد كلمة السر الجديدة *</label>
+              <input type="password" id="sec-confirm-pin" placeholder="أعد كتابة الرمز الجديد" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:border-blue-600">
+            </div>
+          </div>
+
+          <button onclick="changeServantPassword()" class="px-6 py-3 rounded-2xl bg-rose-700 hover:bg-rose-800 text-white font-extrabold text-sm shadow transition flex items-center gap-2">
+            <i class="fa-solid fa-shield-check"></i> حفظ كلمة السر الجديدة في السحابة
+          </button>
+        </div>
+
+        <!-- General Church & Points Settings Card -->
+        <div class="bg-white rounded-3xl p-5 sm:p-6 card-shadow border border-slate-100 space-y-4">
+          <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
+            <div class="w-11 h-11 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-xl shrink-0">
+              <i class="fa-solid fa-sliders"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-black text-slate-800">إعدادات الكنيسة ونظام النقاط</h3>
+              <p class="text-xs text-slate-500">تخصيص اسم الاجتماع وقيمة النقاط الممنوحة للحضور والمسابقات</p>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">اسم الكنيسة أو الاجتماع (يظهر في أعلى الموقع)</label>
+              <input type="text" id="set-church-name" placeholder="مثال: اجتماع شباب الأنبا أنطونيوس" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:border-blue-600">
             </div>
 
-            <div class="bg-[#faf7f0] p-4 rounded-xl border border-amber-200 space-y-2">
-              <label class="block text-xs font-bold text-[#0f233c]">🔑 تغيير كلمة سر لوحة الخدام (تُحفظ في السحابة):</label>
-              <div class="flex gap-2">
-                <input type="password" id="newServantPinInput" placeholder="اكتب كلمة السر الجديدة..."
-                  class="flex-1 px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white">
-                <button onclick="changeServantPassword()" class="navy-btn px-4 py-2 rounded-lg text-xs font-bold">حفظ الرمز</button>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">نقاط الحضور اليومي</label>
+                <input type="number" id="set-attendance-pts" min="1" max="500" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm font-bold">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">نقاط الإجابة الصحيحة بالمسابقة</label>
+                <input type="number" id="set-quiz-pts" min="1" max="500" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm font-bold">
               </div>
             </div>
           </div>
 
-          <div class="overflow-x-auto">
-            <table class="w-full text-sm text-right border-collapse">
-              <thead>
-                <tr class="bg-[#0f233c] text-[#e6c665]">
-                  <th class="p-3 rounded-tr-lg">الاسم</th>
-                  <th class="p-3">الصفة</th>
-                  <th class="p-3">حالة وحضور اليوم</th>
-                  <th class="p-3">النقاط</th>
-                  <th class="p-3">اعتماد الحضور وتعديل النقاط</th>
-                  <th class="p-3 rounded-tl-lg">حذف العضو</th>
-                </tr>
-              </thead>
-              <tbody id="servantMembersTable" class="divide-y divide-slate-200 bg-white"></tbody>
-            </table>
+          <button onclick="saveGeneralSettings()" class="px-6 py-3 rounded-2xl royal-gradient text-white font-extrabold text-sm shadow transition flex items-center gap-2">
+            <i class="fa-solid fa-cloud-arrow-up"></i> حفظ الإعدادات ومزامنتها
+          </button>
+        </div>
+
+        <!-- Cloud Info & Danger Zone -->
+        <div class="bg-white rounded-3xl p-5 card-shadow border border-slate-100 space-y-3">
+          <h3 class="font-extrabold text-sm text-slate-800 flex items-center gap-2">
+            <i class="fa-solid fa-database text-emerald-600"></i> حالة قاعدة البيانات السحابية
+          </h3>
+          <div class="text-xs text-slate-600 bg-slate-50 p-3 rounded-2xl border border-slate-200/70 space-y-1">
+            <div>• معرف السحابة (Gist ID): <code id="display-gist-id" class="font-bold text-blue-800">جاري التحميل...</code></div>
+            <div>• عدد الأعضاء المحذوفين المحجوبين من العودة: <strong id="display-deleted-count">0</strong></div>
+          </div>
+          <div class="flex flex-wrap gap-2 pt-1">
+            <button onclick="confirmBulkResetPoints()" class="px-4 py-2.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold text-xs">
+              <i class="fa-solid fa-rotate-left ml-1"></i> تصفير نقاط جميع الأعضاء
+            </button>
+            <button onclick="confirmClearLogs()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs">
+              <i class="fa-solid fa-broom ml-1"></i> مسح سجل النشاطات القديمة
+            </button>
           </div>
         </div>
       </div>
@@ -414,939 +552,1052 @@
 
   </main>
 
-  <div id="toast" class="fixed bottom-5 left-5 bg-[#0f233c] text-white border border-[#c59b27] px-4 py-3 rounded-xl shadow-xl text-sm font-bold transform translate-y-24 opacity-0 transition-all duration-300 z-50"></div>
+  <!-- Bottom Navigation Bar (Mobile-First One-Handed Navigation) -->
+  <nav class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200 z-40 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+    <div class="max-w-4xl mx-auto grid grid-cols-5 h-16">
+      <button onclick="switchTab('home')" id="nav-home" class="nav-btn flex flex-col items-center justify-center gap-1 text-blue-800 font-extrabold transition">
+        <i class="fa-solid fa-house text-base sm:text-lg"></i>
+        <span class="text-[10px] sm:text-[11px]">الرئيسية</span>
+      </button>
+      <button onclick="switchTab('attendance')" id="nav-attendance" class="nav-btn flex flex-col items-center justify-center gap-1 text-slate-400 font-bold transition">
+        <i class="fa-solid fa-clipboard-user text-base sm:text-lg"></i>
+        <span class="text-[10px] sm:text-[11px]">الأعضاء</span>
+      </button>
+      <button onclick="switchTab('quiz')" id="nav-quiz" class="nav-btn flex flex-col items-center justify-center gap-1 text-slate-400 font-bold transition">
+        <i class="fa-solid fa-brain text-base sm:text-lg"></i>
+        <span class="text-[10px] sm:text-[11px]">150 سؤال</span>
+      </button>
+      <button onclick="switchTab('leaderboard')" id="nav-leaderboard" class="nav-btn flex flex-col items-center justify-center gap-1 text-slate-400 font-bold transition">
+        <i class="fa-solid fa-trophy text-base sm:text-lg"></i>
+        <span class="text-[10px] sm:text-[11px]">المتصدرون</span>
+      </button>
+      <button onclick="switchTab('settings')" id="nav-settings" class="nav-btn flex flex-col items-center justify-center gap-1 text-slate-400 font-bold transition">
+        <i class="fa-solid fa-gear text-base sm:text-lg"></i>
+        <span class="text-[10px] sm:text-[11px]">الإعدادات</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- 1. Self-Registration Modal ("سجّل نفسك فوراً") -->
+  <div id="modal-register" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-black text-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-user-plus text-amber-500"></i> تسجيل عضو جديد في السحابة
+        </h3>
+        <button onclick="closeModal('modal-register')" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <p class="text-xs text-slate-500">بمجرد التسجيل سيظهر اسمك فوراً على هواتف جميع الخدام والأعضاء وتبدأ بـ <strong>10 نقاط ترحيبية</strong>!</p>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">الاسم الثلاثي *</label>
+          <input type="text" id="reg-name" placeholder="مثال: مارك جرجس فهيم" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-blue-600">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">الصفة *</label>
+            <select id="reg-role" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white">
+              <option value="مخدوم">مخدوم</option>
+              <option value="خادم">خادم</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">المرحلة / الفصل *</label>
+            <select id="reg-stage" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white">
+              <option value="ابتدائي">ابتدائي</option>
+              <option value="إعدادي">إعدادي</option>
+              <option value="ثانوي">ثانوي</option>
+              <option value="جامعة">جامعة</option>
+              <option value="خريجين">خريجين</option>
+              <option value="خدام">خدام</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">رقم الموبايل (اختياري للافتقاد واتساب)</label>
+          <input type="tel" id="reg-phone" placeholder="012xxxxxxxx" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-blue-600">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">اختر رمزك المفضل</label>
+          <div id="avatar-picker" class="flex items-center justify-between gap-2">
+            <button type="button" onclick="selectAvatar('✝️')" class="avatar-opt w-11 h-11 rounded-xl bg-amber-100 border-2 border-amber-500 text-xl flex items-center justify-center">✝️</button>
+            <button type="button" onclick="selectAvatar('🕊️')" class="avatar-opt w-11 h-11 rounded-xl bg-slate-100 border-2 border-transparent text-xl flex items-center justify-center">🕊️</button>
+            <button type="button" onclick="selectAvatar('📖')" class="avatar-opt w-11 h-11 rounded-xl bg-slate-100 border-2 border-transparent text-xl flex items-center justify-center">📖</button>
+            <button type="button" onclick="selectAvatar('👑')" class="avatar-opt w-11 h-11 rounded-xl bg-slate-100 border-2 border-transparent text-xl flex items-center justify-center">👑</button>
+            <button type="button" onclick="selectAvatar('⭐')" class="avatar-opt w-11 h-11 rounded-xl bg-slate-100 border-2 border-transparent text-xl flex items-center justify-center">⭐</button>
+            <button type="button" onclick="selectAvatar('🦁')" class="avatar-opt w-11 h-11 rounded-xl bg-slate-100 border-2 border-transparent text-xl flex items-center justify-center">🦁</button>
+          </div>
+        </div>
+      </div>
+
+      <button onclick="submitRegistration()" id="btn-submit-reg" class="w-full py-3 rounded-2xl gold-gradient text-white font-extrabold text-sm shadow-lg hover:opacity-95 active:scale-95 transition">
+        حفظ ومزامنة مع السحابة الآن
+      </button>
+    </div>
+  </div>
+
+  <!-- 2. Edit Member Modal (Servants Only) -->
+  <div id="modal-edit-member" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-black text-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-user-pen text-blue-600"></i> تعديل بيانات العضو
+        </h3>
+        <button onclick="closeModal('modal-edit-member')" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <input type="hidden" id="edit-member-id">
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">الاسم بالكامل *</label>
+          <input type="text" id="edit-member-name" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-blue-600">
+        </div>
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">الصفة</label>
+            <select id="edit-member-role" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white">
+              <option value="مخدوم">مخدوم</option>
+              <option value="خادم">خادم</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">المرحلة</label>
+            <select id="edit-member-stage" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white">
+              <option value="ابتدائي">ابتدائي</option>
+              <option value="إعدادي">إعدادي</option>
+              <option value="ثانوي">ثانوي</option>
+              <option value="جامعة">جامعة</option>
+              <option value="خريجين">خريجين</option>
+              <option value="خدام">خدام</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">رقم الموبايل</label>
+            <input type="tel" id="edit-member-phone" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">رصيد النقاط الحالي</label>
+            <input type="number" id="edit-member-points" min="0" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-bold text-amber-700">
+          </div>
+        </div>
+      </div>
+      <button onclick="saveEditedMember()" class="w-full py-3 rounded-2xl royal-gradient text-white font-extrabold text-sm shadow-lg">
+        حفظ التعديلات في السحابة
+      </button>
+    </div>
+  </div>
+
+  <!-- 3. Custom Confirmation Modal (For Deleting Member / Resetting Points - Never uses confirm()) -->
+  <div id="modal-confirm" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-sm p-6 shadow-2xl space-y-4 text-center">
+      <div class="w-14 h-14 rounded-2xl bg-rose-100 text-rose-600 text-2xl flex items-center justify-center mx-auto">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <h3 id="confirm-modal-title" class="text-lg font-black text-slate-800">تأكيد الإجراء</h3>
+      <p id="confirm-modal-message" class="text-xs sm:text-sm text-slate-600 leading-relaxed">هل أنت متأكد من تنفيذ هذا الإجراء؟</p>
+      <div class="flex gap-2 pt-1">
+        <button onclick="closeModal('modal-confirm')" class="w-1/2 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm">إلغاء</button>
+        <button id="confirm-modal-yes-btn" class="w-1/2 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-sm shadow">تأكيد الحذف</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Select Existing Account Modal -->
+  <div id="modal-select-user" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-black text-slate-800">اختر حسابك من القائمة</h3>
+        <button onclick="closeModal('modal-select-user')" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <input type="text" id="switch-user-search" oninput="renderSwitchUserList()" placeholder="ابحث عن اسمك..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm">
+      <div id="switch-user-list" class="max-h-64 overflow-y-auto space-y-2">
+        <!-- Populated dynamically -->
+      </div>
+      <button onclick="closeModal('modal-select-user'); openRegisterModal();" class="w-full py-2.5 rounded-xl bg-blue-50 text-blue-800 font-bold text-xs">
+        لم تجد اسمك؟ سجّل عضواً جديداً
+      </button>
+    </div>
+  </div>
+
+  <!-- 5. Servant Admin PIN Modal -->
+  <div id="modal-servant-pin" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-sm p-6 shadow-2xl space-y-4 text-center">
+      <div class="w-14 h-14 rounded-2xl royal-gradient text-amber-400 text-2xl flex items-center justify-center mx-auto">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <h3 class="text-lg font-black text-slate-800">دخول لوحة تحكم الخدام</h3>
+      <p class="text-xs text-slate-500">أدخل كلمة سر الخدام لتسجيل الحضور والغياب وحذف/تعديل الأعضاء وإدارة الإعدادات (الافتراضي: <strong>1234</strong>)</p>
+      <input type="password" id="servant-pin-input" onkeydown="if(event.key==='Enter') verifyServantPin()" maxlength="16" placeholder="••••" class="w-full text-center tracking-widest text-2xl font-black py-3 rounded-2xl border border-slate-200 bg-slate-50 focus:outline-none focus:border-blue-600">
+      <div class="flex gap-2">
+        <button onclick="closeModal('modal-servant-pin')" class="w-1/2 py-2.5 rounded-xl bg-slate-100 text-slate-600 font-bold text-sm">إلغاء</button>
+        <button onclick="verifyServantPin()" class="w-1/2 py-2.5 rounded-xl royal-gradient text-white font-bold text-sm">دخول</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Announcement & Verse Editor Modal (Servants Only) -->
+  <div id="modal-announcement" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-black text-slate-800">تحديث آية اليوم وإعلان الكنيسة</h3>
+        <button onclick="closeModal('modal-announcement')" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">آية اليوم والشاهد</label>
+          <textarea id="input-verse" rows="2" class="w-full p-3 rounded-xl border border-slate-200 text-sm"></textarea>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">إعلان الخدمة / التنبيه العام</label>
+          <textarea id="input-announcement" rows="3" class="w-full p-3 rounded-xl border border-slate-200 text-sm"></textarea>
+        </div>
+      </div>
+      <button onclick="saveAnnouncement()" class="w-full py-3 rounded-2xl royal-gradient text-white font-extrabold text-sm">
+        نشر التحديث لجميع الهواتف فوراً
+      </button>
+    </div>
+  </div>
+
+  <!-- 7. Prayer Request Modal -->
+  <div id="modal-prayer" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-black text-slate-800">إضافة طلب صلاة أو افتقاد</h3>
+        <button onclick="closeModal('modal-prayer')" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <textarea id="input-prayer-text" rows="3" placeholder="اكتب طلب الصلاة هنا ليصلي من أجله الخدام والمخدومون..." class="w-full p-3.5 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-blue-600"></textarea>
+      <button onclick="submitPrayerRequest()" class="w-full py-3 rounded-2xl bg-purple-700 hover:bg-purple-800 text-white font-extrabold text-sm">
+        إرسال الطلب للسحابة
+      </button>
+    </div>
+  </div>
 
   <script>
-    // ==========================================
-    // 1. إعدادات السحابة الموحدة لكل الهواتف
-    // ==========================================
-    const GITHUB_TOKEN = "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";
-    const GIST_FILENAME = "church_service_cloud_db.json";
-    const GIST_DESCRIPTION = "Church Service Portal Live Sync DB";
-    const DEFAULT_SERVANT_PIN = "1234";
-
-    let activeGistId = localStorage.getItem("church_active_gist_id") || null;
-    let isSyncing = false;
-    let currentQuizPage = 0;
-    const QUESTIONS_PER_PAGE = 10;
-
-    let db = {
-      members: [],
-      activities: [],
-      announcement: "أهلاً بكم في بوابة خدمة الكنيسة — شارك في مسابقة الـ 150 سؤال اليومية وسجل حضورك!",
-      servantPin: DEFAULT_SERVANT_PIN,
-      dailyQuestionsCache: {},
-      lastUpdated: 0
+    /*************************************************************************
+     * 1. GITHUB CLOUD CONFIGURATION & AUTO-DISCOVERY ENGINE
+     *************************************************************************/
+    const GITHUB_CONFIG = {
+      TOKEN: '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',
+      GIST_FILENAME: 'church_service_hub_db_v2.json',
+      GIST_DESCRIPTION: 'CHURCH_SERVICE_HUB_CLOUD_V2',
+      POLL_INTERVAL_MS: 5000 // Real-time sync every 5 seconds across all devices
     };
 
-    let currentUser = JSON.parse(localStorage.getItem("church_current_user") || "null");
-
-    function getCurrentServantPin() {
-      return (db && db.servantPin) ? String(db.servantPin) : DEFAULT_SERVANT_PIN;
-    }
-
-    function getTodayKey() {
-      return new Date().toISOString().split("T")[0];
-    }
-
-    function authHeaders() {
-      return {
-        "Authorization": `Bearer ${GITHUB_TOKEN}`,
-        "Accept": "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28",
-        "Content-Type": "application/json"
-      };
-    }
-
-    // ==========================================
-    // 2. مولّد 150 سؤالاً عربياً متجدداً يومياً
-    // ==========================================
-    function buildDailyArabic150(dateKey, salt = 0) {
-      let seed = salt * 9973;
-      for (let i = 0; i < dateKey.length; i++) {
-        seed += dateKey.charCodeAt(i) * (i + 17);
+    // Global Application State
+    let appState = {
+      gistId: localStorage.getItem('church_cloud_gist_id_v2') || null,
+      isServant: sessionStorage.getItem('church_is_servant') === 'true',
+      currentUserId: localStorage.getItem('church_current_user_id') || null,
+      selectedAvatar: '✝️',
+      stageFilter: 'ALL',
+      isSyncing: false,
+      lastSyncTime: null,
+      // Cloud Synchronized Data Schema
+      cloudData: {
+        version: 2,
+        settings: {
+          churchName: 'بوابة الكنيسة للخدام والمخدومين',
+          adminPassword: '1234',
+          attendancePoints: 10,
+          quizPoints: 5
+        },
+        verse: '"أَسْتَطِيعُ كُلَّ شَيْءٍ فِي الْمَسِيحِ الَّذِي يُقَوِّينِي." (فيلبي 4: 13)',
+        announcement: 'أهلاً بكل الخدام والمخدومين! سجل اسمك الآن وشارك في مسابقة الـ 150 سؤال اليومية لجمع النقاط.',
+        members: [],     // { id, name, role, stage, phone, avatar, points, streak, joinedAt }
+        deletedIds: [],  // Array of deleted member IDs so deleted members NEVER resurrect on sync
+        attendance: {},  // { "YYYY-MM-DD": { memberId: "present" | "absent" } }
+        logs: [],        // { id, text, icon, color, timestamp }
+        prayers: []      // { id, author, text, timestamp }
       }
-      const rand = () => {
-        seed = (seed * 1664525 + 1013904223) % 4294967296;
-        return seed / 4294967296;
+    };
+
+    /*************************************************************************
+     * 2. COMPLETE 150-QUESTION CHRISTIAN & BIBLICAL QUIZ BANK WITH REFERENCES
+     *************************************************************************/
+    const QUIZ_BANK_150 = [
+      // --- العهد القديم (1 - 45) ---
+      { q: "من هو أول إنسان خلقه الله على الأرض؟", opts: ["نوح", "آدم", "إبراهيم", "هابيل"], a: 1, cat: "العهد القديم", ref: "تكوين 2: 7" },
+      { q: "كم يوماً استغرقت عملية الخليقة قبل أن يستريح الله في اليوم السابع؟", opts: ["5 أيام", "6 أيام", "7 أيام", "40 يوماً"], a: 1, cat: "العهد القديم", ref: "تكوين 2: 2" },
+      { q: "ما اسم الفلك الذي بناه نوح للنجاة من الطوفان؟", opts: ["فلك العهد", "فلك نوح", "سفينة الخلاص", "فلك الرجاء"], a: 1, cat: "العهد القديم", ref: "تكوين 6: 14" },
+      { q: "ما هي العلامة التي وضعها الله في السحاب عهداً بعدم إهلاك الأرض بالطوفان؟", opts: ["نجمة الصبح", "قوس قزح", "عمود سحاب", "حمامة بيضاء"], a: 1, cat: "العهد القديم", ref: "تكوين 9: 13" },
+      { q: "من هو أبو الآباء الذي دعاه الله ليخرج من أرضه إلى أرض كنعان؟", opts: ["إسحق", "يعقوب", "إبراهيم", "يوسف"], a: 2, cat: "العهد القديم", ref: "تكوين 12: 1" },
+      { q: "كم كان عمر إبراهيم عندما وُلد له إسحق؟", opts: ["75 سنة", "90 سنة", "100 سنة", "120 سنة"], a: 2, cat: "العهد القديم", ref: "تكوين 21: 5" },
+      { q: "كم عدد أسباط بني إسرائيل أبناء يعقوب؟", opts: ["10 أسباط", "12 سبطاً", "7 أسباط", "14 سبطاً"], a: 1, cat: "العهد القديم", ref: "تكوين 49: 28" },
+      { q: "من هو ابن يعقوب الذي باعه إخوته وصار الرجل الثاني في مصر؟", opts: ["يهوذا", "بنيامين", "يوسف الصديق", "رأوبين"], a: 2, cat: "العهد القديم", ref: "تكوين 41: 40" },
+      { q: "كم سنة جوع وكم سنة شبع فسرها يوسف في حلم فرعون؟", opts: ["5 و 5", "7 شبع و 7 جوع", "10 و 10", "3 و 7"], a: 1, cat: "العهد القديم", ref: "تكوين 41: 29" },
+      { q: "في أي نهر وُضع موسى النبي وهو طفل رضيع؟", opts: ["نهر الأردن", "نهر الفرات", "نهر النيل", "نهر دجلة"], a: 2, cat: "العهد القديم", ref: "خروج 2: 3" },
+      { q: "على أي جبل استلم موسى النبي لوحي الشريعة والوصايا العشر؟", opts: ["جبل الزيتون", "جبل سيناء", "جبل الكرمل", "جبل طابور"], a: 1, cat: "العهد القديم", ref: "خروج 31: 18" },
+      { q: "كم عدد الضربات التي ضرب بها الله أرض مصر قبل خروج الشعب؟", opts: ["7 ضربات", "10 ضربات", "12 ضربة", "3 ضربات"], a: 1, cat: "العهد القديم", ref: "خروج 7 - 12" },
+      { q: "ما هو الطعام الذي أنزله الله من السماء لبني إسرائيل في البرية؟", opts: ["التين والزيتون", "المن والسلوى", "الخبز والسمك", "العسل البري"], a: 1, cat: "العهد القديم", ref: "خروج 16: 13" },
+      { q: "من هو القائد الذي قاد بني إسرائيل لعبور نهر الأردن ودخول أريحا؟", opts: ["كالب بن يفنة", "يشوع بن نون", "جدعون", "شمشون"], a: 1, cat: "العهد القديم", ref: "يشوع 1: 2" },
+      { q: "كم مرة دار الشعب حول أسوار أريحا في اليوم السابع فسقطت الأسوار؟", opts: ["مرة واحدة", "3 مرات", "7 مرات", "12 مرة"], a: 2, cat: "العهد القديم", ref: "يشوع 6: 15" },
+      { q: "من هو القاضي الجبار الذي كان سر قوته في شعر رأسه؟", opts: ["جدعون", "شمشون الجبار", "يفتاح", "باراق"], a: 1, cat: "العهد القديم", ref: "قضاة 16: 17" },
+      { q: "من هي المرأة المؤابية التي قالت لحماتها نعمي: شعبك شعبي وإلهك إلهي؟", opts: ["أستير", "راعوث", "حنة", "دبورة"], a: 1, cat: "العهد القديم", ref: "راعوث 1: 16" },
+      { q: "من هو النبي الذي مسح شاول ثم داود ملكاً على إسرائيل؟", opts: ["إيليا النبي", "صموئيل النبي", "ناثان النبي", "أليشع"], a: 1, cat: "العهد القديم", ref: "1 صموئيل 16: 13" },
+      { q: "بماذا هزم داود الفتى العملاق جليات الفلسطيني؟", opts: ["بسيف الملك", "بمقلاع وحجر", "برمح طويل", "بقوس وسهم"], a: 1, cat: "العهد القديم", ref: "1 صموئيل 17: 49" },
+      { q: "ما هو السفر الذي كتب داود النبي معظم ترانيمه وصلواته فيه؟", opts: ["سفر الأمثال", "سفر المزامير", "سفر الجامعة", "سفر أيوب"], a: 1, cat: "العهد القديم", ref: "سفر المزامير" },
+      { q: "من هو الملك الذي اشتهر بحكمته العظيمة وبنى هيكل الرب في أورشليم؟", opts: ["داود", "سليمان الحكيم", "حزقيا", "يوشيا"], a: 1, cat: "العهد القديم", ref: "1 ملوك 6: 1" },
+      { q: "من هو النبي الذي صعد إلى السماء في مركبة نارية؟", opts: ["أخنوخ", "إيليا النبي", "موسى", "حزقيال"], a: 1, cat: "العهد القديم", ref: "2 ملوك 2: 11" },
+      { q: "كم مرة اغتسل نعمان السرياني في نهر الأردن فبرئ من برصه؟", opts: ["3 مرات", "7 مرات", "مرة واحدة", "10 مرات"], a: 1, cat: "العهد القديم", ref: "2 ملوك 5: 14" },
+      { q: "من هو النبي الذي ابتلعه الحوت العظيم وبقي في جوفه ثلاثة أيام؟", opts: ["عاموس", "يونان النبي", "هوشع", "ميخا"], a: 1, cat: "العهد القديم", ref: "يونان 1: 17" },
+      { q: "إلى أي مدينة عظيمة أرسل الله يونان النبي ليدعوها للتوبة؟", opts: ["بابل", "نينوى", "دمشق", "صور"], a: 1, cat: "العهد القديم", ref: "يونان 1: 2" },
+      { q: "من هو النبي الذي أُلقي في جب الأسود فأنقذه الله وسد أفواهها؟", opts: ["إرميا", "دانيال النبي", "حزقيال", "زكريا"], a: 1, cat: "العهد القديم", ref: "دانيال 6: 22" },
+      { q: "من هم الثلاثة فتية الذين أُلقوا في أتون النار ولم تحترق ثيابهم؟", opts: ["شدرخ وميشخ وعبدنغو", "بطرس ويعقوب ويوحنا", "قايين وهابيل وشيث", "سام وحام ويافث"], a: 0, cat: "العهد القديم", ref: "دانيال 3: 27" },
+      { q: "من هي الملكة اليهودية التي أنقذت شعبها من مؤامرة هامان؟", opts: ["راعوث", "أستير الملكة", "أبيجايل", "مريم أخت موسى"], a: 1, cat: "العهد القديم", ref: "أستير 7: 3" },
+      { q: "من هو الرجل الصديق الذي احتمل تجارب قاسية بصبر عظيم ورد الله له أضعاف ما فقد؟", opts: ["أيوب الصديق", "طوبيا", "نحميا", "عزرا"], a: 0, cat: "العهد القديم", ref: "أيوب 42: 10" },
+      { q: "من هو الساقي الذي قاد عملية إعادة بناء أسوار أورشليم المهدمة؟", opts: ["زربابل", "نحميا", "عزرا", "يشوع"], a: 1, cat: "العهد القديم", ref: "نحميا 2: 17" },
+      { q: "ما هي الوصية الأولى مع وعد في الوصايا العشر؟", opts: ["لا تسرق", "أكرم أباك وأمك", "لا تشهد بالزور", "اذكر يوم السبت"], a: 1, cat: "العهد القديم", ref: "خروج 20: 12" },
+      { q: "ما اسم زوجة إبراهيم وأم إسحق؟", opts: ["رفقة", "سارة", "راحيل", "ليئة"], a: 1, cat: "العهد القديم", ref: "تكوين 21: 3" },
+      { q: "بماذا باع عيسو بكوريته لأخيه يعقوب؟", opts: ["بثلاثين من الفضة", "بأكلة عدس", "بقطيع غنم", "بثوب ملون"], a: 1, cat: "العهد القديم", ref: "تكوين 25: 34" },
+      { q: "ماذا رأى يعقوب في حلمه في بيت إيل؟", opts: ["شجرة عظيمة", "سلماً منصوباً على الأرض ورأسه يمس السماء", "بحراً من نار", "أسداً يزأر"], a: 1, cat: "العهد القديم", ref: "تكوين 28: 12" },
+      { q: "كم سنة تاه بنو إسرائيل في البرية بسبب تذمرهم؟", opts: ["7 سنوات", "40 سنة", "70 سنة", "12 سنة"], a: 1, cat: "العهد القديم", ref: "عدد 14: 33" },
+      { q: "من هو أخو موسى النبي الذي صار أول رئيس كهنة؟", opts: ["يشوع", "هارون", "حور", "ألعازر"], a: 1, cat: "العهد القديم", ref: "خروج 28: 1" },
+      { q: "من هي القاضية والنبية التي قادت إسرائيل للنصر مع باراق؟", opts: ["دبورة", "خلدة", "حنة", "رفقة"], a: 0, cat: "العهد القديم", ref: "قضاة 4: 4" },
+      { q: "كم عدد الرجال الذين اختارهم الله لجدعون ليهزم بهم المديانيين؟", opts: ["300 رجل", "1000 رجل", "12 رجلاً", "70 رجلاً"], a: 0, cat: "العهد القديم", ref: "قضاة 7: 7" },
+      { q: "من هو النبي الذي تنبأ قائلاً: ها العذراء تحبل وتلد ابناً وتدعو اسمه عمانوئيل؟", opts: ["إرميا", "إشعياء النبي", "حزقيال", "ملاخي"], a: 1, cat: "العهد القديم", ref: "إشعياء 7: 14" },
+      { q: "ماذا تعني كلمة (عمانوئيل)؟", opts: ["الله معنا", "الله محبة", "ملك السلام", "الرب راعيّ"], a: 0, cat: "العهد القديم", ref: "متى 1: 23" },
+      { q: "من هو النبي الملقب بالنبي الباكي؟", opts: ["إشعياء", "إرميا النبي", "دانيال", "عاموس"], a: 1, cat: "العهد القديم", ref: "مراثي إرميا" },
+      { q: "من هو تلميذ إيليا النبي الذي طلب نصيب اثنين من روحه؟", opts: ["جيحزي", "أليشع النبي", "عوبديا", "ميخا"], a: 1, cat: "العهد القديم", ref: "2 ملوك 2: 9" },
+      { q: "ما اسم الجبل الذي استقر عليه فلك نوح بعد الطوفان؟", opts: ["جبل سيناء", "جبل أراراط", "جبل حرمون", "جبل الكرمل"], a: 1, cat: "العهد القديم", ref: "تكوين 8: 4" },
+      { q: "من هو الرجل الذي سار مع الله ولم يوجد لأن الله أخذه؟", opts: ["متوشالح", "أخنوخ", "لامك", "شيث"], a: 1, cat: "العهد القديم", ref: "تكوين 5: 24" },
+      { q: "ما هو أول سفر في الكتاب المقدس؟", opts: ["الخروج", "التكوين", "المزامير", "متى"], a: 1, cat: "العهد القديم", ref: "سفر التكوين" },
+
+      // --- العهد الجديد (46 - 90) ---
+      { q: "في أي مدينة وُلد السيد المسيح؟", opts: ["الناصرة", "بيت لحم", "أورشليم", "كفرناحوم"], a: 1, cat: "العهد الجديد", ref: "متى 2: 1" },
+      { q: "ما اسم الملاك الذي بشّر السيدة العذراء مريم بميلاد المسيح؟", opts: ["ميخائيل", "جبرائيل", "رافائيل", "سوريال"], a: 1, cat: "العهد الجديد", ref: "لوقا 1: 26" },
+      { q: "ما هي الهدايا الثلاث التي قدمها المجوس للسيد المسيح؟", opts: ["ذهب وفضة ونحاس", "ذهب ولبان ومر", "خبز وخمر وزيت", "قمح وعسل وبخور"], a: 1, cat: "العهد الجديد", ref: "متى 2: 11" },
+      { q: "إلى أي بلد هربت العائلة المقدسة من بطش هيرودس الملك؟", opts: ["سوريا", "مصر", "الأردن", "اليونان"], a: 1, cat: "العهد الجديد", ref: "متى 2: 13" },
+      { q: "في أي نهر اعتمد السيد المسيح على يد يوحنا المعمدان؟", opts: ["نهر النيل", "نهر الأردن", "نهر الفرات", "بحر الجليل"], a: 1, cat: "العهد الجديد", ref: "متى 3: 13" },
+      { q: "كم يوماً صام السيد المسيح في البرية قبل بدء خدمته؟", opts: ["7 أيام", "40 يوماً و 40 ليلة", "3 أيام", "50 يوماً"], a: 1, cat: "العهد الجديد", ref: "متى 4: 2" },
+      { q: "ما هي أول معجزة صنعها السيد المسيح؟", opts: ["إقامة لعازر", "تحويل الماء إلى خمر في عرس قانا الجليل", "تفتيح عيني الأعمى", "إشباع الجموع"], a: 1, cat: "العهد الجديد", ref: "يوحنا 2: 11" },
+      { q: "كم عدد تلاميذ السيد المسيح الاثني عشر؟", opts: ["7 تلاميذ", "12 تلميذاً", "70 تلميذاً", "10 تلاميذ"], a: 1, cat: "العهد الجديد", ref: "متى 10: 1" },
+      { q: "ما اسم التلميذ الذي كان صياد سمك ولقبه المسيح بالصخرة؟", opts: ["يوحنا", "بطرس (سمعان)", "أندراوس", "فيلبس"], a: 1, cat: "العهد الجديد", ref: "متى 16: 18" },
+      { q: "من هو التلميذ الملقب بالتلميذ الذي كان يسوع يحبه؟", opts: ["بطرس", "يوحنا الحبيب", "يعقوب", "توما"], a: 1, cat: "العهد الجديد", ref: "يوحنا 13: 23" },
+      { q: "كم رغيفاً وكم سمكة استخدمهم المسيح لإشباع خمسة آلاف رجل؟", opts: ["7 أرغفة وقليل من السمك", "5 أرغفة وسمكتين", "3 أرغفة و 3 سمكات", "رغيف واحد وسمكة"], a: 1, cat: "العهد الجديد", ref: "متى 14: 17" },
+      { q: "من هو الرجل القصير القامة الذي تسلق شجرة جميز ليرى يسوع؟", opts: ["نيقوديموس", "زكا العشار", "بارتيماوس", "لعازر"], a: 1, cat: "العهد الجديد", ref: "لوقا 19: 4" },
+      { q: "كم يوماً كان لعازر في القبر عندما أقامه السيد المسيح من الموت؟", opts: ["يومين", "3 أيام", "4 أيام", "7 أيام"], a: 2, cat: "العهد الجديد", ref: "يوحنا 11: 39" },
+      { q: "في مثل السامري الصالح، من الذي اعتنى بالرجل الجريح؟", opts: ["الكاهن", "اللاوي", "السامري الصالح", "الفريسي"], a: 2, cat: "العهد الجديد", ref: "لوقا 10: 33" },
+      { q: "في مثل الابن الضال، ماذا فعل الأب عندما رأى ابنه راجعاً من بعيد؟", opts: ["عاتبه بشدة", "ركض ووقع على عنقه وقبّله", "رفض استقباله", "جعله كأحد الأجراء"], a: 1, cat: "العهد الجديد", ref: "لوقا 15: 20" },
+      { q: "على أي جبل تجلى السيد المسيح أمام بطرس ويعقوب ويوحنا؟", opts: ["جبل سيناء", "جبل طابور", "جبل الجلجثة", "جبل الكرمل"], a: 1, cat: "العهد الجديد", ref: "متى 17: 1" },
+      { q: "بماذا استقبلت الجموع السيد المسيح عند دخوله أورشليم في أحد الشعانين؟", opts: ["بالسيوف", "بسعف النخيل وأغصان الزيتون", "بالورود الحمراء", "بالشموع"], a: 1, cat: "العهد الجديد", ref: "يوحنا 12: 13" },
+      { q: "كم قطعة من الفضة أخذها يهوذا الإسخريوطي ليسلم السيد المسيح؟", opts: ["10 قطع", "20 قطعة", "30 قطعة من الفضة", "50 قطعة"], a: 2, cat: "العهد الجديد", ref: "متى 26: 15" },
+      { q: "في أي بستان صلى السيد المسيح قبل القبض عليه ليلة الآلام؟", opts: ["بستان عدن", "بستان جثسيماني", "بستان يوسف الرامي", "جبل الزيتون"], a: 1, cat: "العهد الجديد", ref: "متى 26: 36" },
+      { q: "من هو الشخص الذي ساعد السيد المسيح في حمل الصليب في الطريق إلى الجلجثة؟", opts: ["يوسف الرامي", "سمعان القيرواني", "نيقوديموس", "بطرس الرسول"], a: 1, cat: "العهد الجديد", ref: "مرقس 15: 21" },
+      { q: "في أي يوم قام السيد المسيح من بين الأموات منتصراً على الموت؟", opts: ["الجمعة", "السبت", "الأحد (أول الأسبوع)", "الاثنين"], a: 2, cat: "العهد الجديد", ref: "مرقس 16: 9" },
+      { q: "من هو التلميذ الذي شك في القيامة حتى رأى أثر المسامير في يدي المسيح؟", opts: ["فيلبس", "توما الرسول", "متى", "برثولماوس"], a: 1, cat: "العهد الجديد", ref: "يوحنا 20: 25" },
+      { q: "بعد كم يوماً من القيامة صعد السيد المسيح إلى السماء؟", opts: ["10 أيام", "40 يوماً", "50 يوماً", "7 أيام"], a: 1, cat: "العهد الجديد", ref: "أعمال الرسل 1: 3" },
+      { q: "في أي يوم حل الروح القدس على التلاميذ المجتمعين في العلية؟", opts: ["يوم الفصح", "يوم الخمسين (العنصرة)", "يوم السبت", "عيد المظال"], a: 1, cat: "العهد الجديد", ref: "أعمال الرسل 2: 1" },
+      { q: "ما اسم أول شهيد في المسيحية الذي رُجم وهو يصلي لراجميه؟", opts: ["يعقوب", "القديس استفانوس الشماس", "بولس", "برنابا"], a: 1, cat: "العهد الجديد", ref: "أعمال الرسل 7: 59" },
+      { q: "ما كان اسم بولس الرسول قبل إيمانه بالمسيح؟", opts: ["سمعان", "شاول الطرسوسي", "سيلا", "تيموثاوس"], a: 1, cat: "العهد الجديد", ref: "أعمال الرسل 9: 1" },
+      { q: "على طريق أي مدينة ظهر السيد المسيح لشاول الطرسوسي؟", opts: ["أورشليم", "دمشق", "أنطاكية", "روما"], a: 1, cat: "العهد الجديد", ref: "أعمال الرسل 9: 3" },
+      { q: "كم عدد الأناجيل القانونية في العهد الجديد؟", opts: ["3 أناجيل", "4 أناجيل (متى، مرقس، لوقا، يوحنا)", "5 أناجيل", "7 أناجيل"], a: 1, cat: "العهد الجديد", ref: "العهد الجديد" },
+      { q: "من هو الإنجيلي الذي كان يعمل طبيباً وكتب أيضاً سفر أعمال الرسل؟", opts: ["متى", "مرقس", "لوقا البشير", "يوحنا"], a: 2, cat: "العهد الجديد", ref: "كولوسي 4: 14" },
+      { q: "ما هو آخر سفر في الكتاب المقدس؟", opts: ["أعمال الرسل", "رؤيا يوحنا اللاهوتي", "رسالة رومية", "رسالة يهوذا"], a: 1, cat: "العهد الجديد", ref: "سفر الرؤيا" },
+      { q: "أين دُعي التلاميذ مسيحيين أول مرة؟", opts: ["في أورشليم", "في أنطاكية", "في الإسكندرية", "في روما"], a: 1, cat: "العهد الجديد", ref: "أعمال الرسل 11: 26" },
+      { q: "كم عدد التطويبات التي علم بها السيد المسيح في الموعظة على الجبل؟", opts: ["5 تطويبات", "8 تطويبات (أو 9)", "10 تطويبات", "3 تطويبات"], a: 1, cat: "العهد الجديد", ref: "متى 5: 3-11" },
+      { q: "ماذا قال السيد المسيح عن صانعي السلام؟", opts: ["يرثون الأرض", "لأنهم أبناء الله يُدعون", "يعاينون الله", "يُرحمون"], a: 1, cat: "العهد الجديد", ref: "متى 5: 9" },
+      { q: "من هي أخت مرثا ولعازر التي جلست عند قدمي يسوع تسمع كلامه؟", opts: ["سالومي", "مريم", "حنة", "أليصابات"], a: 1, cat: "العهد الجديد", ref: "لوقا 10: 39" },
+      { q: "من هو الفريسي الذي جاء إلى يسوع ليلاً ليتعلم منه عن الولادة الثانية؟", opts: ["غمالائيل", "نيقوديموس", "قيافا", "حنان"], a: 1, cat: "العهد الجديد", ref: "يوحنا 3: 1" },
+      { q: "كم عدد العذارى الحكيمات وكم عدد الجاهلات في مثل العذارى؟", opts: ["3 و 3", "5 حكيمات و 5 جاهلات", "7 و 3", "6 و 6"], a: 1, cat: "العهد الجديد", ref: "متى 25: 2" },
+      { q: "كم وزنة أعطى السيد للعبد الأول في مثل الوزنات؟", opts: ["وزنتين", "5 وزنات", "10 وزنات", "وزنة واحدة"], a: 1, cat: "العهد الجديد", ref: "متى 25: 15" },
+      { q: "من هي أم يوحنا المعمدان؟", opts: ["حنة", "أليصابات", "مرثا", "رفقة"], a: 1, cat: "العهد الجديد", ref: "لوقا 1: 13" },
+      { q: "من هو والد يوحنا المعمدان الذي صمت حتى وُلد ابنه؟", opts: ["يوسف النجار", "زكريا الكاهن", "سمعان الشيخ", "لاوي"], a: 1, cat: "العهد الجديد", ref: "لوقا 1: 20" },
+      { q: "كم عدد البرص الذين شفاهم السيد المسيح وعاد واحد فقط منهم ليشكر؟", opts: ["7 برص", "10 برص", "12 أبرص", "3 برص"], a: 1, cat: "العهد الجديد", ref: "لوقا 17: 17" },
+      { q: "من هو الملك الروماني الذي غسل يديه أمام الجمع قائلاً إني بريء من دم هذا البار؟", opts: ["هيرودس", "بيلاطس البنطي", "أغريباس", "فيلكس"], a: 1, cat: "العهد الجديد", ref: "متى 27: 24" },
+      { q: "ما هي أقصر آية في الكتاب المقدس؟", opts: ["الله محبة", "بكى يسوع", "افرحوا كل حين", "صلوا بلا انقطاع"], a: 1, cat: "العهد الجديد", ref: "يوحنا 11: 35" },
+      { q: "في أي جزيرة كان يوحنا الحبيب منفياً عندما كتب سفر الرؤيا؟", opts: ["جزيرة قبرص", "جزيرة بطمس", "جزيرة كريت", "جزيرة مالطة"], a: 1, cat: "العهد الجديد", ref: "رؤيا 1: 9" },
+      { q: "ما اسم المولود أعمى الذي شفاه المسيح في أريحا؟", opts: ["لعازر", "بارتيماوس", "أنسيمس", "تيخيكس"], a: 1, cat: "العهد الجديد", ref: "مرقس 10: 46" },
+      { q: "كم مرة أمر السيد المسيح أن نغفر لأخينا إذا أخطأ إلينا؟", opts: ["7 مرات فقط", "سبعين مرة سبع مرات (بلا حدود)", "3 مرات", "مرة واحدة"], a: 1, cat: "العهد الجديد", ref: "متى 18: 22" },
+
+      // --- الطقس وتاريخ الكنيسة (91 - 120) ---
+      { q: "من هو الرسول الذي أسس الكنيسة في مصر (الإسكندرية)؟", opts: ["القديس بطرس", "القديس مارمرقس الرسول", "القديس بولس", "القديس توما"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "تاريخ الكنيسة القبطية" },
+      { q: "ما هو رمز القديس مرقس الإنجيلي في الأيقونات القبطية؟", opts: ["النسر", "الأسد", "الثور", "الملاك"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "الأيقونات القبطية" },
+      { q: "كم عدد أسرار الكنيسة المقدسة؟", opts: ["5 أسرار", "7 أسرار", "3 أسرار", "12 سراً"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "اللاهوت الطقسي" },
+      { q: "ما هو السر الذي به نولد ولادة جديدة من الماء والروح؟", opts: ["سر الميرون", "سر المعمودية", "سر التوبة", "سر المسحة"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "يوحنا 3: 5" },
+      { q: "كم رشمة يُرشم بها المعمد بزيت الميرون المقدس؟", opts: ["12 رشمة", "36 رشمة", "7 رشمات", "3 رشمات"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "طقس الميرون" },
+      { q: "ما هو سر الأسرار الذي نتحد فيه بجسد الرب ودمه الأقدسين؟", opts: ["سر الكهنوت", "سر الإفخارستيا (التناول)", "سر الزيجة", "سر الاعتراف"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "1 كورنثوس 11: 24" },
+      { q: "كم عدد الصلوات اليومية في كتاب الأجبية؟", opts: ["5 صلوات", "7 صلوات", "3 صلوات", "12 صلاة"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "مزمور 119: 164" },
+      { q: "ما هي الصلاة الأولى في صلوات الأجبية التي نصليها صباحاً؟", opts: ["صلاة الساعة الثالثة", "صلاة باكر", "صلاة الغروب", "صلاة النوم"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "كتاب الأجبية" },
+      { q: "في أي صلاة من صلوات الأجبية نتذكر حلول الروح القدس على التلاميذ؟", opts: ["صلاة باكر", "صلاة الساعة الثالثة", "صلاة الساعة السادسة", "صلاة النوم"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "أعمال الرسل 2: 15" },
+      { q: "في أي صلاة نتذكر صلب السيد المسيح على الصليب؟", opts: ["صلاة الساعة السادسة", "صلاة الغروب", "صلاة الستار", "صلاة باكر"], a: 0, cat: "الطقس وتاريخ الكنيسة", ref: "لوقا 23: 44" },
+      { q: "كم يوماً مدة الصوم الكبير المقدس شاملاً أسبوع الآلام؟", opts: ["40 يوماً", "55 يوماً", "43 يوماً", "15 يوماً"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "الأصوام الكنسية" },
+      { q: "كم يوماً مدة صوم السيدة العذراء مريم في شهر أغسطس؟", opts: ["7 أيام", "15 يوماً", "40 يوماً", "3 أيام"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "الأصوام الكنسية" },
+      { q: "كم يوماً مدة صوم الميلاد المجيد؟", opts: ["40 يوماً", "43 يوماً", "55 يوماً", "30 يوماً"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "الأصوام الكنسية" },
+      { q: "ما هو الشهر القبطي المخصص لتسابيح السيدة العذراء قبل عيد الميلاد؟", opts: ["شهر توت", "شهر كيهك", "شهر برمهات", "شهر مسرى"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "التسبحة الكيهكية" },
+      { q: "ما هو أول شهر في السنة القبطية (عيد النيروز)؟", opts: ["شهر بابه", "شهر توت", "شهر هاتور", "شهر أمشير"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "التقويم القبطي" },
+      { q: "بماذا يبدأ التقويم القبطي (تقويم الشهداء)؟", opts: ["ميلاد المسيح", "تولي دقلديانوس الحكم واستشهاد المسيحيين", "دخول العائلة المقدسة مصر", "مجمع نيقية"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "عام 284 ميلادية" },
+      { q: "في أي سنة انعقد مجمع نيقية المسكوني الأول؟", opts: ["313 م", "325 م", "381 م", "431 م"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "تاريخ المجامع" },
+      { q: "من هو البطل السكندري الذي دافع عن الإيمان في مجمع نيقية ولقب بحامي الإيمان؟", opts: ["البابا كيرلس", "البابا أثناسيوس الرسولي", "البابا ديسقورس", "البابا بطرس"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "سيرة البابا أثناسيوس" },
+      { q: "كم عدد الأبواب في حامل الأيقونات (الأيكونوستاسيس) في الكنيسة؟", opts: ["باب واحد", "3 أبواب (الأوسط هو الباب الملوكي)", "5 أبواب", "بابان"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "طقس الكنيسة" },
+      { q: "إلى أي اتجاه ننظر أثناء الصلاة في الكنيسة؟", opts: ["الغرب", "الشرق", "الشمال", "الجنوب"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "متى 24: 27" },
+      { q: "ماذا تعني كلمة (أجيوس) في الألحان القبطية؟", opts: ["ارحمنا", "قدوس", "آمين", "هلليلويا"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "اللغة القبطية واليونانية" },
+      { q: "ماذا تعني كلمة (كيريي ليسون)؟", opts: ["المجد للرب", "يارب ارحم", "السلام لكم", "مبارك الآتي"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "القداس الإلهي" },
+      { q: "ماذا تعني كلمة (هلليلويا)؟", opts: ["صلوا معنا", "سبحوا الرب", "ارحمنا يا الله", "حقاً قام"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "لغة المزامير" },
+      { q: "ما اسم الخبز الذي يُقدم في القداس الإلهي ليصير جسد الرب؟", opts: ["فطير", "الحمل (القربان)", "المن", "البركة"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "طقس القداس" },
+      { q: "كم ثقباً يُرشم في القربانة (الحمل) إشارة لجراحات السيد المسيح؟", opts: ["3 ثقوب", "5 ثقوب", "7 ثقوب", "12 ثقباً"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "طقس القربان" },
+      { q: "ما اسم القداس الأكثر استخداماً في الكنيسة القبطية؟", opts: ["القداس الغريغوري", "القداس الباسيلي", "القداس الكيرلسي", "قداس الرسل"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "القديس باسيليوس الكبير" },
+      { q: "ما هو اليوم الذي نصوم فيه تذكاراً لتسليم يهوذا للسيد المسيح؟", opts: ["الاثنين", "الأربعاء", "الخميس", "السبت"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "أصوام الأسبوع" },
+      { q: "ما هو اليوم الذي نصوم فيه تذكاراً لصلب السيد المسيح؟", opts: ["الثلاثاء", "الجمعة", "الأحد", "الأربعاء"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "أصوام الأسبوع" },
+      { q: "كم يوماً تستمر فترة الخماسين المقدسة بعد عيد القيامة؟", opts: ["40 يوماً", "50 يوماً (لا صوم فيها ولا مطانيات)", "55 يوماً", "30 يوماً"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "طقس الخماسين" },
+      { q: "من هو البابا الملقب بخاتم الشهداء؟", opts: ["البابا مرقس", "البابا بطرس الأول", "البابا أثناسيوس", "البابا شنودة"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "السنكسار القبطي" },
+
+      // --- القديسين والقيم المسيحية (121 - 150) ---
+      { q: "من هو القديس الملقب بأبي الرهبان في العالم كله؟", opts: ["الأنبا باخوميوس", "الأنبا أنطونيوس الكبير", "الأنبا مقار", "الأنبا شنودة"], a: 1, cat: "القديسين والقيم", ref: "بستان الرهبان" },
+      { q: "من هو القديس الذي أسس نظام الشركة الرهبانية في صعيد مصر؟", opts: ["الأنبا أنطونيوس", "الأنبا باخوميوس", "الأنبا بولا", "الأنبا بيشوي"], a: 1, cat: "القديسين والقيم", ref: "تاريخ الرهبنة" },
+      { q: "من هو أول السواح في المسيحية؟", opts: ["الأنبا مقار", "الأنبا بولا أول السواح", "الأنبا موسى الأسود", "مارمينا"], a: 1, cat: "القديسين والقيم", ref: "السنكسار القبطي" },
+      { q: "من هو القديس الذي تحول من رئيس عصابة قاطع طريق إلى قديس عظيم في برية شيهيت؟", opts: ["القديس أغسطينوس", "القديس الأنبا موسى الأسود", "القديس أرسانيوس", "القديس يحنس القصير"], a: 1, cat: "القديسين والقيم", ref: "بستان الرهبان" },
+      { q: "من هو القديس الملقب بحبيب مخلصنا الصالح والذي غسل أقدام المسيح؟", opts: ["الأنبا بولا", "الأنبا بيشوي", "الأنبا صموئيل", "الأنبا كاراس"], a: 1, cat: "القديسين والقيم", ref: "سيرة الأنبا بيشوي" },
+      { q: "من هو القديس الذي أطاع معلمه وسقى خشبة يابسة في الصحراء حتى أثمرت (شجرة الطاعة)؟", opts: ["الأنبا أرسانيوس", "القديس يحنس القصير", "الأنبا بيجول", "القديس مكسيموس"], a: 1, cat: "القديسين والقيم", ref: "بستان الرهبان" },
+      { q: "من هو الشهيد العظيم الملقب بأمير الشهداء؟", opts: ["مارمينا", "مارجرجس الروماني", "أبو سيفين", "القديس أبانوب"], a: 1, cat: "القديسين والقيم", ref: "السنكسار القبطي" },
+      { q: "من هو الشهيد المصري الملقب بالعجايبي وديره في مريوط؟", opts: ["مارجرجس", "القديس مارمينا العجايبي", "القديس تادرس", "القديس دميانة"], a: 1, cat: "القديسين والقيم", ref: "السنكسار القبطي" },
+      { q: "من هي القديسة التي استشهدت مع الأربعين عذراء في البرلس؟", opts: ["القديسة مهرائيل", "القديسة دميانة", "القديسة بربارة", "القديسة رفقة"], a: 1, cat: "القديسين والقيم", ref: "السنكسار القبطي" },
+      { q: "من هو القديس الذي كان يصلي من أجل نقل جبل المقطم في عهد المعز لدين الله؟", opts: ["الأنبا أبرآم", "القديس سمعان الخراز (مع البابا أبرآم بن زرعة)", "الأنبا رويس", "الأنبا برسوم العريان"], a: 1, cat: "القديسين والقيم", ref: "تاريخ البطاركة" },
+      { q: "من هو القديس المعاصر الذي اشتهر بمحبته الفائقة للفقراء ولقب بصديق الفقراء؟", opts: ["الأنبا بيشوي", "القديس الأنبا أبرآم أسقف الفيوم", "الأنبا صرابامون", "الأنبا توماس"], a: 1, cat: "القديسين والقيم", ref: "سيرة الأنبا أبرآم" },
+      { q: "ما هي أعظم وصية في الناموس كما لخصها السيد المسيح؟", opts: ["الصوم الدائم", "تحب الرب إلهك من كل قلبك وتحب قريبك كنفسك", "تقديم الذبائح", "حفظ السبت"], a: 1, cat: "القديسين والقيم", ref: "متى 22: 37-39" },
+      { q: "كم عدد ثمار الروح القدس المذكورة في رسالة غلاطية (محبة، فرح، سلام...)؟", opts: ["7 ثمار", "9 ثمار", "12 ثمرة", "5 ثمار"], a: 1, cat: "القديسين والقيم", ref: "غلاطية 5: 22" },
+      { q: "ما هي أول ثمرة من ثمار الروح القدس؟", opts: ["الصبر", "المحبة", "اللطف", "التعفف"], a: 1, cat: "القديسين والقيم", ref: "غلاطية 5: 22" },
+      { q: "ماذا يقول الكتاب المقدس عن المحبة في رسالة كورنثوس الأولى 13؟", opts: ["المحبة تسقط أحياناً", "المحبة تتأنى وترفق... المحبة لا تسقط أبداً", "المحبة للأصدقاء فقط", "المحبة بالقول"], a: 1, cat: "القديسين والقيم", ref: "1 كورنثوس 13: 4-8" },
+      { q: "ما هي الفضائل الثلاث العظمى المذكورة في (1 كورنثوس 13: 13)؟", opts: ["الصوم والصلاة والصدقة", "الإيمان والرجاء والمحبة وأعظمهن المحبة", "الحكمة والقوة والشجاعة", "الطاعة والوداعة والصبر"], a: 1, cat: "القديسين والقيم", ref: "1 كورنثوس 13: 13" },
+      { q: "ماذا علمنا السيد المسيح أن نفعل تجاه أعدائنا؟", opts: ["ننتقم منهم", "أحبوا أعداءكم باركوا لاعنيكم أحسنوا إلى مبغضيكم", "نتجاهلهم", "نقاطعهم"], a: 1, cat: "القديسين والقيم", ref: "متى 5: 44" },
+      { q: "ماذا يقول السيد المسيح عن العطاء: مغبوط هو العطاء أكثر من...؟", opts: ["الكلام", "الأخذ", "الغنى", "الكنز"], a: 1, cat: "القديسين والقيم", ref: "أعمال الرسل 20: 35" },
+      { q: "كيف علمنا الرب يسوع أن نصلي عندما طلب التلاميذ منه ذلك؟", opts: ["المزمور الخمسين", "الصلاة الربانية (أبانا الذي في السماوات)", "تسبحة الملائكة", "قانون الإيمان"], a: 1, cat: "القديسين والقيم", ref: "متى 6: 9" },
+      { q: "في الصلاة الربانية ماذا نطلب بعد (أعطنا خبزنا كفاف يومنا)؟", opts: ["وانصرنا على أعدائنا", "واغفر لنا ذنوبنا كما نغفر نحن أيضاً للمذنبين إلينا", "وارزقنا مالاً", "واشفِ مرضانا"], a: 1, cat: "القديسين والقيم", ref: "متى 6: 12" },
+      { q: "من هو الشاب الذي كتب له بولس الرسول: لا يستهن أحد بحداثتك بل كن قدوة للمؤمنين؟", opts: ["تيطس", "تيموثاوس", "فليمون", "أنسيمس"], a: 1, cat: "القديسين والقيم", ref: "1 تيموثاوس 4: 12" },
+      { q: "ماذا تعني عبارة (كونوا حكماء كالحيات وبسطاء كالحمام)؟", opts: ["الخداع والمكر", "التمييز والحكمة مع النقاوة وعدم الأذى", "الخوف والهرب", "القسوة"], a: 1, cat: "القديسين والقيم", ref: "متى 10: 16" },
+      { q: "من هو القديس الذي يُلقب بـ (الذهبي الفم) لبلاغته ووعظه؟", opts: ["القديس باسيليوس", "القديس يوحنا ذهبي الفم", "القديس غريغوريوس", "القديس كيرلس"], a: 1, cat: "القديسين والقيم", ref: "آباء الكنيسة" },
+      { q: "من هو القديس الذي كتب كتاب (تجسد الكلمة)؟", opts: ["البابا ديسقورس", "البابا أثناسيوس الرسولي", "البابا شنودة الثالث", "الأنبا أنطونيوس"], a: 1, cat: "القديسين والقيم", ref: "كتابات الآباء" },
+      { q: "ماذا قال السيد المسيح للتلاميذ عندما منعوا الأطفال من الاقتراب إليه؟", opts: ["انتظروا حتى يكبروا", "دعوا الأولاد يأتون إليّ ولا تمنعوهم لأن لمثل هؤلاء ملكوت السماوات", "اذهبوا إلى بيوتكم", "علموهم أولاً"], a: 1, cat: "القديسين والقيم", ref: "متى 19: 14" },
+      { q: "ماذا شبه السيد المسيح المؤمنين في العالم؟", opts: ["ذهب وفضة", "ملح الأرض ونور العالم", "جبال وصخور", "أنهار وبحار"], a: 1, cat: "القديسين والقيم", ref: "متى 5: 13-14" },
+      { q: "ما هو سلاح المؤمن الروحي المذكور في أفسس 6؟", opts: ["سيف حديدي", "سلاح الله الكامل (ترس الإيمان، خوذة الخلاص، سيف الروح)", "درع نحاسي", "قوس وسهام"], a: 1, cat: "القديسين والقيم", ref: "أفسس 6: 11" },
+      { q: "ماذا تعني آية: (كل الأشياء تعمل معاً للخير للذين يحبون الله)؟", opts: ["لا توجد تجارب", "الله يحول كل الظروف والتجارب لخير أولاده الأبدي", "المؤمن لا يتألم", "الحياة سهلة دائماً"], a: 1, cat: "القديسين والقيم", ref: "رومية 8: 28" },
+      { q: "من هو البابا الـ 117 للكنيسة القبطية الأرثوذكسية والمشهور بذهبي الفم المعاصر؟", opts: ["البابا كيرلس السادس", "قداسة البابا شنودة الثالث", "البابا يوساب الثاني", "البابا مكاريوس"], a: 1, cat: "القديسين والقيم", ref: "تاريخ البطاركة" },
+      { q: "ما هو شعار الخدمة المسيحية الحقيقية كما علمنا الرب يسوع؟", opts: ["التسلط على الآخرين", "ابن الإنسان لم يأتِ ليُخدم بل ليَخدم", "طلب الكرامة", "جمع الأموال"], a: 1, cat: "القديسين والقيم", ref: "متى 20: 28" }
+    ];
+
+    /*************************************************************************
+     * 3. GITHUB GIST CLOUD SYNC ENGINE (AUTO-DISCOVER, POLL & DELETION TRACKING)
+     *************************************************************************/
+    function githubHeaders(noCache = false) {
+      const headers = {
+        'Authorization': `Bearer ${GITHUB_CONFIG.TOKEN}`,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json'
       };
+      if (noCache) {
+        headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
+        headers['Pragma'] = 'no-cache';
+      }
+      return headers;
+    }
 
-      const books = [
-        { name: "سفر التكوين", part: "العهد القديم", chapters: 50, category: "أسفار موسى الخمسة" },
-        { name: "سفر الخروج", part: "العهد القديم", chapters: 40, category: "أسفار موسى الخمسة" },
-        { name: "سفر اللاويين", part: "العهد القديم", chapters: 27, category: "أسفار موسى الخمسة" },
-        { name: "سفر العدد", part: "العهد القديم", chapters: 36, category: "أسفار موسى الخمسة" },
-        { name: "سفر التثنية", part: "العهد القديم", chapters: 34, category: "أسفار موسى الخمسة" },
-        { name: "سفر يشوع", part: "العهد القديم", chapters: 24, category: "الأسفار التاريخية" },
-        { name: "سفر القضاة", part: "العهد القديم", chapters: 21, category: "الأسفار التاريخية" },
-        { name: "سفر راعوث", part: "العهد القديم", chapters: 4, category: "الأسفار التاريخية" },
-        { name: "سفر صموئيل الأول", part: "العهد القديم", chapters: 31, category: "الأسفار التاريخية" },
-        { name: "سفر صموئيل الثاني", part: "العهد القديم", chapters: 24, category: "الأسفار التاريخية" },
-        { name: "سفر الملوك الأول", part: "العهد القديم", chapters: 22, category: "الأسفار التاريخية" },
-        { name: "سفر الملوك الثاني", part: "العهد القديم", chapters: 25, category: "الأسفار التاريخية" },
-        { name: "سفر نحميا", part: "العهد القديم", chapters: 13, category: "الأسفار التاريخية" },
-        { name: "سفر أستير", part: "العهد القديم", chapters: 10, category: "الأسفار التاريخية" },
-        { name: "سفر أيوب", part: "العهد القديم", chapters: 42, category: "الأسفار الشعرية والحكمة" },
-        { name: "سفر المزامير", part: "العهد القديم", chapters: 150, category: "الأسفار الشعرية والحكمة" },
-        { name: "سفر الأمثال", part: "العهد القديم", chapters: 31, category: "الأسفار الشعرية والحكمة" },
-        { name: "سفر الجامعة", part: "العهد القديم", chapters: 12, category: "الأسفار الشعرية والحكمة" },
-        { name: "سفر إشعياء", part: "العهد القديم", chapters: 66, category: "الأنبياء الكبار" },
-        { name: "سفر إرميا", part: "العهد القديم", chapters: 52, category: "الأنبياء الكبار" },
-        { name: "سفر حزقيال", part: "العهد القديم", chapters: 48, category: "الأنبياء الكبار" },
-        { name: "سفر دانيال", part: "العهد القديم", chapters: 12, category: "الأنبياء الكبار" },
-        { name: "سفر يونان", part: "العهد القديم", chapters: 4, category: "الأنبياء الصغار" },
-        { name: "إنجيل متى", part: "العهد الجديد", chapters: 28, category: "الأناجيل الأربعة" },
-        { name: "إنجيل مرقس", part: "العهد الجديد", chapters: 16, category: "الأناجيل الأربعة" },
-        { name: "إنجيل لوقا", part: "العهد الجديد", chapters: 24, category: "الأناجيل الأربعة" },
-        { name: "إنجيل يوحنا", part: "العهد الجديد", chapters: 21, category: "الأناجيل الأربعة" },
-        { name: "سفر أعمال الرسل", part: "العهد الجديد", chapters: 28, category: "سفر تاريخ الكنيسة الأولى" },
-        { name: "رسالة رومية", part: "العهد الجديد", chapters: 16, category: "رسائل بولس الرسول" },
-        { name: "رسالة أفسس", part: "العهد الجديد", chapters: 6, category: "رسائل بولس الرسول" },
-        { name: "رسالة فيلبي", part: "العهد الجديد", chapters: 4, category: "رسائل بولس الرسول" },
-        { name: "رسالة العبرانيين", part: "العهد الجديد", chapters: 13, category: "رسائل بولس الرسول" },
-        { name: "رسالة يعقوب", part: "العهد الجديد", chapters: 5, category: "الرسائل الكاثوليكون" },
-        { name: "سفر الرؤيا", part: "العهد الجديد", chapters: 22, category: "سفر الرؤيا" }
-      ];
+    async function initCloudSync() {
+      setSyncUI('syncing', 'جاري الاتصال بالسحابة...');
+      try {
+        if (!appState.gistId) {
+          appState.gistId = await discoverChurchGist();
+        }
 
-      const figures = [
-        { name: "موسى النبي", desc: "قاد شعب الله للخروج من مصر وتسلم الوصايا العشر على جبل سيناء" },
-        { name: "داود النبي والملك", desc: "غلب جليات الجبار وكتب عدداً كبيراً من المزامير" },
-        { name: "سليمان الحكيم", desc: "اشتهر بالحكمة وبنى هيكل الرب في أورشليم" },
-        { name: "إيليا النبي", desc: "صعد إلى السماء في مركبة نارية وواجه أنبياء البعل على جبل الكرمل" },
-        { name: "أليشع النبي", desc: "تلمذ لإيليا النبي ونال ضعف روحه وصنع معجزات عديدة" },
-        { name: "يوسف الصديق", desc: "باعه إخوته فصار مدبراً في مصر وعفا عنهم بحكمة ومحبة" },
-        { name: "دانيال النبي", desc: "حفظه الله في جب الأسود بسبب أمانته وصلاته الدائمة" },
-        { name: "يوحنا المعمدان", desc: "أعد الطريق أمام السيد المسيح وعمّده في نهر الأردن" },
-        { name: "بطرس الرسول", desc: "اعترف بأن المسيح هو ابن الله الحي، وأنكر ثلاث مرات ثم تاب بدموع" },
-        { name: "بولس الرسول", desc: "رسول الأمم الذي كتب 14 رسالة في العهد الجديد" },
-        { name: "مارمرقس الرسول", desc: "كاروز الديار المصرية ومؤسس كنيسة الإسكندرية" },
-        { name: "القديس أثناسيوس الرسولي", desc: "بطل مجمع نيقية والمدافع عن الإيمان المستقيم" },
-        { name: "الأنبا أنطونيوس الكبير", desc: "أبو الرهبان ومؤسس حياة الرهبنة في العالم" },
-        { name: "الشهيد العظيم مارجرجس", desc: "الملقب بأمير الشهداء وثبت على الإيمان حتى الاستشهاد" },
-        { name: "القديس مارمينا العجايبي", desc: "شفيع مريوط وصاحب المعجزات الشهيرة في الكنيسة القبطية" }
-      ];
-
-      const liturgyFacts = [
-        { q: "ما اسم الكتاب الذي يحتوي على صلوات السواعي السبعة في الكنيسة القبطية؟", ans: "الأجبية", opts: ["الأجبية", "السنكسار", "القطمارس", "الدفنار"] },
-        { q: "ما اسم الكتاب الذي يضم سير القديسين والشهداء حسب أيام السنة؟", ans: "السنكسار", opts: ["السنكسار", "الأجبية", "الخولاجي", "الإبصلمودية"] },
-        { q: "ما اسم الكتاب الذي يضم قراءات الكنيسة اليومية من الكتاب المقدس؟", ans: "القطمارس", opts: ["القطمارس", "الأجبية", "السنكسار", "البصخة"] },
-        { q: "كم عدد الأسرار الكنسية السبعة في الكنيسة القبطية الأرثوذكسية؟", ans: "7 أسرار", opts: ["7 أسرار", "5 أسرار", "3 أسرار", "9 أسرار"] },
-        { q: "كم يوماً يستمر الصوم الكبير شاملاً أسبوع الآلام؟", ans: "55 يوماً", opts: ["55 يوماً", "40 يوماً", "43 يوماً", "28 يوماً"] },
-        { q: "كم يوماً يستمر صوم السيدة العذراء مريم؟", ans: "15 يوماً", opts: ["15 يوماً", "40 يوماً", "7 أيام", "21 يوماً"] },
-        { q: "في أي مدينة وُلد السيد المسيح؟", ans: "بيت لحم", opts: ["بيت لحم", "الناصرة", "أورشليم", "كفرناحوم"] },
-        { q: "ما اسم النهر الذي اعتمد فيه السيد المسيح؟", ans: "نهر الأردن", opts: ["نهر الأردن", "نهر النيل", "نهر الفرات", "نهر دجلة"] },
-        { q: "ما اسم البستان الذي صلى فيه السيد المسيح قبل القبض عليه؟", ans: "جثسيماني", opts: ["جثسيماني", "عدن", "أريحا", "بيت عنيا"] },
-        { q: "من هو أول شهيد في المسيحية؟", ans: "إسطفانوس", opts: ["إسطفانوس", "يعقوب", "بطرس", "بولس"] }
-      ];
-
-      const pool = [];
-      for (let i = 0; i < 150; i++) {
-        const b = books[Math.floor(rand() * books.length)];
-        const f = figures[Math.floor(rand() * figures.length)];
-        const lf = liturgyFacts[Math.floor(rand() * liturgyFacts.length)];
-        const mode = i % 4;
-
-        if (mode === 0) {
-          const isOld = b.part === "العهد القديم";
-          pool.push({
-            q: `إلى أي عهد من الكتاب المقدس ينتمي "${b.name}"؟`,
-            options: isOld
-              ? ["العهد القديم", "العهد الجديد", "السنكسار", "الأجبية"]
-              : ["العهد الجديد", "العهد القديم", "السنكسار", "الأجبية"],
-            a: 0,
-            tag: "الكتاب المقدس"
-          });
-        } else if (mode === 1) {
-          const ch = b.chapters;
-          pool.push({
-            q: `كم عدد فصول "${b.name}" في الكتاب المقدس؟`,
-            options: [
-              `${ch} فصلاً`,
-              `${Math.max(1, ch + 4)} فصلاً`,
-              `${Math.max(1, ch - 3)} فصلاً`,
-              `${ch + 9} فصلاً`
-            ],
-            a: 0,
-            tag: b.category
-          });
-        } else if (mode === 2) {
-          const other = figures.filter(x => x.name !== f.name);
-          const pick3 = other.sort(() => rand() - 0.5).slice(0, 3).map(x => x.name);
-          pool.push({
-            q: `من الشخصية الكتابية أو الكنسية التي يُعرف عنها: (${f.desc})؟`,
-            options: [f.name, ...pick3],
-            a: 0,
-            tag: "شخصيات وقديسون"
-          });
+        if (!appState.gistId) {
+          appState.gistId = await createChurchGist();
         } else {
-          pool.push({
-            q: lf.q,
-            options: [...lf.opts],
-            a: lf.opts.indexOf(lf.ans),
-            tag: "طقس وعقيدة"
-          });
-        }
-      }
-
-      return pool.map(item => {
-        const correctText = item.options[item.a];
-        const shuffledOpts = [...item.options].sort(() => rand() - 0.5);
-        return {
-          ...item,
-          options: shuffledOpts,
-          a: shuffledOpts.indexOf(correctText)
-        };
-      });
-    }
-
-    async function getOrCreateDaily150Questions(forceRefresh = false) {
-      const today = getTodayKey();
-      document.getElementById("quizDateLabel").textContent = new Date().toLocaleDateString("ar-EG");
-
-      if (!forceRefresh && Array.isArray(db.dailyQuestionsCache?.[today]) && db.dailyQuestionsCache[today].length === 150) {
-        document.getElementById("quizSourceStatus").textContent =
-          `تم تحميل 150 سؤالاً عربياً متجدداً ليوم (${today}) ومتزامنة مع الجميع (+10 نقاط لكل إجابة صحيحة)`;
-        return db.dailyQuestionsCache[today];
-      }
-
-      const salt = forceRefresh ? Math.floor(Date.now() / 1000) % 1000 : 1;
-      const generated = buildDailyArabic150(today, salt);
-
-      await commitCloudChange((cloudDb) => {
-        cloudDb.dailyQuestionsCache = { [today]: generated };
-        addActivityLog(cloudDb, `📖 تم تجهيز حزمة 150 سؤالاً عربياً جديداً ليوم (${today})`);
-      });
-
-      document.getElementById("quizSourceStatus").textContent =
-        `تم تجهيز 150 سؤالاً عربياً جديداً ليوم (${today}) وحفظها في السحابة (+10 نقاط لكل إجابة صحيحة)`;
-      return generated;
-    }
-
-    async function refreshDailyArabicQuestions(showMsg = false) {
-      await getOrCreateDaily150Questions(true);
-      renderAllUI();
-      if (showMsg) showToast("✓ تم توليد 150 سؤالاً عربياً جديداً لليوم ومزامنتها");
-    }
-
-    // ==========================================
-    // 3. المزامنة الموثوقة بين كل الهواتف عبر GitHub Gist
-    // ==========================================
-    function setSyncUI(state, text) {
-      const dot = document.getElementById("syncDot");
-      const label = document.getElementById("syncStatusText");
-      const badge = document.getElementById("gistIdBadge");
-      label.textContent = text;
-      badge.textContent = activeGistId ? `Gist: ${activeGistId.slice(0, 8)}...` : "Gist: غير متصل";
-
-      if (state === "syncing") {
-        dot.className = "w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping";
-      } else if (state === "ok") {
-        dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
-      } else {
-        dot.className = "w-2.5 h-2.5 rounded-full bg-rose-400";
-      }
-    }
-
-    async function resolveSharedGistId() {
-      if (activeGistId) return activeGistId;
-
-      const listRes = await fetch("https://api.github.com/gists?per_page=100", {
-        headers: authHeaders()
-      });
-
-      if (!listRes.ok) {
-        const errData = await listRes.json().catch(() => ({}));
-        throw new Error(errData.message || `HTTP ${listRes.status}`);
-      }
-
-      const gists = await listRes.json();
-      const matches = gists
-        .filter(g => g.files && g.files[GIST_FILENAME])
-        .sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-
-      if (matches.length > 0) {
-        activeGistId = matches[0].id;
-        localStorage.setItem("church_active_gist_id", activeGistId);
-        return activeGistId;
-      }
-
-      const createRes = await fetch("https://api.github.com/gists", {
-        method: "POST",
-        headers: authHeaders(),
-        body: JSON.stringify({
-          description: GIST_DESCRIPTION,
-          public: false,
-          files: {
-            [GIST_FILENAME]: {
-              content: JSON.stringify(db, null, 2)
-            }
-          }
-        })
-      });
-
-      if (!createRes.ok) {
-        const errData = await createRes.json().catch(() => ({}));
-        throw new Error(errData.message || `HTTP ${createRes.status}`);
-      }
-
-      const created = await createRes.json();
-      activeGistId = created.id;
-      localStorage.setItem("church_active_gist_id", activeGistId);
-      return activeGistId;
-    }
-
-    async function fetchRemoteDb() {
-      const gistId = await resolveSharedGistId();
-      const res = await fetch(`https://api.github.com/gists/${gistId}?cb=${Date.now()}`, {
-        headers: authHeaders(),
-        cache: "no-store"
-      });
-
-      if (!res.ok) {
-        const errData = await res.json().catch(() => ({}));
-        throw new Error(errData.message || `HTTP ${res.status}`);
-      }
-
-      const data = await res.json();
-      const rawContent = data.files?.[GIST_FILENAME]?.content;
-      if (!rawContent) {
-        return {
-          members: [],
-          activities: [],
-          announcement: db.announcement,
-          servantPin: DEFAULT_SERVANT_PIN,
-          dailyQuestionsCache: {},
-          lastUpdated: 0
-        };
-      }
-
-      const parsed = JSON.parse(rawContent);
-      return {
-        members: Array.isArray(parsed.members) ? parsed.members : [],
-        activities: Array.isArray(parsed.activities) ? parsed.activities : [],
-        announcement: parsed.announcement || db.announcement,
-        servantPin: parsed.servantPin ? String(parsed.servantPin) : DEFAULT_SERVANT_PIN,
-        dailyQuestionsCache: parsed.dailyQuestionsCache && typeof parsed.dailyQuestionsCache === "object" ? parsed.dailyQuestionsCache : {},
-        lastUpdated: Number(parsed.lastUpdated || 0)
-      };
-    }
-
-    async function pullFromCloud(silent = false) {
-      if (isSyncing) return;
-      isSyncing = true;
-      if (!silent) setSyncUI("syncing", "جاري سحب بيانات الهواتف...");
-
-      try {
-        const remote = await fetchRemoteDb();
-        db = remote;
-        localStorage.setItem("church_db_backup", JSON.stringify(db));
-
-        if (currentUser) {
-          const stillExists = db.members.find(m => m.id === currentUser.id);
-          if (!stillExists) {
-            currentUser = null;
-            localStorage.removeItem("church_current_user");
-          } else {
-            currentUser = stillExists;
-            localStorage.setItem("church_current_user", JSON.stringify(currentUser));
-          }
+          await pullFromCloud(true);
         }
 
-        setSyncUI("ok", "متزامن مع كل الهواتف ✓");
-        renderAllUI();
+        // Real-time polling loop every 5 seconds
+        setInterval(() => {
+          if (!appState.isSyncing) {
+            pullFromCloud(false);
+          }
+        }, GITHUB_CONFIG.POLL_INTERVAL_MS);
+
       } catch (err) {
-        const backup = localStorage.getItem("church_db_backup");
-        if (backup) db = JSON.parse(backup);
-        setSyncUI("err", `خطأ سحابة: ${err.message}`);
-        renderAllUI();
-      } finally {
-        isSyncing = false;
+        console.error('Cloud init error:', err);
+        setSyncUI('error', 'تعذر الاتصال بالسحابة • وضع محلي');
+        loadLocalFallback();
+        renderAll();
       }
     }
 
-    async function commitCloudChange(mutatorFn) {
-      isSyncing = true;
-      setSyncUI("syncing", "جاري مزامنة التغيير مع الجميع...");
+    async function discoverChurchGist() {
+      const res = await fetch(`https://api.github.com/gists?per_page=100&_t=${Date.now()}`, {
+        headers: githubHeaders(true)
+      });
+      if (!res.ok) throw new Error('Failed to list gists: ' + res.status);
+      const gists = await res.json();
+      const found = gists.find(g =>
+        g.description === GITHUB_CONFIG.GIST_DESCRIPTION ||
+        (g.files && g.files[GITHUB_CONFIG.GIST_FILENAME])
+      );
+      if (found) {
+        localStorage.setItem('church_cloud_gist_id_v2', found.id);
+        return found.id;
+      }
+      return null;
+    }
 
+    async function createChurchGist() {
+      const starterData = {
+        ...appState.cloudData,
+        members: [
+          {
+            id: 'm_seed_1',
+            name: 'أبانوب جرجس (خادم)',
+            role: 'خادم',
+            stage: 'خدام',
+            phone: '01200000001',
+            avatar: '✝️',
+            points: 50,
+            streak: 3,
+            joinedAt: new Date().toISOString()
+          },
+          {
+            id: 'm_seed_2',
+            name: 'مينا سمير',
+            role: 'مخدوم',
+            stage: 'ثانوي',
+            phone: '01200000002',
+            avatar: '🕊️',
+            points: 35,
+            streak: 2,
+            joinedAt: new Date().toISOString()
+          }
+        ],
+        logs: [
+          {
+            id: 'log_init',
+            text: 'تم تفعيل بوابة الكنيسة السحابية بنجاح! أهلاً بالجميع.',
+            icon: 'fa-cloud-check',
+            color: 'text-emerald-600 bg-emerald-50',
+            timestamp: new Date().toISOString()
+          }
+        ]
+      };
+
+      const payload = {
+        description: GITHUB_CONFIG.GIST_DESCRIPTION,
+        public: false,
+        files: {
+          [GITHUB_CONFIG.GIST_FILENAME]: {
+            content: JSON.stringify(starterData, null, 2)
+          }
+        }
+      };
+
+      const res = await fetch('https://api.github.com/gists', {
+        method: 'POST',
+        headers: githubHeaders(),
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) throw new Error('Failed to create Gist: ' + res.status);
+      const created = await res.json();
+      localStorage.setItem('church_cloud_gist_id_v2', created.id);
+      appState.cloudData = starterData;
+      saveLocalFallback();
+      setSyncUI('online', 'متصل بالسحابة • جاهز');
+      renderAll();
+      return created.id;
+    }
+
+    async function pullFromCloud(showFeedback = false) {
+      if (!appState.gistId) return;
+      if (showFeedback) setSyncUI('syncing', 'جاري التحديث...');
       try {
-        try {
-          db = await fetchRemoteDb();
-        } catch (_) {}
+        const res = await fetch(`https://api.github.com/gists/${appState.gistId}?_t=${Date.now()}`, {
+          headers: githubHeaders(true)
+        });
+        if (res.status === 404) {
+          localStorage.removeItem('church_cloud_gist_id_v2');
+          appState.gistId = null;
+          await initCloudSync();
+          return;
+        }
+        if (!res.ok) throw new Error('Gist fetch failed');
 
-        mutatorFn(db);
-        db.lastUpdated = Date.now();
-        localStorage.setItem("church_db_backup", JSON.stringify(db));
-        renderAllUI();
+        const gist = await res.json();
+        const fileObj = gist.files && gist.files[GITHUB_CONFIG.GIST_FILENAME];
+        if (fileObj && fileObj.content) {
+          const remoteData = normalizeCloudData(JSON.parse(fileObj.content));
+          const prevLogId = appState.cloudData.logs?.[0]?.id;
+          const newLogId = remoteData.logs?.[0]?.id;
 
-        const gistId = await resolveSharedGistId();
-        const res = await fetch(`https://api.github.com/gists/${gistId}`, {
-          method: "PATCH",
-          headers: authHeaders(),
+          appState.cloudData = remoteData;
+
+          // If current logged-in member was deleted by a servant on another device, clear local session
+          if (appState.currentUserId && remoteData.deletedIds.includes(appState.currentUserId)) {
+            appState.currentUserId = null;
+            localStorage.removeItem('church_current_user_id');
+          }
+
+          saveLocalFallback();
+          appState.lastSyncTime = new Date();
+
+          if (!showFeedback && prevLogId && newLogId && prevLogId !== newLogId) {
+            showToast(`تحديث جديد: ${remoteData.logs[0].text}`, 'info');
+          }
+
+          renderAll();
+        }
+        setSyncUI('online', 'متصل بالسحابة • متزامن');
+      } catch (err) {
+        console.warn('Pull warning:', err);
+        setSyncUI('error', 'إعادة محاولة الاتصال...');
+      }
+    }
+
+    // Safe Merge & Push to GitHub Gist with Deletion Tracking
+    async function pushToCloudSafe(mutatorFn, successToastMsg = null) {
+      appState.isSyncing = true;
+      setSyncUI('syncing', 'جاري الحفظ في السحابة...');
+      try {
+        let latestData = appState.cloudData;
+        if (appState.gistId) {
+          const res = await fetch(`https://api.github.com/gists/${appState.gistId}?_t=${Date.now()}`, {
+            headers: githubHeaders(true)
+          });
+          if (res.ok) {
+            const gist = await res.json();
+            const content = gist.files?.[GITHUB_CONFIG.GIST_FILENAME]?.content;
+            if (content) latestData = normalizeCloudData(JSON.parse(content));
+          }
+        }
+
+        // Apply mutation on top of freshest remote data
+        mutatorFn(latestData);
+
+        // Enforce deletedIds filter so deleted members are permanently purged across all phones
+        if (Array.isArray(latestData.deletedIds) && latestData.deletedIds.length > 0) {
+          const deletedSet = new Set(latestData.deletedIds);
+          latestData.members = latestData.members.filter(m => !deletedSet.has(m.id));
+          Object.keys(latestData.attendance || {}).forEach(dateKey => {
+            deletedSet.forEach(delId => {
+              delete latestData.attendance[dateKey][delId];
+            });
+          });
+          if (latestData.deletedIds.length > 300) {
+            latestData.deletedIds = latestData.deletedIds.slice(-300);
+          }
+        }
+
+        if (latestData.logs.length > 60) latestData.logs = latestData.logs.slice(0, 60);
+        if (latestData.prayers.length > 40) latestData.prayers = latestData.prayers.slice(0, 40);
+
+        const patchRes = await fetch(`https://api.github.com/gists/${appState.gistId}`, {
+          method: 'PATCH',
+          headers: githubHeaders(),
           body: JSON.stringify({
             files: {
-              [GIST_FILENAME]: {
-                content: JSON.stringify(db, null, 2)
+              [GITHUB_CONFIG.GIST_FILENAME]: {
+                content: JSON.stringify(latestData, null, 2)
               }
             }
           })
         });
 
-        if (!res.ok) {
-          const errData = await res.json().catch(() => ({}));
-          throw new Error(errData.message || `HTTP ${res.status}`);
-        }
+        if (!patchRes.ok) throw new Error('Failed to save to Gist');
 
-        setSyncUI("ok", "تمت المزامنة مع كل الهواتف ✓");
+        appState.cloudData = latestData;
+        saveLocalFallback();
+        appState.lastSyncTime = new Date();
+        setSyncUI('online', 'تمت المزامنة السحابية');
+        renderAll();
+
+        if (successToastMsg) showToast(successToastMsg, 'success');
       } catch (err) {
-        setSyncUI("err", `تعذر الحفظ بالسحابة: ${err.message}`);
-        showToast(`⚠️ لم يتم الحفظ بالسحابة: ${err.message}`);
+        console.error('Push error:', err);
+        setSyncUI('error', 'خطأ في الحفظ السحابي');
+        showToast('تعذر الحفظ في السحابة، تأكد من اتصال الإنترنت', 'error');
       } finally {
-        isSyncing = false;
+        appState.isSyncing = false;
       }
     }
 
-    function manualSync() {
-      pullFromCloud(false);
-      showToast("🔄 جاري التحديث من السحابة...");
+    function normalizeCloudData(data) {
+      const defaultSettings = {
+        churchName: 'بوابة الكنيسة للخدام والمخدومين',
+        adminPassword: '1234',
+        attendancePoints: 10,
+        quizPoints: 5
+      };
+      return {
+        version: data.version || 2,
+        settings: {
+          ...defaultSettings,
+          ...(data.settings || {}),
+          adminPassword: (data.settings && data.settings.adminPassword) || data.servantPin || '1234'
+        },
+        verse: data.verse || appState.cloudData.verse,
+        announcement: data.announcement || appState.cloudData.announcement,
+        members: Array.isArray(data.members) ? data.members : [],
+        deletedIds: Array.isArray(data.deletedIds) ? data.deletedIds : [],
+        attendance: data.attendance && typeof data.attendance === 'object' ? data.attendance : {},
+        logs: Array.isArray(data.logs) ? data.logs : [],
+        prayers: Array.isArray(data.prayers) ? data.prayers : []
+      };
     }
 
-    function addActivityLog(targetDb, text) {
-      const now = new Date();
-      const timeStr = now.toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit" });
-      targetDb.activities.unshift({ text, time: timeStr, ts: Date.now() });
-      if (targetDb.activities.length > 40) targetDb.activities = targetDb.activities.slice(0, 40);
+    function saveLocalFallback() {
+      localStorage.setItem('church_cloud_cache_v2', JSON.stringify(appState.cloudData));
     }
 
-    // ==========================================
-    // 4. إدارة الأعضاء والحضور والمسابقة
-    // ==========================================
-    async function handleRegisterOrLogin(e) {
-      e.preventDefault();
-      const name = document.getElementById("inputName").value.trim();
-      const role = document.getElementById("inputRole").value;
-      if (!name) return;
+    function loadLocalFallback() {
+      const cached = localStorage.getItem('church_cloud_cache_v2');
+      if (cached) {
+        try {
+          appState.cloudData = normalizeCloudData(JSON.parse(cached));
+        } catch (e) {}
+      }
+    }
 
-      let loggedMember = null;
+    async function forceSyncNow() {
+      const icon = document.getElementById('sync-icon');
+      icon.classList.add('fa-spin');
+      await pullFromCloud(true);
+      setTimeout(() => icon.classList.remove('fa-spin'), 600);
+      showToast('تمت المزامنة الفورية مع السحابة', 'success');
+    }
 
-      await commitCloudChange((cloudDb) => {
-        let member = cloudDb.members.find(m => m.name.toLowerCase() === name.toLowerCase());
-        if (!member) {
-          member = {
-            id: "m_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
-            name,
-            role,
-            points: 10,
-            joinedAt: new Date().toLocaleDateString("ar-EG"),
-            lastAttendanceDate: "",
-            lastAttendanceType: "مسجل جديد",
-            attendanceApprovedToday: false,
-            pendingAttendancePoints: 0,
-            answeredDates: {}
-          };
-          cloudDb.members.push(member);
-          addActivityLog(cloudDb, `✨ انضم ${name} (${role}) إلى بوابة الخدمة (+10 نقاط ترحيب)`);
+    function setSyncUI(status, text) {
+      const dot = document.getElementById('sync-dot');
+      const label = document.getElementById('sync-status-text');
+      const clock = document.getElementById('last-sync-clock');
+      label.textContent = text;
+
+      dot.className = 'w-2.5 h-2.5 rounded-full inline-block shrink-0 ';
+      if (status === 'online') {
+        dot.className += 'bg-emerald-400 pulse-dot';
+        if (appState.lastSyncTime) {
+          clock.textContent = 'آخر تحديث: ' + appState.lastSyncTime.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        }
+      } else if (status === 'syncing') {
+        dot.className += 'bg-amber-400 animate-ping';
+      } else {
+        dot.className += 'bg-rose-500';
+      }
+    }
+
+    /*************************************************************************
+     * 4. USER REGISTRATION, EDITING, DELETING & SERVANT ADMIN SECURITY
+     *************************************************************************/
+    function selectAvatar(emoji) {
+      appState.selectedAvatar = emoji;
+      document.querySelectorAll('.avatar-opt').forEach(btn => {
+        if (btn.textContent.trim() === emoji) {
+          btn.classList.remove('bg-slate-100', 'border-transparent');
+          btn.classList.add('bg-amber-100', 'border-amber-500');
         } else {
-          addActivityLog(cloudDb, `👋 دخل ${member.name} إلى الموقع الآن`);
+          btn.classList.add('bg-slate-100', 'border-transparent');
+          btn.classList.remove('bg-amber-100', 'border-amber-500');
         }
-        loggedMember = member;
       });
-
-      if (loggedMember) {
-        currentUser = loggedMember;
-        localStorage.setItem("church_current_user", JSON.stringify(currentUser));
-        document.getElementById("inputName").value = "";
-        showToast(`أهلاً بك يا ${loggedMember.name}! تم المزامنة مع السحابة`);
-        renderAllUI();
-      }
     }
 
-    function logoutUser() {
-      currentUser = null;
-      localStorage.removeItem("church_current_user");
-      renderAllUI();
-    }
+    async function submitRegistration() {
+      const name = document.getElementById('reg-name').value.trim();
+      const role = document.getElementById('reg-role').value;
+      const stage = document.getElementById('reg-stage').value;
+      const phone = document.getElementById('reg-phone').value.trim();
 
-    async function recordAttendance(type, pts) {
-      if (!currentUser) {
-        showToast("⚠️ سجل اسمك أولاً في الرئيسية لتسجيل حضورك!");
-        switchTab("home");
+      if (name.length < 3) {
+        showToast('يرجى إدخال الاسم كاملاً (3 أحرف على الأقل)', 'error');
         return;
       }
 
-      const today = getTodayKey();
-      const attKey = `${today}_${type}`;
-      let alreadyRecorded = false;
-      let updatedMember = null;
-
-      await commitCloudChange((cloudDb) => {
-        const member = cloudDb.members.find(m => m.id === currentUser.id);
-        if (!member) return;
-
-        if (member.lastAttendanceKey === attKey) {
-          alreadyRecorded = true;
-          updatedMember = member;
-          return;
-        }
-
-        member.lastAttendanceDate = today;
-        member.lastAttendanceType = type;
-        member.lastAttendanceKey = attKey;
-        member.attendanceApprovedToday = false;
-        member.pendingAttendancePoints = pts;
-        updatedMember = member;
-
-        addActivityLog(cloudDb, `⛪ سجل ${member.name} حضور (${type}) — بانتظار اعتماد الخادم لإضافة +${pts} نقطة`);
-      });
-
-      if (updatedMember) {
-        currentUser = updatedMember;
-        localStorage.setItem("church_current_user", JSON.stringify(currentUser));
-      }
-
-      if (alreadyRecorded) {
-        showToast(`✅ لقد سجلت حضور (${type}) اليوم بالفعل — بانتظار اعتماد الخادم!`);
-      } else {
-        showToast(`📩 تم تسجيل حضورك في (${type}) — سيقوم الخادم باعتماد النقاط`);
-      }
-    }
-
-    async function approveAttendanceByServant(memberId) {
-      await commitCloudChange((cloudDb) => {
-        const member = cloudDb.members.find(m => m.id === memberId);
-        if (!member) return;
-
-        const today = getTodayKey();
-        if (member.lastAttendanceDate !== today || member.attendanceApprovedToday) return;
-
-        const ptsToAdd = member.pendingAttendancePoints || 15;
-        member.points += ptsToAdd;
-        member.attendanceApprovedToday = true;
-        member.pendingAttendancePoints = 0;
-
-        addActivityLog(cloudDb, `✅ اعتمد الخادم حضور ${member.name} (${member.lastAttendanceType}) وأضاف +${ptsToAdd} نقطة`);
-      });
-      showToast("✓ تم اعتماد الحضور وإضافة النقاط ومزامنتها مع الجميع");
-    }
-
-    function setQuizPage(pageIdx) {
-      currentQuizPage = pageIdx;
-      renderAllUI();
-      document.getElementById("view-quiz").scrollIntoView({ behavior: "smooth" });
-    }
-
-    function changeQuizPage(delta) {
-      const totalPages = Math.ceil(150 / QUESTIONS_PER_PAGE);
-      const next = currentQuizPage + delta;
-      if (next >= 0 && next < totalPages) {
-        setQuizPage(next);
-      }
-    }
-
-    async function submitQuizAnswer(qIdx, selectedOption, correctOption) {
-      if (!currentUser) {
-        showToast("⚠️ سجل اسمك في الرئيسية أولاً لتحصل على النقاط!");
+      // Prevent duplicate names
+      const exists = appState.cloudData.members.some(m => m.name.trim().toLowerCase() === name.toLowerCase());
+      if (exists) {
+        showToast('هذا الاسم مسجل بالفعل! يمكنك اختياره من زر "تبديل الحساب"', 'error');
         return;
       }
 
-      const today = getTodayKey();
-      let isCorrect = false;
-      let alreadySolved = false;
-      let updatedMember = null;
+      const btn = document.getElementById('btn-submit-reg');
+      btn.disabled = true;
+      btn.textContent = 'جاري التسجيل والمزامنة...';
 
-      await commitCloudChange((cloudDb) => {
-        const member = cloudDb.members.find(m => m.id === currentUser.id);
-        if (!member) return;
+      const newMemberId = 'm_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+      const newMember = {
+        id: newMemberId,
+        name,
+        role,
+        stage,
+        phone,
+        avatar: appState.selectedAvatar,
+        points: 10,
+        streak: 1,
+        joinedAt: new Date().toISOString()
+      };
 
-        if (!member.answeredDates) member.answeredDates = {};
-        if (!member.answeredDates[today]) member.answeredDates[today] = [];
+      await pushToCloudSafe((data) => {
+        data.members.push(newMember);
+        data.logs.unshift({
+          id: 'log_' + Date.now(),
+          text: `انضم عضو جديد: ${name} (${role} - ${stage}) وحصل على +10 نقاط ترحيبية`,
+          icon: 'fa-user-plus',
+          color: 'text-blue-700 bg-blue-50',
+          timestamp: new Date().toISOString()
+        });
+      }, `أهلاً بك يا ${name}! تم تسجيلك ومزامنة حسابك مع الجميع`);
 
-        if (member.answeredDates[today].includes(qIdx)) {
-          alreadySolved = true;
-          updatedMember = member;
-          return;
-        }
+      appState.currentUserId = newMemberId;
+      localStorage.setItem('church_current_user_id', newMemberId);
 
-        member.answeredDates[today].push(qIdx);
-        if (selectedOption === correctOption) {
-          isCorrect = true;
-          member.points += 10;
-          addActivityLog(cloudDb, `📖 أجاب ${member.name} إجابة صحيحة في مسابقة اليوم (+10 نقاط)`);
-        } else {
-          addActivityLog(cloudDb, `📖 شارك ${member.name} في مسابقة اليوم`);
-        }
-        updatedMember = member;
-      });
-
-      if (updatedMember) {
-        currentUser = updatedMember;
-        localStorage.setItem("church_current_user", JSON.stringify(currentUser));
-      }
-
-      if (alreadySolved) {
-        showToast("لقد أجبت على هذا السؤال اليوم بالفعل!");
-      } else if (isCorrect) {
-        showToast("👏 إجابة صحيحة! أُضيفت +10 نقاط لرصيدك");
-      } else {
-        showToast("❌ إجابة غير صحيحة — انتقل للسؤال التالي");
-      }
+      document.getElementById('reg-name').value = '';
+      document.getElementById('reg-phone').value = '';
+      btn.disabled = false;
+      btn.textContent = 'حفظ ومزامنة مع السحابة الآن';
+      closeModal('modal-register');
+      renderAll();
     }
 
-    // ==========================================
-    // 5. لوحة تحكم الخدام + تغيير كلمة السر
-    // ==========================================
-    function unlockServantPanel() {
-      const pin = document.getElementById("servantPinInput").value.trim();
-      if (pin === getCurrentServantPin()) {
-        document.getElementById("servantLoginBox").classList.add("hidden");
-        document.getElementById("servantDashboard").classList.remove("hidden");
-        document.getElementById("servantPinInput").value = "";
-        renderAllUI();
-      } else {
-        showToast("❌ رمز الخدام غير صحيح");
-      }
-    }
-
-    function lockServantPanel() {
-      document.getElementById("servantLoginBox").classList.remove("hidden");
-      document.getElementById("servantDashboard").classList.add("hidden");
-      document.getElementById("servantPinInput").value = "";
-    }
-
-    async function changeServantPasswordFromHome() {
-      const currentPinEl = document.getElementById("homeCurrentPinInput");
-      const newPinEl = document.getElementById("homeNewPinInput");
-      const enteredCurrent = currentPinEl.value.trim();
-      const newPin = newPinEl.value.trim();
-
-      if (enteredCurrent !== getCurrentServantPin()) {
-        showToast("❌ كلمة السر الحالية غير صحيحة");
+    // Open Edit Member Modal (Servant Only)
+    function openEditMemberModal(memberId) {
+      if (!appState.isServant) {
+        toggleServantMode();
         return;
       }
-      if (!newPin || newPin.length < 3) {
-        showToast("⚠️ اكتب كلمة سر جديدة (3 أحرف أو أرقام على الأقل)");
+      const member = appState.cloudData.members.find(m => m.id === memberId);
+      if (!member) return;
+
+      document.getElementById('edit-member-id').value = member.id;
+      document.getElementById('edit-member-name').value = member.name;
+      document.getElementById('edit-member-role').value = member.role;
+      document.getElementById('edit-member-stage').value = member.stage;
+      document.getElementById('edit-member-phone').value = member.phone || '';
+      document.getElementById('edit-member-points').value = member.points || 0;
+      openModal('modal-edit-member');
+    }
+
+    async function saveEditedMember() {
+      const id = document.getElementById('edit-member-id').value;
+      const name = document.getElementById('edit-member-name').value.trim();
+      const role = document.getElementById('edit-member-role').value;
+      const stage = document.getElementById('edit-member-stage').value;
+      const phone = document.getElementById('edit-member-phone').value.trim();
+      const points = Math.max(0, parseInt(document.getElementById('edit-member-points').value, 10) || 0);
+
+      if (name.length < 3) {
+        showToast('يرجى إدخال اسم صحيح', 'error');
         return;
       }
 
-      await commitCloudChange((cloudDb) => {
-        cloudDb.servantPin = newPin;
-        addActivityLog(cloudDb, "🔑 تم تغيير كلمة سر الخدام من الصفحة الرئيسية وحفظها في السحابة");
-      });
+      await pushToCloudSafe((data) => {
+        const m = data.members.find(x => x.id === id);
+        if (!m) return;
+        m.name = name;
+        m.role = role;
+        m.stage = stage;
+        m.phone = phone;
+        m.points = points;
 
-      currentPinEl.value = "";
-      newPinEl.value = "";
-      showToast("✅ تم تغيير كلمة السر وحفظها في السحابة بنجاح");
+        data.logs.unshift({
+          id: 'log_' + Date.now(),
+          text: `قام الخدام بتحديث بيانات العضو: ${name}`,
+          icon: 'fa-user-pen',
+          color: 'text-blue-700 bg-blue-50',
+          timestamp: new Date().toISOString()
+        });
+      }, 'تم حفظ تعديلات العضو ومزامنتها سحابياً');
+
+      closeModal('modal-edit-member');
     }
 
+    // Delete Member Permanently with Deletion Tracking (Servant Only)
+    function confirmDeleteMember(memberId) {
+      if (!appState.isServant) {
+        toggleServantMode();
+        return;
+      }
+      const member = appState.cloudData.members.find(m => m.id === memberId);
+      if (!member) return;
+
+      openConfirmDialog(
+        'حذف عضو نهائياً من السحابة',
+        `هل أنت متأكد من حذف "${member.name}"؟ سيتم حذفه نهائياً من السحابة ومن هواتف جميع الخدام والأعضاء ولن يظهر مرة أخرى.`,
+        'حذف نهائي',
+        async () => {
+          await pushToCloudSafe((data) => {
+            if (!data.deletedIds.includes(memberId)) {
+              data.deletedIds.push(memberId);
+            }
+            data.members = data.members.filter(m => m.id !== memberId);
+            Object.keys(data.attendance || {}).forEach(dateKey => {
+              delete data.attendance[dateKey][memberId];
+            });
+            data.logs.unshift({
+              id: 'log_' + Date.now(),
+              text: `إجراء إداري: تم حذف العضو (${member.name}) من قاعدة البيانات`,
+              icon: 'fa-trash-can',
+              color: 'text-rose-700 bg-rose-50',
+              timestamp: new Date().toISOString()
+            });
+          }, `تم حذف ${member.name} نهائياً ومزامنة الحذف مع الجميع`);
+
+          if (appState.currentUserId === memberId) {
+            appState.currentUserId = null;
+            localStorage.removeItem('church_current_user_id');
+            renderHeaderUser();
+          }
+        }
+      );
+    }
+
+    // Change Servant Password in Cloud
     async function changeServantPassword() {
-      const inputEl = document.getElementById("newServantPinInput");
-      const newPin = inputEl.value.trim();
-      if (!newPin || newPin.length < 3) {
-        showToast("⚠️ اكتب كلمة سر جديدة (3 أحرف أو أرقام على الأقل)");
+      if (!appState.isServant) {
+        toggleServantMode();
+        return;
+      }
+      const oldPin = document.getElementById('sec-old-pin').value.trim();
+      const newPin = document.getElementById('sec-new-pin').value.trim();
+      const confirmPin = document.getElementById('sec-confirm-pin').value.trim();
+
+      const currentCloudPin = appState.cloudData.settings?.adminPassword || '1234';
+
+      if (oldPin !== currentCloudPin) {
+        showToast('كلمة السر الحالية غير صحيحة!', 'error');
+        return;
+      }
+      if (newPin.length < 4) {
+        showToast('يجب أن تتكون كلمة السر الجديدة من 4 أرقام أو أحرف على الأقل', 'error');
+        return;
+      }
+      if (newPin !== confirmPin) {
+        showToast('كلمة السر الجديدة وتأكيدها غير متطابقين!', 'error');
         return;
       }
 
-      await commitCloudChange((cloudDb) => {
-        cloudDb.servantPin = newPin;
-        addActivityLog(cloudDb, "🔑 تم تحديث كلمة سر لوحة تحكم الخدام في السحابة");
-      });
+      await pushToCloudSafe((data) => {
+        data.settings.adminPassword = newPin;
+        data.logs.unshift({
+          id: 'log_' + Date.now(),
+          text: 'تحديث أمني: تم تغيير كلمة سر لوحة تحكم الخدام',
+          icon: 'fa-key',
+          color: 'text-rose-700 bg-rose-50',
+          timestamp: new Date().toISOString()
+        });
+      }, 'تم تغيير كلمة سر الخدام وحفظها في السحابة بنجاح!');
 
-      inputEl.value = "";
-      showToast("✅ تم تغيير كلمة السر وحفظها في السحابة بنجاح");
+      document.getElementById('sec-old-pin').value = '';
+      document.getElementById('sec-new-pin').value = '';
+      document.getElementById('sec-confirm-pin').value = '';
     }
 
-    async function adjustMemberPoints(memberId, delta) {
-      await commitCloudChange((cloudDb) => {
-        const member = cloudDb.members.find(m => m.id === memberId);
-        if (!member) return;
-        member.points = Math.max(0, member.points + delta);
-        const actionText = delta > 0 ? `أضاف الخادم +${delta} نقطة لـ ${member.name}` : `خصم الخادم ${Math.abs(delta)} نقطة من ${member.name}`;
-        addActivityLog(cloudDb, `🛡️ ${actionText}`);
-      });
-      showToast("✓ تم تحديث النقاط ومزامنتها مع الجميع");
+    // Save General Church & Points Settings in Cloud
+    async function saveGeneralSettings() {
+      if (!appState.isServant) return;
+      const churchName = document.getElementById('set-church-name').value.trim();
+      const attPts = Math.max(1, parseInt(document.getElementById('set-attendance-pts').value, 10) || 10);
+      const quizPts = Math.max(1, parseInt(document.getElementById('set-quiz-pts').value, 10) || 5);
+
+      await pushToCloudSafe((data) => {
+        if (churchName) data.settings.churchName = churchName;
+        data.settings.attendancePoints = attPts;
+        data.settings.quizPoints = quizPts;
+        data.logs.unshift({
+          id: 'log_' + Date.now(),
+          text: 'قام الخدام بتحديث إعدادات الكنيسة ونظام النقاط',
+          icon: 'fa-sliders',
+          color: 'text-blue-700 bg-blue-50',
+          timestamp: new Date().toISOString()
+        });
+      }, 'تم حفظ الإعدادات ومزامنتها مع السحابة');
     }
 
-    async function deleteMemberByServant(memberId) {
-      const target = db.members.find(m => m.id === memberId);
-      if (!target) return;
-      if (!confirm(`هل أنت متأكد من حذف (${target.name}) نهائياً من السحابة؟ سيختفي من كل الهواتف فوراً.`)) return;
-
-      await commitCloudChange((cloudDb) => {
-        cloudDb.members = cloudDb.members.filter(m => m.id !== memberId);
-        addActivityLog(cloudDb, `🗑️ قام الخادم بحذف العضو (${target.name}) من القائمة`);
-      });
-
-      if (currentUser && currentUser.id === memberId) {
-        currentUser = null;
-        localStorage.removeItem("church_current_user");
-      }
-      showToast(`تم حذف ${target.name} ومزامنته مع الجميع`);
-    }
-
-    async function updateChurchAnnouncement() {
-      const inputEl = document.getElementById("newAnnouncementInput");
-      const text = inputEl.value.trim();
-      if (!text) return;
-
-      await commitCloudChange((cloudDb) => {
-        cloudDb.announcement = text;
-        addActivityLog(cloudDb, `📢 نشر الخادم تنبيهاً جديداً: "${text}"`);
-      });
-
-      inputEl.value = "";
-      showToast("📢 تم نشر التنبيه للجميع");
-    }
-
-    // ==========================================
-    // 6. تحديث الواجهة والتبويبات
-    // ==========================================
-    async function switchTab(tabName) {
-      const tabs = ["home", "quiz", "attendance", "leaderboard", "servants"];
-      tabs.forEach(t => {
-        document.getElementById(`view-${t}`).classList.add("hidden");
-        const btn = document.getElementById(`tab-${t}`);
-        btn.classList.remove("tab-active");
-        btn.classList.add("text-slate-700");
-      });
-      document.getElementById(`view-${tabName}`).classList.remove("hidden");
-      const activeBtn = document.getElementById(`tab-${tabName}`);
-      activeBtn.classList.add("tab-active");
-      activeBtn.classList.remove("text-slate-700");
-
-      if (tabName === "quiz") {
-        await getOrCreateDaily150Questions(false);
-      }
-      renderAllUI();
-    }
-
-    function renderAllUI() {
-      const banner = document.getElementById("announcementBanner");
-      if (db.announcement) {
-        banner.classList.remove("hidden");
-        document.getElementById("announcementText").textContent = db.announcement;
-      }
-
-      const activeBox = document.getElementById("activeUserBox");
-      const quizWarn = document.getElementById("quizUserWarning");
-      if (currentUser) {
-        const fresh = db.members.find(m => m.id === currentUser.id);
-        if (fresh) {
-          activeBox.classList.remove("hidden");
-          quizWarn.classList.add("hidden");
-          document.getElementById("currentUserName").textContent = fresh.name;
-          document.getElementById("currentUserMeta").textContent = `الصفة: ${fresh.role} | تاريخ الانضمام: ${fresh.joinedAt || "اليوم"}`;
-          document.getElementById("currentUserPoints").textContent = fresh.points;
+    function confirmBulkResetPoints() {
+      if (!appState.isServant) return;
+      openConfirmDialog(
+        'تصفير نقاط جميع الأعضاء',
+        'هل أنت متأكد من تصفير نقاط جميع الخدام والمخدومين لبدء مسابقة أو موسم جديد؟',
+        'نعم، صفّر النقاط',
+        async () => {
+          await pushToCloudSafe((data) => {
+            data.members.forEach(m => {
+              m.points = 0;
+              m.streak = 0;
+            });
+            data.logs.unshift({
+              id: 'log_' + Date.now(),
+              text: 'بداية موسم جديد: تم تصفير نقاط جميع الأعضاء',
+              icon: 'fa-rotate-left',
+              color: 'text-amber-700 bg-amber-50',
+              timestamp: new Date().toISOString()
+            });
+          }, 'تم تصفير نقاط الجميع بنجاح');
         }
-      } else {
-        activeBox.classList.add("hidden");
-        quizWarn.classList.remove("hidden");
-      }
-
-      const today = getTodayKey();
-      const todayCount = db.members.filter(m => m.lastAttendanceDate === today).length;
-      document.getElementById("statTotalMembers").textContent = db.members.length;
-      document.getElementById("statTodayAttendance").textContent = todayCount;
-
-      const feedEl = document.getElementById("activityFeedList");
-      if (db.activities.length === 0) {
-        feedEl.innerHTML = `<li class="text-slate-400 text-center py-4">لا توجد تحديثات مسجلة بعد</li>`;
-      } else {
-        feedEl.innerHTML = db.activities.map(act => `
-          <li class="flex items-start justify-between gap-2 bg-[#faf7f0] p-2.5 rounded-lg border border-amber-200/60">
-            <span class="text-slate-800">${act.text}</span>
-            <span class="text-[11px] text-slate-400 whitespace-nowrap">${act.time || ""}</span>
-          </li>
-        `).join("");
-      }
-
-      const recentEl = document.getElementById("recentMembersList");
-      const recentMembers = [...db.members].reverse().slice(0, 8);
-      if (recentMembers.length === 0) {
-        recentEl.innerHTML = `<p class="text-slate-400 text-center py-4">كن أول من يسجل اسمه في الخدمة!</p>`;
-      } else {
-        recentEl.innerHTML = recentMembers.map(m => `
-          <div class="flex items-center justify-between p-2.5 rounded-lg border border-slate-200 bg-white">
-            <div>
-              <span class="font-bold text-sm text-[#0f233c]">${m.name}</span>
-              <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded mr-1">${m.role}</span>
-            </div>
-            <span class="text-xs font-extrabold text-[#c59b27]">${m.points} نقطة</span>
-          </div>
-        `).join("");
-      }
-
-      const allDailyQs = Array.isArray(db.dailyQuestionsCache?.[today]) && db.dailyQuestionsCache[today].length === 150
-        ? db.dailyQuestionsCache[today]
-        : buildDailyArabic150(today, 1);
-
-      const freshUser = currentUser ? db.members.find(m => m.id === currentUser.id) : null;
-      const answeredToday = (freshUser && freshUser.answeredDates && freshUser.answeredDates[today]) || [];
-      document.getElementById("todaySolvedCount").textContent = answeredToday.length;
-
-      const totalPages = Math.ceil(allDailyQs.length / QUESTIONS_PER_PAGE);
-      const pagBar = document.getElementById("quizPaginationBar");
-      pagBar.innerHTML = Array.from({ length: totalPages }, (_, p) => {
-        const startNum = p * QUESTIONS_PER_PAGE + 1;
-        const endNum = (p + 1) * QUESTIONS_PER_PAGE;
-        const isActive = p === currentQuizPage;
-        return `
-          <button onclick="setQuizPage(${p})"
-            class="px-2.5 py-1 rounded text-xs font-bold transition ${isActive ? "bg-[#0f233c] text-[#e6c665]" : "bg-white border border-slate-300 text-slate-700 hover:bg-amber-100"}">
-            ${startNum}-${endNum}
-          </button>
-        `;
-      }).join("");
-
-      const hideAnswered = document.getElementById("hideAnsweredToggle")?.checked;
-      const pageSlice = allDailyQs.slice(currentQuizPage * QUESTIONS_PER_PAGE, (currentQuizPage + 1) * QUESTIONS_PER_PAGE);
-      const visibleSlice = hideAnswered ? pageSlice.filter((_, idx) => !answeredToday.includes(currentQuizPage * QUESTIONS_PER_PAGE + idx)) : pageSlice;
-
-      document.getElementById("quizPageIndicator").textContent = `صفحة ${currentQuizPage + 1} من ${totalPages} (إجمالي 150 سؤال عربي يومياً)`;
-      document.getElementById("prevQuizPageBtn").disabled = currentQuizPage === 0;
-      document.getElementById("nextQuizPageBtn").disabled = currentQuizPage >= totalPages - 1;
-
-      const quizContainer = document.getElementById("quizContainer");
-      if (visibleSlice.length === 0) {
-        quizContainer.innerHTML = `<div class="text-center py-8 text-emerald-700 font-bold">🎉 أحسنت! لقد أجبت على جميع أسئلة هذه المجموعة اليوم. انتقل للمجموعة التالية!</div>`;
-      } else {
-        quizContainer.innerHTML = visibleSlice.map((item, idx) => {
-          const globalQIdx = currentQuizPage * QUESTIONS_PER_PAGE + idx;
-          const displayNum = globalQIdx + 1;
-          const isAnswered = answeredToday.includes(globalQIdx);
-          return `
-            <div class="p-4 rounded-xl border ${isAnswered ? "bg-emerald-50/60 border-emerald-200" : "bg-[#faf7f0] border-amber-200"}">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-bold text-[#c59b27]">السؤال ${displayNum} من 150 • ${item.tag || "عربي"}</span>
-                ${isAnswered ? `<span class="text-xs font-bold text-emerald-700">✓ تمت الإجابة اليوم</span>` : ""}
-              </div>
-              <p class="font-bold text-[#0f233c] mb-3">${item.q}</p>
-              <div class="grid sm:grid-cols-2 gap-2">
-                ${item.options.map((opt, optIdx) => `
-                  <button ${isAnswered ? "disabled" : ""} onclick="submitQuizAnswer(${globalQIdx}, ${optIdx}, ${item.a})"
-                    class="text-right px-3.5 py-2 rounded-lg border text-sm font-semibold transition
-                    ${isAnswered
-                      ? (optIdx === item.a ? "bg-emerald-600 text-white border-emerald-600" : "bg-white text-slate-400 border-slate-200")
-                      : "bg-white hover:bg-[#0f233c] hover:text-[#e6c665] border-slate-300"}">
-                    ${opt}
-                  </button>
-                `).join("")}
-              </div>
-            </div>
-          `;
-        }).join("");
-      }
-
-      const attBody = document.getElementById("attendanceTableBody");
-      attBody.innerHTML = db.members.length === 0
-        ? `<tr><td colspan="5" class="p-4 text-center text-slate-400">لا يوجد أعضاء مسجلون بعد</td></tr>`
-        : db.members.map(m => {
-            const presentToday = m.lastAttendanceDate === today;
-            return `
-              <tr class="hover:bg-amber-50/30">
-                <td class="p-3 font-bold text-[#0f233c]">${m.name}</td>
-                <td class="p-3 text-slate-600">${m.role}</td>
-                <td class="p-3">
-                  ${presentToday
-                    ? (m.attendanceApprovedToday
-                        ? `<span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-1 rounded-full">حاضر ومعتمد ✓</span>`
-                        : `<span class="bg-amber-100 text-amber-900 text-xs font-bold px-2.5 py-1 rounded-full">سجل حضوره (بانتظار الخادم)</span>`)
-                    : `<span class="bg-rose-100 text-rose-700 text-xs font-bold px-2.5 py-1 rounded-full">لم يسجل حضور اليوم</span>`}
-                </td>
-                <td class="p-3 text-xs text-slate-500">${m.lastAttendanceType || "-"}</td>
-                <td class="p-3 font-extrabold text-[#c59b27]">${m.points}</td>
-              </tr>
-            `;
-          }).join("");
-
-      const query = (document.getElementById("searchMemberInput")?.value || "").trim().toLowerCase();
-      const sorted = [...db.members]
-        .filter(m => m.name.toLowerCase().includes(query))
-        .sort((a, b) => b.points - a.points);
-
-      const medals = ["🥇 المركز الأول", "🥈 المركز الثاني", "🥉 المركز الثالث"];
-      document.getElementById("topThreeContainer").innerHTML = sorted.slice(0, 3).map((m, i) => `
-        <div class="p-4 rounded-xl border-2 border-[#c59b27] bg-gradient-to-b from-[#0f233c] to-[#1a365d] text-white text-center shadow">
-          <div class="text-xs font-bold text-[#e6c665] mb-1">${medals[i]}</div>
-          <div class="text-lg font-extrabold">${m.name}</div>
-          <div class="text-xs text-slate-300 mb-2">${m.role}</div>
-          <div class="inline-block bg-[#c59b27] text-[#0f233c] font-extrabold px-3 py-1 rounded-full text-sm">
-            ${m.points} نقطة
-          </div>
-        </div>
-      `).join("");
-
-      document.getElementById("fullLeaderboardList").innerHTML = sorted.slice(3).map((m, i) => `
-        <div class="flex items-center justify-between p-3 rounded-lg bg-[#faf7f0] border border-amber-200/70">
-          <div class="flex items-center gap-3">
-            <span class="w-7 h-7 rounded-full bg-[#0f233c] text-[#e6c665] text-xs font-bold flex items-center justify-center">${i + 4}</span>
-            <div>
-              <span class="font-bold text-[#0f233c]">${m.name}</span>
-              <span class="text-xs text-slate-500 mr-2">(${m.role})</span>
-            </div>
-          </div>
-          <span class="font-extrabold text-[#c59b27]">${m.points} نقطة</span>
-        </div>
-      `).join("");
-
-      const servantTable = document.getElementById("servantMembersTable");
-      if (servantTable) {
-        servantTable.innerHTML = db.members.length === 0
-          ? `<tr><td colspan="6" class="p-4 text-center text-slate-400">لا يوجد أعضاء</td></tr>`
-          : db.members.map(m => {
-              const presentToday = m.lastAttendanceDate === today;
-              const pendingPts = m.pendingAttendancePoints || 15;
-              return `
-                <tr>
-                  <td class="p-3 font-bold text-[#0f233c]">${m.name}</td>
-                  <td class="p-3 text-xs text-slate-600">${m.role}</td>
-                  <td class="p-3 text-xs">
-                    ${presentToday
-                      ? (m.attendanceApprovedToday
-                          ? `<span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-1 rounded">معتمد (${m.lastAttendanceType})</span>`
-                          : `<span class="bg-amber-100 text-amber-900 font-bold px-2 py-1 rounded">بانتظار الاعتماد (${m.lastAttendanceType})</span>`)
-                      : `<span class="text-slate-400">لم يسجل اليوم</span>`}
-                  </td>
-                  <td class="p-3 font-extrabold text-[#c59b27]">${m.points}</td>
-                  <td class="p-3">
-                    <div class="flex flex-wrap items-center gap-1">
-                      ${(presentToday && !m.attendanceApprovedToday)
-                        ? `<button onclick="approveAttendanceByServant('${m.id}')" class="bg-[#0f233c] text-[#e6c665] text-xs px-2.5 py-1 rounded font-bold hover:opacity-90">اعتماد الحضور (+${pendingPts}) ✓</button>`
-                        : ""}
-                      <button onclick="adjustMemberPoints('${m.id}', 10)" class="bg-emerald-600 text-white text-xs px-2 py-1 rounded font-bold hover:bg-emerald-700">+10</button>
-                      <button onclick="adjustMemberPoints('${m.id}', 5)" class="bg-emerald-500 text-white text-xs px-2 py-1 rounded font-bold hover:bg-emerald-600">+5</button>
-                      <button onclick="adjustMemberPoints('${m.id}', -5)" class="bg-amber-600 text-white text-xs px-2 py-1 rounded font-bold hover:bg-amber-700">-5</button>
-                      <button onclick="adjustMemberPoints('${m.id}', -10)" class="bg-amber-700 text-white text-xs px-2 py-1 rounded font-bold hover:bg-amber-800">-10</button>
-                    </div>
-                  </td>
-                  <td class="p-3">
-                    <button onclick="deleteMemberByServant('${m.id}')" class="bg-rose-600 text-white text-xs px-3 py-1 rounded font-bold hover:bg-rose-700">
-                      حذف نهائي 🗑️
-                    </button>
-                  </td>
-                </tr>
-              `;
-            }).join("");
-      }
+      );
     }
 
-    function showToast(msg) {
-      const t = document.getElementById("toast");
-      t.textContent = msg;
-      t.classList.remove("translate-y-24", "opacity-0");
-      setTimeout(() => {
-        t.classList.add("translate-y-24", "opacity-0");
-      }, 3200);
+    function confirmClearLogs() {
+      if (!appState.isServant) return;
+      openConfirmDialog(
+        'مسح سجل النشاطات',
+        'هل تريد مسح سجل التحديثات القديمة من الصفحة الرئيسية؟',
+        'مسح السجل',
+        async () => {
+          await pushToCloudSafe((data) => {
+            data.logs = [{
+              id: 'log_' + Date.now(),
+              text: 'تم تنظيف سجل التحديثات بواسطة الخدام',
+              icon: 'fa-broom',
+              color: 'text-slate-700 bg-slate-100',
+              timestamp: new Date().toISOString()
+            }];
+          }, 'تم مسح سجل النشاطات');
+        }
+      );
     }
 
-    window.addEventListener("DOMContentLoaded", async () => {
-      renderAllUI();
-      await pullFromCloud(false);
-      await getOrCreateDaily150Questions(false);
-      renderAllUI();
+    function openConfirmDialog(title, message, yesLabel, onConfirmFn) {
+      document.getElementById('confirm-modal-title').textContent = title;
+      document.getElementById('confirm-modal-message').textContent = message;
+      const yesBtn = document.getElementById('confirm-modal-yes-btn');
+      yesBtn.textContent = yesLabel;
+      yesBtn.onclick = async () => {
+        closeModal('modal-confirm');
+        await onConfirmFn();
+      };
+      openModal('modal-confirm');
+    }
 
-      setInterval(() => {
-        if (!document.hidden) pullFromCloud(true);
-      }, 5000);
-    });
-  </script>
-</body>
-</html>
+    function selectCurrentUser(memberId) {
+      appState.currentUserId = memberId;
+      localStorage.setItem('church_current_user_id', memberId);
+      closeModal('modal-select-user');
+      renderHeaderUser();
+      const m = appState.cloudData.members.find(x => x.id === memberId);
+      if (m) showToast(`تم التبديل إلى حساب: ${m.name}`, 'success');
+    }
+
+    function renderSwitchUserList() {
+      const q = document.getElementById('switch-user-search').value.trim().toLowerCase();
+      const container = document.getElementById('switch-user-list');
+      const filtered = appState.cloudData.members.filter(m => m.name.toLowerCase().includes(q));
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="text-center text-xs text-slate-400 py-4">لا يوجد أعضاء مطابقون</div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(m => `
+        <button onclick="selectCurrentUser('${m.id}')" class="w-full p-3 rounded-2xl border ${m.id === appState.currentUserId ? 'border-blue-600 bg-blue-50/70' : 'border-slate-100 hover:bg-slate-50'} flex items-center justify-between text-right transition">
+          <div class="flex items-center gap-2.5">
+            <span class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center text-lg">${m.avatar || '✝️'}</span>
+            <div>
+              <div 
