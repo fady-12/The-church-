@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script>
     tailwind.config = {
+      darkMode: 'media',
       theme: {
         extend: {
           fontFamily: {
@@ -36,78 +37,248 @@
     }
   </script>
   <style>
+    /* Explicit Color System & Design Tokens (Light Default + Dark Mode) */
+    :root {
+      --bg-page: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-subtle: #f1f5f9;
+      --bg-hero: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+      --bg-gold: linear-gradient(135deg, #b45309 0%, #d97706 55%, #f59e0b 100%);
+      --bg-verse: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --text-on-dark: #ffffff;
+      --text-on-gold: #ffffff;
+      --border-color: #e2e8f0;
+      --border-accent: #fcd34d;
+      --accent-royal: #1e3a8a;
+      --accent-royal-hover: #172554;
+      --accent-gold: #d97706;
+      --success-bg: #dcfce7;
+      --success-text: #166534;
+      --success-border: #86efac;
+      --danger-bg: #fee2e2;
+      --danger-text: #991b1b;
+      --danger-border: #fca5a5;
+      --warn-bg: #fef3c7;
+      --warn-text: #92400e;
+      --info-bg: #dbeafe;
+      --info-text: #1e40af;
+      --shadow-card: 0 6px 24px -4px rgba(15, 23, 42, 0.08);
+      --nav-bg: rgba(255, 255, 255, 0.97);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-page: #0b1120;
+        --bg-surface: #111827;
+        --bg-subtle: #1e293b;
+        --bg-hero: linear-gradient(135deg, #090d16 0%, #172554 100%);
+        --bg-gold: linear-gradient(135deg, #92400e 0%, #b45309 55%, #d97706 100%);
+        --bg-verse: linear-gradient(135deg, #1f1a0d 0%, #29200a 100%);
+        --text-primary: #f8fafc;
+        --text-secondary: #cbd5e1;
+        --text-muted: #94a3b8;
+        --text-on-dark: #ffffff;
+        --text-on-gold: #ffffff;
+        --border-color: #334155;
+        --border-accent: #92400e;
+        --accent-royal: #2563eb;
+        --accent-royal-hover: #1d4ed8;
+        --accent-gold: #f59e0b;
+        --success-bg: #052e16;
+        --success-text: #86efac;
+        --success-border: #166534;
+        --danger-bg: #450a0a;
+        --danger-text: #fca5a5;
+        --danger-border: #991b1b;
+        --warn-bg: #451a03;
+        --warn-text: #fcd34d;
+        --info-bg: #172554;
+        --info-text: #93c5fd;
+        --shadow-card: 0 8px 26px -4px rgba(0, 0, 0, 0.45);
+        --nav-bg: rgba(17, 24, 39, 0.97);
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: 'Cairo', sans-serif;
-      background-color: #f8fafc;
-      color: #0f172a;
+      font-family: 'Cairo', 'Tajawal', sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-primary);
       -webkit-tap-highlight-color: transparent;
-      padding-bottom: 88px;
+      padding-bottom: 92px;
+      margin: 0;
+      overflow-x: hidden;
     }
+
+    .surface-card {
+      background-color: var(--bg-surface);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-card);
+    }
+
+    .subtle-box {
+      background-color: var(--bg-subtle);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+
     .gold-gradient {
-      background: linear-gradient(135deg, #b45309 0%, #d97706 50%, #f59e0b 100%);
+      background: var(--bg-gold);
+      color: var(--text-on-gold);
     }
+
     .royal-gradient {
-      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+      background: var(--bg-hero);
+      color: var(--text-on-dark);
     }
-    .card-shadow {
-      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06);
+
+    .verse-card {
+      background: var(--bg-verse);
+      color: var(--text-primary);
+      border: 1px solid var(--border-accent);
+      box-shadow: var(--shadow-card);
     }
+
+    .text-main { color: var(--text-primary); }
+    .text-sub { color: var(--text-secondary); }
+    .text-dim { color: var(--text-muted); }
+
+    .badge-success {
+      background-color: var(--success-bg);
+      color: var(--success-text);
+      border: 1px solid var(--success-border);
+    }
+
+    .badge-danger {
+      background-color: var(--danger-bg);
+      color: var(--danger-text);
+      border: 1px solid var(--danger-border);
+    }
+
+    .badge-warn {
+      background-color: var(--warn-bg);
+      color: var(--warn-text);
+      border: 1px solid var(--border-accent);
+    }
+
+    .badge-info {
+      background-color: var(--info-bg);
+      color: var(--info-text);
+      border: 1px solid var(--border-color);
+    }
+
+    .app-input, .app-select, .app-textarea {
+      background-color: var(--bg-subtle);
+      color: var(--text-primary);
+      border: 1.5px solid var(--border-color);
+      border-radius: 0.75rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .app-input::placeholder, .app-textarea::placeholder {
+      color: var(--text-muted);
+      opacity: 1;
+    }
+
+    .app-input:focus, .app-select:focus, .app-textarea:focus {
+      outline: none;
+      border-color: var(--accent-royal);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+    }
+
+    .btn-royal {
+      background-color: var(--accent-royal);
+      color: #ffffff;
+    }
+    .btn-royal:hover {
+      background-color: var(--accent-royal-hover);
+    }
+
+    .bottom-nav {
+      background-color: var(--nav-bg);
+      border-top: 1px solid var(--border-color);
+      box-shadow: 0 -6px 24px rgba(15, 23, 42, 0.12);
+    }
+
+    .nav-active {
+      color: var(--accent-gold) !important;
+      font-weight: 900 !important;
+    }
+
+    .nav-inactive {
+      color: var(--text-muted) !important;
+      font-weight: 700 !important;
+    }
+
     .pulse-dot {
       animation: pulseAnim 2s infinite;
     }
+
     @keyframes pulseAnim {
-      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
-      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.75); }
+      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(52, 211, 153, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
     }
+
     @keyframes marqueeRTL {
       0% { transform: translateX(-100%); }
       100% { transform: translateX(100%); }
     }
+
     .animate-ticker {
       display: inline-block;
       white-space: nowrap;
-      animation: marqueeRTL 22s linear infinite;
+      animation: marqueeRTL 24s linear infinite;
+      color: #f8fafc;
     }
+
     .animate-ticker:hover {
       animation-play-state: paused;
     }
+
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #f1f5f9; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    ::-webkit-scrollbar-track { background: var(--bg-subtle); }
+    ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 9999px; }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-900 select-none">
+<body class="select-none">
 
   <!-- Toast Notification Container -->
   <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 w-[92%] max-w-md pointer-events-none"></div>
 
   <!-- Top Header & Live Cloud Status -->
-  <header class="royal-gradient text-white sticky top-0 z-40 shadow-lg rounded-b-3xl">
+  <header class="royal-gradient sticky top-0 z-40 shadow-xl rounded-b-3xl border-b border-white/10">
     <div class="max-w-4xl mx-auto px-4 pt-4 pb-4">
       <div class="flex items-center justify-between gap-2">
         <div class="flex items-center gap-3 min-w-0">
-          <div class="w-11 h-11 rounded-2xl gold-gradient flex items-center justify-center shadow-md text-white text-xl font-bold shrink-0">
+          <div class="w-11 h-11 rounded-2xl gold-gradient flex items-center justify-center shadow-md text-xl font-bold shrink-0 border border-amber-200/40">
             <i class="fa-solid fa-cross"></i>
           </div>
           <div class="min-w-0">
-            <h1 id="header-church-title" class="text-base sm:text-xl font-extrabold tracking-tight leading-tight truncate">بوابة الكنيسة للخدام والمخدومين</h1>
-            <div class="flex items-center gap-2 text-[11px] sm:text-xs text-blue-200 mt-0.5">
+            <h1 id="header-church-title" class="text-base sm:text-xl font-extrabold tracking-tight leading-tight truncate text-white">بوابة الكنيسة للخدام والمخدومين</h1>
+            <div class="flex items-center gap-2 text-[11px] sm:text-xs text-sky-200 mt-0.5">
               <span id="sync-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-400 pulse-dot inline-block shrink-0"></span>
-              <span id="sync-status-text" class="truncate">متصل بالسحابة • مزامنة تلقائية</span>
+              <span id="sync-status-text" class="truncate">متصل بالسحابة • مزامنة تلقائية كل 6 ثوانٍ</span>
             </div>
           </div>
         </div>
 
         <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
           <!-- Manual Instant Sync Button -->
-          <button onclick="forceSyncNow()" id="btn-sync-now" title="مزامنة فورية الآن" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition text-white border border-white/15 flex items-center gap-1.5 text-xs font-bold">
-            <i id="sync-icon" class="fa-solid fa-rotate"></i>
+          <button onclick="forceSyncNow()" id="btn-sync-now" title="مزامنة فورية الآن" class="p-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 active:scale-95 transition text-white border border-white/20 flex items-center gap-1.5 text-xs font-bold">
+            <i id="sync-icon" class="fa-solid fa-rotate text-emerald-300"></i>
             <span class="hidden sm:inline">مزامنة فورية</span>
           </button>
 
           <!-- Servant Admin Mode Toggle -->
-          <button onclick="toggleServantMode()" id="btn-servant-mode" class="p-2.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-amber-300 active:scale-95 transition flex items-center gap-1.5 text-xs font-bold">
+          <button onclick="toggleServantMode()" id="btn-servant-mode" class="p-2.5 rounded-xl bg-amber-500/25 hover:bg-amber-500/35 border border-amber-300/50 text-amber-200 active:scale-95 transition flex items-center gap-1.5 text-xs font-extrabold">
             <i id="servant-lock-icon" class="fa-solid fa-lock"></i>
             <span id="servant-mode-label">دخول الخدام</span>
           </button>
@@ -115,21 +286,21 @@
       </div>
 
       <!-- Active User Bar (Quick Switch / Register) -->
-      <div class="mt-3.5 bg-white/10 backdrop-blur-md rounded-2xl p-2.5 border border-white/10 flex items-center justify-between gap-2">
+      <div class="mt-3.5 bg-slate-950/55 rounded-2xl p-2.5 border border-white/15 flex items-center justify-between gap-2">
         <div class="flex items-center gap-2.5 min-w-0">
-          <div id="current-user-avatar" class="w-9 h-9 rounded-xl bg-amber-500 text-slate-900 font-extrabold flex items-center justify-center text-base shrink-0">
+          <div id="current-user-avatar" class="w-9 h-9 rounded-xl gold-gradient font-extrabold flex items-center justify-center text-base shrink-0 border border-white/20">
             <i class="fa-solid fa-user"></i>
           </div>
           <div class="truncate">
             <div id="current-user-name" class="text-xs sm:text-sm font-bold text-white truncate">زائر (سجّل اسمك الآن)</div>
-            <div id="current-user-meta" class="text-[11px] text-blue-200 truncate">اضغط على "سجّل نفسك" للانضمام والمنافسة</div>
+            <div id="current-user-meta" class="text-[11px] text-sky-200 truncate">اضغط على "سجّل نفسك" للانضمام والمنافسة</div>
           </div>
         </div>
         <div class="flex items-center gap-1.5 shrink-0">
-          <button onclick="openSelectUserModal()" class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-xs font-bold text-white transition">
+          <button onclick="openSelectUserModal()" class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white border border-white/15 transition">
             تبديل الحساب
           </button>
-          <button onclick="openRegisterModal()" class="px-3 py-1.5 rounded-xl gold-gradient text-xs font-extrabold text-white shadow hover:opacity-95 active:scale-95 transition flex items-center gap-1">
+          <button onclick="openRegisterModal()" class="px-3 py-1.5 rounded-xl gold-gradient text-xs font-extrabold shadow hover:opacity-95 active:scale-95 transition flex items-center gap-1 border border-amber-200/30">
             <i class="fa-solid fa-user-plus"></i>
             <span>سجّل نفسك</span>
           </button>
@@ -137,11 +308,11 @@
       </div>
 
       <!-- Live Breaking News Ticker -->
-      <div class="mt-2.5 bg-slate-950/40 rounded-xl px-3 py-1.5 overflow-hidden flex items-center gap-2 border border-white/5">
-        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-extrabold shrink-0">مباشر</span>
+      <div class="mt-2.5 bg-slate-950/75 rounded-xl px-3 py-1.5 overflow-hidden flex items-center gap-2 border border-white/10">
+        <span class="px-2 py-0.5 rounded bg-emerald-500 text-slate-950 text-[10px] font-black shrink-0">مباشر</span>
         <div class="overflow-hidden flex-1">
-          <div id="live-ticker-text" class="animate-ticker text-[11px] text-blue-100 font-semibold">
-            أهلاً بكم في بوابة الكنيسة السحابية • المزامنة الفورية مفعلة بين جميع الهواتف
+          <div id="live-ticker-text" class="animate-ticker text-[11px] font-semibold">
+            مرحباً بكم في بوابة الكنيسة السحابية • المزامنة الفورية مفعلة بين جميع الهواتف كل 6 ثوانٍ
           </div>
         </div>
       </div>
@@ -155,93 +326,93 @@
     <section id="tab-home" class="space-y-5">
       <!-- Quick Stats Banner -->
       <div class="grid grid-cols-3 gap-3">
-        <div class="bg-white rounded-2xl p-3.5 card-shadow border border-slate-100 text-center">
-          <div class="text-blue-600 text-lg mb-1"><i class="fa-solid fa-users"></i></div>
-          <div id="stat-total-members" class="text-xl font-black text-slate-800">0</div>
-          <div class="text-[11px] font-semibold text-slate-500">إجمالي الأعضاء</div>
+        <div class="surface-card rounded-2xl p-3.5 text-center">
+          <div class="text-sky-500 text-lg mb-1"><i class="fa-solid fa-users"></i></div>
+          <div id="stat-total-members" class="text-xl font-black text-main">0</div>
+          <div class="text-[11px] font-semibold text-sub">إجمالي الأعضاء</div>
         </div>
-        <div class="bg-white rounded-2xl p-3.5 card-shadow border border-slate-100 text-center">
-          <div class="text-emerald-600 text-lg mb-1"><i class="fa-solid fa-calendar-check"></i></div>
-          <div id="stat-today-present" class="text-xl font-black text-slate-800">0</div>
-          <div class="text-[11px] font-semibold text-slate-500">حضور اليوم</div>
+        <div class="surface-card rounded-2xl p-3.5 text-center">
+          <div class="text-emerald-500 text-lg mb-1"><i class="fa-solid fa-calendar-check"></i></div>
+          <div id="stat-today-present" class="text-xl font-black text-main">0</div>
+          <div class="text-[11px] font-semibold text-sub">حضور اليوم</div>
         </div>
-        <div class="bg-white rounded-2xl p-3.5 card-shadow border border-slate-100 text-center">
+        <div class="surface-card rounded-2xl p-3.5 text-center">
           <div class="text-amber-500 text-lg mb-1"><i class="fa-solid fa-trophy"></i></div>
-          <div id="stat-total-points" class="text-xl font-black text-slate-800">0</div>
-          <div class="text-[11px] font-semibold text-slate-500">مجموع النقاط</div>
+          <div id="stat-total-points" class="text-xl font-black text-main">0</div>
+          <div class="text-[11px] font-semibold text-sub">مجموع النقاط</div>
         </div>
       </div>
 
       <!-- Verse of the Day & Church Announcement Card -->
-      <div class="bg-gradient-to-br from-amber-50 to-orange-50/70 rounded-3xl p-5 border border-amber-200/80 card-shadow relative overflow-hidden">
-        <div class="flex items-center justify-between mb-2">
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 text-amber-800 text-xs font-extrabold">
+      <div class="verse-card rounded-3xl p-5 relative overflow-hidden">
+        <div class="flex items-center justify-between mb-2 gap-2">
+          <span class="badge-warn inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold">
             <i class="fa-solid fa-book-bible"></i> آية اليوم وتنبيهات الكنيسة
           </span>
-          <button onclick="openAnnouncementModal()" class="servant-only hidden text-xs font-bold text-amber-800 bg-amber-200/70 hover:bg-amber-200 px-3 py-1 rounded-xl transition">
+          <button onclick="openAnnouncementModal()" class="servant-only hidden badge-warn hover:opacity-90 text-xs font-extrabold px-3 py-1 rounded-xl transition cursor-pointer">
             <i class="fa-solid fa-pen-to-square"></i> تعديل التنبيه
           </button>
         </div>
-        <p id="daily-verse-text" class="text-base sm:text-lg font-extrabold text-slate-800 leading-relaxed mt-2">
+        <p id="daily-verse-text" class="text-base sm:text-lg font-extrabold text-main leading-relaxed mt-2">
           "أَسْتَطِيعُ كُلَّ شَيْءٍ فِي الْمَسِيحِ الَّذِي يُقَوِّينِي." (فيلبي 4: 13)
         </p>
-        <div id="church-announcement-box" class="mt-3 pt-3 border-t border-amber-200/70 flex items-start gap-2.5 text-sm text-slate-700">
-          <i class="fa-solid fa-bullhorn text-amber-600 mt-1"></i>
+        <div id="church-announcement-box" class="mt-3 pt-3 border-t border-amber-500/25 flex items-start gap-2.5 text-sm text-sub">
+          <i class="fa-solid fa-bullhorn text-amber-500 mt-1 shrink-0"></i>
           <div>
-            <span class="font-bold text-amber-900">إعلان الخدمة: </span>
-            <span id="church-announcement-text">أهلاً بكل الخدام والمخدومين! سجل اسمك الآن وشارك في مسابقة الـ 150 سؤال اليومية لجمع النقاط.</span>
+            <span class="font-extrabold text-main">إعلان الخدمة: </span>
+            <span id="church-announcement-text">مرحباً بكل الخدام والمخدومين! سجل اسمك الآن وشارك في مسابقة الـ 150 سؤال اليومية لجمع النقاط.</span>
           </div>
         </div>
       </div>
 
       <!-- Quick Action Cards -->
       <div class="grid grid-cols-2 gap-3">
-        <button onclick="switchTab('quiz')" class="bg-white hover:bg-blue-50/50 active:scale-[0.98] transition rounded-2xl p-4 card-shadow border border-slate-100 text-right flex items-center gap-3">
-          <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-xl shrink-0">
+        <button onclick="switchTab('quiz')" class="surface-card hover:opacity-95 active:scale-[0.98] transition rounded-2xl p-4 text-right flex items-center gap-3 cursor-pointer">
+          <div class="w-12 h-12 rounded-2xl badge-info flex items-center justify-center text-xl shrink-0">
             <i class="fa-solid fa-circle-question"></i>
           </div>
           <div>
-            <div class="font-extrabold text-slate-800 text-sm sm:text-base">مسابقة الـ 150 سؤال</div>
-            <div class="text-xs text-slate-500 mt-0.5">اختبر معلوماتك واربح نقاط</div>
+            <div class="font-extrabold text-main text-sm sm:text-base">مسابقة الـ 150 سؤال</div>
+            <div class="text-xs text-sub mt-0.5">اختبر معلوماتك واربح نقاطاً</div>
           </div>
         </button>
 
-        <button onclick="openPrayerModal()" class="bg-white hover:bg-purple-50/50 active:scale-[0.98] transition rounded-2xl p-4 card-shadow border border-slate-100 text-right flex items-center gap-3">
-          <div class="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center text-xl shrink-0">
+        <button onclick="openPrayerModal()" class="surface-card hover:opacity-95 active:scale-[0.98] transition rounded-2xl p-4 text-right flex items-center gap-3 cursor-pointer">
+          <div class="w-12 h-12 rounded-2xl badge-warn flex items-center justify-center text-xl shrink-0">
             <i class="fa-solid fa-hands-praying"></i>
           </div>
           <div>
-            <div class="font-extrabold text-slate-800 text-sm sm:text-base">طلب صلاة / افتقاد</div>
-            <div class="text-xs text-slate-500 mt-0.5">اكتب طلبك ليصلي الجميع</div>
+            <div class="font-extrabold text-main text-sm sm:text-base">طلب صلاة وافتقاد</div>
+            <div class="text-xs text-sub mt-0.5">اكتب طلبك ليصلي الجميع</div>
           </div>
         </button>
       </div>
 
       <!-- Real-Time Cloud Live Activity Feed -->
-      <div class="bg-white rounded-3xl p-5 card-shadow border border-slate-100">
-        <div class="flex items-center justify-between mb-4">
+      <div class="surface-card rounded-3xl p-5">
+        <div class="flex items-center justify-between mb-4 gap-2">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 pulse-dot"></span>
-            <h2 class="font-extrabold text-base sm:text-lg text-slate-800">آخر التحديثات الفورية (مباشر)</h2>
+            <h2 class="font-extrabold text-base sm:text-lg text-main">آخر التحديثات الفورية (مباشر)</h2>
           </div>
-          <span id="last-sync-clock" class="text-[11px] font-semibold text-slate-400">يتم التحديث...</span>
+          <span id="last-sync-clock" class="text-[11px] font-semibold text-dim">يتم التحديث...</span>
         </div>
 
-        <div id="live-activity-list" class="space-y-3 max-h-80 overflow-y-auto pr-1">
-          <div class="text-center py-6 text-slate-400 text-sm">جاري جلب آخر التحديثات من السحابة...</div>
+        <div id="live-activity-list" class="space-y-3 max-h-80 overflow-y-auto pl-1">
+          <div class="text-center py-6 text-dim text-sm">جاري جلب آخر التحديثات من السحابة...</div>
         </div>
       </div>
 
       <!-- Recent Prayer Requests -->
-      <div class="bg-white rounded-3xl p-5 card-shadow border border-slate-100">
+      <div class="surface-card rounded-3xl p-5">
         <div class="flex items-center justify-between mb-3">
-          <h2 class="font-extrabold text-base text-slate-800 flex items-center gap-2">
+          <h2 class="font-extrabold text-base text-main flex items-center gap-2">
             <i class="fa-solid fa-heart text-rose-500"></i> طلبات الصلاة والافتقاد
           </h2>
-          <button onclick="openPrayerModal()" class="text-xs font-bold text-blue-700 hover:underline">+ إضافة طلب</button>
+          <button onclick="openPrayerModal()" class="text-xs font-extrabold text-amber-500 hover:underline cursor-pointer">+ إضافة طلب</button>
         </div>
         <div id="prayer-requests-list" class="space-y-2.5">
-          <div class="text-xs text-slate-400 text-center py-3">لا توجد طلبات صلاة حالياً. كن أول من يشارك!</div>
+          <div class="text-xs text-dim text-center py-3">لا توجد طلبات صلاة حالياً. كن أول من يشارك!</div>
         </div>
       </div>
     </section>
@@ -249,15 +420,15 @@
     <!-- ==================== TAB 2: MEMBERS & ATTENDANCE ==================== -->
     <section id="tab-attendance" class="hidden space-y-5">
       <!-- Date & Filter Controls -->
-      <div class="bg-white rounded-3xl p-4 card-shadow border border-slate-100 space-y-3">
+      <div class="surface-card rounded-3xl p-4 space-y-3">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div>
-            <h2 class="text-lg font-extrabold text-slate-800">سجل الحضور والغياب وإدارة الأعضاء</h2>
-            <p class="text-xs text-slate-500">مزامنة فورية بين هواتف جميع الخدام والأعضاء</p>
+            <h2 class="text-lg font-extrabold text-main">سجل الحضور والغياب وإدارة الأعضاء</h2>
+            <p class="text-xs text-sub">مزامنة فورية بين هواتف جميع الخدام والأعضاء</p>
           </div>
           <div class="flex items-center gap-2">
-            <input type="date" id="attendance-date" onchange="renderMembersList()" class="px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 bg-slate-50 focus:outline-none focus:border-blue-600">
-            <button onclick="openRegisterModal()" class="px-3.5 py-2 rounded-xl royal-gradient text-white text-xs font-bold shadow hover:opacity-95 flex items-center gap-1.5">
+            <input type="date" id="attendance-date" onchange="renderMembersList()" class="app-select px-3 py-2 text-xs font-bold">
+            <button onclick="openRegisterModal()" class="px-3.5 py-2 rounded-xl btn-royal text-xs font-extrabold shadow transition flex items-center gap-1.5 cursor-pointer">
               <i class="fa-solid fa-plus"></i> إضافة عضو
             </button>
           </div>
@@ -266,41 +437,41 @@
         <!-- Search & Stage Filters -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
           <div class="relative">
-            <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-            <input type="text" id="search-member-input" oninput="renderMembersList()" placeholder="ابحث بالاسم أو رقم الهاتف..." class="w-full pr-9 pl-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm focus:outline-none focus:border-blue-600">
+            <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-dim text-xs"></i>
+            <input type="text" id="search-member-input" oninput="renderMembersList()" placeholder="ابحث بالاسم أو رقم الهاتف..." class="app-input w-full pr-9 pl-3 py-2.5 text-sm">
           </div>
           <div class="flex gap-1.5 overflow-x-auto pb-1">
-            <button onclick="setStageFilter('ALL')" data-stage="ALL" class="stage-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-blue-900 text-white shrink-0">الكل</button>
-            <button onclick="setStageFilter('PRESENT_TODAY')" data-stage="PRESENT_TODAY" class="stage-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 shrink-0">الحاضرون اليوم</button>
-            <button onclick="setStageFilter('ABSENT_TODAY')" data-stage="ABSENT_TODAY" class="stage-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200 shrink-0">الغائبون (افتقاد)</button>
-            <button onclick="setStageFilter('ابتدائي')" data-stage="ابتدائي" class="stage-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 shrink-0">ابتدائي</button>
-            <button onclick="setStageFilter('إعدادي')" data-stage="إعدادي" class="stage-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 shrink-0">إعدادي</button>
-            <button onclick="setStageFilter('ثانوي')" data-stage="ثانوي" class="stage-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 shrink-0">ثانوي</button>
-            <button onclick="setStageFilter('جامعة')" data-stage="جامعة" class="stage-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 shrink-0">جامعة</button>
-            <button onclick="setStageFilter('خريجين')" data-stage="خريجين" class="stage-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 shrink-0">خريجين</button>
-            <button onclick="setStageFilter('خدام')" data-stage="خدام" class="stage-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 shrink-0">الخدام</button>
+            <button onclick="setStageFilter('ALL')" data-stage="ALL" class="stage-filter-btn px-3 py-2 rounded-xl text-xs font-extrabold btn-royal shrink-0 cursor-pointer">الكل</button>
+            <button onclick="setStageFilter('PRESENT_TODAY')" data-stage="PRESENT_TODAY" class="stage-filter-btn badge-success px-3 py-2 rounded-xl text-xs font-extrabold shrink-0 cursor-pointer">الحاضرون اليوم</button>
+            <button onclick="setStageFilter('ABSENT_TODAY')" data-stage="ABSENT_TODAY" class="stage-filter-btn badge-danger px-3 py-2 rounded-xl text-xs font-extrabold shrink-0 cursor-pointer">الغائبون (افتقاد)</button>
+            <button onclick="setStageFilter('ابتدائي')" data-stage="ابتدائي" class="stage-filter-btn subtle-box px-3 py-2 rounded-xl text-xs font-bold shrink-0 cursor-pointer">ابتدائي</button>
+            <button onclick="setStageFilter('إعدادي')" data-stage="إعدادي" class="stage-filter-btn subtle-box px-3 py-2 rounded-xl text-xs font-bold shrink-0 cursor-pointer">إعدادي</button>
+            <button onclick="setStageFilter('ثانوي')" data-stage="ثانوي" class="stage-filter-btn subtle-box px-3 py-2 rounded-xl text-xs font-bold shrink-0 cursor-pointer">ثانوي</button>
+            <button onclick="setStageFilter('جامعة')" data-stage="جامعة" class="stage-filter-btn subtle-box px-3 py-2 rounded-xl text-xs font-bold shrink-0 cursor-pointer">جامعة</button>
+            <button onclick="setStageFilter('خريجين')" data-stage="خريجين" class="stage-filter-btn subtle-box px-3 py-2 rounded-xl text-xs font-bold shrink-0 cursor-pointer">خريجين</button>
+            <button onclick="setStageFilter('خدام')" data-stage="خدام" class="stage-filter-btn subtle-box px-3 py-2 rounded-xl text-xs font-bold shrink-0 cursor-pointer">الخدام</button>
           </div>
         </div>
 
         <!-- Servant Notice Banner -->
-        <div id="servant-hint-banner" class="bg-blue-50 border border-blue-200 rounded-2xl p-3 flex items-center justify-between gap-2 text-xs text-blue-900">
+        <div id="servant-hint-banner" class="badge-info rounded-2xl p-3 flex items-center justify-between gap-2 text-xs">
           <div class="flex items-center gap-2">
-            <i class="fa-solid fa-circle-info text-blue-600 text-base"></i>
-            <span>لتسجيل الحضور والغياب أو <strong>حذف/تعديل الأعضاء</strong> وتغيير كلمة السر، فعّل <strong>وضع الخدام</strong>.</span>
+            <i class="fa-solid fa-circle-info text-base shrink-0"></i>
+            <span>لتسجيل الحضور والغياب أو <strong>حذف وتعديل الأعضاء</strong> وتغيير كلمة السر، فعّل <strong>وضع الخدام</strong>.</span>
           </div>
-          <button onclick="toggleServantMode()" class="px-3 py-1.5 rounded-xl bg-blue-700 text-white font-bold shrink-0">دخول الخدام</button>
+          <button onclick="toggleServantMode()" class="px-3 py-1.5 rounded-xl btn-royal font-extrabold shrink-0 cursor-pointer">دخول الخدام</button>
         </div>
 
         <!-- Servant Quick Bulk Actions Bar -->
-        <div class="servant-only hidden bg-slate-900 text-white rounded-2xl p-3 flex flex-wrap items-center justify-between gap-2">
-          <div class="text-xs font-bold text-amber-300 flex items-center gap-1.5">
+        <div class="servant-only hidden royal-gradient rounded-2xl p-3 flex flex-wrap items-center justify-between gap-2 border border-white/15">
+          <div class="text-xs font-extrabold text-amber-300 flex items-center gap-1.5">
             <i class="fa-solid fa-wand-magic-sparkles"></i> أدوات الخدام السريعة:
           </div>
           <div class="flex flex-wrap items-center gap-1.5">
-            <button onclick="switchTab('settings')" class="px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-xs font-bold flex items-center gap-1">
-              <i class="fa-solid fa-key text-amber-400"></i> تغيير كلمة السر والإعدادات
+            <button onclick="switchTab('settings')" class="px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-bold flex items-center gap-1 cursor-pointer">
+              <i class="fa-solid fa-key text-amber-300"></i> تغيير كلمة السر والإعدادات
             </button>
-            <button onclick="confirmBulkResetPoints()" class="px-3 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 border border-rose-400/30 text-xs font-bold flex items-center gap-1">
+            <button onclick="confirmBulkResetPoints()" class="px-3 py-1.5 rounded-xl badge-danger text-xs font-extrabold flex items-center gap-1 cursor-pointer">
               <i class="fa-solid fa-rotate-left"></i> تصفير نقاط الجميع
             </button>
           </div>
@@ -315,20 +486,20 @@
 
     <!-- ==================== TAB 3: 150-QUESTION DAILY QUIZ ==================== -->
     <section id="tab-quiz" class="hidden space-y-5">
-      <div class="royal-gradient text-white rounded-3xl p-6 card-shadow relative overflow-hidden">
+      <div class="royal-gradient rounded-3xl p-6 shadow-xl relative overflow-hidden border border-white/10">
         <div class="relative z-10">
-          <span class="inline-block px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 text-xs font-extrabold mb-2">
-            <i class="fa-solid fa-star"></i> بنك الأسئلة الشامل (150 سؤال متنوع بالشواهد)
+          <span class="badge-warn inline-block px-3 py-1 rounded-full text-xs font-extrabold mb-2">
+            <i class="fa-solid fa-star"></i> بنك الأسئلة الشامل (150 سؤالاً متنوعاً بالشواهد)
           </span>
-          <h2 class="text-2xl font-black">المسابقة الكتابية والكنسية اليومية</h2>
-          <p class="text-sm text-blue-100 mt-1">اختر تحدي اليوم (10 أسئلة متجددة يومياً) أو تدرب في الوضع الحر من أصل 150 سؤالاً، وتُضاف نقاطك تلقائياً للسحابة!</p>
+          <h2 class="text-2xl font-black text-white">المسابقة الكتابية والكنسية اليومية</h2>
+          <p class="text-sm text-sky-100 mt-1">اختر تحدي اليوم (10 أسئلة متجددة يومياً) أو تدرب في الوضع الحر من أصل 150 سؤالاً، وتُضاف نقاطك تلقائياً إلى رصيدك في السحابة!</p>
 
           <div class="mt-4 flex flex-wrap items-center gap-2.5">
-            <button onclick="startQuiz('daily')" class="px-5 py-3 rounded-2xl gold-gradient text-white font-extrabold text-sm shadow-lg hover:opacity-95 active:scale-95 transition flex items-center gap-2">
+            <button onclick="startQuiz('daily')" class="px-5 py-3 rounded-2xl gold-gradient font-extrabold text-sm shadow-lg hover:opacity-95 active:scale-95 transition flex items-center gap-2 cursor-pointer">
               <i class="fa-solid fa-bolt"></i> ابدأ تحدي اليوم (10 أسئلة)
             </button>
-            <button onclick="startQuiz('marathon')" class="px-4 py-3 rounded-2xl bg-white/15 hover:bg-white/25 text-white font-bold text-sm border border-white/20 active:scale-95 transition flex items-center gap-2">
-              <i class="fa-solid fa-infinity"></i> تدريب حر من الـ 150 سؤال
+            <button onclick="startQuiz('marathon')" class="px-4 py-3 rounded-2xl bg-slate-900/80 hover:bg-slate-900 text-white font-bold text-sm border border-white/20 active:scale-95 transition flex items-center gap-2 cursor-pointer">
+              <i class="fa-solid fa-infinity"></i> تدريب حر من الـ 150 سؤالاً
             </button>
           </div>
         </div>
@@ -336,19 +507,19 @@
       </div>
 
       <!-- Quiz Active Arena -->
-      <div id="quiz-arena" class="hidden bg-white rounded-3xl p-5 sm:p-6 card-shadow border border-slate-100 space-y-5">
-        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-          <div class="flex items-center gap-2">
-            <span id="quiz-progress-badge" class="px-3 py-1 rounded-xl bg-blue-100 text-blue-800 text-xs font-extrabold">سؤال 1 من 10</span>
-            <span id="quiz-category-badge" class="px-2.5 py-1 rounded-xl bg-amber-100 text-amber-800 text-xs font-bold">العهد القديم</span>
+      <div id="quiz-arena" class="hidden surface-card rounded-3xl p-5 sm:p-6 space-y-5">
+        <div class="flex items-center justify-between border-b border-slate-200/40 pb-3 gap-2">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span id="quiz-progress-badge" class="badge-info px-3 py-1 rounded-xl text-xs font-extrabold">سؤال 1 من 10</span>
+            <span id="quiz-category-badge" class="badge-warn px-2.5 py-1 rounded-xl text-xs font-bold">العهد القديم</span>
           </div>
-          <div class="text-sm font-extrabold text-emerald-600">
+          <div class="text-sm font-extrabold text-emerald-500">
             النقاط المكتسبة: <span id="quiz-session-score">0</span>
           </div>
         </div>
 
         <div>
-          <h3 id="quiz-question-text" class="text-lg sm:text-xl font-extrabold text-slate-800 leading-relaxed">
+          <h3 id="quiz-question-text" class="text-lg sm:text-xl font-extrabold text-main leading-relaxed">
             نص السؤال يظهر هنا؟
           </h3>
         </div>
@@ -360,52 +531,52 @@
         <div id="quiz-feedback-box" class="hidden rounded-2xl p-4 text-sm font-bold leading-relaxed"></div>
 
         <div class="flex items-center justify-between pt-2">
-          <button onclick="quitQuiz()" class="text-xs font-bold text-slate-400 hover:text-slate-600">إنهاء المسابقة</button>
-          <button id="btn-next-question" onclick="nextQuizQuestion()" class="hidden px-6 py-2.5 rounded-xl royal-gradient text-white font-bold text-sm shadow">
+          <button onclick="quitQuiz()" class="text-xs font-bold text-dim hover:text-main cursor-pointer">إنهاء المسابقة</button>
+          <button id="btn-next-question" onclick="nextQuizQuestion()" class="hidden px-6 py-2.5 rounded-xl btn-royal font-bold text-sm shadow cursor-pointer">
             السؤال التالي <i class="fa-solid fa-arrow-left mr-1"></i>
           </button>
         </div>
       </div>
 
       <!-- Quiz Summary Result Card -->
-      <div id="quiz-result-card" class="hidden bg-white rounded-3xl p-6 card-shadow border border-slate-100 text-center space-y-4">
-        <div class="w-20 h-20 rounded-full gold-gradient text-white text-4xl flex items-center justify-center mx-auto shadow-lg">
+      <div id="quiz-result-card" class="hidden surface-card rounded-3xl p-6 text-center space-y-4">
+        <div class="w-20 h-20 rounded-full gold-gradient text-4xl flex items-center justify-center mx-auto shadow-lg">
           <i class="fa-solid fa-award"></i>
         </div>
-        <h3 class="text-2xl font-black text-slate-800">مبروك! أنهيت المسابقة</h3>
-        <p id="quiz-result-summary" class="text-slate-600 font-semibold text-sm">أجبت على 8 من 10 إجابات صحيحة</p>
-        <div class="inline-block px-6 py-3 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 font-black text-lg">
-          +<span id="quiz-earned-points">40</span> نقطة أُضيفت لحسابك السحابي!
+        <h3 class="text-2xl font-black text-main">مبارك! أتممت المسابقة</h3>
+        <p id="quiz-result-summary" class="text-sub font-semibold text-sm">أجبت على 8 من 10 إجابات صحيحة</p>
+        <div class="badge-success inline-block px-6 py-3 rounded-2xl font-black text-lg">
+          +<span id="quiz-earned-points">40</span> نقطة أُضيفت إلى رصيدك السحابي!
         </div>
         <div class="pt-2">
-          <button onclick="startQuiz('marathon')" class="px-6 py-3 rounded-2xl royal-gradient text-white font-bold text-sm shadow">
-            العب جولة أخرى من الـ 150 سؤال
+          <button onclick="startQuiz('marathon')" class="px-6 py-3 rounded-2xl btn-royal font-bold text-sm shadow cursor-pointer">
+            العب جولة أخرى من الـ 150 سؤالاً
           </button>
         </div>
       </div>
 
       <!-- Question Bank Explorer Preview -->
-      <div class="bg-white rounded-3xl p-5 card-shadow border border-slate-100">
+      <div class="surface-card rounded-3xl p-5">
         <div class="flex items-center justify-between mb-3">
-          <h3 class="font-extrabold text-base text-slate-800">إحصائيات بنك الأسئلة السحابي</h3>
-          <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-extrabold">150 سؤال جاهز</span>
+          <h3 class="font-extrabold text-base text-main">إحصائيات بنك الأسئلة السحابي</h3>
+          <span class="badge-success px-3 py-1 rounded-full text-xs font-extrabold">150 سؤالاً جاهزاً</span>
         </div>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-center text-xs">
-          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100">
-            <div class="font-black text-blue-800 text-base">45</div>
-            <div class="text-slate-500 font-semibold">العهد القديم</div>
+          <div class="subtle-box p-3 rounded-2xl">
+            <div class="font-black text-sky-500 text-base">45</div>
+            <div class="text-sub font-semibold">العهد القديم</div>
           </div>
-          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100">
-            <div class="font-black text-blue-800 text-base">45</div>
-            <div class="text-slate-500 font-semibold">العهد الجديد</div>
+          <div class="subtle-box p-3 rounded-2xl">
+            <div class="font-black text-sky-500 text-base">45</div>
+            <div class="text-sub font-semibold">العهد الجديد</div>
           </div>
-          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100">
-            <div class="font-black text-amber-600 text-base">30</div>
-            <div class="text-slate-500 font-semibold">الطقس وتاريخ الكنيسة</div>
+          <div class="subtle-box p-3 rounded-2xl">
+            <div class="font-black text-amber-500 text-base">30</div>
+            <div class="text-sub font-semibold">الطقس وتاريخ الكنيسة</div>
           </div>
-          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100">
-            <div class="font-black text-emerald-600 text-base">30</div>
-            <div class="text-slate-500 font-semibold">القديسين والقيم</div>
+          <div class="subtle-box p-3 rounded-2xl">
+            <div class="font-black text-emerald-500 text-base">30</div>
+            <div class="text-sub font-semibold">القديسين والقيم</div>
           </div>
         </div>
       </div>
@@ -413,15 +584,15 @@
 
     <!-- ==================== TAB 4: LEADERBOARD ==================== -->
     <section id="tab-leaderboard" class="hidden space-y-5">
-      <div class="bg-white rounded-3xl p-5 card-shadow border border-slate-100">
-        <div class="flex items-center justify-between mb-4">
+      <div class="surface-card rounded-3xl p-5">
+        <div class="flex items-center justify-between mb-4 gap-2 flex-wrap">
           <div>
-            <h2 class="text-xl font-black text-slate-800 flex items-center gap-2">
+            <h2 class="text-xl font-black text-main flex items-center gap-2">
               <i class="fa-solid fa-crown text-amber-500"></i> لوحة الشرف والمتصدرين
             </h2>
-            <p class="text-xs text-slate-500">ترتيب الأعضاء حسب مجموع نقاط الحضور والمسابقات والأوسمة</p>
+            <p class="text-xs text-sub">ترتيب الأعضاء حسب مجموع نقاط الحضور والمسابقات والأوسمة</p>
           </div>
-          <select id="leaderboard-stage-filter" onchange="renderLeaderboard()" class="px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold bg-slate-50">
+          <select id="leaderboard-stage-filter" onchange="renderLeaderboard()" class="app-select px-3 py-2 text-xs font-bold">
             <option value="ALL">جميع المراحل</option>
             <option value="ابتدائي">ابتدائي</option>
             <option value="إعدادي">إعدادي</option>
@@ -433,7 +604,7 @@
         </div>
 
         <!-- Top 3 Podium -->
-        <div id="podium-container" class="grid grid-cols-3 gap-2 sm:gap-4 items-end pt-4 pb-6 border-b border-slate-100">
+        <div id="podium-container" class="grid grid-cols-3 gap-2 sm:gap-4 items-end pt-4 pb-6 border-b border-slate-200/40">
           <!-- Rendered dynamically -->
         </div>
 
@@ -447,15 +618,15 @@
     <!-- ==================== TAB 5: SERVANT SECURITY & SETTINGS ==================== -->
     <section id="tab-settings" class="hidden space-y-5">
       <!-- Locked Notice if not Servant -->
-      <div id="settings-locked-view" class="bg-white rounded-3xl p-8 card-shadow border border-slate-100 text-center space-y-4">
-        <div class="w-16 h-16 rounded-2xl bg-amber-100 text-amber-600 text-3xl flex items-center justify-center mx-auto">
+      <div id="settings-locked-view" class="surface-card rounded-3xl p-8 text-center space-y-4">
+        <div class="badge-warn w-16 h-16 rounded-2xl text-3xl flex items-center justify-center mx-auto">
           <i class="fa-solid fa-user-shield"></i>
         </div>
-        <h2 class="text-xl font-black text-slate-800">إعدادات الأمان وإدارة الموقع (للخدام فقط)</h2>
-        <p class="text-xs sm:text-sm text-slate-500 max-w-md mx-auto">
+        <h2 class="text-xl font-black text-main">إعدادات الأمان وإدارة الموقع (للخدام فقط)</h2>
+        <p class="text-xs sm:text-sm text-sub max-w-md mx-auto">
           سجّل الدخول كخادم لتتمكن من تغيير كلمة سر الخدام السحابية، تعديل اسم الكنيسة، وضبط نقاط الحضور والمسابقات.
         </p>
-        <button onclick="toggleServantMode()" class="px-6 py-3 rounded-2xl royal-gradient text-white font-extrabold text-sm shadow">
+        <button onclick="toggleServantMode()" class="px-6 py-3 rounded-2xl btn-royal font-extrabold text-sm shadow cursor-pointer">
           <i class="fa-solid fa-lock-open ml-1"></i> فتح لوحة تحكم الخدام
         </button>
       </div>
@@ -463,86 +634,86 @@
       <!-- Unlocked Servant Settings Panel -->
       <div id="settings-unlocked-view" class="hidden space-y-5">
         <!-- Change Servant Password Card -->
-        <div class="bg-white rounded-3xl p-5 sm:p-6 card-shadow border border-slate-100 space-y-4">
-          <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
-            <div class="w-11 h-11 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center text-xl shrink-0">
+        <div class="surface-card rounded-3xl p-5 sm:p-6 space-y-4">
+          <div class="flex items-center gap-3 border-b border-slate-200/40 pb-3">
+            <div class="badge-danger w-11 h-11 rounded-2xl flex items-center justify-center text-xl shrink-0">
               <i class="fa-solid fa-key"></i>
             </div>
             <div>
-              <h3 class="text-lg font-black text-slate-800">تغيير كلمة سر الخدام (متزامنة سحابياً)</h3>
-              <p class="text-xs text-slate-500">عند تغيير كلمة السر هنا، يتم تحديثها في السحابة وتُطبق فوراً على هواتف جميع الخدام</p>
+              <h3 class="text-lg font-black text-main">تغيير كلمة سر الخدام (متزامنة سحابياً)</h3>
+              <p class="text-xs text-sub">عند تغيير كلمة السر هنا، يتم تحديثها في السحابة وتُطبق فوراً على هواتف جميع الخدام</p>
             </div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">كلمة السر الحالية *</label>
-              <input type="password" id="sec-old-pin" placeholder="••••" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:border-blue-600">
+              <label class="block text-xs font-bold text-main mb-1">كلمة السر الحالية *</label>
+              <input type="password" id="sec-old-pin" placeholder="••••" class="app-input w-full px-3.5 py-2.5 text-sm">
             </div>
             <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">كلمة السر الجديدة *</label>
-              <input type="password" id="sec-new-pin" placeholder="أدخل الرمز الجديد" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:border-blue-600">
+              <label class="block text-xs font-bold text-main mb-1">كلمة السر الجديدة *</label>
+              <input type="password" id="sec-new-pin" placeholder="أدخل الرمز الجديد" class="app-input w-full px-3.5 py-2.5 text-sm">
             </div>
             <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">تأكيد كلمة السر الجديدة *</label>
-              <input type="password" id="sec-confirm-pin" placeholder="أعد كتابة الرمز الجديد" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:border-blue-600">
+              <label class="block text-xs font-bold text-main mb-1">تأكيد كلمة السر الجديدة *</label>
+              <input type="password" id="sec-confirm-pin" placeholder="أعد كتابة الرمز الجديد" class="app-input w-full px-3.5 py-2.5 text-sm">
             </div>
           </div>
 
-          <button onclick="changeServantPassword()" class="px-6 py-3 rounded-2xl bg-rose-700 hover:bg-rose-800 text-white font-extrabold text-sm shadow transition flex items-center gap-2">
+          <button onclick="changeServantPassword()" class="px-6 py-3 rounded-2xl bg-rose-700 hover:bg-rose-800 text-white font-extrabold text-sm shadow transition flex items-center gap-2 cursor-pointer">
             <i class="fa-solid fa-shield-check"></i> حفظ كلمة السر الجديدة في السحابة
           </button>
         </div>
 
         <!-- General Church & Points Settings Card -->
-        <div class="bg-white rounded-3xl p-5 sm:p-6 card-shadow border border-slate-100 space-y-4">
-          <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
-            <div class="w-11 h-11 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-xl shrink-0">
+        <div class="surface-card rounded-3xl p-5 sm:p-6 space-y-4">
+          <div class="flex items-center gap-3 border-b border-slate-200/40 pb-3">
+            <div class="badge-info w-11 h-11 rounded-2xl flex items-center justify-center text-xl shrink-0">
               <i class="fa-solid fa-sliders"></i>
             </div>
             <div>
-              <h3 class="text-lg font-black text-slate-800">إعدادات الكنيسة ونظام النقاط</h3>
-              <p class="text-xs text-slate-500">تخصيص اسم الاجتماع وقيمة النقاط الممنوحة للحضور والمسابقات</p>
+              <h3 class="text-lg font-black text-main">إعدادات الكنيسة ونظام النقاط</h3>
+              <p class="text-xs text-sub">تخصيص اسم الاجتماع وقيمة النقاط الممنوحة للحضور والمسابقات</p>
             </div>
           </div>
 
           <div class="space-y-3">
             <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">اسم الكنيسة أو الاجتماع (يظهر في أعلى الموقع)</label>
-              <input type="text" id="set-church-name" placeholder="مثال: اجتماع شباب الأنبا أنطونيوس" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:border-blue-600">
+              <label class="block text-xs font-bold text-main mb-1">اسم الكنيسة أو الاجتماع (يظهر في أعلى الموقع)</label>
+              <input type="text" id="set-church-name" placeholder="مثال: اجتماع شباب الأنبا أنطونيوس" class="app-input w-full px-3.5 py-2.5 text-sm">
             </div>
 
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">نقاط الحضور اليومي</label>
-                <input type="number" id="set-attendance-pts" min="1" max="500" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm font-bold">
+                <label class="block text-xs font-bold text-main mb-1">نقاط الحضور اليومي</label>
+                <input type="number" id="set-attendance-pts" min="1" max="500" class="app-input w-full px-3.5 py-2.5 text-sm font-bold">
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">نقاط الإجابة الصحيحة بالمسابقة</label>
-                <input type="number" id="set-quiz-pts" min="1" max="500" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm font-bold">
+                <label class="block text-xs font-bold text-main mb-1">نقاط الإجابة الصحيحة بالمسابقة</label>
+                <input type="number" id="set-quiz-pts" min="1" max="500" class="app-input w-full px-3.5 py-2.5 text-sm font-bold">
               </div>
             </div>
           </div>
 
-          <button onclick="saveGeneralSettings()" class="px-6 py-3 rounded-2xl royal-gradient text-white font-extrabold text-sm shadow transition flex items-center gap-2">
+          <button onclick="saveGeneralSettings()" class="px-6 py-3 rounded-2xl btn-royal font-extrabold text-sm shadow transition flex items-center gap-2 cursor-pointer">
             <i class="fa-solid fa-cloud-arrow-up"></i> حفظ الإعدادات ومزامنتها
           </button>
         </div>
 
         <!-- Cloud Info & Danger Zone -->
-        <div class="bg-white rounded-3xl p-5 card-shadow border border-slate-100 space-y-3">
-          <h3 class="font-extrabold text-sm text-slate-800 flex items-center gap-2">
-            <i class="fa-solid fa-database text-emerald-600"></i> حالة قاعدة البيانات السحابية
+        <div class="surface-card rounded-3xl p-5 space-y-3">
+          <h3 class="font-extrabold text-sm text-main flex items-center gap-2">
+            <i class="fa-solid fa-database text-emerald-500"></i> حالة قاعدة البيانات السحابية
           </h3>
-          <div class="text-xs text-slate-600 bg-slate-50 p-3 rounded-2xl border border-slate-200/70 space-y-1">
-            <div>• معرف السحابة (Gist ID): <code id="display-gist-id" class="font-bold text-blue-800">جاري التحميل...</code></div>
-            <div>• عدد الأعضاء المحذوفين المحجوبين من العودة: <strong id="display-deleted-count">0</strong></div>
+          <div class="subtle-box text-xs text-sub p-3 rounded-2xl space-y-1">
+            <div>• معرف السحابة (Gist ID): <code id="display-gist-id" class="font-bold text-amber-500">جاري التحميل...</code></div>
+            <div>• عدد الأعضاء المحذوفين المحجوبين من العودة: <strong id="display-deleted-count" class="text-main">0</strong></div>
           </div>
           <div class="flex flex-wrap gap-2 pt-1">
-            <button onclick="confirmBulkResetPoints()" class="px-4 py-2.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold text-xs">
+            <button onclick="confirmBulkResetPoints()" class="badge-warn px-4 py-2.5 rounded-xl font-extrabold text-xs cursor-pointer">
               <i class="fa-solid fa-rotate-left ml-1"></i> تصفير نقاط جميع الأعضاء
             </button>
-            <button onclick="confirmClearLogs()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs">
+            <button onclick="confirmClearLogs()" class="subtle-box px-4 py-2.5 rounded-xl font-bold text-xs cursor-pointer">
               <i class="fa-solid fa-broom ml-1"></i> مسح سجل النشاطات القديمة
             </button>
           </div>
@@ -553,25 +724,25 @@
   </main>
 
   <!-- Bottom Navigation Bar (Mobile-First One-Handed Navigation) -->
-  <nav class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200 z-40 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+  <nav class="bottom-nav fixed bottom-0 inset-x-0 backdrop-blur-md z-40">
     <div class="max-w-4xl mx-auto grid grid-cols-5 h-16">
-      <button onclick="switchTab('home')" id="nav-home" class="nav-btn flex flex-col items-center justify-center gap-1 text-blue-800 font-extrabold transition">
+      <button onclick="switchTab('home')" id="nav-home" class="nav-btn nav-active flex flex-col items-center justify-center gap-1 transition cursor-pointer">
         <i class="fa-solid fa-house text-base sm:text-lg"></i>
         <span class="text-[10px] sm:text-[11px]">الرئيسية</span>
       </button>
-      <button onclick="switchTab('attendance')" id="nav-attendance" class="nav-btn flex flex-col items-center justify-center gap-1 text-slate-400 font-bold transition">
+      <button onclick="switchTab('attendance')" id="nav-attendance" class="nav-btn nav-inactive flex flex-col items-center justify-center gap-1 transition cursor-pointer">
         <i class="fa-solid fa-clipboard-user text-base sm:text-lg"></i>
         <span class="text-[10px] sm:text-[11px]">الأعضاء</span>
       </button>
-      <button onclick="switchTab('quiz')" id="nav-quiz" class="nav-btn flex flex-col items-center justify-center gap-1 text-slate-400 font-bold transition">
+      <button onclick="switchTab('quiz')" id="nav-quiz" class="nav-btn nav-inactive flex flex-col items-center justify-center gap-1 transition cursor-pointer">
         <i class="fa-solid fa-brain text-base sm:text-lg"></i>
-        <span class="text-[10px] sm:text-[11px]">150 سؤال</span>
+        <span class="text-[10px] sm:text-[11px]">150 سؤالاً</span>
       </button>
-      <button onclick="switchTab('leaderboard')" id="nav-leaderboard" class="nav-btn flex flex-col items-center justify-center gap-1 text-slate-400 font-bold transition">
+      <button onclick="switchTab('leaderboard')" id="nav-leaderboard" class="nav-btn nav-inactive flex flex-col items-center justify-center gap-1 transition cursor-pointer">
         <i class="fa-solid fa-trophy text-base sm:text-lg"></i>
         <span class="text-[10px] sm:text-[11px]">المتصدرون</span>
       </button>
-      <button onclick="switchTab('settings')" id="nav-settings" class="nav-btn flex flex-col items-center justify-center gap-1 text-slate-400 font-bold transition">
+      <button onclick="switchTab('settings')" id="nav-settings" class="nav-btn nav-inactive flex flex-col items-center justify-center gap-1 transition cursor-pointer">
         <i class="fa-solid fa-gear text-base sm:text-lg"></i>
         <span class="text-[10px] sm:text-[11px]">الإعدادات</span>
       </button>
@@ -581,35 +752,35 @@
   <!-- ==================== MODALS ==================== -->
 
   <!-- 1. Self-Registration Modal ("سجّل نفسك فوراً") -->
-  <div id="modal-register" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4">
+  <div id="modal-register" class="hidden fixed inset-0 bg-slate-950/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="surface-card rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4">
       <div class="flex items-center justify-between">
-        <h3 class="text-lg font-black text-slate-800 flex items-center gap-2">
+        <h3 class="text-lg font-black text-main flex items-center gap-2">
           <i class="fa-solid fa-user-plus text-amber-500"></i> تسجيل عضو جديد في السحابة
         </h3>
-        <button onclick="closeModal('modal-register')" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center">
+        <button onclick="closeModal('modal-register')" class="subtle-box w-8 h-8 rounded-full flex items-center justify-center cursor-pointer">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
-      <p class="text-xs text-slate-500">بمجرد التسجيل سيظهر اسمك فوراً على هواتف جميع الخدام والأعضاء وتبدأ بـ <strong>10 نقاط ترحيبية</strong>!</p>
+      <p class="text-xs text-sub">بمجرد التسجيل سيظهر اسمك فوراً على هواتف جميع الخدام والأعضاء وتبدأ بـ <strong>10 نقاط ترحيبية</strong>!</p>
 
       <div class="space-y-3">
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">الاسم الثلاثي *</label>
-          <input type="text" id="reg-name" placeholder="مثال: مارك جرجس فهيم" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-blue-600">
+          <label class="block text-xs font-bold text-main mb-1">الاسم الثلاثي *</label>
+          <input type="text" id="reg-name" placeholder="مثال: مارك جرجس فهيم" class="app-input w-full px-3.5 py-2.5 text-sm">
         </div>
 
         <div class="grid grid-cols-2 gap-2.5">
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">الصفة *</label>
-            <select id="reg-role" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white">
+            <label class="block text-xs font-bold text-main mb-1">الصفة *</label>
+            <select id="reg-role" class="app-select w-full px-3 py-2.5 text-sm">
               <option value="مخدوم">مخدوم</option>
               <option value="خادم">خادم</option>
             </select>
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">المرحلة / الفصل *</label>
-            <select id="reg-stage" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white">
+            <label class="block text-xs font-bold text-main mb-1">المرحلة أو الفصل *</label>
+            <select id="reg-stage" class="app-select w-full px-3 py-2.5 text-sm">
               <option value="ابتدائي">ابتدائي</option>
               <option value="إعدادي">إعدادي</option>
               <option value="ثانوي">ثانوي</option>
@@ -621,57 +792,57 @@
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">رقم الموبايل (اختياري للافتقاد واتساب)</label>
-          <input type="tel" id="reg-phone" placeholder="012xxxxxxxx" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-blue-600">
+          <label class="block text-xs font-bold text-main mb-1">رقم الهاتف المحمول (اختياري للافتقاد عبر واتساب)</label>
+          <input type="tel" id="reg-phone" placeholder="012xxxxxxxx" class="app-input w-full px-3.5 py-2.5 text-sm">
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1.5">اختر رمزك المفضل</label>
+          <label class="block text-xs font-bold text-main mb-1.5">اختر رمزك المفضل</label>
           <div id="avatar-picker" class="flex items-center justify-between gap-2">
-            <button type="button" onclick="selectAvatar('✝️')" class="avatar-opt w-11 h-11 rounded-xl bg-amber-100 border-2 border-amber-500 text-xl flex items-center justify-center">✝️</button>
-            <button type="button" onclick="selectAvatar('🕊️')" class="avatar-opt w-11 h-11 rounded-xl bg-slate-100 border-2 border-transparent text-xl flex items-center justify-center">🕊️</button>
-            <button type="button" onclick="selectAvatar('📖')" class="avatar-opt w-11 h-11 rounded-xl bg-slate-100 border-2 border-transparent text-xl flex items-center justify-center">📖</button>
-            <button type="button" onclick="selectAvatar('👑')" class="avatar-opt w-11 h-11 rounded-xl bg-slate-100 border-2 border-transparent text-xl flex items-center justify-center">👑</button>
-            <button type="button" onclick="selectAvatar('⭐')" class="avatar-opt w-11 h-11 rounded-xl bg-slate-100 border-2 border-transparent text-xl flex items-center justify-center">⭐</button>
-            <button type="button" onclick="selectAvatar('🦁')" class="avatar-opt w-11 h-11 rounded-xl bg-slate-100 border-2 border-transparent text-xl flex items-center justify-center">🦁</button>
+            <button type="button" onclick="selectAvatar('✝️')" class="avatar-opt w-11 h-11 rounded-xl bg-amber-500/20 border-2 border-amber-500 text-xl flex items-center justify-center cursor-pointer">✝️</button>
+            <button type="button" onclick="selectAvatar('🕊️')" class="avatar-opt subtle-box w-11 h-11 rounded-xl border-2 border-transparent text-xl flex items-center justify-center cursor-pointer">🕊️</button>
+            <button type="button" onclick="selectAvatar('📖')" class="avatar-opt subtle-box w-11 h-11 rounded-xl border-2 border-transparent text-xl flex items-center justify-center cursor-pointer">📖</button>
+            <button type="button" onclick="selectAvatar('👑')" class="avatar-opt subtle-box w-11 h-11 rounded-xl border-2 border-transparent text-xl flex items-center justify-center cursor-pointer">👑</button>
+            <button type="button" onclick="selectAvatar('⭐')" class="avatar-opt subtle-box w-11 h-11 rounded-xl border-2 border-transparent text-xl flex items-center justify-center cursor-pointer">⭐</button>
+            <button type="button" onclick="selectAvatar('🦁')" class="avatar-opt subtle-box w-11 h-11 rounded-xl border-2 border-transparent text-xl flex items-center justify-center cursor-pointer">🦁</button>
           </div>
         </div>
       </div>
 
-      <button onclick="submitRegistration()" id="btn-submit-reg" class="w-full py-3 rounded-2xl gold-gradient text-white font-extrabold text-sm shadow-lg hover:opacity-95 active:scale-95 transition">
+      <button onclick="submitRegistration()" id="btn-submit-reg" class="w-full py-3 rounded-2xl gold-gradient font-extrabold text-sm shadow-lg hover:opacity-95 active:scale-95 transition cursor-pointer">
         حفظ ومزامنة مع السحابة الآن
       </button>
     </div>
   </div>
 
   <!-- 2. Edit Member Modal (Servants Only) -->
-  <div id="modal-edit-member" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4">
+  <div id="modal-edit-member" class="hidden fixed inset-0 bg-slate-950/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="surface-card rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4">
       <div class="flex items-center justify-between">
-        <h3 class="text-lg font-black text-slate-800 flex items-center gap-2">
-          <i class="fa-solid fa-user-pen text-blue-600"></i> تعديل بيانات العضو
+        <h3 class="text-lg font-black text-main flex items-center gap-2">
+          <i class="fa-solid fa-user-pen text-sky-500"></i> تعديل بيانات العضو
         </h3>
-        <button onclick="closeModal('modal-edit-member')" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center">
+        <button onclick="closeModal('modal-edit-member')" class="subtle-box w-8 h-8 rounded-full flex items-center justify-center cursor-pointer">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
       <input type="hidden" id="edit-member-id">
       <div class="space-y-3">
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">الاسم بالكامل *</label>
-          <input type="text" id="edit-member-name" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-blue-600">
+          <label class="block text-xs font-bold text-main mb-1">الاسم بالكامل *</label>
+          <input type="text" id="edit-member-name" class="app-input w-full px-3.5 py-2.5 text-sm">
         </div>
         <div class="grid grid-cols-2 gap-2.5">
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">الصفة</label>
-            <select id="edit-member-role" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white">
+            <label class="block text-xs font-bold text-main mb-1">الصفة</label>
+            <select id="edit-member-role" class="app-select w-full px-3 py-2.5 text-sm">
               <option value="مخدوم">مخدوم</option>
               <option value="خادم">خادم</option>
             </select>
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">المرحلة</label>
-            <select id="edit-member-stage" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white">
+            <label class="block text-xs font-bold text-main mb-1">المرحلة</label>
+            <select id="edit-member-stage" class="app-select w-full px-3 py-2.5 text-sm">
               <option value="ابتدائي">ابتدائي</option>
               <option value="إعدادي">إعدادي</option>
               <option value="ثانوي">ثانوي</option>
@@ -683,107 +854,107 @@
         </div>
         <div class="grid grid-cols-2 gap-2.5">
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">رقم الموبايل</label>
-            <input type="tel" id="edit-member-phone" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+            <label class="block text-xs font-bold text-main mb-1">رقم الهاتف المحمول</label>
+            <input type="tel" id="edit-member-phone" class="app-input w-full px-3.5 py-2.5 text-sm">
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">رصيد النقاط الحالي</label>
-            <input type="number" id="edit-member-points" min="0" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-bold text-amber-700">
+            <label class="block text-xs font-bold text-main mb-1">رصيد النقاط الحالي</label>
+            <input type="number" id="edit-member-points" min="0" class="app-input w-full px-3.5 py-2.5 text-sm font-bold text-amber-500">
           </div>
         </div>
       </div>
-      <button onclick="saveEditedMember()" class="w-full py-3 rounded-2xl royal-gradient text-white font-extrabold text-sm shadow-lg">
+      <button onclick="saveEditedMember()" class="w-full py-3 rounded-2xl btn-royal font-extrabold text-sm shadow-lg cursor-pointer">
         حفظ التعديلات في السحابة
       </button>
     </div>
   </div>
 
-  <!-- 3. Custom Confirmation Modal (For Deleting Member / Resetting Points - Never uses confirm()) -->
-  <div id="modal-confirm" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl w-full max-w-sm p-6 shadow-2xl space-y-4 text-center">
-      <div class="w-14 h-14 rounded-2xl bg-rose-100 text-rose-600 text-2xl flex items-center justify-center mx-auto">
+  <!-- 3. Custom Confirmation Modal (For Deleting Member / Resetting Points) -->
+  <div id="modal-confirm" class="hidden fixed inset-0 bg-slate-950/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="surface-card rounded-3xl w-full max-w-sm p-6 shadow-2xl space-y-4 text-center">
+      <div class="badge-danger w-14 h-14 rounded-2xl text-2xl flex items-center justify-center mx-auto">
         <i class="fa-solid fa-triangle-exclamation"></i>
       </div>
-      <h3 id="confirm-modal-title" class="text-lg font-black text-slate-800">تأكيد الإجراء</h3>
-      <p id="confirm-modal-message" class="text-xs sm:text-sm text-slate-600 leading-relaxed">هل أنت متأكد من تنفيذ هذا الإجراء؟</p>
+      <h3 id="confirm-modal-title" class="text-lg font-black text-main">تأكيد الإجراء</h3>
+      <p id="confirm-modal-message" class="text-xs sm:text-sm text-sub leading-relaxed">هل أنت متأكد من تنفيذ هذا الإجراء؟</p>
       <div class="flex gap-2 pt-1">
-        <button onclick="closeModal('modal-confirm')" class="w-1/2 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm">إلغاء</button>
-        <button id="confirm-modal-yes-btn" class="w-1/2 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-sm shadow">تأكيد الحذف</button>
+        <button onclick="closeModal('modal-confirm')" class="subtle-box w-1/2 py-2.5 rounded-xl font-bold text-sm cursor-pointer">إلغاء</button>
+        <button id="confirm-modal-yes-btn" class="w-1/2 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-sm shadow cursor-pointer">تأكيد الحذف</button>
       </div>
     </div>
   </div>
 
   <!-- 4. Select Existing Account Modal -->
-  <div id="modal-select-user" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4">
+  <div id="modal-select-user" class="hidden fixed inset-0 bg-slate-950/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="surface-card rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4">
       <div class="flex items-center justify-between">
-        <h3 class="text-lg font-black text-slate-800">اختر حسابك من القائمة</h3>
-        <button onclick="closeModal('modal-select-user')" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center">
+        <h3 class="text-lg font-black text-main">اختر حسابك من القائمة</h3>
+        <button onclick="closeModal('modal-select-user')" class="subtle-box w-8 h-8 rounded-full flex items-center justify-center cursor-pointer">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
-      <input type="text" id="switch-user-search" oninput="renderSwitchUserList()" placeholder="ابحث عن اسمك..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm">
+      <input type="text" id="switch-user-search" oninput="renderSwitchUserList()" placeholder="ابحث عن اسمك..." class="app-input w-full px-3.5 py-2.5 text-sm">
       <div id="switch-user-list" class="max-h-64 overflow-y-auto space-y-2">
         <!-- Populated dynamically -->
       </div>
-      <button onclick="closeModal('modal-select-user'); openRegisterModal();" class="w-full py-2.5 rounded-xl bg-blue-50 text-blue-800 font-bold text-xs">
+      <button onclick="closeModal('modal-select-user'); openRegisterModal();" class="badge-info w-full py-2.5 rounded-xl font-extrabold text-xs cursor-pointer">
         لم تجد اسمك؟ سجّل عضواً جديداً
       </button>
     </div>
   </div>
 
   <!-- 5. Servant Admin PIN Modal -->
-  <div id="modal-servant-pin" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl w-full max-w-sm p-6 shadow-2xl space-y-4 text-center">
-      <div class="w-14 h-14 rounded-2xl royal-gradient text-amber-400 text-2xl flex items-center justify-center mx-auto">
+  <div id="modal-servant-pin" class="hidden fixed inset-0 bg-slate-950/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="surface-card rounded-3xl w-full max-w-sm p-6 shadow-2xl space-y-4 text-center">
+      <div class="w-14 h-14 rounded-2xl royal-gradient text-amber-300 text-2xl flex items-center justify-center mx-auto">
         <i class="fa-solid fa-shield-halved"></i>
       </div>
-      <h3 class="text-lg font-black text-slate-800">دخول لوحة تحكم الخدام</h3>
-      <p class="text-xs text-slate-500">أدخل كلمة سر الخدام لتسجيل الحضور والغياب وحذف/تعديل الأعضاء وإدارة الإعدادات (الافتراضي: <strong>1234</strong>)</p>
-      <input type="password" id="servant-pin-input" onkeydown="if(event.key==='Enter') verifyServantPin()" maxlength="16" placeholder="••••" class="w-full text-center tracking-widest text-2xl font-black py-3 rounded-2xl border border-slate-200 bg-slate-50 focus:outline-none focus:border-blue-600">
+      <h3 class="text-lg font-black text-main">دخول لوحة تحكم الخدام</h3>
+      <p class="text-xs text-sub">أدخل كلمة سر الخدام لتسجيل الحضور والغياب وحذف وتعديل الأعضاء وإدارة الإعدادات (الافتراضية: <strong>1234</strong>)</p>
+      <input type="password" id="servant-pin-input" onkeydown="if(event.key==='Enter') verifyServantPin()" maxlength="16" placeholder="••••" class="app-input w-full text-center tracking-widest text-2xl font-black py-3">
       <div class="flex gap-2">
-        <button onclick="closeModal('modal-servant-pin')" class="w-1/2 py-2.5 rounded-xl bg-slate-100 text-slate-600 font-bold text-sm">إلغاء</button>
-        <button onclick="verifyServantPin()" class="w-1/2 py-2.5 rounded-xl royal-gradient text-white font-bold text-sm">دخول</button>
+        <button onclick="closeModal('modal-servant-pin')" class="subtle-box w-1/2 py-2.5 rounded-xl font-bold text-sm cursor-pointer">إلغاء</button>
+        <button onclick="verifyServantPin()" class="w-1/2 py-2.5 rounded-xl btn-royal font-extrabold text-sm cursor-pointer">دخول</button>
       </div>
     </div>
   </div>
 
   <!-- 6. Announcement & Verse Editor Modal (Servants Only) -->
-  <div id="modal-announcement" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4">
+  <div id="modal-announcement" class="hidden fixed inset-0 bg-slate-950/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="surface-card rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4">
       <div class="flex items-center justify-between">
-        <h3 class="text-lg font-black text-slate-800">تحديث آية اليوم وإعلان الكنيسة</h3>
-        <button onclick="closeModal('modal-announcement')" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center">
+        <h3 class="text-lg font-black text-main">تحديث آية اليوم وإعلان الكنيسة</h3>
+        <button onclick="closeModal('modal-announcement')" class="subtle-box w-8 h-8 rounded-full flex items-center justify-center cursor-pointer">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
       <div class="space-y-3">
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">آية اليوم والشاهد</label>
-          <textarea id="input-verse" rows="2" class="w-full p-3 rounded-xl border border-slate-200 text-sm"></textarea>
+          <label class="block text-xs font-bold text-main mb-1">آية اليوم والشاهد</label>
+          <textarea id="input-verse" rows="2" class="app-textarea w-full p-3 text-sm"></textarea>
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">إعلان الخدمة / التنبيه العام</label>
-          <textarea id="input-announcement" rows="3" class="w-full p-3 rounded-xl border border-slate-200 text-sm"></textarea>
+          <label class="block text-xs font-bold text-main mb-1">إعلان الخدمة أو التنبيه العام</label>
+          <textarea id="input-announcement" rows="3" class="app-textarea w-full p-3 text-sm"></textarea>
         </div>
       </div>
-      <button onclick="saveAnnouncement()" class="w-full py-3 rounded-2xl royal-gradient text-white font-extrabold text-sm">
+      <button onclick="saveAnnouncement()" class="w-full py-3 rounded-2xl btn-royal font-extrabold text-sm cursor-pointer">
         نشر التحديث لجميع الهواتف فوراً
       </button>
     </div>
   </div>
 
   <!-- 7. Prayer Request Modal -->
-  <div id="modal-prayer" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4">
+  <div id="modal-prayer" class="hidden fixed inset-0 bg-slate-950/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="surface-card rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4">
       <div class="flex items-center justify-between">
-        <h3 class="text-lg font-black text-slate-800">إضافة طلب صلاة أو افتقاد</h3>
-        <button onclick="closeModal('modal-prayer')" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center">
+        <h3 class="text-lg font-black text-main">إضافة طلب صلاة أو افتقاد</h3>
+        <button onclick="closeModal('modal-prayer')" class="subtle-box w-8 h-8 rounded-full flex items-center justify-center cursor-pointer">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
-      <textarea id="input-prayer-text" rows="3" placeholder="اكتب طلب الصلاة هنا ليصلي من أجله الخدام والمخدومون..." class="w-full p-3.5 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-blue-600"></textarea>
-      <button onclick="submitPrayerRequest()" class="w-full py-3 rounded-2xl bg-purple-700 hover:bg-purple-800 text-white font-extrabold text-sm">
+      <textarea id="input-prayer-text" rows="3" placeholder="اكتب طلب الصلاة هنا ليصلي من أجله الخدام والمخدومون..." class="app-textarea w-full p-3.5 text-sm"></textarea>
+      <button onclick="submitPrayerRequest()" class="w-full py-3 rounded-2xl gold-gradient font-extrabold text-sm shadow cursor-pointer">
         إرسال الطلب للسحابة
       </button>
     </div>
@@ -797,7 +968,7 @@
       TOKEN: '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',
       GIST_FILENAME: 'church_service_hub_db_v2.json',
       GIST_DESCRIPTION: 'CHURCH_SERVICE_HUB_CLOUD_V2',
-      POLL_INTERVAL_MS: 5000 // Real-time sync every 5 seconds across all devices
+      POLL_INTERVAL_MS: 6000 // Real-time sync every 6 seconds across all devices
     };
 
     // Global Application State
@@ -809,7 +980,6 @@
       stageFilter: 'ALL',
       isSyncing: false,
       lastSyncTime: null,
-      // Cloud Synchronized Data Schema
       cloudData: {
         version: 2,
         settings: {
@@ -819,12 +989,12 @@
           quizPoints: 5
         },
         verse: '"أَسْتَطِيعُ كُلَّ شَيْءٍ فِي الْمَسِيحِ الَّذِي يُقَوِّينِي." (فيلبي 4: 13)',
-        announcement: 'أهلاً بكل الخدام والمخدومين! سجل اسمك الآن وشارك في مسابقة الـ 150 سؤال اليومية لجمع النقاط.',
-        members: [],     // { id, name, role, stage, phone, avatar, points, streak, joinedAt }
-        deletedIds: [],  // Array of deleted member IDs so deleted members NEVER resurrect on sync
-        attendance: {},  // { "YYYY-MM-DD": { memberId: "present" | "absent" } }
-        logs: [],        // { id, text, icon, color, timestamp }
-        prayers: []      // { id, author, text, timestamp }
+        announcement: 'مرحباً بكل الخدام والمخدومين! سجل اسمك الآن وشارك في مسابقة الـ 150 سؤال اليومية لجمع النقاط.',
+        members: [],
+        deletedIds: [],
+        attendance: {},
+        logs: [],
+        prayers: []
       }
     };
 
@@ -832,7 +1002,6 @@
      * 2. COMPLETE 150-QUESTION CHRISTIAN & BIBLICAL QUIZ BANK WITH REFERENCES
      *************************************************************************/
     const QUIZ_BANK_150 = [
-      // --- العهد القديم (1 - 45) ---
       { q: "من هو أول إنسان خلقه الله على الأرض؟", opts: ["نوح", "آدم", "إبراهيم", "هابيل"], a: 1, cat: "العهد القديم", ref: "تكوين 2: 7" },
       { q: "كم يوماً استغرقت عملية الخليقة قبل أن يستريح الله في اليوم السابع؟", opts: ["5 أيام", "6 أيام", "7 أيام", "40 يوماً"], a: 1, cat: "العهد القديم", ref: "تكوين 2: 2" },
       { q: "ما اسم الفلك الذي بناه نوح للنجاة من الطوفان؟", opts: ["فلك العهد", "فلك نوح", "سفينة الخلاص", "فلك الرجاء"], a: 1, cat: "العهد القديم", ref: "تكوين 6: 14" },
@@ -878,8 +1047,6 @@
       { q: "ما اسم الجبل الذي استقر عليه فلك نوح بعد الطوفان؟", opts: ["جبل سيناء", "جبل أراراط", "جبل حرمون", "جبل الكرمل"], a: 1, cat: "العهد القديم", ref: "تكوين 8: 4" },
       { q: "من هو الرجل الذي سار مع الله ولم يوجد لأن الله أخذه؟", opts: ["متوشالح", "أخنوخ", "لامك", "شيث"], a: 1, cat: "العهد القديم", ref: "تكوين 5: 24" },
       { q: "ما هو أول سفر في الكتاب المقدس؟", opts: ["الخروج", "التكوين", "المزامير", "متى"], a: 1, cat: "العهد القديم", ref: "سفر التكوين" },
-
-      // --- العهد الجديد (46 - 90) ---
       { q: "في أي مدينة وُلد السيد المسيح؟", opts: ["الناصرة", "بيت لحم", "أورشليم", "كفرناحوم"], a: 1, cat: "العهد الجديد", ref: "متى 2: 1" },
       { q: "ما اسم الملاك الذي بشّر السيدة العذراء مريم بميلاد المسيح؟", opts: ["ميخائيل", "جبرائيل", "رافائيل", "سوريال"], a: 1, cat: "العهد الجديد", ref: "لوقا 1: 26" },
       { q: "ما هي الهدايا الثلاث التي قدمها المجوس للسيد المسيح؟", opts: ["ذهب وفضة ونحاس", "ذهب ولبان ومر", "خبز وخمر وزيت", "قمح وعسل وبخور"], a: 1, cat: "العهد الجديد", ref: "متى 2: 11" },
@@ -925,8 +1092,6 @@
       { q: "في أي جزيرة كان يوحنا الحبيب منفياً عندما كتب سفر الرؤيا؟", opts: ["جزيرة قبرص", "جزيرة بطمس", "جزيرة كريت", "جزيرة مالطة"], a: 1, cat: "العهد الجديد", ref: "رؤيا 1: 9" },
       { q: "ما اسم المولود أعمى الذي شفاه المسيح في أريحا؟", opts: ["لعازر", "بارتيماوس", "أنسيمس", "تيخيكس"], a: 1, cat: "العهد الجديد", ref: "مرقس 10: 46" },
       { q: "كم مرة أمر السيد المسيح أن نغفر لأخينا إذا أخطأ إلينا؟", opts: ["7 مرات فقط", "سبعين مرة سبع مرات (بلا حدود)", "3 مرات", "مرة واحدة"], a: 1, cat: "العهد الجديد", ref: "متى 18: 22" },
-
-      // --- الطقس وتاريخ الكنيسة (91 - 120) ---
       { q: "من هو الرسول الذي أسس الكنيسة في مصر (الإسكندرية)؟", opts: ["القديس بطرس", "القديس مارمرقس الرسول", "القديس بولس", "القديس توما"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "تاريخ الكنيسة القبطية" },
       { q: "ما هو رمز القديس مرقس الإنجيلي في الأيقونات القبطية؟", opts: ["النسر", "الأسد", "الثور", "الملاك"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "الأيقونات القبطية" },
       { q: "كم عدد أسرار الكنيسة المقدسة؟", opts: ["5 أسرار", "7 أسرار", "3 أسرار", "12 سراً"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "اللاهوت الطقسي" },
@@ -957,8 +1122,6 @@
       { q: "ما هو اليوم الذي نصوم فيه تذكاراً لصلب السيد المسيح؟", opts: ["الثلاثاء", "الجمعة", "الأحد", "الأربعاء"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "أصوام الأسبوع" },
       { q: "كم يوماً تستمر فترة الخماسين المقدسة بعد عيد القيامة؟", opts: ["40 يوماً", "50 يوماً (لا صوم فيها ولا مطانيات)", "55 يوماً", "30 يوماً"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "طقس الخماسين" },
       { q: "من هو البابا الملقب بخاتم الشهداء؟", opts: ["البابا مرقس", "البابا بطرس الأول", "البابا أثناسيوس", "البابا شنودة"], a: 1, cat: "الطقس وتاريخ الكنيسة", ref: "السنكسار القبطي" },
-
-      // --- القديسين والقيم المسيحية (121 - 150) ---
       { q: "من هو القديس الملقب بأبي الرهبان في العالم كله؟", opts: ["الأنبا باخوميوس", "الأنبا أنطونيوس الكبير", "الأنبا مقار", "الأنبا شنودة"], a: 1, cat: "القديسين والقيم", ref: "بستان الرهبان" },
       { q: "من هو القديس الذي أسس نظام الشركة الرهبانية في صعيد مصر؟", opts: ["الأنبا أنطونيوس", "الأنبا باخوميوس", "الأنبا بولا", "الأنبا بيشوي"], a: 1, cat: "القديسين والقيم", ref: "تاريخ الرهبنة" },
       { q: "من هو أول السواح في المسيحية؟", opts: ["الأنبا مقار", "الأنبا بولا أول السواح", "الأنبا موسى الأسود", "مارمينا"], a: 1, cat: "القديسين والقيم", ref: "السنكسار القبطي" },
@@ -1020,7 +1183,7 @@
           await pullFromCloud(true);
         }
 
-        // Real-time polling loop every 5 seconds
+        // Real-time polling loop every 6 seconds
         setInterval(() => {
           if (!appState.isSyncing) {
             pullFromCloud(false);
@@ -1084,7 +1247,7 @@
             id: 'log_init',
             text: 'تم تفعيل بوابة الكنيسة السحابية بنجاح! أهلاً بالجميع.',
             icon: 'fa-cloud-check',
-            color: 'text-emerald-600 bg-emerald-50',
+            color: 'badge-success',
             timestamp: new Date().toISOString()
           }
         ]
@@ -1140,7 +1303,6 @@
 
           appState.cloudData = remoteData;
 
-          // If current logged-in member was deleted by a servant on another device, clear local session
           if (appState.currentUserId && remoteData.deletedIds.includes(appState.currentUserId)) {
             appState.currentUserId = null;
             localStorage.removeItem('church_current_user_id');
@@ -1162,7 +1324,6 @@
       }
     }
 
-    // Safe Merge & Push to GitHub Gist with Deletion Tracking
     async function pushToCloudSafe(mutatorFn, successToastMsg = null) {
       appState.isSyncing = true;
       setSyncUI('syncing', 'جاري الحفظ في السحابة...');
@@ -1179,10 +1340,8 @@
           }
         }
 
-        // Apply mutation on top of freshest remote data
         mutatorFn(latestData);
 
-        // Enforce deletedIds filter so deleted members are permanently purged across all phones
         if (Array.isArray(latestData.deletedIds) && latestData.deletedIds.length > 0) {
           const deletedSet = new Set(latestData.deletedIds);
           latestData.members = latestData.members.filter(m => !deletedSet.has(m.id));
@@ -1223,7 +1382,7 @@
       } catch (err) {
         console.error('Push error:', err);
         setSyncUI('error', 'خطأ في الحفظ السحابي');
-        showToast('تعذر الحفظ في السحابة، تأكد من اتصال الإنترنت', 'error');
+        showToast('تعذر الحفظ في السحابة، يرجى التحقق من اتصال الإنترنت', 'error');
       } finally {
         appState.isSyncing = false;
       }
@@ -1300,11 +1459,9 @@
       appState.selectedAvatar = emoji;
       document.querySelectorAll('.avatar-opt').forEach(btn => {
         if (btn.textContent.trim() === emoji) {
-          btn.classList.remove('bg-slate-100', 'border-transparent');
-          btn.classList.add('bg-amber-100', 'border-amber-500');
+          btn.className = 'avatar-opt w-11 h-11 rounded-xl bg-amber-500/20 border-2 border-amber-500 text-xl flex items-center justify-center cursor-pointer';
         } else {
-          btn.classList.add('bg-slate-100', 'border-transparent');
-          btn.classList.remove('bg-amber-100', 'border-amber-500');
+          btn.className = 'avatar-opt subtle-box w-11 h-11 rounded-xl border-2 border-transparent text-xl flex items-center justify-center cursor-pointer';
         }
       });
     }
@@ -1320,7 +1477,6 @@
         return;
       }
 
-      // Prevent duplicate names
       const exists = appState.cloudData.members.some(m => m.name.trim().toLowerCase() === name.toLowerCase());
       if (exists) {
         showToast('هذا الاسم مسجل بالفعل! يمكنك اختياره من زر "تبديل الحساب"', 'error');
@@ -1332,6 +1488,7 @@
       btn.textContent = 'جاري التسجيل والمزامنة...';
 
       const newMemberId = 'm_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+      const welcomePts = appState.cloudData.settings?.attendancePoints || 10;
       const newMember = {
         id: newMemberId,
         name,
@@ -1339,7 +1496,7 @@
         stage,
         phone,
         avatar: appState.selectedAvatar,
-        points: 10,
+        points: welcomePts,
         streak: 1,
         joinedAt: new Date().toISOString()
       };
@@ -1348,12 +1505,12 @@
         data.members.push(newMember);
         data.logs.unshift({
           id: 'log_' + Date.now(),
-          text: `انضم عضو جديد: ${name} (${role} - ${stage}) وحصل على +10 نقاط ترحيبية`,
+          text: `انضم عضو جديد: ${name} (${role} - ${stage}) وحصل على +${welcomePts} نقاط ترحيبية`,
           icon: 'fa-user-plus',
-          color: 'text-blue-700 bg-blue-50',
+          color: 'badge-info',
           timestamp: new Date().toISOString()
         });
-      }, `أهلاً بك يا ${name}! تم تسجيلك ومزامنة حسابك مع الجميع`);
+      }, `مرحباً بك يا ${name}! تم تسجيلك ومزامنة حسابك مع الجميع`);
 
       appState.currentUserId = newMemberId;
       localStorage.setItem('church_current_user_id', newMemberId);
@@ -1366,7 +1523,6 @@
       renderAll();
     }
 
-    // Open Edit Member Modal (Servant Only)
     function openEditMemberModal(memberId) {
       if (!appState.isServant) {
         toggleServantMode();
@@ -1410,7 +1566,7 @@
           id: 'log_' + Date.now(),
           text: `قام الخدام بتحديث بيانات العضو: ${name}`,
           icon: 'fa-user-pen',
-          color: 'text-blue-700 bg-blue-50',
+          color: 'badge-info',
           timestamp: new Date().toISOString()
         });
       }, 'تم حفظ تعديلات العضو ومزامنتها سحابياً');
@@ -1418,7 +1574,6 @@
       closeModal('modal-edit-member');
     }
 
-    // Delete Member Permanently with Deletion Tracking (Servant Only)
     function confirmDeleteMember(memberId) {
       if (!appState.isServant) {
         toggleServantMode();
@@ -1444,7 +1599,7 @@
               id: 'log_' + Date.now(),
               text: `إجراء إداري: تم حذف العضو (${member.name}) من قاعدة البيانات`,
               icon: 'fa-trash-can',
-              color: 'text-rose-700 bg-rose-50',
+              color: 'badge-danger',
               timestamp: new Date().toISOString()
             });
           }, `تم حذف ${member.name} نهائياً ومزامنة الحذف مع الجميع`);
@@ -1458,7 +1613,6 @@
       );
     }
 
-    // Change Servant Password in Cloud
     async function changeServantPassword() {
       if (!appState.isServant) {
         toggleServantMode();
@@ -1489,7 +1643,7 @@
           id: 'log_' + Date.now(),
           text: 'تحديث أمني: تم تغيير كلمة سر لوحة تحكم الخدام',
           icon: 'fa-key',
-          color: 'text-rose-700 bg-rose-50',
+          color: 'badge-danger',
           timestamp: new Date().toISOString()
         });
       }, 'تم تغيير كلمة سر الخدام وحفظها في السحابة بنجاح!');
@@ -1499,7 +1653,6 @@
       document.getElementById('sec-confirm-pin').value = '';
     }
 
-    // Save General Church & Points Settings in Cloud
     async function saveGeneralSettings() {
       if (!appState.isServant) return;
       const churchName = document.getElementById('set-church-name').value.trim();
@@ -1514,7 +1667,7 @@
           id: 'log_' + Date.now(),
           text: 'قام الخدام بتحديث إعدادات الكنيسة ونظام النقاط',
           icon: 'fa-sliders',
-          color: 'text-blue-700 bg-blue-50',
+          color: 'badge-info',
           timestamp: new Date().toISOString()
         });
       }, 'تم حفظ الإعدادات ومزامنتها مع السحابة');
@@ -1536,7 +1689,7 @@
               id: 'log_' + Date.now(),
               text: 'بداية موسم جديد: تم تصفير نقاط جميع الأعضاء',
               icon: 'fa-rotate-left',
-              color: 'text-amber-700 bg-amber-50',
+              color: 'badge-warn',
               timestamp: new Date().toISOString()
             });
           }, 'تم تصفير نقاط الجميع بنجاح');
@@ -1556,7 +1709,7 @@
               id: 'log_' + Date.now(),
               text: 'تم تنظيف سجل التحديثات بواسطة الخدام',
               icon: 'fa-broom',
-              color: 'text-slate-700 bg-slate-100',
+              color: 'badge-info',
               timestamp: new Date().toISOString()
             }];
           }, 'تم مسح سجل النشاطات');
@@ -1576,28 +1729,4 @@
       openModal('modal-confirm');
     }
 
-    function selectCurrentUser(memberId) {
-      appState.currentUserId = memberId;
-      localStorage.setItem('church_current_user_id', memberId);
-      closeModal('modal-select-user');
-      renderHeaderUser();
-      const m = appState.cloudData.members.find(x => x.id === memberId);
-      if (m) showToast(`تم التبديل إلى حساب: ${m.name}`, 'success');
-    }
-
-    function renderSwitchUserList() {
-      const q = document.getElementById('switch-user-search').value.trim().toLowerCase();
-      const container = document.getElementById('switch-user-list');
-      const filtered = appState.cloudData.members.filter(m => m.name.toLowerCase().includes(q));
-
-      if (filtered.length === 0) {
-        container.innerHTML = `<div class="text-center text-xs text-slate-400 py-4">لا يوجد أعضاء مطابقون</div>`;
-        return;
-      }
-
-      container.innerHTML = filtered.map(m => `
-        <button onclick="selectCurrentUser('${m.id}')" class="w-full p-3 rounded-2xl border ${m.id === appState.currentUserId ? 'border-blue-600 bg-blue-50/70' : 'border-slate-100 hover:bg-slate-50'} flex items-center justify-between text-right transition">
-          <div class="flex items-center gap-2.5">
-            <span class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center text-lg">${m.avatar || '✝️'}</span>
-            <div>
-              <div 
+   
