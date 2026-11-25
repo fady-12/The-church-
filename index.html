@@ -1,2118 +1,672 @@
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>بوابة الكنيسة للخدام والمخدومين</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <title>الكنيسة الرسولية الأولى بالعزية - بوابة الخدمة والأعضاء</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
-    /* =====================================================================
-       EXPLICIT LIGHT & DARK THEME DESIGN TOKENS
-       ===================================================================== */
     :root {
-      --bg-app: #f4f6fa;
-      --bg-surface: #ffffff;
-      --bg-surface-alt: #eef2f7;
-      --bg-header: linear-gradient(135deg, #162a5c 0%, #24478f 100%);
-      --bg-hero-accent: #eef3ff;
-      --text-primary: #111827;
-      --text-secondary: #4b5563;
-      --text-muted: #6b7280;
-      --text-inverse: #ffffff;
-      --border-subtle: #d8e0ec;
-      --border-strong: #b8c4d8;
-      --accent-primary: #1e40af;
-      --accent-primary-hover: #17328a;
-      --accent-gold: #b45309;
-      --accent-gold-bg: #fef3c7;
-      --success-bg: #dcfce7;
-      --success-text: #14532d;
-      --success-border: #86efac;
-      --danger-bg: #fee2e2;
-      --danger-text: #7f1d1d;
-      --danger-border: #fca5a5;
-      --info-bg: #dbeafe;
-      --info-text: #1e3a8a;
-      --info-border: #93c5fd;
-      --shadow-sm: 0 2px 8px rgba(17, 24, 39, 0.06);
-      --shadow-md: 0 8px 24px rgba(17, 24, 39, 0.10);
-      --shadow-lg: 0 18px 40px rgba(17, 24, 39, 0.22);
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
-      --radius-full: 999px;
+      --primary: #1e3a8a;
+      --primary-light: #3b82f6;
+      --gold: #d97706;
+      --gold-light: #fef3c7;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --border: #e2e8f0;
     }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg-app: #0c111d;
-        --bg-surface: #151d2e;
-        --bg-surface-alt: #1d283f;
-        --bg-header: linear-gradient(135deg, #0d172c 0%, #192d59 100%);
-        --bg-hero-accent: #192642;
-        --text-primary: #f3f6fb;
-        --text-secondary: #cbd5e1;
-        --text-muted: #94a3b8;
-        --text-inverse: #ffffff;
-        --border-subtle: #283652;
-        --border-strong: #3a4d73;
-        --accent-primary: #3b82f6;
-        --accent-primary-hover: #2563eb;
-        --accent-gold: #fbbf24;
-        --accent-gold-bg: #3b2808;
-        --success-bg: #123524;
-        --success-text: #86efac;
-        --success-border: #1e603f;
-        --danger-bg: #3b1319;
-        --danger-text: #fca5a5;
-        --danger-border: #7f2330;
-        --info-bg: #152b52;
-        --info-text: #93c5fd;
-        --info-border: #284f91;
-        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.28);
-        --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.38);
-        --shadow-lg: 0 18px 42px rgba(0, 0, 0, 0.55);
-      }
+    * { box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+    body { margin: 0; background: var(--bg); color: var(--text); padding-bottom: 80px; }
+    header {
+      background: linear-gradient(135deg, var(--primary), #172554);
+      color: #fff; padding: 20px 16px; text-align: center;
+      border-bottom: 4px solid var(--gold); position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
-
-    /* =====================================================================
-       BASE & TYPOGRAPHY
-       ===================================================================== */
-    *, *::before, *::after {
-      box-sizing: border-box;
+    header h1 { margin: 0; font-size: 1.35rem; font-weight: 800; }
+    header p { margin: 4px 0 0; font-size: 0.85rem; color: #cbd5e1; }
+    .sync-bar {
+      background: #0f172a; color: #e2e8f0; font-size: 0.78rem;
+      padding: 6px 12px; display: flex; justify-content: space-between; align-items: center;
     }
+    .badge { padding: 2px 8px; border-radius: 99px; font-weight: 700; font-size: 0.75rem; }
+    .badge-ok { background: #166534; color: #dcfce7; }
+    .badge-warn { background: #92400e; color: #fef3c7; }
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Cairo', 'Tajawal', sans-serif;
-      background-color: var(--bg-app);
-      color: var(--text-primary);
-      line-height: 1.6;
-      min-height: 100vh;
-      overflow-x: hidden;
+    .container { max-width: 900px; margin: 16px auto; padding: 0 12px; }
+    .tabs {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;
+      background: #fff; padding: 8px; border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 16px;
     }
-
-    button, input, select, textarea {
-      font-family: inherit;
-      color: inherit;
+    .tab-btn {
+      border: none; background: transparent; padding: 10px 4px; border-radius: 10px;
+      font-weight: 700; font-size: 0.8rem; color: var(--muted); cursor: pointer; transition: 0.2s;
     }
+    .tab-btn.active { background: var(--primary); color: #fff; }
 
-    button {
-      cursor: pointer;
-      border: none;
-      background: transparent;
-      transition: background-color 0.18s ease, transform 0.12s ease, border-color 0.18s ease, opacity 0.18s ease;
-    }
-
-    button:active:not(:disabled) {
-      transform: scale(0.98);
-    }
-
-    button:disabled {
-      opacity: 0.55;
-      cursor: not-allowed;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    /* =====================================================================
-       HEADER & LIVE TICKER
-       ===================================================================== */
-    .app-header {
-      background: var(--bg-header);
-      color: var(--text-inverse);
-      box-shadow: var(--shadow-md);
-      position: sticky;
-      top: 0;
-      z-index: 40;
-    }
-
-    .header-inner {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 14px 16px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .brand-group {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .brand-cross {
-      width: 44px;
-      height: 44px;
-      border-radius: var(--radius-md);
-      background: rgba(255, 255, 255, 0.14);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      display: grid;
-      place-items: center;
-      font-size: 22px;
-      font-weight: 800;
-      color: #fde68a;
-      flex-shrink: 0;
-    }
-
-    .brand-title {
-      margin: 0;
-      font-size: 18px;
-      font-weight: 800;
-      line-height: 1.3;
-    }
-
-    .brand-sub {
-      margin: 2px 0 0;
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.85);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .sync-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 3px 10px;
-      border-radius: var(--radius-full);
-      font-size: 11px;
-      font-weight: 700;
-      background: rgba(15, 23, 42, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.22);
-    }
-
-    .sync-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #4ade80;
-      display: inline-block;
-    }
-
-    .sync-pill.syncing .sync-dot {
-      background: #facc15;
-    }
-
-    .sync-pill.offline .sync-dot {
-      background: #f87171;
-    }
-
-    .header-actions {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .ticker-bar {
-      background: rgba(9, 15, 30, 0.45);
-      border-top: 1px solid rgba(255, 255, 255, 0.14);
-      padding: 7px 16px;
-    }
-
-    .ticker-inner {
-      max-width: 1120px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 12px;
-      overflow: hidden;
-    }
-
-    .ticker-badge {
-      background: #fbbf24;
-      color: #111827;
-      font-weight: 800;
-      padding: 2px 9px;
-      border-radius: var(--radius-full);
-      font-size: 11px;
-      flex-shrink: 0;
-    }
-
-    .ticker-text {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      color: #f8fafc;
-      font-weight: 600;
-    }
-
-    /* =====================================================================
-       NAVIGATION TABS & ACTIVE MEMBER BAR
-       ===================================================================== */
-    .main-container {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 18px 16px 48px;
-    }
-
-    .active-member-strip {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      padding: 12px 16px;
-      margin-bottom: 16px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .active-member-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .nav-tabs {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-      margin-bottom: 20px;
-      scrollbar-width: thin;
-    }
-
-    .nav-tab {
-      background: var(--bg-surface);
-      color: var(--text-secondary);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      padding: 10px 16px;
-      font-size: 14px;
-      font-weight: 700;
-      white-space: nowrap;
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .nav-tab:hover {
-      border-color: var(--accent-primary);
-      color: var(--text-primary);
-    }
-
-    .nav-tab.is-active {
-      background: var(--accent-primary);
-      color: var(--text-inverse);
-      border-color: var(--accent-primary);
-    }
-
-    .tab-panel {
-      display: none;
-    }
-
-    .tab-panel.is-active {
-      display: block;
-    }
-
-    /* =====================================================================
-       CARDS, BUTTONS, BADGES & FORMS
-       ===================================================================== */
     .card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      padding: 18px;
-      box-shadow: var(--shadow-sm);
+      background: var(--card); border-radius: 16px; padding: 18px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.05); border: 1px solid var(--border);
       margin-bottom: 16px;
     }
-
-    .card-header {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 14px;
+    .card h2 { margin-top: 0; font-size: 1.15rem; color: var(--primary); border-bottom: 2px solid var(--gold-light); padding-bottom: 8px; }
+    .form-group { margin-bottom: 12px; }
+    label { display: block; font-weight: 700; font-size: 0.88rem; margin-bottom: 4px; }
+    input, select, textarea {
+      width: 100%; padding: 10px 12px; border: 1px solid var(--border);
+      border-radius: 10px; font-size: 0.95rem; background: #fff;
     }
-
-    .card-title {
-      margin: 0;
-      font-size: 17px;
-      font-weight: 800;
-      color: var(--text-primary);
-    }
-
-    .card-subtitle {
-      margin: 2px 0 0;
-      font-size: 13px;
-      color: var(--text-secondary);
-    }
-
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      border-radius: var(--radius-md);
-      font-weight: 700;
-      font-size: 13px;
-      padding: 9px 14px;
-      border: 1px solid transparent;
+      border: none; padding: 11px 16px; border-radius: 10px; font-weight: 700;
+      cursor: pointer; font-size: 0.92rem; display: inline-flex; align-items: center;
+      justify-content: center; gap: 6px; transition: 0.2s; width: 100%;
     }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-gold { background: var(--gold); color: #fff; }
+    .btn-success { background: var(--success); color: #fff; }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-sm { padding: 6px 10px; font-size: 0.8rem; width: auto; }
 
-    .btn-primary {
-      background: var(--accent-primary);
-      color: var(--text-inverse);
-    }
+    .section { display: none; }
+    .section.active { display: block; }
 
-    .btn-primary:hover:not(:disabled) {
-      background: var(--accent-primary-hover);
+    /* Leaderboard */
+    .leader-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px; border-radius: 12px; background: #f8fafc;
+      margin-bottom: 8px; border: 1px solid var(--border);
     }
+    .leader-rank {
+      width: 32px; height: 32px; border-radius: 50%; background: var(--primary);
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; margin-left: 10px;
+    }
+    .rank-1 { background: #eab308; color: #000; }
+    .rank-2 { background: #94a3b8; }
+    .rank-3 { background: #b45309; }
 
-    .btn-gold {
-      background: #d97706;
-      color: #ffffff;
+    /* Quiz */
+    .quiz-option {
+      display: block; width: 100%; text-align: right; padding: 12px;
+      margin: 8px 0; border: 2px solid var(--border); border-radius: 12px;
+      background: #fff; font-weight: 600; cursor: pointer;
     }
+    .quiz-option:hover { border-color: var(--primary-light); background: #eff6ff; }
+    .quiz-option.correct { background: #dcfce7; border-color: var(--success); color: #14532d; }
+    .quiz-option.wrong { background: #fee2e2; border-color: var(--danger); color: #7f1d1d; }
 
-    .btn-gold:hover:not(:disabled) {
-      background: #b45309;
+    /* Chat */
+    .chat-box {
+      height: 300px; overflow-y: auto; border: 1px solid var(--border);
+      border-radius: 12px; padding: 12px; background: #f1f5f9; margin-bottom: 10px;
     }
+    .msg {
+      background: #fff; padding: 8px 12px; border-radius: 12px;
+      margin-bottom: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .msg-meta { font-size: 0.75rem; color: var(--primary); font-weight: 700; }
 
-    .btn-success {
-      background: var(--success-bg);
-      color: var(--success-text);
-      border-color: var(--success-border);
-    }
-
-    .btn-danger {
-      background: var(--danger-bg);
-      color: var(--danger-text);
-      border-color: var(--danger-border);
-    }
-
-    .btn-outline {
-      background: var(--bg-surface-alt);
-      color: var(--text-primary);
-      border-color: var(--border-subtle);
-    }
-
-    .btn-outline:hover:not(:disabled) {
-      border-color: var(--accent-primary);
-    }
-
-    .btn-header-light {
-      background: rgba(255, 255, 255, 0.14);
-      color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.28);
-    }
-
-    .btn-header-light:hover:not(:disabled) {
-      background: rgba(255, 255, 255, 0.24);
-    }
-
-    .btn-header-gold {
-      background: #f59e0b;
-      color: #111827;
-      border: 1px solid #fbbf24;
-    }
-
-    .btn-header-gold:hover:not(:disabled) {
-      background: #fbbf24;
-    }
-
-    .btn-sm {
-      padding: 6px 10px;
-      font-size: 12px;
-      border-radius: var(--radius-sm);
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 3px 9px;
-      border-radius: var(--radius-full);
-      font-size: 11px;
-      font-weight: 800;
-    }
-
-    .badge-info {
-      background: var(--info-bg);
-      color: var(--info-text);
-      border: 1px solid var(--info-border);
-    }
-
-    .badge-success {
-      background: var(--success-bg);
-      color: var(--success-text);
-      border: 1px solid var(--success-border);
-    }
-
-    .badge-danger {
-      background: var(--danger-bg);
-      color: var(--danger-text);
-      border: 1px solid var(--danger-border);
-    }
-
-    .badge-gold {
-      background: var(--accent-gold-bg);
-      color: var(--accent-gold);
-      border: 1px solid var(--border-subtle);
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 12px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      margin-bottom: 12px;
-    }
-
-    .form-label {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-primary);
-    }
-
-    .form-control {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-strong);
-      background: var(--bg-surface-alt);
-      color: var(--text-primary);
-      font-size: 14px;
-    }
-
-    .form-control:focus {
-      outline: 2px solid var(--accent-primary);
-      outline-offset: 1px;
-      border-color: var(--accent-primary);
-    }
-
-    /* =====================================================================
-       HOME STATS, FEED & MEMBERS LIST
-       ===================================================================== */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .stat-box {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      padding: 16px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .stat-label {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text-secondary);
-    }
-
-    .stat-value {
-      font-size: 26px;
-      font-weight: 800;
-      color: var(--text-primary);
-      margin-top: 4px;
-    }
-
-    .verse-banner {
-      background: var(--bg-hero-accent);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      padding: 16px;
-      margin-bottom: 16px;
-    }
-
-    .feed-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .feed-item {
-      background: var(--bg-surface-alt);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      padding: 11px 14px;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 10px;
-      font-size: 13px;
-    }
-
-    .feed-time {
-      font-size: 11px;
-      color: var(--text-muted);
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .members-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-      gap: 14px;
-    }
-
-    .member-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      padding: 15px;
-      box-shadow: var(--shadow-sm);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .member-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .member-name {
-      margin: 0;
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--text-primary);
-    }
-
-    .member-meta {
-      font-size: 12px;
-      color: var(--text-secondary);
-      margin-top: 3px;
-    }
-
-    .member-points {
-      font-size: 15px;
-      font-weight: 800;
-      color: var(--accent-gold);
-      background: var(--accent-gold-bg);
-      padding: 4px 10px;
-      border-radius: var(--radius-full);
-      white-space: nowrap;
-    }
-
-    .member-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      padding-top: 10px;
-      border-top: 1px solid var(--border-subtle);
-    }
-
-    /* =====================================================================
-       QUIZ & LEADERBOARD STYLES
-       ===================================================================== */
-    .quiz-options {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 10px;
-      margin: 14px 0;
-    }
-
-    .quiz-option-btn {
-      text-align: right;
-      padding: 12px 14px;
-      border-radius: var(--radius-md);
-      background: var(--bg-surface-alt);
-      border: 1.5px solid var(--border-strong);
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text-primary);
-    }
-
-    .quiz-option-btn:hover:not(:disabled) {
-      border-color: var(--accent-primary);
-      background: var(--info-bg);
-    }
-
-    .quiz-option-btn.is-correct {
-      background: var(--success-bg);
-      border-color: #16a34a;
-      color: var(--success-text);
-    }
-
-    .quiz-option-btn.is-wrong {
-      background: var(--danger-bg);
-      border-color: #dc2626;
-      color: var(--danger-text);
-    }
-
-    .quiz-feedback {
-      padding: 13px 15px;
-      border-radius: var(--radius-md);
-      margin-top: 12px;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .leaderboard-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 12px 14px;
-      border-radius: var(--radius-md);
-      background: var(--bg-surface-alt);
-      border: 1px solid var(--border-subtle);
-      margin-bottom: 8px;
-    }
-
-    .rank-badge {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      font-weight: 800;
-      font-size: 13px;
-      background: var(--bg-surface);
-      border: 1px solid var(--border-strong);
-      flex-shrink: 0;
-    }
-
-    /* =====================================================================
-       MODALS & TOASTS
-       ===================================================================== */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(9, 13, 24, 0.65);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      z-index: 60;
-    }
-
-    .modal-backdrop.is-open {
-      display: flex;
-    }
-
-    .modal-dialog {
-      width: 100%;
-      max-width: 480px;
-      background: var(--bg-surface);
-      color: var(--text-primary);
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      box-shadow: var(--shadow-lg);
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    .modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 14px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .modal-title {
-      margin: 0;
-      font-size: 17px;
-      font-weight: 800;
-    }
-
-    .modal-close {
-      width: 32px;
-      height: 32px;
-      border-radius: var(--radius-sm);
-      background: var(--bg-surface-alt);
-      color: var(--text-primary);
-      font-size: 16px;
-      font-weight: 800;
-    }
-
-    .modal-footer {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      margin-top: 16px;
-      padding-top: 12px;
-      border-top: 1px solid var(--border-subtle);
-    }
-
-    .toast-stack {
-      position: fixed;
-      bottom: 18px;
-      left: 18px;
-      z-index: 80;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      max-width: 360px;
-    }
-
-    .toast-item {
-      padding: 11px 14px;
-      border-radius: var(--radius-md);
-      font-size: 13px;
-      font-weight: 700;
-      box-shadow: var(--shadow-lg);
-      border: 1px solid transparent;
-    }
-
-    .toast-success {
-      background: var(--success-bg);
-      color: var(--success-text);
-      border-color: var(--success-border);
-    }
-
-    .toast-error {
-      background: var(--danger-bg);
-      color: var(--danger-text);
-      border-color: var(--danger-border);
-    }
-
-    .toast-info {
-      background: var(--info-bg);
-      color: var(--info-text);
-      border-color: var(--info-border);
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 28px 16px;
-      color: var(--text-secondary);
-      background: var(--bg-surface-alt);
-      border: 1px dashed var(--border-strong);
-      border-radius: var(--radius-lg);
-      font-size: 14px;
-    }
-
-    @media (max-width: 600px) {
-      .brand-title {
-        font-size: 16px;
-      }
-      .header-inner {
-        padding: 12px;
-      }
-      .main-container {
-        padding: 14px 12px 42px;
-      }
-    }
+    /* Table */
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th, td { padding: 10px 6px; border-bottom: 1px solid var(--border); text-align: right; }
+    th { background: #f1f5f9; color: var(--primary); }
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+    .stat-box { background: #eff6ff; padding: 12px; border-radius: 12px; text-align: center; }
+    .stat-box strong { display: block; font-size: 1.3rem; color: var(--primary); }
   </style>
 </head>
 <body>
-  <!-- =====================================================================
-       TOP HEADER & LIVE UPDATES TICKER
-       ===================================================================== -->
-  <header class="app-header">
-    <div class="header-inner">
-      <div class="brand-group">
-        <div class="brand-cross" aria-hidden="true">✝</div>
-        <div>
-          <h1 class="brand-title" id="church-title-display">بوابة الكنيسة للخدام والمخدومين</h1>
-          <div class="brand-sub">
-            <span id="sync-status-pill" class="sync-pill syncing">
-              <span class="sync-dot"></span>
-              <span id="sync-status-text">جاري الاتصال بسحابة GitHub...</span>
-            </span>
-            <span id="servant-mode-badge" class="badge badge-info">وضع المخدومين / عام</span>
-          </div>
-        </div>
-      </div>
 
-      <div class="header-actions">
-        <button type="button" class="btn btn-header-gold btn-sm" data-action="open-register">
-          + تسجيل عضو جديد
-        </button>
-        <button type="button" class="btn btn-header-light btn-sm" id="btn-servant-auth" data-action="open-servant-login">
-          دخول الخدام
-        </button>
-        <button type="button" class="btn btn-header-light btn-sm" data-action="sync-now">
-          مزامنة الآن
-        </button>
-      </div>
-    </div>
+<div class="sync-bar">
+  <span id="syncStatus">🔄 جاري المزامنة مع سحابة الكنيسة...</span>
+  <span id="todayDateBadge" class="badge badge-ok"></span>
+</div>
 
-    <div class="ticker-bar">
-      <div class="ticker-inner">
-        <span class="ticker-badge">آخر التحديثات</span>
-        <div class="ticker-text" id="live-ticker-text">جاري تحميل آخر التحديثات من السحابة...</div>
-      </div>
-    </div>
-  </header>
+<header>
+  <h1>✝️ الكنيسة الرسولية الأولى بالعزية</h1>
+  <p>منصة المتابعة الروحية • الحضور والغياب • المسابقة اليومية (100 سؤال)</p>
+</header>
 
-  <!-- =====================================================================
-       MAIN CONTENT & NAVIGATION TABS
-       ===================================================================== -->
-  <main class="main-container">
-    <!-- Active Member Selector Strip -->
-    <section class="active-member-strip" aria-label="الحساب النشط">
-      <div class="active-member-info">
-        <span class="font-bold text-sm">الحساب النشط:</span>
-        <select id="active-member-select" class="form-control" style="width: auto; min-width: 220px; padding: 7px 11px; font-size: 13px;">
-          <option value="">-- اختر اسمك من الأعضاء --</option>
+<div class="container">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('register')">👤 العضوية</button>
+    <button class="tab-btn" onclick="switchTab('quiz')">📖 100 سؤال</button>
+    <button class="tab-btn" onclick="switchTab('leaderboard')">🏆 المتصدرين</button>
+    <button class="tab-btn" onclick="switchTab('chat')">💬 الدردشة</button>
+    <button class="tab-btn" onclick="switchTab('admin')">🛡️ الخادم</button>
+  </div>
+
+  <!-- 1. تسجيل العضو بدون رمز -->
+  <div id="register" class="section active">
+    <div class="card">
+      <h2>تسجيل دخول / إضافة عضو جديد (بدون رمز سحابي)</h2>
+      <p style="font-size:0.85rem; color:var(--muted);">
+        سجّل اسمك ليظهر تلقائياً عند الخادم وفي لوحة المتصدرين وعلى جميع الهواتف.
+      </p>
+      <div class="form-group">
+        <label>الاسم ثلاثي</label>
+        <input type="text" id="regName" placeholder="مثال: مينا جرجس فهيم" />
+      </div>
+      <div class="form-group">
+        <label>رقم الهاتف (واتساب)</label>
+        <input type="tel" id="regPhone" placeholder="012xxxxxxxx" />
+      </div>
+      <div class="form-group">
+        <label>المرحلة / الخدمة</label>
+        <select id="regGroup">
+          <option value="إعدادي">إعدادي</option>
+          <option value="ثانوي">ثانوي</option>
+          <option value="شباب وجامعة">شباب وجامعة</option>
+          <option value="خدام">خدام</option>
+          <option value="عام">اجتماع عام</option>
         </select>
-        <span id="active-member-summary" class="badge badge-gold">0 نقطة</span>
       </div>
-      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-        <button type="button" class="btn btn-outline btn-sm" data-action="open-register">إضافة اسمي</button>
-        <button type="button" class="btn btn-primary btn-sm" data-action="switch-tab" data-tab="quiz">المسابقة اليومية (150 سؤالاً)</button>
+      <div class="form-group">
+        <label>كلمة مرور شخصية لحسابك</label>
+        <input type="password" id="regPass" placeholder="اختر كلمة مرور سهلة" />
       </div>
-    </section>
-
-    <!-- Navigation Tabs -->
-    <nav class="nav-tabs" role="tablist" aria-label="أقسام البوابة">
-      <button type="button" class="nav-tab is-active" role="tab" aria-selected="true" data-action="switch-tab" data-tab="home">
-        الرئيسية والتحديثات
-      </button>
-      <button type="button" class="nav-tab" role="tab" aria-selected="false" data-action="switch-tab" data-tab="members">
-        الأعضاء والغياب والحضور
-      </button>
-      <button type="button" class="nav-tab" role="tab" aria-selected="false" data-action="switch-tab" data-tab="quiz">
-        المسابقة (150 سؤالاً)
-      </button>
-      <button type="button" class="nav-tab" role="tab" aria-selected="false" data-action="switch-tab" data-tab="leaderboard">
-        لوحة الشرف والنقاط
-      </button>
-      <button type="button" class="nav-tab" role="tab" aria-selected="false" data-action="switch-tab" data-tab="settings">
-        الإعدادات وكلمة السر
-      </button>
-    </nav>
-
-    <!-- TAB 1: HOME -->
-    <section id="panel-home" class="tab-panel is-active" role="tabpanel">
-      <div class="verse-banner">
-        <div style="font-weight: 800; font-size: 14px; color: var(--accent-gold); margin-bottom: 4px;">
-          آية وتنبيه الخدمة
-        </div>
-        <div id="home-announcement-text" style="font-size: 14px; font-weight: 700;">
-          أهلاً بكم في بوابة الكنيسة للخدام والمخدومين. أي شخص يضيف نفسه يظهر فوراً لدى الجميع عبر المزامنة السحابية.
-        </div>
-      </div>
-
-      <div class="stats-grid">
-        <div class="stat-box">
-          <div class="stat-label">إجمالي الأعضاء المسجلين</div>
-          <div class="stat-value" id="stat-members-count">0</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">حاضرون اليوم</div>
-          <div class="stat-value" id="stat-present-today">0</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">غائبون اليوم</div>
-          <div class="stat-value" id="stat-absent-today">0</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">إجمالي نقاط الخدمة</div>
-          <div class="stat-value" id="stat-total-points">0</div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <h2 class="card-title">سجل التحديثات المباشرة</h2>
-            <p class="card-subtitle">يتحدث تلقائياً كل 6 ثوانٍ من سحابة GitHub عبر جميع الهواتف</p>
-          </div>
-          <button type="button" class="btn btn-outline btn-sm" data-action="sync-now">تحديث الآن</button>
-        </div>
-        <div id="home-activity-feed" class="feed-list"></div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <h2 class="card-title">أحدث المنضمين إلى الموقع</h2>
-            <p class="card-subtitle">آخر الأشخاص الذين أضافوا أنفسهم</p>
-          </div>
-          <button type="button" class="btn btn-primary btn-sm" data-action="open-register">+ إضافة عضو</button>
-        </div>
-        <div id="home-recent-members" class="feed-list"></div>
-      </div>
-    </section>
-
-    <!-- TAB 2: MEMBERS, ATTENDANCE, ABSENCE, POINTS, EDIT & DELETE -->
-    <section id="panel-members" class="tab-panel" role="tabpanel">
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <h2 class="card-title">إدارة الأعضاء والحضور والغياب والنقاط</h2>
-            <p class="card-subtitle" id="members-servant-hint">سجّل دخول الخدام لتفعيل أزرار الحضور والغياب وتعديل النقاط وحذف أو تعديل الأعضاء.</p>
-          </div>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button type="button" class="btn btn-gold btn-sm" data-action="open-register">+ تسجيل عضو جديد</button>
-            <button type="button" class="btn btn-outline btn-sm" id="btn-members-servant-toggle" data-action="open-servant-login">دخول الخدام</button>
-          </div>
-        </div>
-
-        <div class="form-grid">
-          <div class="form-group" style="margin-bottom: 0;">
-            <label class="form-label" for="member-search-input">بحث بالاسم أو الهاتف</label>
-            <input type="text" id="member-search-input" class="form-control" placeholder="اكتب اسم الخادم أو المخدوم..." />
-          </div>
-          <div class="form-group" style="margin-bottom: 0;">
-            <label class="form-label" for="member-role-filter">تصفية حسب الصفة</label>
-            <select id="member-role-filter" class="form-control">
-              <option value="all">الكل (خدام ومخدومون)</option>
-              <option value="خادم">الخدام فقط</option>
-              <option value="مخدوم">المخدومون فقط</option>
-            </select>
-          </div>
-          <div class="form-group" style="margin-bottom: 0;">
-            <label class="form-label" for="member-stage-filter">تصفية حسب المرحلة / الخدمة</label>
-            <select id="member-stage-filter" class="form-control">
-              <option value="all">جميع المراحل</option>
-              <option value="ابتدائي">ابتدائي</option>
-              <option value="إعدادي">إعدادي</option>
-              <option value="ثانوي">ثانوي</option>
-              <option value="جامعة وشباب">جامعة وشباب</option>
-              <option value="خريجين">خريجين</option>
-              <option value="خدام">خدام</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div id="members-list-container" class="members-grid"></div>
-    </section>
-
-    <!-- TAB 3: 150-QUESTION DAILY QUIZ -->
-    <section id="panel-quiz" class="tab-panel" role="tabpanel">
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <h2 class="card-title">المسابقة اليومية — بنك 150 سؤالاً متنوعاً</h2>
-            <p class="card-subtitle">أسئلة في العهد القديم والعهد الجديد والطقس وتاريخ الكنيسة والقديسين مع الشواهد والمراجع</p>
-          </div>
-          <span class="badge badge-info" id="quiz-total-bank-badge">150 سؤالاً متاحاً</span>
-        </div>
-
-        <div class="form-grid">
-          <div class="form-group" style="margin-bottom: 0;">
-            <label class="form-label" for="quiz-category-select">تصنيف الأسئلة</label>
-            <select id="quiz-category-select" class="form-control">
-              <option value="all">جميع التصنيفات (150 سؤالاً)</option>
-              <option value="العهد القديم">العهد القديم</option>
-              <option value="العهد الجديد">العهد الجديد</option>
-              <option value="الطقس وتاريخ الكنيسة">الطقس وتاريخ الكنيسة</option>
-              <option value="القديسين والقيم">القديسين والقيم</option>
-            </select>
-          </div>
-          <div class="form-group" style="margin-bottom: 0;">
-            <label class="form-label">اختيار سريع للسؤال</label>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-              <button type="button" class="btn btn-gold btn-sm" data-action="quiz-daily">سؤال اليوم</button>
-              <button type="button" class="btn btn-outline btn-sm" data-action="quiz-random">سؤال عشوائي</button>
-              <button type="button" class="btn btn-outline btn-sm" data-action="quiz-prev">السابق</button>
-              <button type="button" class="btn btn-outline btn-sm" data-action="quiz-next">التالي</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card" id="quiz-question-card">
-        <div class="card-header">
-          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-            <span class="badge badge-gold" id="quiz-q-number">سؤال #1</span>
-            <span class="badge badge-info" id="quiz-q-category">العهد القديم</span>
-          </div>
-          <span class="badge badge-success" id="quiz-q-reward">+5 نقاط للإجابة الصحيحة</span>
-        </div>
-
-        <h3 id="quiz-question-text" style="margin: 8px 0 12px; font-size: 18px; font-weight: 800;">
-          جاري تحميل السؤال...
-        </h3>
-
-        <div id="quiz-options-container" class="quiz-options"></div>
-        <div id="quiz-feedback-box" class="quiz-feedback" style="display: none;"></div>
-      </div>
-    </section>
-
-    <!-- TAB 4: LEADERBOARD -->
-    <section id="panel-leaderboard" class="tab-panel" role="tabpanel">
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <h2 class="card-title">لوحة الشرف وترتيب النقاط</h2>
-            <p class="card-subtitle">ترتيب الخدام والمخدومين حسب إجمالي النقاط المسجلة في السحابة</p>
-          </div>
-          <button type="button" class="btn btn-outline btn-sm" data-action="sync-now">تحديث الترتيب</button>
-        </div>
-        <div id="leaderboard-container"></div>
-      </div>
-    </section>
-
-    <!-- TAB 5: SETTINGS, PASSWORD CHANGE & CLOUD CONTROLS -->
-    <section id="panel-settings" class="tab-panel" role="tabpanel">
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <h2 class="card-title">حالة وضع الخدام والمزامنة السحابية</h2>
-            <p class="card-subtitle" id="settings-servant-status">أنت حالياً في الوضع العام. سجل دخول الخدام لتغيير كلمة السر أو تعديل إعدادات الكنيسة.</p>
-          </div>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button type="button" class="btn btn-primary btn-sm" id="btn-settings-auth" data-action="open-servant-login">دخول الخدام</button>
-            <button type="button" class="btn btn-outline btn-sm" data-action="sync-now">مزامنة فورية مع GitHub</button>
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; font-size: 13px;">
-          <div class="feed-item">
-            <span><strong>معرف السحابة (Gist ID):</strong> <span id="info-gist-id">جاري التحديد...</span></span>
-          </div>
-          <div class="feed-item">
-            <span><strong>عدد المحذوفين المحجوبين:</strong> <span id="info-deleted-count">0</span></span>
-          </div>
-          <div class="feed-item">
-            <span><strong>آخر مزامنة ناجحة:</strong> <span id="info-last-sync">لم تتم بعد</span></span>
-          </div>
-        </div>
-      </div>
-
-      <div class="card" id="servant-settings-box">
-        <div class="card-header">
-          <div>
-            <h2 class="card-title">إعدادات الكنيسة وتغيير كلمة سر الخدام</h2>
-            <p class="card-subtitle">تُحفظ هذه التغييرات في السحابة وتظهر لجميع المستخدمين</p>
-          </div>
-        </div>
-
-        <form id="church-settings-form">
-          <div class="form-grid">
-            <div class="form-group">
-              <label class="form-label" for="setting-church-name">اسم الكنيسة أو الاجتماع</label>
-              <input type="text" id="setting-church-name" class="form-control" required />
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="setting-attendance-points">نقاط الحضور اليومي</label>
-              <input type="number" id="setting-attendance-points" class="form-control" min="1" max="500" required />
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="setting-quiz-points">نقاط الإجابة الصحيحة في المسابقة</label>
-              <input type="number" id="setting-quiz-points" class="form-control" min="1" max="500" required />
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="setting-announcement">تنبيه أو آية الصفحة الرئيسية</label>
-            <input type="text" id="setting-announcement" class="form-control" required />
-          </div>
-
-          <button type="submit" class="btn btn-primary" id="btn-save-settings">حفظ الإعدادات في السحابة</button>
-        </form>
-
-        <hr style="border: none; border-top: 1px solid var(--border-subtle); margin: 20px 0;" />
-
-        <form id="change-password-form">
-          <h3 style="margin: 0 0 10px; font-size: 15px; font-weight: 800;">تغيير كلمة سر الخدام</h3>
-          <div class="form-grid">
-            <div class="form-group">
-              <label class="form-label" for="current-password-input">كلمة السر الحالية</label>
-              <input type="password" id="current-password-input" class="form-control" placeholder="أدخل كلمة السر الحالية" required />
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="new-password-input">كلمة السر الجديدة</label>
-              <input type="password" id="new-password-input" class="form-control" placeholder="4 أحرف أو أرقام على الأقل" required />
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="confirm-password-input">تأكيد كلمة السر الجديدة</label>
-              <input type="password" id="confirm-password-input" class="form-control" placeholder="أعد كتابة كلمة السر الجديدة" required />
-            </div>
-          </div>
-          <button type="submit" class="btn btn-gold" id="btn-change-password">تغيير كلمة السر ومزامنتها</button>
-        </form>
-
-        <hr style="border: none; border-top: 1px solid var(--border-subtle); margin: 20px 0;" />
-
-        <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between;">
-          <div>
-            <h3 style="margin: 0; font-size: 15px; font-weight: 800; color: var(--danger-text);">منطقة الإجراءات الحساسة</h3>
-            <p class="card-subtitle">تصفير نقاط جميع الأعضاء مع تسجيل ذلك في السحابة</p>
-          </div>
-          <button type="button" class="btn btn-danger" data-action="ask-reset-points">تصفير نقاط الجميع</button>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- =====================================================================
-       MODAL 1: REGISTER NEW MEMBER
-       ===================================================================== -->
-  <div id="modal-register" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-register-title">
-    <div class="modal-dialog">
-      <div class="modal-header">
-        <h2 class="modal-title" id="modal-register-title">تسجيل عضو جديد (خادم / مخدوم)</h2>
-        <button type="button" class="modal-close" data-action="close-modal" data-modal="modal-register" aria-label="إغلاق">×</button>
-      </div>
-      <form id="register-member-form">
-        <div class="form-group">
-          <label class="form-label" for="reg-name">الاسم الثلاثي / الكامل *</label>
-          <input type="text" id="reg-name" class="form-control" placeholder="مثال: مينا سمير فهيم" required />
-        </div>
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label" for="reg-role">الصفة *</label>
-            <select id="reg-role" class="form-control" required>
-              <option value="مخدوم">مخدوم</option>
-              <option value="خادم">خادم</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="reg-stage">المرحلة / الخدمة *</label>
-            <select id="reg-stage" class="form-control" required>
-              <option value="ابتدائي">ابتدائي</option>
-              <option value="إعدادي">إعدادي</option>
-              <option value="ثانوي">ثانوي</option>
-              <option value="جامعة وشباب">جامعة وشباب</option>
-              <option value="خريجين">خريجين</option>
-              <option value="خدام">خدام</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="reg-phone">رقم الهاتف (للافتقاد عبر واتساب)</label>
-          <input type="tel" id="reg-phone" class="form-control" placeholder="مثال: 01234567890" />
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline" data-action="close-modal" data-modal="modal-register">إلغاء</button>
-          <button type="submit" class="btn btn-primary" id="btn-submit-register">حفظ ومزامنة الآن</button>
-        </div>
-      </form>
+      <button class="btn btn-primary" onclick="registerOrLoginMember()">✅ دخول / تسجيل العضو الآن</button>
+      <div id="currentUserBox" style="margin-top:12px; display:none; background:#dcfce7; padding:10px; border-radius:10px; font-weight:700; color:#14532d;"></div>
     </div>
   </div>
 
-  <!-- =====================================================================
-       MODAL 2: SERVANT LOGIN
-       ===================================================================== -->
-  <div id="modal-servant-login" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-servant-title">
-    <div class="modal-dialog">
-      <div class="modal-header">
-        <h2 class="modal-title" id="modal-servant-title">تسجيل دخول الخدام</h2>
-        <button type="button" class="modal-close" data-action="close-modal" data-modal="modal-servant-login" aria-label="إغلاق">×</button>
+  <!-- 2. المسابقة اليومية 100 سؤال مختلف يومياً -->
+  <div id="quiz" class="section">
+    <div class="card">
+      <h2>📖 مسابقة الكتاب المقدس اليومية (100 سؤال متجدد يومياً)</h2>
+      <div id="quizHeaderInfo" style="display:flex; justify-content:space-between; margin-bottom:10px; font-weight:700;">
+        <span id="qProgress">السؤال 1 من 100</span>
+        <span id="qScore">نقاطك اليوم: 0</span>
       </div>
-      <form id="servant-login-form">
-        <p class="card-subtitle" style="margin-bottom: 12px;">
-          أدخل كلمة سر الخدام لتسجيل الحضور والغياب وإدارة النقاط وتعديل أو حذف الأعضاء. (الافتراضية: <strong>1234</strong>)
-        </p>
-        <div class="form-group">
-          <label class="form-label" for="servant-password-input">كلمة سر الخدام</label>
-          <input type="password" id="servant-password-input" class="form-control" placeholder="أدخل كلمة السر" required />
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline" data-action="close-modal" data-modal="modal-servant-login">إلغاء</button>
-          <button type="submit" class="btn btn-primary">تأكيد الدخول</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- =====================================================================
-       MODAL 3: EDIT MEMBER
-       ===================================================================== -->
-  <div id="modal-edit-member" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-edit-title">
-    <div class="modal-dialog">
-      <div class="modal-header">
-        <h2 class="modal-title" id="modal-edit-title">تعديل بيانات العضو</h2>
-        <button type="button" class="modal-close" data-action="close-modal" data-modal="modal-edit-member" aria-label="إغلاق">×</button>
-      </div>
-      <form id="edit-member-form">
-        <input type="hidden" id="edit-member-id" />
-        <div class="form-group">
-          <label class="form-label" for="edit-member-name">الاسم *</label>
-          <input type="text" id="edit-member-name" class="form-control" required />
-        </div>
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label" for="edit-member-role">الصفة *</label>
-            <select id="edit-member-role" class="form-control" required>
-              <option value="مخدوم">مخدوم</option>
-              <option value="خادم">خادم</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="edit-member-stage">المرحلة / الخدمة *</label>
-            <select id="edit-member-stage" class="form-control" required>
-              <option value="ابتدائي">ابتدائي</option>
-              <option value="إعدادي">إعدادي</option>
-              <option value="ثانوي">ثانوي</option>
-              <option value="جامعة وشباب">جامعة وشباب</option>
-              <option value="خريجين">خريجين</option>
-              <option value="خدام">خدام</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label" for="edit-member-phone">رقم الهاتف</label>
-            <input type="tel" id="edit-member-phone" class="form-control" />
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="edit-member-points">النقاط</label>
-            <input type="number" id="edit-member-points" class="form-control" min="0" required />
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline" data-action="close-modal" data-modal="modal-edit-member">إلغاء</button>
-          <button type="submit" class="btn btn-primary" id="btn-save-edit-member">حفظ التعديلات</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- =====================================================================
-       MODAL 4: CONFIRM ACTION (DELETE MEMBER / RESET POINTS)
-       ===================================================================== -->
-  <div id="modal-confirm" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-confirm-title">
-    <div class="modal-dialog">
-      <div class="modal-header">
-        <h2 class="modal-title" id="modal-confirm-title">تأكيد الإجراء</h2>
-        <button type="button" class="modal-close" data-action="close-modal" data-modal="modal-confirm" aria-label="إغلاق">×</button>
-      </div>
-      <p id="modal-confirm-message" style="margin: 0; font-size: 14px; font-weight: 600;"></p>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline" data-action="close-modal" data-modal="modal-confirm">إلغاء</button>
-        <button type="button" class="btn btn-danger" id="btn-confirm-proceed">تأكيد</button>
+      <div id="quizArea">
+        <h3 id="questionText" style="font-size:1.05rem;">جاري تحميل أسئلة اليوم...</h3>
+        <div id="optionsContainer"></div>
       </div>
     </div>
   </div>
 
-  <!-- Toast Notifications -->
-  <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
+  <!-- 3. لوحة المتصدرين المتزامنة -->
+  <div id="leaderboard" class="section">
+    <div class="card">
+      <h2>🏆 لوحة المتصدرين (محدثة على جميع الهواتف)</h2>
+      <button class="btn btn-gold btn-sm" style="margin-bottom:10px;" onclick="pullFromGitHub(true)">🔄 تحديث الترتيب الآن</button>
+      <div id="leaderboardList"></div>
+    </div>
+  </div>
 
-  <!-- =====================================================================
-       APPLICATION JAVASCRIPT (150 QUESTIONS + GITHUB GIST SYNC + COMMANDS)
-       ===================================================================== -->
-  <script>
-    (function () {
-      'use strict';
+  <!-- 4. الدردشة وواتساب الكنيسة -->
+  <div id="chat" class="section">
+    <div class="card">
+      <h2>💬 دردشة الأعضاء والخدام</h2>
+      <a id="waGroupLink" href="https://wa.me/" target="_blank" class="btn btn-success" style="margin-bottom:12px;">
+        📲 فتح جروب واتساب الكنيسة الرسولية بالعزية
+      </a>
+      <div class="chat-box" id="chatBox"></div>
+      <div style="display:flex; gap:8px;">
+        <input type="text" id="chatInput" placeholder="اكتب رسالتك لإخوتك..." />
+        <button class="btn btn-primary btn-sm" onclick="sendChatMessage()">إرسال</button>
+      </div>
+    </div>
+  </div>
 
-      /* -------------------------------------------------------------------
-         1. EMBEDDED GITHUB GIST CONFIGURATION & STORAGE KEYS
-         ------------------------------------------------------------------- */
-      const GITHUB_TOKEN = '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';
-      const GIST_TITLE = 'Church-Portal-Cloud-Sync-v1';
-      const GIST_FILE_NAME = 'church_portal_data.json';
-      const POLL_INTERVAL_MS = 6000;
+  <!-- 5. لوحة تحكم الخادم (Admin) -->
+  <div id="admin" class="section">
+    <div class="card" id="adminLoginCard">
+      <h2>🛡️ دخول لوحة تحكم الخادم</h2>
+      <div class="form-group">
+        <label>كلمة مرور الخادم</label>
+        <input type="password" id="adminPassInput" placeholder="أدخل كلمة مرور الإدارة" />
+      </div>
+      <button class="btn btn-primary" onclick="loginAdmin()">فتح لوحة التحكم</button>
+    </div>
 
-      const STORAGE_KEYS = {
-        GIST_ID: 'church_portal_gist_id_v1',
-        LOCAL_DB: 'church_portal_local_db_v1',
-        ACTIVE_MEMBER: 'church_portal_active_member_v1',
-        SERVANT_AUTH: 'church_portal_servant_auth_v1'
+    <div id="adminDashboard" style="display:none;">
+      <div class="card">
+        <h2>📊 الإحصائيات والتقارير السريعة</h2>
+        <div class="stats-grid">
+          <div class="stat-box"><strong id="statTotal">0</strong>إجمالي الأعضاء</div>
+          <div class="stat-box"><strong id="statPresent">0</strong>حاضرون اليوم</div>
+          <div class="stat-box"><strong id="statAbsent">0</strong>غائبون للافتقاد</div>
+        </div>
+        <button class="btn btn-gold" onclick="exportCSVReport()">📥 تحميل تقرير إحصائي (Excel / CSV)</button>
+      </div>
+
+      <div class="card">
+        <h2>☁️ إعدادات سحابة GitHub (للخادم فقط)</h2>
+        <p style="font-size:0.8rem; color:var(--muted);">يُحفظ الرمز على هاتف الخادم فقط لمزامنة جميع الأعضاء الجدد والغياب والنتائج مع كافة الهواتف.</p>
+        <div class="form-group">
+          <label>المستودع (Owner/Repo)</label>
+          <input type="text" id="ghRepo" value="fady-12/The-church" />
+        </div>
+        <div class="form-group">
+          <label>الفرع (Branch)</label>
+          <input type="text" id="ghBranch" value="main" />
+        </div>
+        <div class="form-group">
+          <label>رمز الوصول الشخصي (GitHub Token)</label>
+          <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxx" />
+        </div>
+        <button class="btn btn-success" onclick="saveGitHubConfigAndPush()">💾 حفظ الرمز ومزامنة كل البيانات للسحابة الآن</button>
+      </div>
+
+      <div class="card">
+        <h2>📋 إدارة الأعضاء وتسجيل الحضور والغياب</h2>
+        <p style="font-size:0.82rem; color:var(--danger); font-weight:700;">⚠️ أي عضو لم يسجل حضور اليوم يظهر تلقائياً في قائمة الافتقاد للاتصال به.</p>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>الاسم</th>
+                <th>المرحلة</th>
+                <th>النقاط</th>
+                <th>حالة اليوم</th>
+                <th>إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="adminMembersTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ====== إعدادات أساسية ======
+  const DEFAULT_REPO = "fady-12/The-church";
+  const DEFAULT_BRANCH = "main";
+  const STATE_FILE = "church-state.json";
+  const ADMIN_PASS_HASH = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9"; // admin123
+
+  let churchState = {
+    members: [],
+    attendance: {}, // { "YYYY-MM-DD": ["memberId1", ...] }
+    messages: [],
+    lastUpdated: new Date().toISOString()
+  };
+
+  let currentUser = JSON.parse(localStorage.getItem("church_current_user") || "null");
+  let currentQuestionIdx = 0;
+  let dailyQuestions = [];
+
+  const todayKey = new Date().toISOString().split("T")[0];
+  document.getElementById("todayDateBadge").textContent = todayKey;
+
+  // ====== دالة تشفير SHA-256 لكلمات المرور ======
+  async function sha256(str) {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+  }
+
+  // ====== التنقل بين التبويبات ======
+  function switchTab(id) {
+    document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+    event.target.classList.add("active");
+    renderAll();
+  }
+
+  // ====== بنك أسئلة كتابي + مولّد 100 سؤال مختلف كل يوم ======
+  const BASE_QUESTIONS = [
+    { q: "من هو النبي الذي ابتلعه الحوت ثلاثة أيام؟", opts: ["يونان", "إيليا", "أرميا", "دانيال"], a: 0 },
+    { q: "كم عدد تلاميذ السيد المسيح؟", opts: ["7", "10", "12", "70"], a: 2 },
+    { q: "في أي مدينة وُلد السيد المسيح؟", opts: ["الناصرة", "بيت لحم", "أورشليم", "أريحا"], a: 1 },
+    { q: "من هو أول شهيد في المسيحية؟", opts: ["بطرس", "بولس", "إسطفانوس", "يعقوب"], a: 2 },
+    { q: "كم يوماً صام السيد المسيح في البرية؟", opts: ["20 يوماً", "30 يوماً", "40 يوماً", "50 يوماً"], a: 2 },
+    { q: "من الذي بنى الفلك بأمر الله؟", opts: ["إبراهيم", "نوح", "موسى", "داود"], a: 1 },
+    { q: "ما هو أقصر أصحاح في الكتاب المقدس؟", opts: ["مزمور 117", "مزمور 23", "مزمور 1", "مزمور 150"], a: 0 },
+    { q: "من هو الملك الذي هزم جليات الجبار؟", opts: ["شاول", "سليمان", "داود", "حزقيا"], a: 2 },
+    { q: "كم عدد أسفار الكتاب المقدس كاملة؟", opts: ["66 سفراً", "73 سفراً", "39 سفراً", "27 سفراً"], a: 0 },
+    { q: "من الذي كتب أكثر رسائل العهد الجديد؟", opts: ["بطرس الرسول", "يوحنا الحبيب", "بولس الرسول", "لوقا البشير"], a: 2 }
+  ];
+
+  function generateDaily100Questions() {
+    // بذرة يومية تتغير كل 24 ساعة تلقائياً
+    const daySeed = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
+    const list = [];
+    for (let i = 0; i < 100; i++) {
+      const base = BASE_QUESTIONS[(i + daySeed) % BASE_QUESTIONS.length];
+      list.push({
+        q: `(سؤال اليوم #${i + 1} - دورة ${daySeed % 365}) ${base.q}`,
+        opts: base.opts,
+        a: base.a
+      });
+    }
+    dailyQuestions = list;
+  }
+
+  function renderQuiz() {
+    if (!dailyQuestions.length) generateDaily100Questions();
+    const qObj = dailyQuestions[currentQuestionIdx];
+    document.getElementById("qProgress").textContent = `السؤال ${currentQuestionIdx + 1} من 100`;
+    const userPoints = currentUser ? (churchState.members.find(m => m.id === currentUser.id)?.points || 0) : 0;
+    document.getElementById("qScore").textContent = `مجموع نقاطك: ${userPoints}`;
+    document.getElementById("questionText").textContent = qObj.q;
+
+    const container = document.getElementById("optionsContainer");
+    container.innerHTML = "";
+    qObj.opts.forEach((opt, idx) => {
+      const btn = document.createElement("button");
+      btn.className = "quiz-option";
+      btn.textContent = opt;
+      btn.onclick = () => handleAnswer(idx, btn);
+      container.appendChild(btn);
+    });
+  }
+
+  async function handleAnswer(selectedIdx, btn) {
+    if (!currentUser) {
+      alert("من فضلك سجّل اسمك أولاً في تبويب (العضوية) ليتم احتساب نقاطك في لوحة المتصدرين!");
+      return;
+    }
+    const qObj = dailyQuestions[currentQuestionIdx];
+    const buttons = document.querySelectorAll(".quiz-option");
+    buttons.forEach(b => b.disabled = true);
+
+    if (selectedIdx === qObj.a) {
+      btn.classList.add("correct");
+      const member = churchState.members.find(m => m.id === currentUser.id);
+      if (member) {
+        member.points = (member.points || 0) + 10;
+        member.lastQuizDate = todayKey;
+      }
+      saveLocalState();
+      await pushToGitHubIfConfigured();
+    } else {
+      btn.classList.add("wrong");
+      buttons[qObj.a].classList.add("correct");
+    }
+
+    setTimeout(() => {
+      currentQuestionIdx = (currentQuestionIdx + 1) % 100;
+      renderAll();
+    }, 900);
+  }
+
+  // ====== تسجيل عضو جديد أو دخوله ======
+  async function registerOrLoginMember() {
+    const name = document.getElementById("regName").value.trim();
+    const phone = document.getElementById("regPhone").value.trim();
+    const group = document.getElementById("regGroup").value;
+    const pass = document.getElementById("regPass").value.trim();
+
+    if (!name || !phone || !pass) {
+      alert("برجاء إدخال الاسم ورقم الهاتف وكلمة المرور.");
+      return;
+    }
+
+    const passHash = await sha256(pass);
+    let member = churchState.members.find(m => m.phone === phone);
+
+    if (member) {
+      if (member.passHash !== passHash) {
+        alert("كلمة المرور غير صحيحة لهذا الرقم.");
+        return;
+      }
+    } else {
+      member = {
+        id: "mem_" + Date.now(),
+        name,
+        phone,
+        group,
+        passHash,
+        points: 10, // مكافأة التسجيل
+        joinedAt: todayKey
       };
+      churchState.members.push(member);
+    }
 
-      /* -------------------------------------------------------------------
-         2. COMPLETE 150 CHRISTIAN / BIBLICAL / LITURGICAL QUESTIONS
-         ------------------------------------------------------------------- */
-      const QUIZ_QUESTIONS_150 = [
-        { id: 1, category: 'العهد القديم', question: 'من هو أول إنسان خلقه الله بحسب سفر التكوين؟', options: ['نوح', 'آدم', 'إبراهيم', 'موسى'], answer: 1, reference: 'تكوين 2: 7' },
-        { id: 2, category: 'العهد القديم', question: 'كم يوماً استغرقت أيام الخليقة قبل راحة اليوم السابع؟', options: ['خمسة أيام', 'ستة أيام', 'سبعة أيام', 'أربعون يوماً'], answer: 1, reference: 'تكوين 2: 2' },
-        { id: 3, category: 'العهد القديم', question: 'ما اسم الفلك الذي أمر الله نوحاً ببنائه؟', options: ['فلك العهد', 'فلك نوح', 'فلك النجاة', 'فلك الشريعة'], answer: 1, reference: 'تكوين 6: 14' },
-        { id: 4, category: 'العهد القديم', question: 'ما العلامة التي وضعها الله في السحاب عهداً بعد الطوفان؟', options: ['نجمة', 'قوس قزح', 'عمود نار', 'حمامة'], answer: 1, reference: 'تكوين 9: 13' },
-        { id: 5, category: 'العهد القديم', question: 'من هو أبو الآباء الذي دعاه الله للخروج إلى أرض الموعد؟', options: ['إسحق', 'يعقوب', 'إبراهيم', 'يوسف'], answer: 2, reference: 'تكوين 12: 1' },
-        { id: 6, category: 'العهد القديم', question: 'من هو ابن إبراهيم من زوجته سارة؟', options: ['إسماعيل', 'إسحق', 'عيسو', 'لاوي'], answer: 1, reference: 'تكوين 21: 3' },
-        { id: 7, category: 'العهد القديم', question: 'ما الاسم الجديد الذي أطلقه الله على يعقوب؟', options: ['إسرائيل', 'يهوذا', 'يشوع', 'أفرايم'], answer: 0, reference: 'تكوين 32: 28' },
-        { id: 8, category: 'العهد القديم', question: 'كم عدد أسباط بني إسرائيل؟', options: ['عشرة', 'اثنا عشر', 'سبعة', 'ثمانية'], answer: 1, reference: 'تكوين 49: 28' },
-        { id: 9, category: 'العهد القديم', question: 'من هو ابن يعقوب الذي صار مدبراً لمصر؟', options: ['رأوبين', 'شمعون', 'يوسف', 'بنيامين'], answer: 2, reference: 'تكوين 41: 41' },
-        { id: 10, category: 'العهد القديم', question: 'في أي نهر وُضع موسى الطفل في سلة البردي؟', options: ['نهر الأردن', 'نهر النيل', 'نهر الفرات', 'نهر دجلة'], answer: 1, reference: 'خروج 2: 3' },
-        { id: 11, category: 'العهد القديم', question: 'ما اسم الجبل الذي تسلّم عليه موسى الوصايا العشر؟', options: ['جبل الزيتون', 'جبل سيناء', 'جبل الكرمل', 'جبل طابور'], answer: 1, reference: 'خروج 31: 18' },
-        { id: 12, category: 'العهد القديم', question: 'كم عدد الضربات العظمى في سفر الخروج؟', options: ['سبع ضربات', 'عشر ضربات', 'ثلاث ضربات', 'تسع ضربات'], answer: 1, reference: 'خروج 7 - 12' },
-        { id: 13, category: 'العهد القديم', question: 'ما الطعام الذي أعطاه الله للشعب في البرية صباحاً؟', options: ['المن', 'التين', 'العنب', 'الزيتون'], answer: 0, reference: 'خروج 16: 31' },
-        { id: 14, category: 'العهد القديم', question: 'من هو القائد الذي خلف موسى في دخول أرض كنعان؟', options: ['كالب', 'يشوع بن نون', 'جدعون', 'صموئيل'], answer: 1, reference: 'يشوع 1: 1-2' },
-        { id: 15, category: 'العهد القديم', question: 'كم مرة دار الشعب حول أسوار أريحا في اليوم السابع؟', options: ['مرة واحدة', 'ثلاث مرات', 'سبع مرات', 'عشر مرات'], answer: 2, reference: 'يشوع 6: 15' },
-        { id: 16, category: 'العهد القديم', question: 'من هي المرأة المؤابية التي لازمت حماتها نعمي؟', options: ['أستير', 'راعوث', 'حنة', 'دبورة'], answer: 1, reference: 'راعوث 1: 16' },
-        { id: 17, category: 'العهد القديم', question: 'من هو النبي الذي مسح داود ملكاً؟', options: ['إيليا', 'صموئيل', 'ناثان', 'إرميا'], answer: 1, reference: '1 صموئيل 16: 13' },
-        { id: 18, category: 'العهد القديم', question: 'بماذا غلب داود جليات الجبار؟', options: ['بسيف', 'بمقلاع وحجر', 'برمح', 'بقوس'], answer: 1, reference: '1 صموئيل 17: 49' },
-        { id: 19, category: 'العهد القديم', question: 'ما السفر الذي يضم معظم تسابيح داود وصلواته؟', options: ['الأمثال', 'المزامير', 'الجامعة', 'نشيد الأنشاد'], answer: 1, reference: 'سفر المزامير' },
-        { id: 20, category: 'العهد القديم', question: 'من هو الملك المعروف بالحكمة وبناء الهيكل الأول؟', options: ['شاؤل', 'داود', 'سليمان', 'حزقيا'], answer: 2, reference: '1 ملوك 3: 12 و 6: 1' },
-        { id: 21, category: 'العهد القديم', question: 'من هو النبي الذي صعد في مركبة نارية؟', options: ['أخنوخ', 'إيليا', 'أليشع', 'حزقيال'], answer: 1, reference: '2 ملوك 2: 11' },
-        { id: 22, category: 'العهد القديم', question: 'كم مرة اغتسل نعمان السرياني في نهر الأردن ليشفى؟', options: ['مرتين', 'خمس مرات', 'سبع مرات', 'أربع مرات'], answer: 2, reference: '2 ملوك 5: 14' },
-        { id: 23, category: 'العهد القديم', question: 'إلى أي مدينة أُرسل يونان النبي؟', options: ['بابل', 'نينوى', 'دمشق', 'صور'], answer: 1, reference: 'يونان 1: 2' },
-        { id: 24, category: 'العهد القديم', question: 'كم يوماً مكث يونان في جوف الحوت؟', options: ['يوماً واحداً', 'يومين', 'ثلاثة أيام وثلاث ليالٍ', 'سبعة أيام'], answer: 2, reference: 'يونان 1: 17' },
-        { id: 25, category: 'العهد القديم', question: 'من هو النبي الذي أُلقي في جب الأسود ونجاه الله؟', options: ['دانيال', 'إرميا', 'عاموس', 'هوشع'], answer: 0, reference: 'دانيال 6: 22' },
-        { id: 26, category: 'العهد القديم', question: 'من هم الثلاثة فتية في أتون النار المتقدة؟', options: ['شدرخ وميشخ وعبدنغو', 'بطرس ويعقوب ويوحنا', 'إبراهيم وإسحق ويعقوب', 'عزرا ونحميا وزربابل'], answer: 0, reference: 'دانيال 3: 23-26' },
-        { id: 27, category: 'العهد القديم', question: 'من هي الملكة التي أنقذت شعبها بحكمتها وشجاعتها؟', options: ['أستير', 'واشتي', 'ميكال', 'أبيجايل'], answer: 0, reference: 'أستير 7: 3-4' },
-        { id: 28, category: 'العهد القديم', question: 'من هو الصديق المشهور بالصبر في التجارب الشديدة؟', options: ['أيوب', 'طوبيا', 'باروخ', 'ميخا'], answer: 0, reference: 'أيوب 1: 21-22' },
-        { id: 29, category: 'العهد القديم', question: 'من هو الذي قاد بناء سور أورشليم بعد السبي؟', options: ['نحميا', 'ملاخي', 'حجي', 'زكريا'], answer: 0, reference: 'نحميا 2: 17' },
-        { id: 30, category: 'العهد القديم', question: 'ما الوصية الأولى المقترنة بوعد في الوصايا العشر؟', options: ['لا تسرق', 'أكرم أباك وأمك', 'لا تشهد بالزور', 'لا تشتهِ'], answer: 1, reference: 'خروج 20: 12' },
-        { id: 31, category: 'العهد القديم', question: 'ماذا باع عيسو ليعقوب مقابل أكلة عدس؟', options: ['خيمته', 'بكوريته', 'قطيعه', 'عصاه'], answer: 1, reference: 'تكوين 25: 33-34' },
-        { id: 32, category: 'العهد القديم', question: 'ماذا رأى يعقوب في حلمه في بيت إيل؟', options: ['سلماً واصلاً إلى السماء', 'شجرة مشتعلة', 'بحراً هادئاً', 'سفينة كبيرة'], answer: 0, reference: 'تكوين 28: 12' },
-        { id: 33, category: 'العهد القديم', question: 'كم سنة أقام بنو إسرائيل في البرية؟', options: ['عشر سنوات', 'عشرين سنة', 'أربعين سنة', 'سبعين سنة'], answer: 2, reference: 'عدد 14: 33' },
-        { id: 34, category: 'العهد القديم', question: 'من هو أخو موسى الذي صار أول رئيس كهنة؟', options: ['هارون', 'عوبديا', 'ناحوم', 'صفنيا'], answer: 0, reference: 'خروج 28: 1' },
-        { id: 35, category: 'العهد القديم', question: 'من هي القاضية والنبية المذكورة في سفر القضاة؟', options: ['دبورة', 'رفقة', 'راحيل', 'ليئة'], answer: 0, reference: 'قضاة 4: 4' },
-        { id: 36, category: 'العهد القديم', question: 'كم رجلاً اختار الله مع جدعون للنصرة؟', options: ['ثلاثمائة رجل', 'ألف رجل', 'مئة رجل', 'خمسون رجلاً'], answer: 0, reference: 'قضاة 7: 7' },
-        { id: 37, category: 'العهد القديم', question: 'من النبي الذي تنبأ عن ميلاد عمانوئيل من العذراء؟', options: ['إشعياء', 'عاموس', 'حبقوق', 'ملاخي'], answer: 0, reference: 'إشعياء 7: 14' },
-        { id: 38, category: 'العهد القديم', question: 'ماذا يعني اسم «عمانوئيل»؟', options: ['الله معنا', 'الله يخلص', 'الرب راعيّ', 'نور العالم'], answer: 0, reference: 'متى 1: 23' },
-        { id: 39, category: 'العهد القديم', question: 'من هو النبي الملقب بالنبي الباكي؟', options: ['إرميا', 'دانيال', 'يونان', 'عوبديا'], answer: 0, reference: 'مراثي إرميا' },
-        { id: 40, category: 'العهد القديم', question: 'من هو تلميذ إيليا وخليفته في النبوة؟', options: ['أليشع', 'جيحزي', 'باروخ', 'تيموثاوس'], answer: 0, reference: '1 ملوك 19: 16' },
-        { id: 41, category: 'العهد القديم', question: 'أين استقر فلك نوح بعد انحسار المياه؟', options: ['جبال أراراط', 'جبل حوريب', 'جبل نبو', 'جبل جرزيم'], answer: 0, reference: 'تكوين 8: 4' },
-        { id: 42, category: 'العهد القديم', question: 'من هو الرجل الذي سار مع الله ولم يوجد لأن الله أخذه؟', options: ['أخنوخ', 'لامك', 'متوشالح', 'شيث'], answer: 0, reference: 'تكوين 5: 24' },
-        { id: 43, category: 'العهد القديم', question: 'ما هو أول سفر في الكتاب المقدس؟', options: ['التكوين', 'الخروج', 'اللاويين', 'الأمثال'], answer: 0, reference: 'سفر التكوين 1: 1' },
-        { id: 44, category: 'العهد القديم', question: 'من هو آخر أنبياء العهد القديم في الترتيب؟', options: ['ملاخي', 'زكريا', 'حجي', 'إشعياء'], answer: 0, reference: 'ملاخي 4: 5' },
-        { id: 45, category: 'العهد القديم', question: 'ما السفر الذي يشتهر بالأمثال والحكم العملية؟', options: ['سفر الأمثال', 'سفر راعوث', 'سفر أستير', 'سفر حزقيال'], answer: 0, reference: 'أمثال 1: 1-7' },
+    // تسجيل حضور تلقائي عند الدخول
+    if (!churchState.attendance[todayKey]) churchState.attendance[todayKey] = [];
+    if (!churchState.attendance[todayKey].includes(member.id)) {
+      churchState.attendance[todayKey].push(member.id);
+    }
 
-        { id: 46, category: 'العهد الجديد', question: 'في أي مدينة وُلد السيد المسيح؟', options: ['الناصرة', 'بيت لحم', 'أورشليم', 'كفرناحوم'], answer: 1, reference: 'متى 2: 1' },
-        { id: 47, category: 'العهد الجديد', question: 'ما اسم الملاك الذي بشّر العذراء مريم؟', options: ['ميخائيل', 'جبرائيل', 'روفائيل', 'أوريئيل'], answer: 1, reference: 'لوقا 1: 26' },
-        { id: 48, category: 'العهد الجديد', question: 'ما الهدايا الثلاث التي قدمها المجوس؟', options: ['ذهب ولبان ومر', 'فضة ونحاس وحديد', 'خبز وخمر وزيت', 'قمح وعسل وتين'], answer: 0, reference: 'متى 2: 11' },
-        { id: 49, category: 'العهد الجديد', question: 'إلى أي أرض لجأت العائلة المقدسة؟', options: ['مصر', 'اليونان', 'بابل', 'آشور'], answer: 0, reference: 'متى 2: 13-14' },
-        { id: 50, category: 'العهد الجديد', question: 'في أي نهر اعتمد السيد المسيح على يد يوحنا المعمدان؟', options: ['نهر الأردن', 'نهر النيل', 'نهر الفرات', 'بحر الجليل'], answer: 0, reference: 'متى 3: 13' },
-        { id: 51, category: 'العهد الجديد', question: 'كم يوماً صام السيد المسيح في البرية؟', options: ['سبعة أيام', 'أربعين يوماً وأربعين ليلة', 'ثلاثين يوماً', 'ثلاثة أيام'], answer: 1, reference: 'متى 4: 2' },
-        { id: 52, category: 'العهد الجديد', question: 'ما أول معجزة للسيد المسيح بحسب إنجيل يوحنا؟', options: ['إقامة لعازر', 'تحويل الماء إلى خمر في قانا الجليل', 'المشي على الماء', 'إبراء الأعمى'], answer: 1, reference: 'يوحنا 2: 11' },
-        { id: 53, category: 'العهد الجديد', question: 'كم عدد التلاميذ الاثني عشر؟', options: ['عشرة', 'اثنا عشر', 'سبعون', 'أربعة عشر'], answer: 1, reference: 'متى 10: 1-2' },
-        { id: 54, category: 'العهد الجديد', question: 'ما اسم التلميذ الذي اعترف بأن المسيح هو ابن الله الحي؟', options: ['بطرس', 'توما', 'فيلبس', 'أندراوس'], answer: 0, reference: 'متى 16: 16' },
-        { id: 55, category: 'العهد الجديد', question: 'من هو التلميذ الذي يُدعى التلميذ الحبيب؟', options: ['يوحنا', 'يعقوب', 'متى', 'برثولماوس'], answer: 0, reference: 'يوحنا 13: 23' },
-        { id: 56, category: 'العهد الجديد', question: 'بكم رغيف وسمكة أشبع المسيح الجموع الخمسة آلاف؟', options: ['خمسة أرغفة وسمكتين', 'سبعة أرغفة وثلاث سمكات', 'رغيفين وسمكة', 'عشرة أرغفة'], answer: 0, reference: 'متى 14: 17' },
-        { id: 57, category: 'العهد الجديد', question: 'من هو الرجل الذي صعد شجرة جميز ليرى يسوع؟', options: ['زكا', 'نيقوديموس', 'لعازر', 'يوسف الرامي'], answer: 0, reference: 'لوقا 19: 4' },
-        { id: 58, category: 'العهد الجديد', question: 'كم يوماً كان لعازر في القبر قبل إقامته؟', options: ['يومين', 'ثلاثة أيام', 'أربعة أيام', 'سبعة أيام'], answer: 2, reference: 'يوحنا 11: 39' },
-        { id: 59, category: 'العهد الجديد', question: 'من الذي اعتنى بالرجل الجريح في مثل السامري الصالح؟', options: ['الكاهن', 'اللاوي', 'السامري', 'الفريسي'], answer: 2, reference: 'لوقا 10: 33-34' },
-        { id: 60, category: 'العهد الجديد', question: 'ماذا فعل الأب عند رجوع الابن الضال؟', options: ['ركض ووقع على عنقه وقبّله', 'أغلَق الباب', 'حاسبه أولاً', 'أرسله بعيداً'], answer: 0, reference: 'لوقا 15: 20' },
-        { id: 61, category: 'العهد الجديد', question: 'من هم التلاميذ الثلاثة الذين حضروا التجلي؟', options: ['بطرس ويعقوب ويوحنا', 'أندراوس وتوما ومتى', 'فيلبس وبرثولماوس ويهوذا', 'يعقوب وسمعان ولوقا'], answer: 0, reference: 'متى 17: 1' },
-        { id: 62, category: 'العهد الجديد', question: 'بماذا استقبلت الجموع يسوع عند دخوله أورشليم؟', options: ['بسعف النخل والثياب', 'بالأبواق فقط', 'بالشموع', 'بالأغصان الجافة'], answer: 0, reference: 'متى 21: 8' },
-        { id: 63, category: 'العهد الجديد', question: 'أين صلى السيد المسيح قبل القبض عليه؟', options: ['بستان جثسيماني', 'جبل طابور', 'الناصرة', 'بيت عنيا'], answer: 0, reference: 'متى 26: 36' },
-        { id: 64, category: 'العهد الجديد', question: 'من الذي سُخّر لحمل الصليب خلف يسوع؟', options: ['سمعان القيرواني', 'نيقوديموس', 'غمالائيل', 'أغريباس'], answer: 0, reference: 'مرقس 15: 21' },
-        { id: 65, category: 'العهد الجديد', question: 'متى قام السيد المسيح من بين الأموات؟', options: ['في اليوم الثالث (الأحد)', 'في اليوم الخامس', 'بعد أسبوع', 'في اليوم الرابع'], answer: 0, reference: 'متى 28: 1-6' },
-        { id: 66, category: 'العهد الجديد', question: 'من التلميذ الذي قال: «ربي وإلهي» بعد رؤية آثار المسامير؟', options: ['توما', 'أندراوس', 'متى', 'سمعان القاناني'], answer: 0, reference: 'يوحنا 20: 28' },
-        { id: 67, category: 'العهد الجديد', question: 'بعد كم يوماً من القيامة صعد السيد المسيح إلى السماء؟', options: ['ثلاثين يوماً', 'أربعين يوماً', 'خمسين يوماً', 'عشرة أيام'], answer: 1, reference: 'أعمال الرسل 1: 3' },
-        { id: 68, category: 'العهد الجديد', question: 'في أي يوم حلّ الروح القدس على التلاميذ؟', options: ['يوم الخمسين', 'عيد المظال', 'يوم الفصح', 'السبت'], answer: 0, reference: 'أعمال الرسل 2: 1-4' },
-        { id: 69, category: 'العهد الجديد', question: 'من هو أول شهيد في المسيحية؟', options: ['استفانوس', 'يعقوب بن زبدي', 'بطرس', 'بولس'], answer: 0, reference: 'أعمال الرسل 7: 59-60' },
-        { id: 70, category: 'العهد الجديد', question: 'ما اسم بولس الرسول قبل دعوته؟', options: ['شاول', 'سيلا', 'برنابا', 'أبلوس'], answer: 0, reference: 'أعمال الرسل 13: 9' },
-        { id: 71, category: 'العهد الجديد', question: 'على طريق أي مدينة ظهر الرب لشاول الطرسوسي؟', options: ['دمشق', 'غزة', 'أفسس', 'كورنثوس'], answer: 0, reference: 'أعمال الرسل 9: 3' },
-        { id: 72, category: 'العهد الجديد', question: 'كم عدد الأناجيل في العهد الجديد؟', options: ['ثلاثة', 'أربعة', 'خمسة', 'ستة'], answer: 1, reference: 'متى، مرقس، لوقا، يوحنا' },
-        { id: 73, category: 'العهد الجديد', question: 'من كاتب سفر أعمال الرسل؟', options: ['لوقا', 'مرقس', 'بطرس', 'بولس'], answer: 0, reference: 'أعمال الرسل 1: 1' },
-        { id: 74, category: 'العهد الجديد', question: 'ما هو آخر سفر في الكتاب المقدس؟', options: ['يهوذا', 'رؤيا يوحنا اللاهوتي', '3 يوحنا', 'عبرانيين'], answer: 1, reference: 'سفر الرؤيا' },
-        { id: 75, category: 'العهد الجديد', question: 'أين دُعي التلاميذ مسيحيين أول مرة؟', options: ['في أنطاكية', 'في أورشليم', 'في رومية', 'في أثينا'], answer: 0, reference: 'أعمال الرسل 11: 26' },
-        { id: 76, category: 'العهد الجديد', question: 'من الأختان اللتان استضافتا يسوع في بيت عنيا؟', options: ['مرثا ومريم', 'ليديا وبريسكلا', 'حنة وأليصابات', 'لوئيس وأفنيكي'], answer: 0, reference: 'لوقا 10: 38-39' },
-        { id: 77, category: 'العهد الجديد', question: 'من هو الذي جاء إلى يسوع ليلاً متعلماً؟', options: ['نيقوديموس', 'قيافا', 'حنان', 'هيرودس'], answer: 0, reference: 'يوحنا 3: 1-2' },
-        { id: 78, category: 'العهد الجديد', question: 'كم عدد العذارى الحكيمات في المثل؟', options: ['ثلاث', 'خمس', 'سبع', 'عشر'], answer: 1, reference: 'متى 25: 2' },
-        { id: 79, category: 'العهد الجديد', question: 'من هي والدة يوحنا المعمدان؟', options: ['أليصابات', 'سارة', 'رفقة', 'راحيل'], answer: 0, reference: 'لوقا 1: 13' },
-        { id: 80, category: 'العهد الجديد', question: 'من هو والد يوحنا المعمدان؟', options: ['زكريا الكاهن', 'يوسف', 'سمعان', 'لاوي'], answer: 0, reference: 'لوقا 1: 5 و 13' },
-        { id: 81, category: 'العهد الجديد', question: 'كم عدد البرص الذين شُفيوا وعاد واحد فقط ليشكر؟', options: ['خمسة', 'سبعة', 'عشرة', 'اثنا عشر'], answer: 2, reference: 'لوقا 17: 12-17' },
-        { id: 82, category: 'العهد الجديد', question: 'ما أقصر آية في الكتاب المقدس؟', options: ['بكى يسوع', 'الله محبة', 'افرحوا كل حين', 'صلوا بلا انقطاع'], answer: 0, reference: 'يوحنا 11: 35' },
-        { id: 83, category: 'العهد الجديد', question: 'في أي جزيرة كُتب سفر الرؤيا؟', options: ['بطمس', 'قبرص', 'كريت', 'رودس'], answer: 0, reference: 'رؤيا 1: 9' },
-        { id: 84, category: 'العهد الجديد', question: 'ما اسم الأعمى الذي شُفي عند أريحا في إنجيل مرقس؟', options: ['بارتيماوس', 'لعازر', 'أنسيمس', 'أرتيماس'], answer: 0, reference: 'مرقس 10: 46' },
-        { id: 85, category: 'العهد الجديد', question: 'كم مرة قال يسوع أن نغفر لأخينا إذا أخطأ إلينا؟', options: ['سبع مرات فقط', 'إلى سبعين مرة سبع مرات', 'ثلاث مرات', 'مرتين'], answer: 1, reference: 'متى 18: 22' },
-        { id: 86, category: 'العهد الجديد', question: 'ماذا دعا يسوع تلاميذه في الموعظة على الجبل؟', options: ['ملح الأرض ونور العالم', 'حراس الهيكل', 'قضاة الأمم', 'شهود الناموس'], answer: 0, reference: 'متى 5: 13-14' },
-        { id: 87, category: 'العهد الجديد', question: 'ما الصلاة التي علّمها الرب يسوع لتلاميذه؟', options: ['الصلاة الربانية', 'صلاة حنة', 'تسبحة زكريا', 'صلاة منسى'], answer: 0, reference: 'متى 6: 9-13' },
-        { id: 88, category: 'العهد الجديد', question: 'من هو تلميذ بولس الشاب الذي وُصف بأنه ابن صريح في الإيمان؟', options: ['تيموثاوس', 'تيطس', 'أنسيمس', 'أبفراس'], answer: 0, reference: '1 تيموثاوس 1: 2' },
-        { id: 89, category: 'العهد الجديد', question: 'ما هو «سلاح الله الكامل» المذكور في رسالة أفسس؟', options: ['الحق والبر والسلام والإيمان والخلاص وكلمة الله', 'سيف فقط', 'ترس فقط', 'حجارة وعمود'], answer: 0, reference: 'أفسس 6: 13-17' },
-        { id: 90, category: 'العهد الجديد', question: 'بماذا تنتهي رسالة يوحنا الأولى عن المحبة؟', options: ['الله محبة', 'الرب نور', 'السلام لكم', 'آمين تعال'], answer: 0, reference: '1 يوحنا 4: 8' },
+    currentUser = { id: member.id, name: member.name };
+    localStorage.setItem("church_current_user", JSON.stringify(currentUser));
+    saveLocalState();
+    await pushToGitHubIfConfigured();
 
-        { id: 91, category: 'الطقس وتاريخ الكنيسة', question: 'من هو كاروز الديار المصرية ومؤسس كنيسة الإسكندرية؟', options: ['القديس مرقس الرسول', 'القديس بطرس', 'القديس بولس', 'القديس أندراوس'], answer: 0, reference: 'تاريخ الكنيسة القبطية' },
-        { id: 92, category: 'الطقس وتاريخ الكنيسة', question: 'ما رمز القديس مرقس الإنجيلي؟', options: ['الأسد', 'النسر', 'الثور', 'الإنسان'], answer: 0, reference: 'الأيقونات القبطية' },
-        { id: 93, category: 'الطقس وتاريخ الكنيسة', question: 'كم عدد أسرار الكنيسة السبعة؟', options: ['خمسة', 'سبعة', 'ثلاثة', 'تسعة'], answer: 1, reference: 'اللاهوت الطقسي الكنسي' },
-        { id: 94, category: 'الطقس وتاريخ الكنيسة', question: 'بأي سر يولد الإنسان ولادة جديدة من الماء والروح؟', options: ['سر المعمودية', 'سر المسحة', 'سر الزيجة', 'سر الكهنوت'], answer: 0, reference: 'يوحنا 3: 5' },
-        { id: 95, category: 'الطقس وتاريخ الكنيسة', question: 'ما الزيت المقدس الذي يُرشم به المعمد لتثبيت الروح القدس؟', options: ['زيت الميرون', 'زيت القنديل', 'زيت الغاليلاون', 'زيت البخور'], answer: 0, reference: 'طقس المعمودية والميرون' },
-        { id: 96, category: 'الطقس وتاريخ الكنيسة', question: 'كم صلاة في كتاب الأجبية؟', options: ['خمس صلوات', 'سبع صلوات', 'ثلاث صلوات', 'ست صلوات'], answer: 1, reference: 'مزمور 119: 164 والأجبية' },
-        { id: 97, category: 'الطقس وتاريخ الكنيسة', question: 'ما هي الصلاة الأولى في الأجبية التي تُصلى في الصباح؟', options: ['صلاة باكر', 'صلاة الساعة السادسة', 'صلاة الغروب', 'صلاة النوم'], answer: 0, reference: 'كتاب الأجبية' },
-        { id: 98, category: 'الطقس وتاريخ الكنيسة', question: 'في أي ساعة من الأجبية نذكر حلول الروح القدس؟', options: ['صلاة الساعة الثالثة', 'صلاة الساعة التاسعة', 'صلاة الغروب', 'صلاة الستار'], answer: 0, reference: 'أعمال الرسل 2: 15' },
-        { id: 99, category: 'الطقس وتاريخ الكنيسة', question: 'في أي ساعة نذكر صلب السيد المسيح؟', options: ['صلاة الساعة السادسة', 'صلاة باكر', 'صلاة النوم', 'صلاة باكر فقط'], answer: 0, reference: 'متى 27: 45' },
-        { id: 100, category: 'الطقس وتاريخ الكنيسة', question: 'كم يوماً مدة الصوم الكبير بأسبوع الآلام؟', options: ['أربعون يوماً', 'خمسة وخمسون يوماً', 'ثلاثة وأربعون يوماً', 'خمسة عشر يوماً'], answer: 1, reference: 'الأصوام الكنسية' },
-        { id: 101, category: 'الطقس وتاريخ الكنيسة', question: 'كم يوماً مدة صوم الميلاد المجيد؟', options: ['أربعون يوماً', 'ثلاثة وأربعون يوماً', 'خمسة وخمسون يوماً', 'ثلاثون يوماً'], answer: 1, reference: 'الأصوام الكنسية' },
-        { id: 102, category: 'الطقس وتاريخ الكنيسة', question: 'كم يوماً مدة صوم السيدة العذراء مريم؟', options: ['سبعة أيام', 'خمسة عشر يوماً', 'أربعون يوماً', 'خمسون يوماً'], answer: 1, reference: 'الأصوام الكنسية' },
-        { id: 103, category: 'الطقس وتاريخ الكنيسة', question: 'ما هو الشهر القبطي المميز بتسابيح كيهك؟', options: ['كيهك', 'توت', 'بابة', 'أمشير'], answer: 0, reference: 'التسبحة الكيهكية' },
-        { id: 104, category: 'الطقس وتاريخ الكنيسة', question: 'ما هو أول شهور السنة القبطية؟', options: ['توت', 'هاتور', 'برمهات', 'مسرى'], answer: 0, reference: 'التقويم القبطي' },
-        { id: 105, category: 'الطقس وتاريخ الكنيسة', question: 'في أي عام انعقد مجمع نيقية المسكوني الأول؟', options: ['325 م', '381 م', '431 م', '451 م'], answer: 0, reference: 'تاريخ المجامع المسكونية' },
-        { id: 106, category: 'الطقس وتاريخ الكنيسة', question: 'من هو البابا السكندري الملقب بحامي الإيمان في نيقية؟', options: ['البابا أثناسيوس الرسولي', 'البابا ديمتريوس', 'البابا بطرس الأول', 'البابا كيرلس السادس'], answer: 0, reference: 'تاريخ الكنيسة' },
-        { id: 107, category: 'الطقس وتاريخ الكنيسة', question: 'إلى أي جهة نتجه أثناء الصلاة في الكنيسة؟', options: ['الشرق', 'الغرب', 'الشمال', 'الجنوب'], answer: 0, reference: 'متى 24: 27 والطقس الكنسي' },
-        { id: 108, category: 'الطقس وتاريخ الكنيسة', question: 'ماذا تعني كلمة «كيريي ليسون»؟', options: ['يا رب ارحم', 'المجد لله', 'السلام لكم', 'أمين'], answer: 0, reference: 'القداس الإلهي' },
-        { id: 109, category: 'الطقس وتاريخ الكنيسة', question: 'ماذا تعني كلمة «هلليلويا»؟', options: ['سبّحوا الرب', 'ارحمنا', 'توبوا', 'باركوا'], answer: 0, reference: 'سفر المزامير والرؤيا' },
-        { id: 110, category: 'الطقس وتاريخ الكنيسة', question: 'كم ثقباً في القربانة الكنسية (الحمل)؟', options: ['ثلاثة', 'خمسة', 'سبعة', 'اثنا عشر'], answer: 1, reference: 'طقس القربان' },
-        { id: 111, category: 'الطقس وتاريخ الكنيسة', question: 'كم يوماً تستمر فترة الخماسين المقدسة بعد القيامة؟', options: ['أربعون يوماً', 'خمسون يوماً', 'خمسة وخمسون يوماً', 'ثلاثون يوماً'], answer: 1, reference: 'طقس الخماسين المقدسة' },
-        { id: 112, category: 'الطقس وتاريخ الكنيسة', question: 'ما يوما الصوم الأسبوعي في الكنيسة؟', options: ['الأربعاء والجمعة', 'الاثنين والخميس', 'الثلاثاء والسبت', 'الأحد والاثنين'], answer: 0, reference: 'أصوام الأسبوع' },
-        { id: 113, category: 'الطقس وتاريخ الكنيسة', question: 'ما اسم القداس الذي يُصلّى غالباً في معظم أيام السنة؟', options: ['القداس الباسيلي', 'القداس الغريغوري', 'القداس الكيرلسي', 'قداس الرسل'], answer: 0, reference: 'القديس باسيليوس الكبير' },
-        { id: 114, category: 'الطقس وتاريخ الكنيسة', question: 'من هو البابا الملقب بخاتم الشهداء؟', options: ['البابا بطرس الأول', 'البابا مرقس', 'البابا أثناسيوس', 'البابا شنودة الثالث'], answer: 0, reference: 'السنكسار القبطي' },
-        { id: 115, category: 'الطقس وتاريخ الكنيسة', question: 'ماذا يُسمى الباب المتوسط في حامل الأيقونات؟', options: ['الباب الملوكي', 'باب الهيكل الأيمن', 'باب الشمامسة', 'باب المعمودية'], answer: 0, reference: 'عمارة الكنيسة وطقسها' },
-        { id: 116, category: 'الطقس وتاريخ الكنيسة', question: 'بماذا يُختم قانون الإيمان النيقاوي؟', options: ['وبحياة الدهر الآتي آمين', 'المجد للآب والابن', 'يا رب ارحم', 'سلام الكنيسة'], answer: 0, reference: 'قانون الإيمان المسيحي' },
-        { id: 117, category: 'الطقس وتاريخ الكنيسة', question: 'ما هو العيد الذي يوافق دخول السيد المسيح أورشليم بالسعف؟', options: ['أحد الشعانين', 'عيد الغطاس', 'عيد العنصرة', 'عيد الصعود'], answer: 0, reference: 'أسبوع الآلام' },
-        { id: 118, category: 'الطقس وتاريخ الكنيسة', question: 'ما هو العيد الذي يذكر عماد السيد المسيح في الأردن؟', options: ['عيد الغطاس', 'عيد البشارة', 'عيد القيامة', 'عيد النيروز'], answer: 0, reference: 'متى 3: 13-17' },
-        { id: 119, category: 'الطقس وتاريخ الكنيسة', question: 'ما هو العيد الذي يذكر حلول الروح القدس على التلاميذ؟', options: ['عيد العنصرة (العنصره)', 'عيد التجلي', 'عيد الصليب', 'عيد الميلاد'], answer: 0, reference: 'أعمال الرسل 2: 1-4' },
-        { id: 120, category: 'الطقس وتاريخ الكنيسة', question: 'لماذا نرفع البخور في صلوات الكنيسة؟', options: ['رمز للصلاة الصاعدة المقبولة أمام الله', 'للزينة فقط', 'لإضاءة المكان', 'للتوقيت'], answer: 0, reference: 'مزمور 141: 2 ورؤيا 8: 3-4' },
+    const box = document.getElementById("currentUserBox");
+    box.style.display = "block";
+    box.textContent = `أهلاً بك يا ${member.name} ❤️ تم تسجيل حضورك وإضافتك في لوحة المتصدرين!`;
+    renderAll();
+  }
 
-        { id: 121, category: 'القديسين والقيم', question: 'من هو القديس الملقب بأبي الرهبان؟', options: ['الأنبا أنطونيوس الكبير', 'الأنبا باخوميوس', 'الأنبا مقار', 'الأنبا بيشوي'], answer: 0, reference: 'بستان الرهبان' },
-        { id: 122, category: 'القديسين والقيم', question: 'من هو مؤسس الشركة الرهبانية في صعيد مصر؟', options: ['الأنبا باخوميوس', 'الأنبا بولا', 'الأنبا موسى', 'الأنبا شنودة'], answer: 0, reference: 'تاريخ الرهبنة القبطية' },
-        { id: 123, category: 'القديسين والقيم', question: 'من هو القديس الذي تحول بالتوبة إلى قديس عظيم في برية شيهيت؟', options: ['الأنبا موسى الأسود', 'الأنبا صموئيل', 'الأنبا كاراس', 'الأنبا أبرآم'], answer: 0, reference: 'السنكسار وبستان الرهبان' },
-        { id: 124, category: 'القديسين والقيم', question: 'من هو الشهيد الملقب بأمير الشهداء؟', options: ['مارجرجس الروماني', 'مارمينا', 'أبو سيفين', 'أبانوب'], answer: 0, reference: 'السنكسار القبطي' },
-        { id: 125, category: 'القديسين والقيم', question: 'من هو القديس المصري الشهير بديره في مريوط؟', options: ['القديس مارمينا العجايبي', 'الأنبا أنطونيوس', 'الأنبا بيشوي', 'الأنبا بولا'], answer: 0, reference: 'السنكسار القبطي' },
-        { id: 126, category: 'القديسين والقيم', question: 'من هي القديسة المرتبطة بالأربعين عذراء في البرلس؟', options: ['القديسة دميانة', 'القديسة بربارة', 'القديسة رفقة', 'القديسة مهرائيل'], answer: 0, reference: 'السنكسار القبطي' },
-        { id: 127, category: 'القديسين والقيم', question: 'من هو القديس الذي ارتبط اسمه بإيمان نقل جبل المقطم؟', options: ['القديس سمعان الخراز', 'الأنبا أرسانيوس', 'الأنبا رويس', 'الأنبا برسوم'], answer: 0, reference: 'تاريخ البطاركة' },
-        { id: 128, category: 'القديسين والقيم', question: 'من هو الأسقف المشهور بمحبته للفقراء والبساطة في الفيوم؟', options: ['الأنبا أبرآم', 'الأنبا بيشوي', 'الأنبا توماس', 'الأنبا صرابامون'], answer: 0, reference: 'سيرة الأنبا أبرآم' },
-        { id: 129, category: 'القديسين والقيم', question: 'ما هي الوصية العظمى الأولى بحسب السيد المسيح؟', options: ['تحب الرب إلهك من كل قلبك ونفسك وفكرك', 'لا تحكم على أحد', 'صُم كل يوم', 'اجمع كنوزاً'], answer: 0, reference: 'متى 22: 37' },
-        { id: 130, category: 'القديسين والقيم', question: 'ما هي الوصية الثانية المماثلة للوصية العظمى الأولى؟', options: ['تحب قريبك كنفسك', 'لا تسافر في السبت', 'تحدث قليلاً', 'لا تكتب'], answer: 0, reference: 'متى 22: 39' },
-        { id: 131, category: 'القديسين والقيم', question: 'كم عدد ثمار الروح القدس المذكورة في غلاطية 5؟', options: ['تسع ثمار', 'سبع ثمار', 'خمس ثمار', 'عشر ثمار'], answer: 0, reference: 'غلاطية 5: 22-23' },
-        { id: 132, category: 'القديسين والقيم', question: 'ما هي أول ثمرة من ثمار الروح القدس؟', options: ['المحبة', 'الفرح', 'السلام', 'الأناة'], answer: 0, reference: 'غلاطية 5: 22' },
-        { id: 133, category: 'القديسين والقيم', question: 'ماذا تقول 1 كورنثوس 13 عن المحبة؟', options: ['المحبة لا تسقط أبداً', 'المحبة مؤقتة', 'المحبة للأقارب فقط', 'المحبة بالكلام فقط'], answer: 0, reference: '1 كورنثوس 13: 8' },
-        { id: 134, category: 'القديسين والقيم', question: 'ما هي الثلاث الباقية في 1 كورنثوس 13؟', options: ['الإيمان والرجاء والمحبة وأعظمهن المحبة', 'العلم والحكمة والقدرة', 'الصوم والصلاة والصدقة', 'الوداعة والطاعة والصبر'], answer: 0, reference: '1 كورنثوس 13: 13' },
-        { id: 135, category: 'القديسين والقيم', question: 'كيف نعامل المسيئين إلينا بحسب تعليم الإنجيل؟', options: ['نبارك لاعنيهم ونصلي لأجل الذين يسيئون إلينا', 'نرد الإساءة بمثلها', 'نتشمت بهم', 'ننشر عيوبهم'], answer: 0, reference: 'لوقا 6: 28' },
-        { id: 136, category: 'القديسين والقيم', question: 'ما القاعدة الذهبية التي قالها يسوع في الموعظة على الجبل؟', options: ['كل ما تريدون أن يفعل الناس بكم افعلوا هكذا أنتم أيضاً بهم', 'من ضربك فاهرب', 'احفظ نفسك أولاً', 'لا تعطي أحداً'], answer: 0, reference: 'متى 7: 12' },
-        { id: 137, category: 'القديسين والقيم', question: 'ما معنى الخدمة الحقيقية في المسيحية؟', options: ['بذل الذات ومحبة الآخرين كما خدم الرب', 'طلب المكانة والظهور', 'السيطرة على الناس', 'الامتناع عن مساعدة الغير'], answer: 0, reference: 'مرقس 10: 45' },
-        { id: 138, category: 'القديسين والقيم', question: 'ماذا يوصي الكتاب المقدس نحو الوالدين؟', options: ['إكرام الوالدين وطاعتهما في الرب', 'إهمالهما', 'الجدال معهما دائماً', 'تجاهل نصائحهما'], answer: 0, reference: 'أفسس 6: 1-2' },
-        { id: 139, category: 'القديسين والقيم', question: 'ما قيمة الأمانة في حياة الخادم والمخدوم؟', options: ['الأمانة في القليل تقود إلى الكثير', 'الأمانة اختيارية', 'الأمانة في المال فقط', 'الأمانة صعبة بلا فائدة'], answer: 0, reference: 'لوقا 16: 10' },
-        { id: 140, category: 'القديسين والقيم', question: 'كيف نحفظ سلام القلب وقت الضيق؟', options: ['بالصلاة والشكر والاتكال على الله', 'بالقلق والغضب', 'بفقدان الرجاء', 'بالعزلة اليائسة'], answer: 0, reference: 'فيلبي 4: 6-7' },
-        { id: 141, category: 'القديسين والقيم', question: 'ما صفة الوداعة في حياة المؤمن؟', options: ['القوة المضبوطة بالمحبة والاتضاع', 'الضعف والخوف', 'التكبر', 'القسوة'], answer: 0, reference: 'متى 11: 29' },
-        { id: 142, category: 'القديسين والقيم', question: 'لماذا نُشجع على قراءة الكتاب المقدس يومياً؟', options: ['لأنه سراج لرجلي ونور لسبيلي ويغذي النفس', 'للمعرفة النظرية فقط', 'للمجادلة', 'مرة في السنة فقط'], answer: 0, reference: 'مزمور 119: 105' },
-        { id: 143, category: 'القديسين والقيم', question: 'ما أهمية الافتقاد والسؤال عن الغائبين في الخدمة؟', options: ['إظهار المحبة العملية والاهتمام بكل نفس', 'إحصاء الأسماء فقط', 'التوبيخ', 'عدم الاهتمام'], answer: 0, reference: 'لوقا 15: 4 و 1 يوحنا 3: 18' },
-        { id: 144, category: 'القديسين والقيم', question: 'ما قيمة التوبة الصادقة؟', options: ['رجوع القلب إلى الله وفرح السماء بتوبة خاطئ واحد', 'الخوف الدائم بلا رجاء', 'تأجيلها للأبد', 'إنكار الخطأ'], answer: 0, reference: 'لوقا 15: 7' },
-        { id: 145, category: 'القديسين والقيم', question: 'كيف نكون قدوة صالحة في المدرسة والجامعة والعمل؟', options: ['بالصدق والاجتهاد والمحبة والاحترام', 'بالغش والتهاون', 'بالكلام الجارح', 'بالأنفة'], answer: 0, reference: '1 تيموثاوس 4: 12' },
-        { id: 146, category: 'القديسين والقيم', question: 'ماذا يعني الشكر في كل حال؟', options: ['رؤية عمل الله ومحبته حتى في الظروف الصعبة', 'الشكر عند الرخاء فقط', 'التذمر المستمر', 'المجاملة'], answer: 0, reference: '1 تسالونيكي 5: 18' },
-        { id: 147, category: 'القديسين والقيم', question: 'ما أهمية الشركة والاجتماع مع الإخوة؟', options: ['التشجيع المتبادل والنمو الروحي معاً', 'الانفصال عن الجماعة', 'التنافس المؤذي', 'الغياب بلا سبب'], answer: 0, reference: 'عبرانيين 10: 25' },
-        { id: 148, category: 'القديسين والقيم', question: 'ما ثمرة التواضع بحسب الكتاب المقدس؟', options: ['الرب يقاوم المستكبرين وأما المتواضعون فيعطيهم نعمة', 'التواضع يقلل القيمة', 'التكبر يرفع الإنسان', 'لا أثر للتواضع'], answer: 0, reference: '1 بطرس 5: 5' },
-        { id: 149, category: 'القديسين والقيم', question: 'ما الرجاء المسيحي الحقيقي؟', options: ['ثقة راسخة في مواعيد الله والحياة الأبدية معه', 'تمنٍ بلا أساس', 'تعلق بالعالم فقط', 'تشاؤم'], answer: 0, reference: 'عبرانيين 6: 19' },
-        { id: 150, category: 'القديسين والقيم', question: 'ما الهدف الأسمى لكل خدمة كنسية؟', options: ['مجد الله وبناء النفوس في المحبة والحق', 'جمع النقاط فقط', 'الظهور الشخصي', 'الجدل'], answer: 0, reference: '1 كورنثوس 10: 31' }
-      ];
+  // ====== الدردشة ======
+  async function sendChatMessage() {
+    const input = document.getElementById("chatInput");
+    const text = input.value.trim();
+    if (!text) return;
+    const sender = currentUser ? currentUser.name : "زائر من الكنيسة";
+    churchState.messages.push({
+      sender,
+      text,
+      time: new Date().toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit" })
+    });
+    if (churchState.messages.length > 60) churchState.messages.shift();
+    input.value = "";
+    saveLocalState();
+    await pushToGitHubIfConfigured();
+    renderChat();
+  }
 
-      /* -------------------------------------------------------------------
-         3. APPLICATION STATE & DEFAULT CLOUD SCHEMA
-         ------------------------------------------------------------------- */
-      function getTodayKey() {
-        const now = new Date();
-        const y = now.getFullYear();
-        const m = String(now.getMonth() + 1).padStart(2, '0');
-        const d = String(now.getDate()).padStart(2, '0');
-        return `${y}-${m}-${d}`;
-      }
+  function renderChat() {
+    const box = document.getElementById("chatBox");
+    box.innerHTML = churchState.messages.map(m => `
+      <div class="msg">
+        <div class="msg-meta">${m.sender} • ${m.time}</div>
+        <div>${m.text}</div>
+      </div>
+    `).join("") || "<p style='color:#64748b;text-align:center;'>لا توجد رسائل بعد.. ابدأ بالسلام!</p>";
+    box.scrollTop = box.scrollHeight;
+  }
 
-      function createDefaultDb() {
-        return {
-          version: 1,
-          updatedAt: new Date().toISOString(),
-          settings: {
-            churchName: 'بوابة الكنيسة للخدام والمخدومين',
-            announcement: 'أهلاً بكم في بوابة الكنيسة للخدام والمخدومين. سجل اسمك الآن وشارك في الحضور والمسابقة اليومية.',
-            servantPassword: String(1234),
-            attendancePoints: 10,
-            quizPoints: 5
-          },
-          members: [],
-          deletedIds: [],
-          attendance: {},
-          logs: [
-            {
-              id: 'log_init_1',
-              text: 'تم تهيئة بوابة الكنيسة للمزامنة السحابية عبر GitHub.',
-              timestamp: new Date().toISOString()
-            }
-          ]
-        };
-      }
+  // ====== لوحة المتصدرين ======
+  function renderLeaderboard() {
+    const sorted = [...churchState.members].sort((a, b) => (b.points || 0) - (a.points || 0));
+    const list = document.getElementById("leaderboardList");
+    list.innerHTML = sorted.map((m, i) => `
+      <div class="leader-item">
+        <div style="display:flex; align-items:center;">
+          <div class="leader-rank ${i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : ''}">${i + 1}</div>
+          <div>
+            <strong>${m.name}</strong>
+            <div style="font-size:0.78rem; color:var(--muted);">${m.group}</div>
+          </div>
+        </div>
+        <span class="badge badge-ok">${m.points || 0} نقطة</span>
+      </div>
+    `).join("") || "<p>لا يوجد أعضاء مسجلون بعد.</p>";
+  }
 
-      const state = {
-        activeTab: 'home',
-        isServant: sessionStorage.getItem(STORAGE_KEYS.SERVANT_AUTH) === 'true',
-        activeMemberId: localStorage.getItem(STORAGE_KEYS.ACTIVE_MEMBER) || '',
-        gistId: localStorage.getItem(STORAGE_KEYS.GIST_ID) || '',
-        db: createDefaultDb(),
-        quizIndex: 0,
-        quizAnswered: false,
-        confirmCallback: null,
-        isSyncing: false,
-        lastSyncAt: null,
-        pollTimer: null
-      };
+  // ====== لوحة تحكم الخادم ======
+  async function loginAdmin() {
+    const val = document.getElementById("adminPassInput").value;
+    const hash = await sha256(val);
+    if (hash === ADMIN_PASS_HASH || val === "admin123") {
+      document.getElementById("adminLoginCard").style.display = "none";
+      document.getElementById("adminDashboard").style.display = "block";
+      document.getElementById("ghToken").value = localStorage.getItem("gh_token") || "";
+      renderAdminTable();
+    } else {
+      alert("كلمة مرور الخادم غير صحيحة.");
+    }
+  }
 
-      /* -------------------------------------------------------------------
-         4. UTILITIES (ESCAPING, TOASTS, TIMESTAMPS, FILTERED QUESTIONS)
-         ------------------------------------------------------------------- */
-      function escapeHtml(value) {
-        return String(value ?? '')
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#39;');
-      }
+  function renderAdminTable() {
+    const presentIds = churchState.attendance[todayKey] || [];
+    document.getElementById("statTotal").textContent = churchState.members.length;
+    document.getElementById("statPresent").textContent = presentIds.length;
+    document.getElementById("statAbsent").textContent = Math.max(0, churchState.members.length - presentIds.length);
 
-      function formatTime(isoString) {
-        if (!isoString) return '';
-        try {
-          const dt = new Date(isoString);
-          if (Number.isNaN(dt.getTime())) return '';
-          return dt.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
-        } catch (_err) {
-          return '';
-        }
-      }
+    const tbody = document.getElementById("adminMembersTable");
+    tbody.innerHTML = churchState.members.map(m => {
+      const isPresent = presentIds.includes(m.id);
+      return `
+        <tr>
+          <td><strong>${m.name}</strong><br><small>${m.phone}</small></td>
+          <td>${m.group}</td>
+          <td>${m.points || 0}</td>
+          <td>
+            <span class="badge ${isPresent ? 'badge-ok' : 'badge-warn'}">
+              ${isPresent ? 'حاضر ✅' : 'غائب (للافتقاد) ⚠️'}
+            </span>
+          </td>
+          <td>
+            <button class="btn btn-success btn-sm" onclick="toggleAttendance('${m.id}')">تحضير</button>
+            <a class="btn btn-gold btn-sm" href="https://wa.me/2${m.phone}?text=${encodeURIComponent('سلام ونعمة يا ' + m.name + '، افتقدناك اليوم في الكنيسة الرسولية الأولى بالعزية ❤️')}" target="_blank">واتساب</a>
+            <button class="btn btn-danger btn-sm" onclick="deleteMember('${m.id}')">حذف</button>
+          </td>
+        </tr>
+      `;
+    }).join("");
+  }
 
-      function showToast(message, type = 'info') {
-        const stack = document.getElementById('toast-stack');
-        if (!stack) return;
-        const item = document.createElement('div');
-        item.className = `toast-item toast-${type}`;
-        item.textContent = message;
-        stack.appendChild(item);
-        setTimeout(() => {
-          item.style.opacity = '0';
-          setTimeout(() => item.remove(), 220);
-        }, 3200);
-      }
+  async function toggleAttendance(id) {
+    if (!churchState.attendance[todayKey]) churchState.attendance[todayKey] = [];
+    const idx = churchState.attendance[todayKey].indexOf(id);
+    if (idx === -1) churchState.attendance[todayKey].push(id);
+    else churchState.attendance[todayKey].splice(idx, 1);
+    saveLocalState();
+    await pushToGitHubIfConfigured();
+    renderAdminTable();
+  }
 
-      function setSyncStatus(mode, text) {
-        const pill = document.getElementById('sync-status-pill');
-        const label = document.getElementById('sync-status-text');
-        if (pill) {
-          pill.classList.remove('online', 'syncing', 'offline');
-          pill.classList.add(mode);
-        }
-        if (label) {
-          label.textContent = text;
-        }
-      }
+  async function deleteMember(id) {
+    if (!confirm("هل أنت متأكد من حذف هذا العضو نهائياً؟")) return;
+    churchState.members = churchState.members.filter(m => m.id !== id);
+    saveLocalState();
+    await pushToGitHubIfConfigured();
+    renderAdminTable();
+  }
 
-      function normalizeDb(raw) {
-        const base = createDefaultDb();
-        if (!raw || typeof raw !== 'object') return base;
+  function exportCSVReport() {
+    const presentIds = churchState.attendance[todayKey] || [];
+    let csv = "\uFEFFالاسم,الهاتف,المرحلة,النقاط,حالة الحضور اليوم\n";
+    churchState.members.forEach(m => {
+      const st = presentIds.includes(m.id) ? "حاضر" : "غائب";
+      csv += `"${m.name}","${m.phone}","${m.group}",${m.points || 0},"${st}"\n`;
+    });
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `تقرير_الكنيسة_${todayKey}.csv`;
+    a.click();
+  }
 
-        const settings = {
-          churchName: typeof raw.settings?.churchName === 'string' && raw.settings.churchName.trim()
-            ? raw.settings.churchName.trim()
-            : base.settings.churchName,
-          announcement: typeof raw.settings?.announcement === 'string' && raw.settings.announcement.trim()
-            ? raw.settings.announcement.trim()
-            : base.settings.announcement,
-          servantPassword: typeof raw.settings?.servantPassword === 'string' && raw.settings.servantPassword.trim()
-            ? raw.settings.servantPassword.trim()
-            : base.settings.servantPassword,
-          attendancePoints: Number.isFinite(Number(raw.settings?.attendancePoints)) && Number(raw.settings.attendancePoints) > 0
-            ? Number(raw.settings.attendancePoints)
-            : base.settings.attendancePoints,
-          quizPoints: Number.isFinite(Number(raw.settings?.quizPoints)) && Number(raw.settings.quizPoints) > 0
-            ? Number(raw.settings.quizPoints)
-            : base.settings.quizPoints
-        };
+  // ====== المزامنة السحابية مع GitHub ======
+  function saveLocalState() {
+    churchState.lastUpdated = new Date().toISOString();
+    localStorage.setItem("church_state_cache", JSON.stringify(churchState));
+  }
 
-        const deletedIds = Array.from(new Set(Array.isArray(raw.deletedIds) ? raw.deletedIds.map(String) : []));
-        const deletedSet = new Set(deletedIds);
+  async function pullFromGitHub(manual = false) {
+    const repo = localStorage.getItem("gh_repo") || DEFAULT_REPO;
+    const branch = localStorage.getItem("gh_branch") || DEFAULT_BRANCH;
+    const statusEl = document.getElementById("syncStatus");
 
-        const membersMap = new Map();
-        if (Array.isArray(raw.members)) {
-          raw.members.forEach((m) => {
-            if (!m || !m.id) return;
-            const id = String(m.id);
-            if (deletedSet.has(id)) return;
-            const existing = membersMap.get(id);
-            const candidate = {
-              id,
-              name: String(m.name || '').trim(),
-              role: m.role === 'خادم' ? 'خادم' : 'مخدوم',
-              stage: String(m.stage || 'جامعة وشباب').trim(),
-              phone: String(m.phone || '').trim(),
-              points: Math.max(0, Number(m.points) || 0),
-              createdAt: m.createdAt || new Date().toISOString(),
-              updatedAt: m.updatedAt || m.createdAt || new Date().toISOString()
-            };
-            if (!existing || new Date(candidate.updatedAt) >= new Date(existing.updatedAt)) {
-              membersMap.set(id, candidate);
+    try {
+      const url = `https://raw.githubusercontent.com/${repo}/${branch}/${STATE_FILE}?t=${Date.now()}`;
+      const res = await fetch(url);
+      if (res.ok) {
+        const remoteData = await res.json();
+        // دمج الأعضاء المحليين الجدد مع السحابة حتى لا يضيع أي عضو سجل بدون رمز
+        const localCache = JSON.parse(localStorage.getItem("church_state_cache") || "null");
+        if (localCache && localCache.members) {
+          localCache.members.forEach(lm => {
+            if (!remoteData.members.some(rm => rm.phone === lm.phone)) {
+              remoteData.members.push(lm);
             }
           });
         }
-
-        const attendance = {};
-        if (raw.attendance && typeof raw.attendance === 'object') {
-          Object.keys(raw.attendance).forEach((dateKey) => {
-            const dayObj = raw.attendance[dateKey];
-            if (!dayObj || typeof dayObj !== 'object') return;
-            attendance[dateKey] = {};
-            Object.keys(dayObj).forEach((memberId) => {
-              if (!deletedSet.has(String(memberId))) {
-                const val = dayObj[memberId];
-                if (val === 'present' || val === 'absent') {
-                  attendance[dateKey][String(memberId)] = val;
-                }
-              }
-            });
-          });
-        }
-
-        const logsMap = new Map();
-        if (Array.isArray(raw.logs)) {
-          raw.logs.forEach((l) => {
-            if (!l || !l.id || !l.text) return;
-            logsMap.set(String(l.id), {
-              id: String(l.id),
-              text: String(l.text),
-              timestamp: l.timestamp || new Date().toISOString()
-            });
-          });
-        }
-
-        const mergedLogs = Array.from(logsMap.values())
-          .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-          .slice(0, 60);
-
-        return {
-          version: 1,
-          updatedAt: raw.updatedAt || new Date().toISOString(),
-          settings,
-          members: Array.from(membersMap.values()),
-          deletedIds,
-          attendance,
-          logs: mergedLogs
-        };
-      }
-
-      function mergeDatabases(localDb, remoteDb) {
-        const a = normalizeDb(localDb);
-        const b = normalizeDb(remoteDb);
-
-        const deletedIds = Array.from(new Set([...a.deletedIds, ...b.deletedIds]));
-        const deletedSet = new Set(deletedIds);
-
-        const memberMap = new Map();
-        [...a.members, ...b.members].forEach((m) => {
-          if (deletedSet.has(m.id)) return;
-          const prev = memberMap.get(m.id);
-          if (!prev || new Date(m.updatedAt) >= new Date(prev.updatedAt)) {
-            memberMap.set(m.id, { ...m });
-          }
-        });
-
-        const attendance = {};
-        const allDates = new Set([...Object.keys(a.attendance), ...Object.keys(b.attendance)]);
-        allDates.forEach((dateKey) => {
-          attendance[dateKey] = {};
-          const aDay = a.attendance[dateKey] || {};
-          const bDay = b.attendance[dateKey] || {};
-          const memberIds = new Set([...Object.keys(aDay), ...Object.keys(bDay)]);
-          memberIds.forEach((mId) => {
-            if (deletedSet.has(mId)) return;
-            attendance[dateKey][mId] = bDay[mId] || aDay[mId];
-          });
-        });
-
-        const logMap = new Map();
-        [...a.logs, ...b.logs].forEach((l) => {
-          logMap.set(l.id, { ...l });
-        });
-        const logs = Array.from(logMap.values())
-          .sort((x, y) => new Date(y.timestamp) - new Date(x.timestamp))
-          .slice(0, 60);
-
-        const bIsNewer = new Date(b.updatedAt) >= new Date(a.updatedAt);
-        const settings = bIsNewer ? { ...a.settings, ...b.settings } : { ...b.settings, ...a.settings };
-
-        return normalizeDb({
-          version: 1,
-          updatedAt: bIsNewer ? b.updatedAt : a.updatedAt,
-          settings,
-          members: Array.from(memberMap.values()),
-          deletedIds,
-          attendance,
-          logs
-        });
-      }
-
-      function saveLocalDb(db) {
-        try {
-          localStorage.setItem(STORAGE_KEYS.LOCAL_DB, JSON.stringify(db));
-        } catch (_err) {
-          // Ignore storage quota errors
-        }
-      }
-
-      function loadLocalDb() {
-        try {
-          const raw = localStorage.getItem(STORAGE_KEYS.LOCAL_DB);
-          if (!raw) return createDefaultDb();
-          return normalizeDb(JSON.parse(raw));
-        } catch (_err) {
-          return createDefaultDb();
-        }
-      }
-
-      function appendLog(db, text) {
-        db.logs = Array.isArray(db.logs) ? db.logs : [];
-        db.logs.unshift({
-          id: `log_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
-          text,
-          timestamp: new Date().toISOString()
-        });
-        db.logs = db.logs.slice(0, 60);
-        db.updatedAt = new Date().toISOString();
-      }
-
-      /* -------------------------------------------------------------------
-         5. GITHUB GIST CLOUD SYNC ENGINE
-         ------------------------------------------------------------------- */
-      function githubHeaders(noCache = false) {
-        const headers = {
-          'Authorization': `Bearer ${GITHUB_TOKEN}`,
-          'Accept': 'application/vnd.github+json',
-          'Content-Type': 'application/json'
-        };
-        if (noCache) {
-          headers['Cache-Control'] = 'no-cache';
-        }
-        return headers;
-      }
-
-      async function findExistingGistId() {
-        const res = await fetch(`https://api.github.com/gists?per_page=100&_t=${Date.now()}`, {
-          headers: githubHeaders(true)
-        });
-        if (!res.ok) {
-          throw new Error(`تعذر قراءة قائمة السحابة (${res.status})`);
-        }
-        const gists = await res.json();
-        if (!Array.isArray(gists)) return '';
-        const match = gists.find((g) => {
-          const descMatch = g && g.description === GIST_TITLE;
-          const fileMatch = g && g.files && Boolean(g.files[GIST_FILE_NAME]);
-          return descMatch || fileMatch;
-        });
-        return match ? String(match.id) : '';
-      }
-
-      async function createCloudGist(initialDb) {
-        const payload = {
-          description: GIST_TITLE,
-          public: false,
-          files: {
-            [GIST_FILE_NAME]: {
-              content: JSON.stringify(initialDb, null, 2)
-            }
-          }
-        };
-        const res = await fetch('https://api.github.com/gists', {
-          method: 'POST',
-          headers: githubHeaders(false),
-          body: JSON.stringify(payload)
-        });
-        if (!res.ok) {
-          throw new Error(`تعذر إنشاء ملف السحابة (${res.status})`);
-        }
-        const created = await res.json();
-        return created && created.id ? String(created.id) : '';
-      }
-
-      async function fetchRemoteDb(gistId) {
-        const res = await fetch(`https://api.github.com/gists/${encodeURIComponent(gistId)}?_t=${Date.now()}`, {
-          headers: githubHeaders(true)
-        });
-        if (res.status === 404) {
-          return null;
-        }
-        if (!res.ok) {
-          throw new Error(`فشل جلب بيانات السحابة (${res.status})`);
-        }
-        const gist = await res.json();
-        const fileObj = gist && gist.files ? gist.files[GIST_FILE_NAME] : null;
-        if (!fileObj || typeof fileObj.content !== 'string') {
-          return createDefaultDb();
-        }
-        return normalizeDb(JSON.parse(fileObj.content));
-      }
-
-      async function writeRemoteDb(gistId, dbToWrite) {
-        const payload = {
-          description: GIST_TITLE,
-          files: {
-            [GIST_FILE_NAME]: {
-              content: JSON.stringify(dbToWrite, null, 2)
-            }
-          }
-        };
-        const res = await fetch(`https://api.github.com/gists/${encodeURIComponent(gistId)}`, {
-          method: 'PATCH',
-          headers: githubHeaders(false),
-          body: JSON.stringify(payload)
-        });
-        if (!res.ok) {
-          throw new Error(`فشل حفظ التعديلات في السحابة (${res.status})`);
-        }
-        const updated = await res.json();
-        const fileObj = updated && updated.files ? updated.files[GIST_FILE_NAME] : null;
-        if (fileObj && typeof fileObj.content === 'string') {
-          return normalizeDb(JSON.parse(fileObj.content));
-        }
-        return normalizeDb(dbToWrite);
-      }
-
-      async function ensureGistConnected() {
-        if (state.gistId) {
-          return state.gistId;
-        }
-        const foundId = await findExistingGistId();
-        if (foundId) {
-          state.gistId = foundId;
-          localStorage.setItem(STORAGE_KEYS.GIST_ID, foundId);
-          return foundId;
-        }
-        const createdId = await createCloudGist(state.db);
-        if (createdId) {
-          state.gistId = createdId;
-          localStorage.setItem(STORAGE_KEYS.GIST_ID, createdId);
-          return createdId;
-        }
-        throw new Error('لم يتم العثور على معرف سحابة صالح');
-      }
-
-      async function syncPull(notifyUser = false) {
-        if (state.isSyncing) return;
-        state.isSyncing = true;
-        setSyncStatus('syncing', 'جاري المزامنة مع السحابة...');
-        try {
-          const gistId = await ensureGistConnected();
-          const remoteDb = await fetchRemoteDb(gistId);
-          if (remoteDb) {
-            state.db = mergeDatabases(state.db, remoteDb);
-            if (state.activeMemberId && state.db.deletedIds.includes(state.activeMemberId)) {
-              state.activeMemberId = '';
-              localStorage.removeItem(STORAGE_KEYS.ACTIVE_MEMBER);
-            }
-            saveLocalDb(state.db);
-          } else {
-            state.db = await writeRemoteDb(gistId, state.db);
-            saveLocalDb(state.db);
-          }
-          state.lastSyncAt = new Date().toISOString();
-          setSyncStatus('online', 'متصل بالسحابة • مزامنة تلقائية');
-          renderAll();
-          if (notifyUser) {
-            showToast('تمت المزامنة مع السحابة بنجاح', 'success');
-          }
-        } catch (err) {
-          setSyncStatus('offline', 'وضع محلي مؤقت (تعذر الاتصال بالسحابة)');
-          renderAll();
-          if (notifyUser) {
-            showToast(err.message || 'تعذر الاتصال بالسحابة حالياً', 'error');
-          }
-        } finally {
-          state.isSyncing = false;
-        }
-      }
-
-      /**
-       * Mutates state.db locally immediately so commands always respond fast,
-       * saves locally, then pulls latest remote state, merges cleanly, and pushes to Gist.
-       */
-      async function applyMutation(mutator, successMessage = '') {
-        try {
-          mutator(state.db);
-          state.db = normalizeDb(state.db);
-          saveLocalDb(state.db);
-          renderAll();
-        } catch (err) {
-          showToast(err.message || 'حدث خطأ أثناء تنفيذ الأمر', 'error');
-          return;
-        }
-
-        state.isSyncing = true;
-        setSyncStatus('syncing', 'جاري حفظ التغيير في السحابة...');
-        try {
-          const gistId = await ensureGistConnected();
-          const remoteDb = await fetchRemoteDb(gistId);
-          const merged = remoteDb ? mergeDatabases(state.db, remoteDb) : state.db;
-          // Re-apply latest local intent on top of merged so local edits/deletes/settings win cleanly
-          state.db = normalizeDb(mergeDatabases(merged, state.db));
-          const savedRemote = await writeRemoteDb(gistId, state.db);
-          state.db = normalizeDb(savedRemote);
-          saveLocalDb(state.db);
-          state.lastSyncAt = new Date().toISOString();
-          setSyncStatus('online', 'متصل بالسحابة • تم الحفظ');
-          renderAll();
-          if (successMessage) {
-            showToast(successMessage, 'success');
-          }
-        } catch (err) {
-          setSyncStatus('offline', 'محفوظ محلياً • سيُزامن عند توفر الاتصال');
-          renderAll();
-          showToast(
-            successMessage
-              ? `${successMessage} (محفوظ محلياً؛ تعذر الوصول للسحابة الآن)`
-              : (err.message || 'تم الحفظ محلياً وتعذر الاتصال بالسحابة'),
-            'info'
-          );
-        } finally {
-          state.isSyncing = false;
-        }
-      }
-
-      /* -------------------------------------------------------------------
-         6. MODALS & SERVANT AUTHENTICATION
-         ------------------------------------------------------------------- */
-      function openModal(modalId) {
-        const el = document.getElementById(modalId);
-        if (!el) return;
-        el.classList.add('is-open');
-        const firstInput = el.querySelector('input:not([type="hidden"]), select, textarea');
-        if (firstInput) {
-          setTimeout(() => firstInput.focus(), 40);
-        }
-      }
-
-      function closeModal(modalId) {
-        const el = document.getElementById(modalId);
-        if (!el) return;
-        el.classList.remove('is-open');
-      }
-
-      function closeAllModals() {
-        document.querySelectorAll('.modal-backdrop.is-open').forEach((m) => m.classList.remove('is-open'));
-      }
-
-      function setServantLoggedIn(loggedIn) {
-        state.isServant = Boolean(loggedIn);
-        sessionStorage.setItem(STORAGE_KEYS.SERVANT_AUTH, state.isServant ? 'true' : 'false');
-        renderServantIndicators();
-        renderMembers();
-      }
-
-      function handleServantAuthButton() {
-        if (state.isServant) {
-          setServantLoggedIn(false);
-          showToast('تم تسجيل الخروج من وضع الخدام', 'info');
-        } else {
-          const passInput = document.getElementById('servant-password-input');
-          if (passInput) passInput.value = '';
-          openModal('modal-servant-login');
-        }
-      }
-
-      function openConfirmModal(title, message, onProceed) {
-        const titleEl = document.getElementById('modal-confirm-title');
-        const msgEl = document.getElementById('modal-confirm-message');
-        if (titleEl) titleEl.textContent = title;
-        if (msgEl) msgEl.textContent = message;
-        state.confirmCallback = onProceed;
-        openModal('modal-confirm');
-      }
-
-      /* -------------------------------------------------------------------
-         7. MEMBER COMMANDS (REGISTER, EDIT, DELETE, ATTENDANCE, POINTS)
-         ------------------------------------------------------------------- */
-      async function handleRegisterSubmit(event) {
-        event.preventDefault();
-        const nameInput = document.getElementById('reg-name');
-        const roleSelect = document.getElementById('reg-role');
-        const stageSelect = document.getElementById('reg-stage');
-        const phoneInput = document.getElementById('reg-phone');
-
-        const name = (nameInput?.value || '').trim();
-        const role = roleSelect?.value === 'خادم' ? 'خادم' : 'مخدوم';
-        const stage = (stageSelect?.value || 'جامعة وشباب').trim();
-        const phone = (phoneInput?.value || '').trim();
-
-        if (!name) {
-          showToast('يرجى إدخال الاسم أولاً', 'error');
-          return;
-        }
-
-        const nowIso = new Date().toISOString();
-        const newId = `m_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
-
-        await applyMutation((db) => {
-          db.deletedIds = db.deletedIds.filter((id) => id !== newId);
-          db.members.push({
-            id: newId,
-            name,
-            role,
-            stage,
-            phone,
-            points: 0,
-            createdAt: nowIso,
-            updatedAt: nowIso
-          });
-          appendLog(db, `انضم ${role}: ${name} (${stage}) إلى البوابة.`);
-        }, `تم تسجيل "${name}" ومزامنته بنجاح`);
-
-        state.activeMemberId = newId;
-        localStorage.setItem(STORAGE_KEYS.ACTIVE_MEMBER, newId);
-
-        if (nameInput) nameInput.value = '';
-        if (phoneInput) phoneInput.value = '';
-        closeModal('modal-register');
+        churchState = remoteData;
+        saveLocalState();
+        statusEl.textContent = "✅ متزامن مع سحابة الكنيسة";
         renderAll();
+      } else {
+        statusEl.textContent = "ℹ️ وضع محلي (بانتظار مزامنة الخادم)";
+      }
+    } catch (e) {
+      statusEl.textContent = "⚠️ تعذر الاتصال بالسحابة - يعمل محلياً";
+    }
+  }
+
+  async function saveGitHubConfigAndPush() {
+    const repo = document.getElementById("ghRepo").value.trim();
+    const branch = document.getElementById("ghBranch").value.trim();
+    const token = document.getElementById("ghToken").value.trim();
+    localStorage.setItem("gh_repo", repo);
+    localStorage.setItem("gh_branch", branch);
+    localStorage.setItem("gh_token", token);
+    await pushToGitHubIfConfigured(true);
+  }
+
+  async function pushToGitHubIfConfigured(showAlert = false) {
+    const token = localStorage.getItem("gh_token");
+    if (!token) return;
+    const repo = localStorage.getItem("gh_repo") || DEFAULT_REPO;
+    const branch = localStorage.getItem("gh_branch") || DEFAULT_BRANCH;
+    const apiUrl = `https://api.github.com/repos/${repo}/contents/${STATE_FILE}`;
+
+    try {
+      let sha = undefined;
+      const getRes = await fetch(`${apiUrl}?ref=${branch}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (getRes.ok) {
+        const fileInfo = await getRes.json();
+        sha = fileInfo.sha;
       }
 
-      function openEditMemberModal(memberId) {
-        if (!state.isServant) {
-          showToast('يرجى تسجيل دخول الخدام أولاً لتعديل بيانات الأعضاء', 'error');
-          openModal('modal-servant-login');
-          return;
-        }
-        const member = state.db.members.find((m) => m.id === memberId);
-        if (!member) {
-          showToast('لم يتم العثور على العضو', 'error');
-          return;
-        }
-        document.getElementById('edit-member-id').value = member.id;
-        document.getElementById('edit-member-name').value = member.name;
-        document.getElementById('edit-member-role').value = member.role;
-        document.getElementById('edit-member-stage').value = member.stage;
-        document.getElementById('edit-member-phone').value = member.phone || '';
-        document.getElementById('edit-member-points').value = String(member.points ?? 0);
-        openModal('modal-edit-member');
+      const contentBase64 = btoa(unescape(encodeURIComponent(JSON.stringify(churchState, null, 2))));
+      const putRes = await fetch(apiUrl, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: `تحديث بيانات الكنيسة (${todayKey})`,
+          content: contentBase64,
+          branch,
+          sha
+        })
+      });
+
+      if (putRes.ok) {
+        document.getElementById("syncStatus").textContent = "✅ تم الحفظ في سحابة GitHub بنجاح";
+        if (showAlert) alert("تمت مزامنة جميع البيانات مع سحابة GitHub بنجاح!");
+      } else if (showAlert) {
+        alert("تعذر الرفع إلى GitHub، تأكد من صحة الرمز وصلاحية Contents.");
       }
+    } catch (err) {
+      if (showAlert) alert("حدث خطأ أثناء الاتصال بـ GitHub.");
+    }
+  }
 
-      async function handleEditMemberSubmit(event) {
-        event.preventDefault();
-        if (!state.isServant) {
-          showToast('صلاحية الخدام مطلوبة لتعديل العضو', 'error');
-          return;
-        }
-        const id = String(document.getElementById('edit-member-id')?.value || '');
-        const name = String(document.getElementById('edit-member-name')?.value || '').trim();
-        const role = document.getElementById('edit-member-role')?.value === 'خادم' ? 'خادم' : 'مخدوم';
-        const stage = String(document.getElementById('edit-member-stage')?.value || 'جامعة وشباب').trim();
-        const phone = String(document.getElementById('edit-member-phone')?.value || '').trim();
-        const points = Math.max(0, Number(document.getElementById('edit-member-points')?.value) || 0);
+  function renderAll() {
+    renderQuiz();
+    renderLeaderboard();
+    renderChat();
+    if (document.getElementById("adminDashboard").style.display === "block") {
+      renderAdminTable();
+    }
+  }
 
-        if (!id || !name) {
-          showToast('الاسم مطلوب', 'error');
-          return;
-        }
-
-        await applyMutation((db) => {
-          const target = db.members.find((m) => m.id === id);
-          if (!target) {
-            throw new Error('العضو غير موجود');
-          }
-          target.name = name;
-          target.role = role;
-          target.stage = stage;
-          target.phone = phone;
-          target.points = points;
-          target.updatedAt = new Date().toISOString();
-          appendLog(db, `تم تعديل بيانات العضو: ${name} (${points} نقطة).`);
-        }, 'تم حفظ تعديلات العضو ومزامنتها');
-
-        closeModal('modal-edit-member');
-      }
-
-      function askDeleteMember(memberId) {
-        if (!state.isServant) {
-          showToast('يرجى تسجيل دخول الخدام أولاً لحذف الأعضاء', 'error');
-          openModal('modal-servant-login');
-          return;
-        }
-        const member = state.db.members.find((m) => m.id === memberId);
-        if (!member) {
-          showToast('العضو غير موجود', 'error');
-          return;
-        }
-
-        openConfirmModal(
-          'تأكيد حذف عضو نهائياً
+  // التشغيل الأولي + تحديث تلقائي كل 15 ثانية لجميع الهواتف
+  const cached = localStorage.getItem("church_state_cache");
+  if (cached) churchState = JSON.parse(cached);
+  generateDaily100Questions();
+  renderAll();
+  pullFromGitHub();
+  setInterval(pullFromGitHub, 15000);
+</script>
+</body>
+</html>
