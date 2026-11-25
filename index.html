@@ -260,14 +260,17 @@
   document.getElementById("todayDateBadge").textContent = todayKey;
 
   async function sbFetch(table, query = "", method = "GET", body = null) {
+    const headers = {
+      "apikey": SUPABASE_ANON_KEY,
+      "Content-Type": "application/json",
+      "Prefer": "return=representation"
+    };
+    if (SUPABASE_ANON_KEY.startsWith("eyJ")) {
+      headers["Authorization"] = `Bearer ${SUPABASE_ANON_KEY}`;
+    }
     const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}${query}`, {
       method,
-      headers: {
-        "apikey": SUPABASE_ANON_KEY,
-        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-        "Content-Type": "application/json",
-        "Prefer": "return=representation"
-      },
+      headers,
       body: body ? JSON.stringify(body) : null
     });
     const text = await res.text();
@@ -282,7 +285,7 @@
       const rows = await sbFetch("members", "?limit=1");
       alert(`✅ قاعدة البيانات متصلة وتعمل بنجاح! عدد السجلات المختبرة: ${rows.length}`);
     } catch (err) {
-      alert(`❌ مشكلة في قاعدة البيانات:\n${err.message}\nتأكد من تنفيذ كود SQL في Supabase.`);
+      alert(`❌ مشكلة في قاعدة البيانات:\n${err.message}`);
     }
   }
 
