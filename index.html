@@ -114,6 +114,7 @@
     .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
     .stat-box { background: #eff6ff; padding: 12px; border-radius: 12px; text-align: center; }
     .stat-box strong { display: block; font-size: 1.3rem; color: var(--primary); }
+    .att-history-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
   </style>
 </head>
 <body>
@@ -125,7 +126,7 @@
 
 <header>
   <h1>✝️ الكنيسة الرسولية الأولى بالعزية</h1>
-  <p>منصة المتابعة الروحية • الحضور والغياب • المسابقة اليومية (100 سؤال)</p>
+  <p>منصة المتابعة الروحية • الحضور والغياب • المسابقة اليومية (100 سؤال متجدد)</p>
 </header>
 
 <div class="container">
@@ -137,7 +138,7 @@
     <button class="tab-btn" onclick="switchTab('admin', this)">🛡️ الخادم</button>
   </div>
 
-  <!-- 1. العضوية -->
+  <!-- 1. العضوية والحضور وتغيير كلمة السر -->
   <div id="register" class="section active">
     <div class="card">
       <h2>تسجيل دخول / إضافة عضو جديد</h2>
@@ -166,12 +167,33 @@
       <button class="btn btn-primary" onclick="registerOrLoginMember()">✅ دخول / تسجيل وحفظ في قاعدة البيانات</button>
       <div id="currentUserBox" style="margin-top:12px; display:none; background:#dcfce7; padding:10px; border-radius:10px; font-weight:700; color:#14532d;"></div>
     </div>
+
+    <!-- سجل حضور العضو -->
+    <div class="card" id="memberAttendanceCard" style="display:none;">
+      <h2>📅 سجل حضوري وغيابي</h2>
+      <div id="memberAttSummary" style="font-weight:700; margin-bottom:8px;"></div>
+      <div class="att-history-list" id="memberAttDates"></div>
+    </div>
+
+    <!-- تغيير كلمة السر للعضو -->
+    <div class="card" id="memberChangePassCard" style="display:none;">
+      <h2>🔑 تغيير كلمة المرور الخاصة بي</h2>
+      <div class="form-group">
+        <label>كلمة المرور الحالية</label>
+        <input type="password" id="oldMemberPass" placeholder="أدخل كلمة المرور الحالية" />
+      </div>
+      <div class="form-group">
+        <label>كلمة المرور الجديدة</label>
+        <input type="password" id="newMemberPass" placeholder="أدخل كلمة المرور الجديدة" />
+      </div>
+      <button class="btn btn-gold" onclick="changeMemberPassword()">💾 حفظ كلمة المرور الجديدة</button>
+    </div>
   </div>
 
-  <!-- 2. المسابقة اليومية 100 سؤال -->
+  <!-- 2. المسابقة اليومية 100 سؤال مختلف -->
   <div id="quiz" class="section">
     <div class="card">
-      <h2>📖 مسابقة الكتاب المقدس اليومية (100 سؤال متجدد يومياً)</h2>
+      <h2>📖 مسابقة الكتاب المقدس اليومية (100 سؤال مختلف يومياً)</h2>
       <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-weight:700;">
         <span id="qProgress">السؤال 1 من 100</span>
         <span id="qScore">مجموع نقاطك: 0</span>
@@ -217,17 +239,21 @@
     <div id="adminDashboard" style="display:none;">
       <div class="card">
         <h2>📊 الإحصائيات والتقارير</h2>
+        <div class="form-group">
+          <label>📅 اختر تاريخ الاجتماع لمتابعة الحضور والغياب:</label>
+          <input type="date" id="adminDateSelect" onchange="renderAdminTable()" />
+        </div>
         <div class="stats-grid">
           <div class="stat-box"><strong id="statTotal">0</strong>إجمالي الأعضاء</div>
-          <div class="stat-box"><strong id="statPresent">0</strong>حاضرون اليوم</div>
+          <div class="stat-box"><strong id="statPresent">0</strong>حاضرون في التاريخ</div>
           <div class="stat-box"><strong id="statAbsent">0</strong>غائبون للافتقاد</div>
         </div>
         <button class="btn btn-primary" onclick="testDatabaseConnection()">🔍 فحص اتصال وحفظ قاعدة البيانات الآن</button>
-        <button class="btn btn-gold" onclick="exportCSVReport()">📥 تحميل تقرير إحصائي (CSV)</button>
+        <button class="btn btn-gold" onclick="exportCSVReport()">📥 تحميل تقرير الحضور والغياب (CSV)</button>
       </div>
 
       <div class="card">
-        <h2>📋 إدارة الأعضاء والحضور والغياب</h2>
+        <h2>📋 كشف الحضور والغياب وإدارة الأعضاء</h2>
         <div style="overflow-x:auto;">
           <table>
             <thead>
@@ -235,13 +261,22 @@
                 <th>الاسم</th>
                 <th>المرحلة</th>
                 <th>النقاط</th>
-                <th>حالة اليوم</th>
+                <th>الحضور / الغياب</th>
                 <th>إجراءات</th>
               </tr>
             </thead>
             <tbody id="adminMembersTable"></tbody>
           </table>
         </div>
+      </div>
+
+      <div class="card">
+        <h2>🔐 تغيير كلمة مرور لوحة الخادم</h2>
+        <div class="form-group">
+          <label>كلمة المرور الجديدة للإدارة</label>
+          <input type="password" id="newAdminPassInput" placeholder="أدخل كلمة مرور الإدارة الجديدة" />
+        </div>
+        <button class="btn btn-danger" onclick="changeAdminPassword()">تحديث كلمة مرور الخادم</button>
       </div>
     </div>
   </div>
@@ -250,14 +285,17 @@
 <script>
   const SUPABASE_URL = "https://kdxmrxcymeuzoxxmccgg.supabase.co";
   const SUPABASE_ANON_KEY = "sb_publishable_N3YDAUjaKH5rjmTMbAdZPA_c3JHhOrH";
-  const ADMIN_PASS_HASH = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9";
+  const DEFAULT_ADMIN_HASH = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9";
 
   let churchState = { members: [], attendance: {}, messages: [] };
   let currentUser = JSON.parse(localStorage.getItem("church_current_user") || "null");
-  let currentQuestionIdx = 0;
-  let dailyQuestions = [];
   const todayKey = new Date().toISOString().split("T")[0];
   document.getElementById("todayDateBadge").textContent = todayKey;
+  document.getElementById("adminDateSelect").value = todayKey;
+
+  let savedProgress = JSON.parse(localStorage.getItem("church_quiz_progress_" + todayKey) || '{"idx":0,"answered":[]}');
+  let currentQuestionIdx = savedProgress.idx || 0;
+  let dailyQuestions = [];
 
   async function sbFetch(table, query = "", method = "GET", body = null) {
     const headers = {
@@ -302,7 +340,8 @@
     renderAll();
   }
 
-  const BASE_QUESTIONS = [
+  // بنك من 100 سؤال كتاب مقدس مختلف تماماً عن بعضها
+  const BIBLE_100_BANK = [
     { q: "من هو النبي الذي ابتلعه الحوت ثلاثة أيام؟", opts: ["يونان", "إيليا", "أرميا", "دانيال"], a: 0 },
     { q: "كم عدد تلاميذ السيد المسيح؟", opts: ["7", "10", "12", "70"], a: 2 },
     { q: "في أي مدينة وُلد السيد المسيح؟", opts: ["الناصرة", "بيت لحم", "أورشليم", "أريحا"], a: 1 },
@@ -312,15 +351,115 @@
     { q: "ما هو أقصر أصحاح في الكتاب المقدس؟", opts: ["مزمور 117", "مزمور 23", "مزمور 1", "مزمور 150"], a: 0 },
     { q: "من هو الملك الذي هزم جليات الجبار؟", opts: ["شاول", "سليمان", "داود", "حزقيا"], a: 2 },
     { q: "كم عدد أسفار الكتاب المقدس كاملة؟", opts: ["66 سفراً", "73 سفراً", "39 سفراً", "27 سفراً"], a: 0 },
-    { q: "من الذي كتب أكثر رسائل العهد الجديد؟", opts: ["بطرس الرسول", "يوحنا الحبيب", "بولس الرسول", "لوقا البشير"], a: 2 }
+    { q: "من الذي كتب أكثر رسائل العهد الجديد؟", opts: ["بطرس الرسول", "يوحنا الحبيب", "بولس الرسول", "لوقا البشير"], a: 2 },
+    { q: "من هي أم يوحنا المعمدان؟", opts: ["مريم", "أليصابات", "حنة", "مرثا"], a: 1 },
+    { q: "ما هي أول معجزة صنعها السيد المسيح؟", opts: ["إقامة لعازر", "تحويل الماء إلى خمر", "إشباع الجموع", "المشي على الماء"], a: 1 },
+    { q: "في أي نهر اعتمد السيد المسيح؟", opts: ["نهر النيل", "نهر الفرات", "نهر الأردن", "نهر دجلة"], a: 2 },
+    { q: "من هو التلميذ الذي أنكر السيد المسيح ثلاث مرات؟", opts: ["يهوذا", "توما", "بطرس", "فيلبس"], a: 2 },
+    { q: "من هو التلميذ الذي شك في قيامة السيد المسيح حتى لمس جراحه؟", opts: ["توما", "أندراوس", "متى", "برثولماوس"], a: 0 },
+    { q: "كم عدد أسفار العهد الجديد؟", opts: ["27 سفراً", "39 سفراً", "66 سفراً", "22 سفراً"], a: 0 },
+    { q: "كم عدد أسفار العهد القديم؟", opts: ["27 سفراً", "39 سفراً", "46 سفراً", "50 سفراً"], a: 1 },
+    { q: "من الذي قاد شعب بني إسرائيل لعبور نهر الأردن؟", opts: ["موسى", "هارون", "يشوع بن نون", "كالب"], a: 2 },
+    { q: "كم عدد الوصايا التي استلمها موسى على الجبل؟", opts: ["7 وصايا", "10 وصايا", "12 وصية", "5 وصايا"], a: 1 },
+    { q: "على أي جبل استلم موسى لوحي الشريعة؟", opts: ["جبل الزيتون", "جبل الكرمل", "جبل سيناء", "جبل طابور"], a: 2 },
+    { q: "من هو أقوى رجل في الكتاب المقدس؟", opts: ["داود", "شمشون", "جدعون", "شاؤل"], a: 1 },
+    { q: "ما سر قوة شمشون الجبار؟", opts: ["سيفه", "شعر رأسه", "درعه", "خاتمه"], a: 1 },
+    { q: "من الذي أُلقي في جب الأسود ونجاه الله؟", opts: ["يوسف", "دانيال", "إرميا", "حزقيال"], a: 1 },
+    { q: "من الذي باعه إخوته وصار وزيراً في مصر؟", opts: ["بنيامين", "يوسف الصديق", "يهوذا", "رأوبين"], a: 1 },
+    { q: "كم عدد إخوة يوسف الصديق؟", opts: ["10 إخوة", "11 أخاً", "12 أخاً", "9 إخوة"], a: 1 },
+    { q: "من هو الملك الذي طلب الحكمة من الله فأعطاه الله حكمة وغنى؟", opts: ["داود", "سليمان", "رحبعام", "آسا"], a: 1 },
+    { q: "من الذي بنى الهيكل الأول في أورشليم؟", opts: ["داود", "سليمان", "نحميا", "عزرا"], a: 1 },
+    { q: "من هو النبي الذي صعد إلى السماء في مركبة نارية؟", opts: ["أليشع", "إيليا", "موسى", "أخنوخ"], a: 1 },
+    { q: "كم يوماً كان لعازر في القبر قبل أن يقيمه السيد المسيح؟", opts: ["يومان", "ثلاثة أيام", "أربعة أيام", "سبعة أيام"], a: 2 },
+    { q: "من هما أختا لعازر؟", opts: ["مريم ومرثا", "راعوث ونعمي", "ليئة وراحيل", "حنة وفننة"], a: 0 },
+    { q: "كم عدد الخبزات والسمكات التي أشبع بها المسيح خمسة آلاف رجل؟", opts: ["5 خبزات وسمكتان", "7 خبزات وسمكتان", "3 خبزات و5 سمكات", "12 خبزة"], a: 0 },
+    { q: "ما اسم البستان الذي صلى فيه السيد المسيح قبل القبض عليه؟", opts: ["بستان عدن", "بستان جثسيماني", "بستان أريحا", "بستان بيت عنيا"], a: 1 },
+    { q: "من الذي ساعد السيد المسيح في حمل الصليب؟", opts: ["يوسف الرامي", "سمعان القيرواني", "نيقوديموس", "بطرس"], a: 1 },
+    { q: "من الذي طلب جسد السيد المسيح من بيلاطس ودفنه في قبره الجديد؟", opts: ["يوسف الرامي", "يوحنا", "بطرس", "سمعان"], a: 0 },
+    { q: "ما اسم التلميذ الذي أسلم السيد المسيح؟", opts: ["يهوذا الإسخريوطي", "توما", "متياس", "سمعان القانوي"], a: 0 },
+    { q: "من هو التلميذ الذي اختير بالقرعة بدلاً من يهوذا؟", opts: ["برنابا", "متياس", "سيلا", "تيموثاوس"], a: 1 },
+    { q: "ما هو أول سفر في الكتاب المقدس؟", opts: ["الخروج", "التكوين", "متى", "المزامير"], a: 1 },
+    { q: "ما هو آخر سفر في الكتاب المقدس؟", opts: ["أعمال الرسل", "رؤيا يوحنا", "يهوذا", "ملاخي"], a: 1 },
+    { q: "من كتب سفر الرؤيا؟", opts: ["بولس الرسول", "يوحنا الحبيب", "بطرس الرسول", "لوقا البشير"], a: 1 },
+    { q: "في أي جزيرة كتب يوحنا سفر الرؤيا؟", opts: ["قبرص", "كريت", "بطمس", "مالطا"], a: 2 },
+    { q: "من كتب سفر أعمال الرسل؟", opts: ["مرقس", "متى", "لوقا", "يوحنا"], a: 2 },
+    { q: "ما مهنة لوقا البشير؟", opts: ["صياد سمك", "عشار", "طبيب", "صانع خيام"], a: 2 },
+    { q: "ما مهنة متى البشير قبل دعوته؟", opts: ["طبيب", "عشار (جامع ضرائب)", "نجار", "صياد"], a: 1 },
+    { q: "ما مهنة بطرس وأندراوس ويعقوب ويوحنا؟", opts: ["صيادو سمك", "تجار", "جنود", "كتبة"], a: 0 },
+    { q: "من هو كاروز الديار المصرية وكاتب الإنجيل الثاني؟", opts: ["القديس مرقس", "القديس لوقا", "القديس متى", "القديس بولس"], a: 0 },
+    { q: "كم عدد الأناجيل في العهد الجديد؟", opts: ["3 أناجيل", "4 أناجيل", "5 أناجيل", "7 أناجيل"], a: 1 },
+    { q: "ما اسم الرجل القصير القامة الذي تسلق شجرة جميز ليرى المسيح؟", opts: ["بارتيماوس", "زكا العشار", "نيقوديموس", "كرنيليوس"], a: 1 },
+    { q: "من هو الفريسي الذي جاء إلى السيد المسيح ليلاً؟", opts: ["نيقوديموس", "غمالائيل", "قيافا", "حنان"], a: 0 },
+    { q: "كم عدد العذارى الحكيمات في مثل العذارى العشر؟", opts: ["3", "5", "7", "10"], a: 1 },
+    { q: "كم عدد البرص الذين طهرهم المسيح وعاد واحد منهم فقط ليشكر؟", opts: ["5", "7", "10", "12"], a: 2 },
+    { q: "ما جنسية الأبرص الوحيد الذي عاد ليشكر السيد المسيح؟", opts: ["يهودي", "سامري", "روماني", "يوناني"], a: 1 },
+    { q: "من هي المرأة التي مسحت قدمي السيد المسيح بالطيب ومسحتهما بشعرها؟", opts: ["مريم أخت لعازر", "مرثا", "سالومة", "سوسنة"], a: 0 },
+    { q: "كم عدد أيام الخليقة التي خلق فيها الله العالم؟", opts: ["5 أيام", "6 أيام", "7 أيام", "10 أيام"], a: 1 },
+    { q: "ماذا خلق الله في اليوم الأول؟", opts: ["الشمس والقمر", "النور", "الإنسان", "الحيوانات"], a: 1 },
+    { q: "ما اسم أول رجل وأول امرأة خلقهما الله؟", opts: ["آدم وحواء", "إبراهيم وسارة", "إسحاق ورفقة", "يعقوب وراحيل"], a: 0 },
+    { q: "من هما ابنا آدم وحواء الأولان؟", opts: ["قايين وهابيل", "شيث وأنوش", "سام وحام", "عيسو ويعقوب"], a: 0 },
+    { q: "كم سنة عاش متوشالح أطول إنسان عمراً في الكتاب المقدس؟", opts: ["900 سنة", "969 سنة", "930 سنة", "850 سنة"], a: 1 },
+    { q: "ما العلامة التي وضعها الله في السماء عهداً بعدم إهلاك الأرض بالطوفان؟", opts: ["نجمة", "قوس قزح", "سحابة", "حمامة"], a: 1 },
+    { q: "ما الطائر الذي أرسله نوح وعاد وفي منقاره ورقة زيتون؟", opts: ["غراب", "حمامة", "نسر", "عصفور"], a: 1 },
+    { q: "من هو أبو الآباء الذي دعاه الله ليخرج من أرضه؟", opts: ["نوح", "إبراهيم", "إسحاق", "يعقوب"], a: 1 },
+    { q: "ما اسم زوجة إبراهيم؟", opts: ["رفقة", "سارة", "راحيل", "ليئة"], a: 1 },
+    { q: "ما اسم ابن إبراهيم من سارة؟", opts: ["إسماعيل", "إسحاق", "يعقوب", "لوط"], a: 1 },
+    { q: "ما اسم زوجة إسحاق؟", opts: ["رفقة", "راحيل", "ليئة", "سارة"], a: 0 },
+    { q: "من هما التوأمان ابنا إسحاق ورفقة؟", opts: ["قايين وهابيل", "عيسو ويعقوب", "أفرايم ومنسى", "فارس وزارح"], a: 1 },
+    { q: "ماذا تغيّر اسم يعقوب بعد مصارعته مع الملاك؟", opts: ["إسرائيل", "إبراهيم", "بطرس", "بولس"], a: 0 },
+    { q: "كم عدد أسباط بني إسرائيل؟", opts: ["10 أسباط", "12 سبطاً", "7 أسباط", "14 سبطاً"], a: 1 },
+    { q: "من هي أخت موسى النبي التي راقبته في النهر؟", opts: ["مريم", "صفورة", "دبورة", "أستير"], a: 0 },
+    { q: "ما اسم أخو موسى الذي صار أول رئيس كهنة؟", opts: ["يشوع", "هارون", "أليعازر", "قورح"], a: 1 },
+    { q: "كم عدد الضربات التي ضرب بها الله أرض مصر قبل خروج الشعب؟", opts: ["7 ضربات", "10 ضربات", "12 ضربة", "5 ضربات"], a: 1 },
+    { q: "كم سنة تاه شعب بني إسرائيل في البرية؟", opts: ["20 سنة", "30 سنة", "40 سنة", "50 سنة"], a: 2 },
+    { q: "ما الطعام الذي كان ينزل من السماء لشعب إسرائيل في البرية؟", opts: ["المن والسلوى", "التين والزيتون", "القمح والشعير", "العسل واللبن"], a: 0 },
+    { q: "ما اسم المدينة التي سقطت أسوارها بعد دوران الشعب حولها 7 أيام؟", opts: ["عاي", "أريحا", "حبرون", "شكيم"], a: 1 },
+    { q: "من هي القاضية والنبية التي قادت إسرائيل للنصر؟", opts: ["راعوث", "دبورة", "أستير", "يهوديت"], a: 1 },
+    { q: "من هو القاضي الذي هزم المديانيين بـ 300 رجل فقط؟", opts: ["جدعون", "شمشون", "يفتاح", "باراق"], a: 0 },
+    { q: "من هي الفتاة الموآبية التي التصقت بحماتها نعمي؟", opts: ["عرفة", "راعوث", "أستير", "أبيجايل"], a: 1 },
+    { q: "من هو أول ملك على بني إسرائيل؟", opts: ["داود", "شاول", "سليمان", "صموئيل"], a: 1 },
+    { q: "من هو النبي الذي مسح شاول وداود ملكين؟", opts: ["ناثان", "صموئيل", "إيليا", "أليشع"], a: 1 },
+    { q: "كم مزامير داود النبي في سفر المزامير؟", opts: ["100 مزمور", "120 مزموراً", "150 مزموراً", "200 مزمور"], a: 2 },
+    { q: "ما هي أول آية في المزمور الأول؟", opts: ["الرب راعي فلا يعوزني شيء", "طوبى للرجل الذي لم يسلك في مشورة الأشرار", "ارحمني يا الله كعظيم رحمتك", "الرب نوري وخلاصي"], a: 1 },
+    { q: "من هي الملكة اليهودية التي أنقذت شعبها من مؤامرة هامان؟", opts: ["أستير", "راعوث", "وشتي", "إيزابل"], a: 0 },
+    { q: "من هو الرجل البار الذي احتمل تجارب شديدة في ماله وأولاده وصحته؟", opts: ["أيوب الصديق", "نوح", "لوط", "طوبيا"], a: 0 },
+    { q: "من هو النبي الذي رموه في جب الوحل؟", opts: ["إشعياء", "إرميا", "حزقيال", "عاموس"], a: 1 },
+    { q: "من هم الفتية الثلاثة الذين أُلقوا في أتون النار المحمى؟", opts: ["شدرخ وميشخ وعبدنغو", "سام وحام ويافث", "بطرس ويعقوب ويوحنا", "قايين وهابيل وشيث"], a: 0 },
+    { q: "ما اسم الملاك الذي بشّر العذراء مريم بميلاد المسيح؟", opts: ["ميخائيل", "جبرائيل", "رافائيل", "سوريال"], a: 1 },
+    { q: "ما معنى اسم 'عمانوئيل'؟", opts: ["الله معنا", "الله يخلص", "ملك السلام", "نور العالم"], a: 0 },
+    { q: "ما معنى اسم 'يسوع'؟", opts: ["المخلص", "المعلم", "الراعي", "المسيح"], a: 0 },
+    { q: "ما الهدايا الثلاث التي قدمها المجوس للسيد المسيح؟", opts: ["ذهب ولبان ومر", "فضة وذهب وحرير", "زيت وخمر وقمح", "لؤلؤ وياقوت وعطر"], a: 0 },
+    { q: "إلى أي بلد هربت العائلة المقدسة من وجه هيرودس الملك؟", opts: ["سوريا", "مصر", "لبنان", "الأردن"], a: 1 },
+    { q: "كم سنة كان عمر السيد المسيح عندما ضاع في الهيكل ووجدته أمه يحاور المعلمين؟", opts: ["8 سنوات", "10 سنوات", "12 سنة", "15 سنة"], a: 2 },
+    { q: "من هو النبي الذي كان يأكل الجراد والعسل البري ويلبس وبر الإبل؟", opts: ["إيليا", "يوحنا المعمدان", "أليشع", "عاموس"], a: 1 },
+    { q: "ما اسم القائد الروماني الذي آمن واعتمد على يد بطرس الرسول؟", opts: ["كرنيليوس", "فيلكس", "فستوس", "أغريباس"], a: 0 },
+    { q: "ما كان اسم بولس الرسول قبل إيمانه؟", opts: ["شاول الطرسوسي", "سمعان", "برنابا", "سيلا"], a: 0 },
+    { q: "على طريق أي مدينة ظهر السيد المسيح لشاول الطرسوسي؟", opts: ["أورشليم", "دمشق", "أنطاكية", "روما"], a: 1 },
+    { q: "كم عدد ثمار الروح القدس المذكورة في رسالة غلاطية؟", opts: ["7 ثمار", "9 ثمار", "10 ثمار", "12 ثمرة"], a: 1 },
+    { q: "ما هي أعظم الفضائل الثلاث (الإيمان والرجاء والمحبة)؟", opts: ["الإيمان", "الرجاء", "المحبة", "الصبر"], a: 2 },
+    { q: "أين دُعي التلاميذ مسيحيين أول مرة؟", opts: ["أورشليم", "أنطاكية", "روما", "الإسكندرية"], a: 1 },
+    { q: "من هو الشاب الذي سقط من الطابق الثالث أثناء عظة بولس فأقامه بولس حياً؟", opts: ["أفتيخوس", "تيموثاوس", "تيطس", "أنسيمس"], a: 0 },
+    { q: "من هو الابن الروحي لبولس الرسول الذي كتب له رسالتين باسمه؟", opts: ["تيموثاوس", "فليمون", "لوقا", "مرقس"], a: 0 },
+    { q: "كم عدد الأسفار الشعرية في العهد القديم (أيوب، المزامير، الأمثال، الجامعة، نشيد الأنشاد)؟", opts: ["3 أسفار", "5 أسفار", "7 أسفار", "4 أسفار"], a: 1 },
+    { q: "ما هي آخر كلمات السيد المسيح على الصليب في إنجيل يوحنا؟", opts: ["قد أُكمل", "يا أبتاه اغفر لهم", "اليوم تكون معي في الفردوس", "أنا عطشان"], a: 0 }
   ];
 
+  // توليد 100 سؤال مختلف تماماً عن بعضها في نفس اليوم، ويتغير ترتيبها يومياً عند الجميع
   function generateDaily100Questions() {
     const daySeed = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
-    dailyQuestions = Array.from({ length: 100 }, (_, i) => {
-      const base = BASE_QUESTIONS[(i * 3 + daySeed) % BASE_QUESTIONS.length];
-      return { q: `(سؤال اليوم #${i + 1}) ${base.q}`, opts: base.opts, a: base.a };
-    });
+    const list = [...BIBLE_100_BANK];
+    // خلط حتمي بناءً على تاريخ اليوم ليكون موحداً عند جميع الهواتف في نفس اليوم ومختلفاً في اليوم التالي
+    let seed = daySeed * 9301 + 49297;
+    for (let i = list.length - 1; i > 0; i--) {
+      seed = (seed * 1664525 + 1013904223) % 4294967296;
+      const j = seed % (i + 1);
+      [list[i], list[j]] = [list[j], list[i]];
+    }
+    dailyQuestions = list.map((item, idx) => ({
+      q: `(سؤال اليوم #${idx + 1}) ${item.q}`,
+      opts: item.opts,
+      a: item.a
+    }));
   }
 
   function renderQuiz() {
@@ -331,13 +470,19 @@
     document.getElementById("qScore").textContent = `مجموع نقاطك: ${userPoints}`;
     document.getElementById("questionText").textContent = qObj.q;
 
+    const alreadyAnswered = savedProgress.answered.includes(currentQuestionIdx);
     const container = document.getElementById("optionsContainer");
     container.innerHTML = "";
     qObj.opts.forEach((opt, idx) => {
       const btn = document.createElement("button");
       btn.className = "quiz-option";
       btn.textContent = opt;
-      btn.onclick = () => handleAnswer(idx, btn);
+      if (alreadyAnswered) {
+        btn.disabled = true;
+        if (idx === qObj.a) btn.classList.add("correct");
+      } else {
+        btn.onclick = () => handleAnswer(idx, btn);
+      }
       container.appendChild(btn);
     });
   }
@@ -349,6 +494,10 @@
     }
     const qObj = dailyQuestions[currentQuestionIdx];
     document.querySelectorAll(".quiz-option").forEach(b => b.disabled = true);
+
+    if (!savedProgress.answered.includes(currentQuestionIdx)) {
+      savedProgress.answered.push(currentQuestionIdx);
+    }
 
     if (selectedIdx === qObj.a) {
       btn.classList.add("correct");
@@ -368,6 +517,8 @@
 
     setTimeout(async () => {
       currentQuestionIdx = (currentQuestionIdx + 1) % 100;
+      savedProgress.idx = currentQuestionIdx;
+      localStorage.setItem("church_quiz_progress_" + todayKey, JSON.stringify(savedProgress));
       await pullFromCloud(false);
     }, 700);
   }
@@ -425,6 +576,62 @@
     }
   }
 
+  async function changeMemberPassword() {
+    if (!currentUser) return;
+    const oldPass = document.getElementById("oldMemberPass").value.trim();
+    const newPass = document.getElementById("newMemberPass").value.trim();
+    if (!oldPass || !newPass) {
+      alert("برجاء إدخال كلمة المرور الحالية وكلمة المرور الجديدة.");
+      return;
+    }
+    try {
+      const rows = await sbFetch("members", `?id=eq.${encodeURIComponent(currentUser.id)}`);
+      if (!rows.length) return;
+      const oldHash = await sha256(oldPass);
+      if (rows[0].pass_hash && rows[0].pass_hash !== oldHash) {
+        alert("كلمة المرور الحالية غير صحيحة.");
+        return;
+      }
+      const newHash = await sha256(newPass);
+      await sbFetch("members", `?id=eq.${encodeURIComponent(currentUser.id)}`, "PATCH", { pass_hash: newHash });
+      document.getElementById("oldMemberPass").value = "";
+      document.getElementById("newMemberPass").value = "";
+      alert("✅ تم تغيير كلمة المرور الخاصة بك وحفظها في قاعدة البيانات بنجاح!");
+    } catch (err) {
+      alert("❌ تعذر تغيير كلمة المرور: " + err.message);
+    }
+  }
+
+  function renderMemberProfileExtras() {
+    const attCard = document.getElementById("memberAttendanceCard");
+    const passCard = document.getElementById("memberChangePassCard");
+    const userBox = document.getElementById("currentUserBox");
+
+    if (!currentUser) {
+      attCard.style.display = "none";
+      passCard.style.display = "none";
+      return;
+    }
+
+    userBox.style.display = "block";
+    userBox.textContent = `👋 أهلاً بك يا ${currentUser.name} (مسجل دخول)`;
+    attCard.style.display = "block";
+    passCard.style.display = "block";
+
+    const allDates = Object.keys(churchState.attendance).sort().reverse();
+    const myPresentDates = allDates.filter(d => (churchState.attendance[d] || []).includes(currentUser.id));
+    const isPresentToday = (churchState.attendance[todayKey] || []).includes(currentUser.id);
+
+    document.getElementById("memberAttSummary").innerHTML = `
+      حالة اليوم (${todayKey}): <span class="badge ${isPresentToday ? 'badge-ok' : 'badge-warn'}">${isPresentToday ? 'حاضر ✅' : 'غائب ⚠️'}</span>
+      • إجمالي أيام الحضور المسجلة: <strong>${myPresentDates.length}</strong> يوم
+    `;
+
+    document.getElementById("memberAttDates").innerHTML = myPresentDates.map(d =>
+      `<span class="badge badge-ok">✅ ${d}</span>`
+    ).join("") || "<span style='color:#64748b;'>لا توجد أيام حضور مسجلة بعد.</span>";
+  }
+
   async function sendChatMessage() {
     const input = document.getElementById("chatInput");
     const text = input.value.trim();
@@ -472,7 +679,8 @@
   async function loginAdmin() {
     const val = document.getElementById("adminPassInput").value;
     const hash = await sha256(val);
-    if (hash === ADMIN_PASS_HASH || val === "admin123") {
+    const savedAdminHash = localStorage.getItem("church_admin_hash") || DEFAULT_ADMIN_HASH;
+    if (hash === savedAdminHash || (!localStorage.getItem("church_admin_hash") && val === "admin123")) {
       document.getElementById("adminLoginCard").style.display = "none";
       document.getElementById("adminDashboard").style.display = "block";
       renderAdminTable();
@@ -481,8 +689,21 @@
     }
   }
 
+  async function changeAdminPassword() {
+    const newPass = document.getElementById("newAdminPassInput").value.trim();
+    if (!newPass) {
+      alert("أدخل كلمة مرور الإدارة الجديدة أولاً.");
+      return;
+    }
+    const newHash = await sha256(newPass);
+    localStorage.setItem("church_admin_hash", newHash);
+    document.getElementById("newAdminPassInput").value = "";
+    alert("✅ تم تغيير كلمة مرور لوحة الخادم بنجاح!");
+  }
+
   function renderAdminTable() {
-    const presentIds = churchState.attendance[todayKey] || [];
+    const selectedDate = document.getElementById("adminDateSelect").value || todayKey;
+    const presentIds = churchState.attendance[selectedDate] || [];
     document.getElementById("statTotal").textContent = churchState.members.length;
     document.getElementById("statPresent").textContent = presentIds.length;
     document.getElementById("statAbsent").textContent = Math.max(0, churchState.members.length - presentIds.length);
@@ -501,8 +722,10 @@
             </span>
           </td>
           <td>
-            <button class="btn btn-success btn-sm" onclick="toggleAttendance('${m.id}')">تحضير</button>
-            <a class="btn btn-gold btn-sm" href="https://wa.me/2${m.phone}?text=${encodeURIComponent('سلام ونعمة يا ' + m.name + '، افتقدناك اليوم في الكنيسة الرسولية الأولى بالعزية ❤️')}" target="_blank">واتساب</a>
+            <button class="btn ${isPresent ? 'btn-danger' : 'btn-success'} btn-sm" onclick="toggleAttendance('${m.id}', '${selectedDate}')">
+              ${isPresent ? 'تسجيل غياب' : 'تسجيل حضور'}
+            </button>
+            <a class="btn btn-gold btn-sm" href="https://wa.me/2${m.phone}?text=${encodeURIComponent('سلام ونعمة يا ' + m.name + '، افتقدناك يوم ' + selectedDate + ' في الكنيسة الرسولية الأولى بالعزية ❤️')}" target="_blank">واتساب افتقاد</a>
             <button class="btn btn-danger btn-sm" onclick="deleteMember('${m.id}')">حذف</button>
           </td>
         </tr>
@@ -510,17 +733,18 @@
     }).join("");
   }
 
-  async function toggleAttendance(id) {
-    const presentIds = churchState.attendance[todayKey] || [];
+  async function toggleAttendance(id, dateKey) {
+    const targetDate = dateKey || todayKey;
+    const presentIds = churchState.attendance[targetDate] || [];
     try {
       if (!presentIds.includes(id)) {
-        await sbFetch("attendance", "", "POST", [{ date_key: todayKey, member_id: id }]);
+        await sbFetch("attendance", "", "POST", [{ date_key: targetDate, member_id: id }]);
       } else {
-        await sbFetch("attendance", `?date_key=eq.${encodeURIComponent(todayKey)}&member_id=eq.${encodeURIComponent(id)}`, "DELETE");
+        await sbFetch("attendance", `?date_key=eq.${encodeURIComponent(targetDate)}&member_id=eq.${encodeURIComponent(id)}`, "DELETE");
       }
       await pullFromCloud(false);
     } catch (err) {
-      alert("تعذر تحديث الحضور: " + err.message);
+      alert("تعذر تحديث الحضور والغياب: " + err.message);
     }
   }
 
@@ -535,8 +759,9 @@
   }
 
   function exportCSVReport() {
-    const presentIds = churchState.attendance[todayKey] || [];
-    let csv = "\uFEFFالاسم,الهاتف,المرحلة,النقاط,حالة الحضور اليوم\n";
+    const selectedDate = document.getElementById("adminDateSelect").value || todayKey;
+    const presentIds = churchState.attendance[selectedDate] || [];
+    let csv = `\uFEFFالاسم,الهاتف,المرحلة,النقاط,حالة الحضور (${selectedDate})\n`;
     churchState.members.forEach(m => {
       const st = presentIds.includes(m.id) ? "حاضر" : "غائب";
       csv += `"${m.name}","${m.phone}","${m.group}",${m.points || 0},"${st}"\n`;
@@ -544,7 +769,7 @@
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = `تقرير_الكنيسة_${todayKey}.csv`;
+    a.download = `تقرير_الحضور_والغياب_${selectedDate}.csv`;
     a.click();
   }
 
@@ -584,6 +809,7 @@
   }
 
   function renderAll() {
+    renderMemberProfileExtras();
     renderQuiz();
     renderLeaderboard();
     renderChat();
