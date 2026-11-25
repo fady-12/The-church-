@@ -64,13 +64,13 @@
     .btn {
       border: none; padding: 11px 16px; border-radius: 10px; font-weight: 700;
       cursor: pointer; font-size: 0.92rem; display: inline-flex; align-items: center;
-      justify-content: center; gap: 6px; transition: 0.2s; width: 100%;
+      justify-content: center; gap: 6px; transition: 0.2s; width: 100%; margin-bottom: 6px;
     }
     .btn-primary { background: var(--primary); color: #fff; }
     .btn-gold { background: var(--gold); color: #fff; }
     .btn-success { background: var(--success); color: #fff; }
     .btn-danger { background: var(--danger); color: #fff; }
-    .btn-sm { padding: 6px 10px; font-size: 0.8rem; width: auto; }
+    .btn-sm { padding: 6px 10px; font-size: 0.8rem; width: auto; margin-bottom: 0; }
 
     .section { display: none; }
     .section.active { display: block; }
@@ -99,7 +99,7 @@
     .quiz-option.wrong { background: #fee2e2; border-color: var(--danger); color: #7f1d1d; }
 
     .chat-box {
-      height: 300px; overflow-y: auto; border: 1px solid var(--border);
+      height: 280px; overflow-y: auto; border: 1px solid var(--border);
       border-radius: 12px; padding: 12px; background: #f1f5f9; margin-bottom: 10px;
     }
     .msg {
@@ -119,7 +119,7 @@
 <body>
 
 <div class="sync-bar">
-  <span id="syncStatus">🔄 جاري المزامنة مع سحابة الكنيسة...</span>
+  <span id="syncStatus">🔄 جاري الاتصال بقاعدة البيانات...</span>
   <span id="todayDateBadge" class="badge badge-ok"></span>
 </div>
 
@@ -137,13 +137,10 @@
     <button class="tab-btn" onclick="switchTab('admin', this)">🛡️ الخادم</button>
   </div>
 
-  <!-- 1. تسجيل العضو بدون رمز -->
+  <!-- 1. العضوية -->
   <div id="register" class="section active">
     <div class="card">
-      <h2>تسجيل دخول / إضافة عضو جديد (بدون رمز سحابي)</h2>
-      <p style="font-size:0.85rem; color:var(--muted);">
-        سجّل اسمك ليظهر عند الخادم وفي لوحة المتصدرين، ويتم دمجه في السحابة عند مزامنة الخادم.
-      </p>
+      <h2>تسجيل دخول / إضافة عضو جديد</h2>
       <div class="form-group">
         <label>الاسم ثلاثي</label>
         <input type="text" id="regName" placeholder="مثال: مينا جرجس فهيم" />
@@ -164,53 +161,49 @@
       </div>
       <div class="form-group">
         <label>كلمة مرور شخصية لحسابك</label>
-        <input type="password" id="regPass" placeholder="اختر كلمة مرور سهلة" />
+        <input type="password" id="regPass" placeholder="اختر كلمة مرور" />
       </div>
-      <button class="btn btn-primary" onclick="registerOrLoginMember()">✅ دخول / تسجيل العضو الآن</button>
+      <button class="btn btn-primary" onclick="registerOrLoginMember()">✅ دخول / تسجيل وحفظ في قاعدة البيانات</button>
       <div id="currentUserBox" style="margin-top:12px; display:none; background:#dcfce7; padding:10px; border-radius:10px; font-weight:700; color:#14532d;"></div>
     </div>
   </div>
 
-  <!-- 2. المسابقة اليومية 100 سؤال مختلف يومياً -->
+  <!-- 2. المسابقة اليومية 100 سؤال -->
   <div id="quiz" class="section">
     <div class="card">
       <h2>📖 مسابقة الكتاب المقدس اليومية (100 سؤال متجدد يومياً)</h2>
-      <div id="quizHeaderInfo" style="display:flex; justify-content:space-between; margin-bottom:10px; font-weight:700;">
+      <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-weight:700;">
         <span id="qProgress">السؤال 1 من 100</span>
         <span id="qScore">مجموع نقاطك: 0</span>
       </div>
-      <div id="quizArea">
-        <h3 id="questionText" style="font-size:1.05rem;">جاري تحميل أسئلة اليوم...</h3>
-        <div id="optionsContainer"></div>
-      </div>
+      <h3 id="questionText" style="font-size:1.05rem;">جاري تحميل أسئلة اليوم...</h3>
+      <div id="optionsContainer"></div>
     </div>
   </div>
 
-  <!-- 3. لوحة المتصدرين المتزامنة -->
+  <!-- 3. المتصدرين -->
   <div id="leaderboard" class="section">
     <div class="card">
-      <h2>🏆 لوحة المتصدرين (محدثة على جميع الهواتف)</h2>
-      <button class="btn btn-gold btn-sm" style="margin-bottom:10px;" onclick="pullFromGitHub(true)">🔄 تحديث الترتيب الآن</button>
+      <h2>🏆 لوحة المتصدرين</h2>
+      <button class="btn btn-gold btn-sm" style="margin-bottom:10px;" onclick="pullFromCloud(true)">🔄 تحديث من قاعدة البيانات</button>
       <div id="leaderboardList"></div>
     </div>
   </div>
 
-  <!-- 4. الدردشة وواتساب الكنيسة -->
+  <!-- 4. الدردشة -->
   <div id="chat" class="section">
     <div class="card">
       <h2>💬 دردشة الأعضاء والخدام</h2>
-      <a id="waGroupLink" href="https://wa.me/" target="_blank" class="btn btn-success" style="margin-bottom:12px;">
-        📲 فتح جروب واتساب الكنيسة الرسولية بالعزية
-      </a>
+      <a href="https://wa.me/" target="_blank" class="btn btn-success" style="margin-bottom:12px;">📲 فتح واتساب الكنيسة</a>
       <div class="chat-box" id="chatBox"></div>
       <div style="display:flex; gap:8px;">
-        <input type="text" id="chatInput" placeholder="اكتب رسالتك لإخوتك..." />
+        <input type="text" id="chatInput" placeholder="اكتب رسالتك..." />
         <button class="btn btn-primary btn-sm" onclick="sendChatMessage()">إرسال</button>
       </div>
     </div>
   </div>
 
-  <!-- 5. لوحة تحكم الخادم (Admin) -->
+  <!-- 5. لوحة تحكم الخادم -->
   <div id="admin" class="section">
     <div class="card" id="adminLoginCard">
       <h2>🛡️ دخول لوحة تحكم الخادم</h2>
@@ -223,36 +216,18 @@
 
     <div id="adminDashboard" style="display:none;">
       <div class="card">
-        <h2>📊 الإحصائيات والتقارير السريعة</h2>
+        <h2>📊 الإحصائيات والتقارير</h2>
         <div class="stats-grid">
           <div class="stat-box"><strong id="statTotal">0</strong>إجمالي الأعضاء</div>
           <div class="stat-box"><strong id="statPresent">0</strong>حاضرون اليوم</div>
           <div class="stat-box"><strong id="statAbsent">0</strong>غائبون للافتقاد</div>
         </div>
-        <button class="btn btn-gold" onclick="exportCSVReport()">📥 تحميل تقرير إحصائي (Excel / CSV)</button>
+        <button class="btn btn-primary" onclick="testDatabaseConnection()">🔍 فحص اتصال وحفظ قاعدة البيانات الآن</button>
+        <button class="btn btn-gold" onclick="exportCSVReport()">📥 تحميل تقرير إحصائي (CSV)</button>
       </div>
 
       <div class="card">
-        <h2>☁️ إعدادات سحابة GitHub (للخادم فقط)</h2>
-        <p style="font-size:0.8rem; color:var(--muted);">يُحفظ الرمز على هاتف الخادم فقط لمزامنة جميع الأعضاء الجدد والغياب والنتائج مع كافة الهواتف.</p>
-        <div class="form-group">
-          <label>المستودع (Owner/Repo)</label>
-          <input type="text" id="ghRepo" value="fady-12/The-church" />
-        </div>
-        <div class="form-group">
-          <label>الفرع (Branch)</label>
-          <input type="text" id="ghBranch" value="main" />
-        </div>
-        <div class="form-group">
-          <label>رمز الوصول الشخصي (GitHub Token)</label>
-          <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxx" />
-        </div>
-        <button class="btn btn-success" onclick="saveGitHubConfigAndPush()">💾 حفظ الرمز ومزامنة كل البيانات للسحابة الآن</button>
-      </div>
-
-      <div class="card">
-        <h2>📋 إدارة الأعضاء وتسجيل الحضور والغياب</h2>
-        <p style="font-size:0.82rem; color:var(--danger); font-weight:700;">⚠️ أي عضو لم يسجل حضور اليوم يظهر تلقائياً في قائمة الافتقاد للاتصال به.</p>
+        <h2>📋 إدارة الأعضاء والحضور والغياب</h2>
         <div style="overflow-x:auto;">
           <table>
             <thead>
@@ -273,24 +248,43 @@
 </div>
 
 <script>
-  const DEFAULT_REPO = "fady-12/The-church";
-  const DEFAULT_BRANCH = "main";
-  const STATE_FILE = "church-state.json";
-  const ADMIN_PASS_HASH = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9"; // admin123
+  const SUPABASE_URL = "https://kdxmrxcymeuzoxxmccgg.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_N3YDAUjaKH5rjmTMbAdZPA_c3JHhOrH";
+  const ADMIN_PASS_HASH = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9";
 
-  let churchState = {
-    members: [],
-    attendance: {},
-    messages: [],
-    lastUpdated: new Date().toISOString()
-  };
-
+  let churchState = { members: [], attendance: {}, messages: [] };
   let currentUser = JSON.parse(localStorage.getItem("church_current_user") || "null");
   let currentQuestionIdx = 0;
   let dailyQuestions = [];
-
   const todayKey = new Date().toISOString().split("T")[0];
   document.getElementById("todayDateBadge").textContent = todayKey;
+
+  async function sbFetch(table, query = "", method = "GET", body = null) {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}${query}`, {
+      method,
+      headers: {
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        "Content-Type": "application/json",
+        "Prefer": "return=representation"
+      },
+      body: body ? JSON.stringify(body) : null
+    });
+    const text = await res.text();
+    if (!res.ok) {
+      throw new Error(`(${res.status}) ${text}`);
+    }
+    return text ? JSON.parse(text) : [];
+  }
+
+  async function testDatabaseConnection() {
+    try {
+      const rows = await sbFetch("members", "?limit=1");
+      alert(`✅ قاعدة البيانات متصلة وتعمل بنجاح! عدد السجلات المختبرة: ${rows.length}`);
+    } catch (err) {
+      alert(`❌ مشكلة في قاعدة البيانات:\n${err.message}\nتأكد من تنفيذ كود SQL في Supabase.`);
+    }
+  }
 
   async function sha256(str) {
     const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
@@ -321,12 +315,8 @@
   function generateDaily100Questions() {
     const daySeed = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
     dailyQuestions = Array.from({ length: 100 }, (_, i) => {
-      const base = BASE_QUESTIONS[(i + daySeed) % BASE_QUESTIONS.length];
-      return {
-        q: `(سؤال اليوم #${i + 1} - دورة ${daySeed % 365}) ${base.q}`,
-        opts: base.opts,
-        a: base.a
-      };
+      const base = BASE_QUESTIONS[(i * 3 + daySeed) % BASE_QUESTIONS.length];
+      return { q: `(سؤال اليوم #${i + 1}) ${base.q}`, opts: base.opts, a: base.a };
     });
   }
 
@@ -351,7 +341,7 @@
 
   async function handleAnswer(selectedIdx, btn) {
     if (!currentUser) {
-      alert("من فضلك سجّل اسمك أولاً في تبويب (العضوية) ليتم احتساب نقاطك في لوحة المتصدرين!");
+      alert("سجّل اسمك أولاً في تبويب (العضوية) لاحتساب نقاطك في قاعدة البيانات!");
       return;
     }
     const qObj = dailyQuestions[currentQuestionIdx];
@@ -362,19 +352,21 @@
       const member = churchState.members.find(m => m.id === currentUser.id);
       if (member) {
         member.points = (member.points || 0) + 10;
-        member.lastQuizDate = todayKey;
+        try {
+          await sbFetch("members", `?id=eq.${encodeURIComponent(member.id)}`, "PATCH", { points: member.points });
+        } catch (e) {
+          alert("لم تُحفظ النقاط في قاعدة البيانات: " + e.message);
+        }
       }
-      saveLocalState();
-      await pushToGitHubIfConfigured();
     } else {
       btn.classList.add("wrong");
       document.querySelectorAll(".quiz-option")[qObj.a].classList.add("correct");
     }
 
-    setTimeout(() => {
+    setTimeout(async () => {
       currentQuestionIdx = (currentQuestionIdx + 1) % 100;
-      renderAll();
-    }, 900);
+      await pullFromCloud(false);
+    }, 700);
   }
 
   async function registerOrLoginMember() {
@@ -388,41 +380,46 @@
       return;
     }
 
-    const passHash = await sha256(pass);
-    let member = churchState.members.find(m => m.phone === phone);
+    try {
+      const passHash = await sha256(pass);
+      const existing = await sbFetch("members", `?phone=eq.${encodeURIComponent(phone)}`);
+      let member;
 
-    if (member) {
-      if (member.passHash !== passHash) {
-        alert("كلمة المرور غير صحيحة لهذا الرقم.");
-        return;
+      if (existing.length > 0) {
+        member = existing[0];
+        if (member.pass_hash && member.pass_hash !== passHash) {
+          alert("كلمة المرور غير صحيحة لهذا الرقم.");
+          return;
+        }
+      } else {
+        const newId = "mem_" + Date.now();
+        const created = await sbFetch("members", "", "POST", [{
+          id: newId,
+          name,
+          phone,
+          member_group: group,
+          pass_hash: passHash,
+          points: 10,
+          joined_at: todayKey
+        }]);
+        member = created[0];
       }
-    } else {
-      member = {
-        id: "mem_" + Date.now(),
-        name,
-        phone,
-        group,
-        passHash,
-        points: 10,
-        joinedAt: todayKey
-      };
-      churchState.members.push(member);
+
+      try {
+        await sbFetch("attendance", "", "POST", [{ date_key: todayKey, member_id: member.id }]);
+      } catch (_) {}
+
+      currentUser = { id: member.id, name: member.name };
+      localStorage.setItem("church_current_user", JSON.stringify(currentUser));
+
+      const box = document.getElementById("currentUserBox");
+      box.style.display = "block";
+      box.textContent = `✅ تم حفظ بياناتك وحضورك في قاعدة البيانات يا ${member.name}!`;
+
+      await pullFromCloud(false);
+    } catch (err) {
+      alert("❌ فشل الحفظ في قاعدة البيانات:\n" + err.message);
     }
-
-    if (!churchState.attendance[todayKey]) churchState.attendance[todayKey] = [];
-    if (!churchState.attendance[todayKey].includes(member.id)) {
-      churchState.attendance[todayKey].push(member.id);
-    }
-
-    currentUser = { id: member.id, name: member.name };
-    localStorage.setItem("church_current_user", JSON.stringify(currentUser));
-    saveLocalState();
-    await pushToGitHubIfConfigured();
-
-    const box = document.getElementById("currentUserBox");
-    box.style.display = "block";
-    box.textContent = `أهلاً بك يا ${member.name} ❤️ تم تسجيل حضورك وإضافتك في لوحة المتصدرين!`;
-    renderAll();
   }
 
   async function sendChatMessage() {
@@ -430,26 +427,25 @@
     const text = input.value.trim();
     if (!text) return;
     const sender = currentUser ? currentUser.name : "زائر من الكنيسة";
-    churchState.messages.push({
-      sender,
-      text,
-      time: new Date().toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit" })
-    });
-    if (churchState.messages.length > 60) churchState.messages.shift();
-    input.value = "";
-    saveLocalState();
-    await pushToGitHubIfConfigured();
-    renderChat();
+    const time = new Date().toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit" });
+
+    try {
+      await sbFetch("messages", "", "POST", [{ sender, text, time }]);
+      input.value = "";
+      await pullFromCloud(false);
+    } catch (err) {
+      alert("تعذر إرسال الرسالة لقاعدة البيانات: " + err.message);
+    }
   }
 
   function renderChat() {
     const box = document.getElementById("chatBox");
-    box.innerHTML = churchState.messages.map(m => `
+    box.innerHTML = churchState.messages.slice(-60).map(m => `
       <div class="msg">
         <div class="msg-meta">${m.sender} • ${m.time}</div>
         <div>${m.text}</div>
       </div>
-    `).join("") || "<p style='color:#64748b;text-align:center;'>لا توجد رسائل بعد.. ابدأ بالسلام!</p>";
+    `).join("") || "<p style='color:#64748b;text-align:center;'>لا توجد رسائل بعد.</p>";
     box.scrollTop = box.scrollHeight;
   }
 
@@ -476,7 +472,6 @@
     if (hash === ADMIN_PASS_HASH || val === "admin123") {
       document.getElementById("adminLoginCard").style.display = "none";
       document.getElementById("adminDashboard").style.display = "block";
-      document.getElementById("ghToken").value = localStorage.getItem("gh_token") || "";
       renderAdminTable();
     } else {
       alert("كلمة مرور الخادم غير صحيحة.");
@@ -499,7 +494,7 @@
           <td>${m.points || 0}</td>
           <td>
             <span class="badge ${isPresent ? 'badge-ok' : 'badge-warn'}">
-              ${isPresent ? 'حاضر ✅' : 'غائب (للافتقاد) ⚠️'}
+              ${isPresent ? 'حاضر ✅' : 'غائب ⚠️'}
             </span>
           </td>
           <td>
@@ -513,21 +508,27 @@
   }
 
   async function toggleAttendance(id) {
-    if (!churchState.attendance[todayKey]) churchState.attendance[todayKey] = [];
-    const idx = churchState.attendance[todayKey].indexOf(id);
-    if (idx === -1) churchState.attendance[todayKey].push(id);
-    else churchState.attendance[todayKey].splice(idx, 1);
-    saveLocalState();
-    await pushToGitHubIfConfigured();
-    renderAdminTable();
+    const presentIds = churchState.attendance[todayKey] || [];
+    try {
+      if (!presentIds.includes(id)) {
+        await sbFetch("attendance", "", "POST", [{ date_key: todayKey, member_id: id }]);
+      } else {
+        await sbFetch("attendance", `?date_key=eq.${encodeURIComponent(todayKey)}&member_id=eq.${encodeURIComponent(id)}`, "DELETE");
+      }
+      await pullFromCloud(false);
+    } catch (err) {
+      alert("تعذر تحديث الحضور: " + err.message);
+    }
   }
 
   async function deleteMember(id) {
-    if (!confirm("هل أنت متأكد من حذف هذا العضو نهائياً؟")) return;
-    churchState.members = churchState.members.filter(m => m.id !== id);
-    saveLocalState();
-    await pushToGitHubIfConfigured();
-    renderAdminTable();
+    if (!confirm("هل أنت متأكد من حذف هذا العضو نهائياً من قاعدة البيانات؟")) return;
+    try {
+      await sbFetch("members", `?id=eq.${encodeURIComponent(id)}`, "DELETE");
+      await pullFromCloud(false);
+    } catch (err) {
+      alert("تعذر حذف العضو: " + err.message);
+    }
   }
 
   function exportCSVReport() {
@@ -544,98 +545,38 @@
     a.click();
   }
 
-  function saveLocalState() {
-    churchState.lastUpdated = new Date().toISOString();
-    localStorage.setItem("church_state_cache", JSON.stringify(churchState));
-  }
-
-  async function pullFromGitHub(manual = false) {
-    const repo = localStorage.getItem("gh_repo") || DEFAULT_REPO;
-    const branch = localStorage.getItem("gh_branch") || DEFAULT_BRANCH;
+  async function pullFromCloud(manual = false) {
     const statusEl = document.getElementById("syncStatus");
-
     try {
-      const url = `https://raw.githubusercontent.com/${repo}/${branch}/${STATE_FILE}?t=${Date.now()}`;
-      const res = await fetch(url);
-      if (res.ok) {
-        const remoteData = await res.json();
-        const localCache = JSON.parse(localStorage.getItem("church_state_cache") || "null");
-        if (localCache && Array.isArray(localCache.members)) {
-          remoteData.members = remoteData.members || [];
-          localCache.members.forEach(lm => {
-            if (!remoteData.members.some(rm => rm.phone === lm.phone)) {
-              remoteData.members.push(lm);
-            }
-          });
-        }
-        churchState = {
-          members: remoteData.members || [],
-          attendance: remoteData.attendance || {},
-          messages: remoteData.messages || [],
-          lastUpdated: remoteData.lastUpdated || new Date().toISOString()
-        };
-        saveLocalState();
-        statusEl.textContent = "✅ متزامن مع سحابة الكنيسة";
-        renderAll();
-        if (manual) alert("تم التحديث من سحابة GitHub بنجاح!");
-      } else {
-        statusEl.textContent = "ℹ️ وضع محلي (بانتظار مزامنة الخادم)";
-      }
-    } catch (e) {
-      statusEl.textContent = "⚠️ تعذر الاتصال بالسحابة - يعمل محلياً";
-    }
-  }
+      const [membersRows, attRows, msgRows] = await Promise.all([
+        sbFetch("members", "?order=points.desc"),
+        sbFetch("attendance", ""),
+        sbFetch("messages", "?order=id.asc&limit=60")
+      ]);
 
-  async function saveGitHubConfigAndPush() {
-    const repo = document.getElementById("ghRepo").value.trim();
-    const branch = document.getElementById("ghBranch").value.trim();
-    const token = document.getElementById("ghToken").value.trim();
-    localStorage.setItem("gh_repo", repo);
-    localStorage.setItem("gh_branch", branch);
-    localStorage.setItem("gh_token", token);
-    await pushToGitHubIfConfigured(true);
-  }
+      churchState.members = membersRows.map(r => ({
+        id: r.id,
+        name: r.name,
+        phone: r.phone,
+        group: r.member_group || "عام",
+        points: r.points || 0,
+        joinedAt: r.joined_at
+      }));
 
-  async function pushToGitHubIfConfigured(showAlert = false) {
-    const token = localStorage.getItem("gh_token");
-    if (!token) return;
-    const repo = localStorage.getItem("gh_repo") || DEFAULT_REPO;
-    const branch = localStorage.getItem("gh_branch") || DEFAULT_BRANCH;
-    const apiUrl = `https://api.github.com/repos/${repo}/contents/${STATE_FILE}`;
-
-    try {
-      let sha = undefined;
-      const getRes = await fetch(`${apiUrl}?ref=${branch}`, {
-        headers: { Authorization: `Bearer ${token}` }
+      const attMap = {};
+      attRows.forEach(r => {
+        if (!attMap[r.date_key]) attMap[r.date_key] = [];
+        if (!attMap[r.date_key].includes(r.member_id)) attMap[r.date_key].push(r.member_id);
       });
-      if (getRes.ok) {
-        const fileInfo = await getRes.json();
-        sha = fileInfo.sha;
-      }
+      churchState.attendance = attMap;
+      churchState.messages = msgRows;
 
-      const contentBase64 = btoa(unescape(encodeURIComponent(JSON.stringify(churchState, null, 2))));
-      const putRes = await fetch(apiUrl, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          message: `تحديث بيانات الكنيسة (${todayKey})`,
-          content: contentBase64,
-          branch,
-          sha
-        })
-      });
-
-      if (putRes.ok) {
-        document.getElementById("syncStatus").textContent = "✅ تم الحفظ في سحابة GitHub بنجاح";
-        if (showAlert) alert("تمت مزامنة جميع البيانات مع سحابة GitHub بنجاح!");
-      } else if (showAlert) {
-        alert("تعذر الرفع إلى GitHub، تأكد من صحة الرمز وصلاحية Contents.");
-      }
+      statusEl.textContent = "✅ متصل بقاعدة البيانات (مزامنة حية)";
+      renderAll();
+      if (manual) alert("تم تحديث البيانات من قاعدة البيانات بنجاح!");
     } catch (err) {
-      if (showAlert) alert("حدث خطأ أثناء الاتصال بـ GitHub.");
+      statusEl.textContent = "⚠️ خطأ اتصال بقاعدة البيانات";
+      if (manual) alert("تعذر القراءة من قاعدة البيانات:\n" + err.message);
     }
   }
 
@@ -648,12 +589,9 @@
     }
   }
 
-  const cached = localStorage.getItem("church_state_cache");
-  if (cached) churchState = JSON.parse(cached);
   generateDaily100Questions();
-  renderAll();
-  pullFromGitHub();
-  setInterval(pullFromGitHub, 15000);
+  pullFromCloud(false);
+  setInterval(() => pullFromCloud(false), 6000);
 </script>
 </body>
 </html>
