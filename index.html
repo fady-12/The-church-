@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-site-verification" content="r84XIlkn0rXdCZby-eZB_FANKx6DYwJOSHrX493YDJw" />
-  <meta name="description" content="منصة الكنيسة الرسولية الأولى بالعزية للمتابعة الروحية والحضور والغياب والمسابقة اليومية وتواصل الأعضاء والخدام." />
+  <meta name="description" content="منصة الكنيسة الرسولية الأولى بالعزية للمتابعة الروحية والحضور والغياب والمسابقة اليومية وكأس العالم وتواصل الأعضاء والخدام." />
   <title>الكنيسة الرسولية الأولى بالعزية - بوابة الخدمة والأعضاء</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -20,34 +20,56 @@
       --success: #16a34a;
       --danger: #dc2626;
       --border: #e2e8f0;
+      --soft: #f1f5f9;
+    }
+    body.dark {
+      --bg: #0b1120;
+      --card: #111827;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --border: #1f2937;
+      --soft: #1e293b;
+      --gold-light: #3b2606;
     }
     * { box-sizing: border-box; font-family: 'Cairo', sans-serif; }
-    body { margin: 0; background: var(--bg); color: var(--text); padding-bottom: 80px; }
+    body { margin: 0; background: var(--bg); color: var(--text); padding-bottom: 90px; transition: background 0.25s, color 0.25s; }
     header {
       background: linear-gradient(135deg, var(--primary), #172554);
-      color: #fff; padding: 20px 16px; text-align: center;
+      color: #fff; padding: 18px 16px; text-align: center;
       border-bottom: 4px solid var(--gold); position: sticky; top: 0; z-index: 100;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
-    header h1 { margin: 0; font-size: 1.35rem; font-weight: 800; }
-    header p { margin: 4px 0 0; font-size: 0.85rem; color: #cbd5e1; }
+    header h1 { margin: 0; font-size: 1.3rem; font-weight: 800; }
+    header p { margin: 4px 0 0; font-size: 0.82rem; color: #cbd5e1; }
     .sync-bar {
-      background: #0f172a; color: #e2e8f0; font-size: 0.78rem;
-      padding: 6px 12px; display: flex; justify-content: space-between; align-items: center;
+      background: #0f172a; color: #e2e8f0; font-size: 0.76rem;
+      padding: 6px 12px; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap;
     }
-    .badge { padding: 2px 8px; border-radius: 99px; font-weight: 700; font-size: 0.75rem; }
+    .badge { padding: 2px 8px; border-radius: 99px; font-weight: 700; font-size: 0.74rem; display: inline-block; }
     .badge-ok { background: #166534; color: #dcfce7; }
     .badge-warn { background: #92400e; color: #fef3c7; }
+    .badge-gold { background: #b45309; color: #fef3c7; }
 
-    .container { max-width: 900px; margin: 16px auto; padding: 0 12px; }
+    .container { max-width: 960px; margin: 14px auto; padding: 0 12px; }
+    .verse-banner {
+      background: var(--gold-light); border: 1px solid var(--gold);
+      border-radius: 14px; padding: 12px 14px; margin-bottom: 14px;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .verse-banner strong { color: var(--gold); font-size: 0.9rem; }
+    .verse-banner span { font-size: 0.86rem; }
+
     .tabs {
-      display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;
-      background: #fff; padding: 8px; border-radius: 14px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 16px;
+      display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px;
+      background: var(--card); padding: 8px; border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 16px; border: 1px solid var(--border);
+    }
+    @media (max-width: 720px) {
+      .tabs { grid-template-columns: repeat(3, 1fr); }
     }
     .tab-btn {
-      border: none; background: transparent; padding: 10px 4px; border-radius: 10px;
-      font-weight: 700; font-size: 0.8rem; color: var(--muted); cursor: pointer; transition: 0.2s;
+      border: none; background: transparent; padding: 9px 4px; border-radius: 10px;
+      font-weight: 700; font-size: 0.78rem; color: var(--muted); cursor: pointer; transition: 0.2s;
     }
     .tab-btn.active { background: var(--primary); color: #fff; }
 
@@ -56,87 +78,105 @@
       box-shadow: 0 4px 14px rgba(0,0,0,0.05); border: 1px solid var(--border);
       margin-bottom: 16px;
     }
-    .card h2 { margin-top: 0; font-size: 1.15rem; color: var(--primary); border-bottom: 2px solid var(--gold-light); padding-bottom: 8px; }
+    .card h2 { margin-top: 0; font-size: 1.12rem; color: var(--primary-light); border-bottom: 2px solid var(--gold-light); padding-bottom: 8px; }
+    body:not(.dark) .card h2 { color: var(--primary); }
     .form-group { margin-bottom: 12px; }
-    label { display: block; font-weight: 700; font-size: 0.88rem; margin-bottom: 4px; }
+    label { display: block; font-weight: 700; font-size: 0.86rem; margin-bottom: 4px; }
     input, select, textarea {
       width: 100%; padding: 10px 12px; border: 1px solid var(--border);
-      border-radius: 10px; font-size: 0.95rem; background: #fff;
+      border-radius: 10px; font-size: 0.92rem; background: var(--soft); color: var(--text);
     }
     .btn {
-      border: none; padding: 11px 16px; border-radius: 10px; font-weight: 700;
-      cursor: pointer; font-size: 0.92rem; display: inline-flex; align-items: center;
-      justify-content: center; gap: 6px; transition: 0.2s; width: 100%; margin-bottom: 6px;
+      border: none; padding: 10px 14px; border-radius: 10px; font-weight: 700;
+      cursor: pointer; font-size: 0.88rem; display: inline-flex; align-items: center;
+      justify-content: center; gap: 6px; transition: 0.2s; width: 100%; margin-bottom: 6px; text-decoration: none;
     }
     .btn-primary { background: var(--primary); color: #fff; }
     .btn-gold { background: var(--gold); color: #fff; }
     .btn-success { background: var(--success); color: #fff; }
     .btn-danger { background: var(--danger); color: #fff; }
-    .btn-sm { padding: 6px 10px; font-size: 0.8rem; width: auto; margin-bottom: 0; }
+    .btn-dark { background: #334155; color: #fff; }
+    .btn-sm { padding: 6px 10px; font-size: 0.78rem; width: auto; margin-bottom: 0; }
 
     .section { display: none; }
     .section.active { display: block; }
 
-    .leader-item {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 12px; border-radius: 12px; background: #f8fafc;
+    .leader-item, .match-item, .prayer-item {
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+      padding: 12px; border-radius: 12px; background: var(--soft);
       margin-bottom: 8px; border: 1px solid var(--border);
     }
     .leader-rank {
       width: 32px; height: 32px; border-radius: 50%; background: var(--primary);
       color: #fff; display: flex; align-items: center; justify-content: center;
-      font-weight: 800; margin-left: 10px;
+      font-weight: 800; margin-left: 10px; flex-shrink: 0;
     }
     .rank-1 { background: #eab308; color: #000; }
-    .rank-2 { background: #94a3b8; }
-    .rank-3 { background: #b45309; }
+    .rank-2 { background: #94a3b8; color: #000; }
+    .rank-3 { background: #b45309; color: #fff; }
 
     .quiz-option {
       display: block; width: 100%; text-align: right; padding: 12px;
       margin: 8px 0; border: 2px solid var(--border); border-radius: 12px;
-      background: #fff; font-weight: 600; cursor: pointer;
+      background: var(--soft); color: var(--text); font-weight: 600; cursor: pointer;
     }
-    .quiz-option:hover { border-color: var(--primary-light); background: #eff6ff; }
+    .quiz-option:hover { border-color: var(--primary-light); }
     .quiz-option.correct { background: #dcfce7; border-color: var(--success); color: #14532d; }
     .quiz-option.wrong { background: #fee2e2; border-color: var(--danger); color: #7f1d1d; }
 
     .chat-box {
-      height: 280px; overflow-y: auto; border: 1px solid var(--border);
-      border-radius: 12px; padding: 12px; background: #f1f5f9; margin-bottom: 10px;
+      height: 260px; overflow-y: auto; border: 1px solid var(--border);
+      border-radius: 12px; padding: 12px; background: var(--soft); margin-bottom: 10px;
     }
     .msg {
-      background: #fff; padding: 8px 12px; border-radius: 12px;
-      margin-bottom: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      background: var(--card); padding: 8px 12px; border-radius: 12px;
+      margin-bottom: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); border: 1px solid var(--border);
     }
-    .msg-meta { font-size: 0.75rem; color: var(--primary); font-weight: 700; }
+    .msg-meta { font-size: 0.75rem; color: var(--gold); font-weight: 700; }
 
-    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
     th, td { padding: 10px 6px; border-bottom: 1px solid var(--border); text-align: right; }
-    th { background: #f1f5f9; color: var(--primary); }
-    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
-    .stat-box { background: #eff6ff; padding: 12px; border-radius: 12px; text-align: center; }
-    .stat-box strong { display: block; font-size: 1.3rem; color: var(--primary); }
+    th { background: var(--soft); color: var(--primary-light); }
+    body:not(.dark) th { color: var(--primary); }
+
+    .stats-grid, .awards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+    @media (max-width: 600px) {
+      .stats-grid, .awards-grid { grid-template-columns: 1fr; }
+    }
+    .stat-box, .award-box { background: var(--soft); padding: 12px; border-radius: 12px; text-align: center; border: 1px solid var(--border); }
+    .stat-box strong, .award-box strong { display: block; font-size: 1.15rem; color: var(--gold); margin-top: 4px; }
     .att-history-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .filter-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+    @media (max-width: 650px) { .filter-row { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
 
 <div class="sync-bar">
   <span id="syncStatus">🔄 جاري الاتصال بقاعدة البيانات...</span>
-  <span id="todayDateBadge" class="badge badge-ok"></span>
+  <div style="display:flex; align-items:center; gap:8px;">
+    <button class="btn btn-dark btn-sm" onclick="toggleDarkMode()">🌓 وضع ليلي/نهاري</button>
+    <span id="todayDateBadge" class="badge badge-ok"></span>
+  </div>
 </div>
 
 <header>
   <h1>✝️ الكنيسة الرسولية الأولى بالعزية</h1>
-  <p>منصة المتابعة الروحية • الحضور والغياب • المسابقة اليومية (100 سؤال متجدد)</p>
+  <p>منصة المتابعة الروحية • الحضور والغياب • 100 سؤال يومي • كأس العالم</p>
 </header>
 
 <div class="container">
+  <div class="verse-banner">
+    <strong>✨ آية اليوم وقراءة الكتاب المقدس</strong>
+    <span id="dailyVerseText">«لِأَنَّهُ حَيْثُمَا اجْتَمَعَ اثْنَانِ أَوْ ثَلَاثَةٌ بِاسْمِي، فَهُنَاكَ أَكُونُ فِي وَسَطِهِمْ» (متى 18: 20) — قراءة اليوم: مزمور 23 وإنجيل يوحنا 15</span>
+  </div>
+
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('register', this)">👤 العضوية</button>
     <button class="tab-btn" onclick="switchTab('quiz', this)">📖 100 سؤال</button>
+    <button class="tab-btn" onclick="switchTab('worldcup', this)">🌍 كأس العالم</button>
     <button class="tab-btn" onclick="switchTab('leaderboard', this)">🏆 المتصدرين</button>
-    <button class="tab-btn" onclick="switchTab('chat', this)">💬 الدردشة</button>
+    <button class="tab-btn" onclick="switchTab('chat', this)">💬 تواصل وصلاة</button>
     <button class="tab-btn" onclick="switchTab('admin', this)">🛡️ الخادم</button>
   </div>
 
@@ -153,7 +193,7 @@
         <input type="tel" id="regPhone" placeholder="012xxxxxxxx" />
       </div>
       <div class="form-group">
-        <label>المرحلة / الخدمة</label>
+        <label>المرحلة / الخدمة (منتخبك في كأس العالم)</label>
         <select id="regGroup">
           <option value="إعدادي">إعدادي</option>
           <option value="ثانوي">ثانوي</option>
@@ -167,11 +207,12 @@
         <input type="password" id="regPass" placeholder="اختر كلمة مرور" />
       </div>
       <button class="btn btn-primary" onclick="registerOrLoginMember()">✅ دخول / تسجيل وحفظ في قاعدة البيانات</button>
-      <div id="currentUserBox" style="margin-top:12px; display:none; background:#dcfce7; padding:10px; border-radius:10px; font-weight:700; color:#14532d;"></div>
+      <div id="currentUserBox" style="margin-top:12px; display:none; background:#dcfce7; padding:12px; border-radius:10px; font-weight:700; color:#14532d;"></div>
     </div>
 
     <div class="card" id="memberAttendanceCard" style="display:none;">
-      <h2>📅 سجل حضوري وغيابي</h2>
+      <h2>🏅 بطاقتي وأوسمتي وسجل حضوري</h2>
+      <div id="memberBadgesArea" style="margin-bottom:8px;"></div>
       <div id="memberAttSummary" style="font-weight:700; margin-bottom:8px;"></div>
       <div class="att-history-list" id="memberAttDates"></div>
     </div>
@@ -188,14 +229,35 @@
       </div>
       <button class="btn btn-gold" onclick="changeMemberPassword()">💾 حفظ كلمة المرور الجديدة</button>
     </div>
+
+    <div class="card">
+      <h2>🗓️ مواعيد الاجتماعات والخدمات الأسبوعية</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>الخدمة / الاجتماع</th>
+            <th>الموعد</th>
+            <th>المكان</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>مرحلة إعدادي</td><td>الجمعة 5:00 م</td><td>قاعة الكنيسة</td></tr>
+          <tr><td>مرحلة ثانوي</td><td>الجمعة 6:30 م</td><td>قاعة الكنيسة</td></tr>
+          <tr><td>شباب وجامعة</td><td>السبت 7:30 م</td><td>قاعة الشباب</td></tr>
+          <tr><td>الاجتماع العام والصلاة</td><td>الأحد 6:00 م</td><td>القاعة الرئيسية</td></tr>
+          <tr><td>اجتماع الخدام</td><td>الثلاثاء 7:00 م</td><td>مكتب الخدمة</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <!-- 2. المسابقة اليومية 100 سؤال مختلف -->
   <div id="quiz" class="section">
     <div class="card">
       <h2>📖 مسابقة الكتاب المقدس اليومية (100 سؤال مختلف يومياً)</h2>
-      <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-weight:700;">
+      <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:10px; font-weight:700;">
         <span id="qProgress">السؤال 1 من 100</span>
+        <span id="qCompletedToday">مُجاب اليوم: 0 / 100</span>
         <span id="qScore">مجموع نقاطك: 0</span>
       </div>
       <h3 id="questionText" style="font-size:1.05rem;">جاري تحميل أسئلة اليوم...</h3>
@@ -203,7 +265,26 @@
     </div>
   </div>
 
-  <!-- 3. المتصدرين -->
+  <!-- 3. كأس العالم للكنيسة -->
+  <div id="worldcup" class="section">
+    <div class="card">
+      <h2>🌍 بطولة كأس العالم الروحية للكنيسة</h2>
+      <p style="color:var(--muted); font-size:0.86rem; margin-top:0;">تُحسب نقاط المنتخبات من مجموع نقاط الأعضاء + نقاط الحضور المسجلة في قاعدة البيانات (كل يوم حضور = +25 نقطة للمنتخب).</p>
+      <div class="awards-grid">
+        <div class="award-box"><span>⚽ هداف البطولة</span><strong id="topScorerAward">-</strong></div>
+        <div class="award-box"><span>🛡️ الأكثر التزاماً بالحضور</span><strong id="mostAttendedAward">-</strong></div>
+        <div class="award-box"><span>🏆 المنتخب المتصدر</span><strong id="topTeamAward">-</strong></div>
+      </div>
+      <div id="worldCupStandings"></div>
+    </div>
+
+    <div class="card">
+      <h2>⚔️ جدول مواجهات كأس العالم</h2>
+      <div id="worldCupMatches"></div>
+    </div>
+  </div>
+
+  <!-- 4. المتصدرين -->
   <div id="leaderboard" class="section">
     <div class="card">
       <h2>🏆 لوحة المتصدرين</h2>
@@ -212,7 +293,7 @@
     </div>
   </div>
 
-  <!-- 4. الدردشة -->
+  <!-- 5. الدردشة وطلبات الصلاة -->
   <div id="chat" class="section">
     <div class="card">
       <h2>💬 دردشة الأعضاء والخدام</h2>
@@ -223,9 +304,22 @@
         <button class="btn btn-primary btn-sm" onclick="sendChatMessage()">إرسال</button>
       </div>
     </div>
+
+    <div class="card">
+      <h2>🙏 صندوق طلبات الصلاة والأسئلة الروحية</h2>
+      <div class="form-group">
+        <label>اكتب طلب صلاة أو سؤال روحي للخادم</label>
+        <textarea id="prayerInput" rows="3" placeholder="مثال: نصلي من أجل الامتحانات أو سؤال في الكتاب المقدس..."></textarea>
+      </div>
+      <label style="display:flex; align-items:center; gap:6px; margin-bottom:10px; font-weight:600;">
+        <input type="checkbox" id="prayerAnon" style="width:auto;" /> إرسال بدون إظهار اسمي (مجهول)
+      </label>
+      <button class="btn btn-gold" onclick="submitPrayerRequest()">📨 إرسال طلب الصلاة</button>
+      <div id="prayerSentMsg" style="margin-top:8px; font-weight:700; color:var(--success);"></div>
+    </div>
   </div>
 
-  <!-- 5. لوحة تحكم الخادم -->
+  <!-- 6. لوحة تحكم الخادم -->
   <div id="admin" class="section">
     <div class="card" id="adminLoginCard">
       <h2>🛡️ دخول لوحة تحكم الخادم</h2>
@@ -259,11 +353,13 @@
         <button class="btn btn-primary" onclick="testDatabaseConnection()">🔍 فحص اتصال وحفظ قاعدة البيانات الآن</button>
         <button class="btn btn-gold" onclick="exportCSVReport()">📥 تحميل تقرير الحضور والغياب الكامل (CSV)</button>
         <button class="btn btn-success" onclick="exportServantsCSVReport()">✝️ تحميل تقرير الخدام فقط (CSV)</button>
+        <button class="btn btn-danger" onclick="exportAbsentCSVReport()">⚠️ تحميل تقرير الغائبين فقط (CSV)</button>
+        <button class="btn btn-dark" onclick="copyAbsentNames()">📋 نسخ أسماء الغائبين للواتساب</button>
       </div>
 
       <div class="card">
         <h2>✝️ تقرير الخدام</h2>
-        <div id="servantsSummaryText" style="font-weight:700; margin-bottom:8px; color:var(--primary);"></div>
+        <div id="servantsSummaryText" style="font-weight:700; margin-bottom:8px; color:var(--gold);"></div>
         <div style="overflow-x:auto;">
           <table>
             <thead>
@@ -281,6 +377,22 @@
 
       <div class="card">
         <h2>📋 كشف الحضور والغياب وإدارة الأعضاء</h2>
+        <div class="filter-row">
+          <input type="text" id="adminSearchInput" placeholder="🔍 ابحث بالاسم أو رقم الهاتف..." oninput="renderAdminTable()" />
+          <select id="adminGroupFilter" onchange="renderAdminTable()">
+            <option value="الكل">كل المراحل</option>
+            <option value="إعدادي">إعدادي</option>
+            <option value="ثانوي">ثانوي</option>
+            <option value="شباب وجامعة">شباب وجامعة</option>
+            <option value="خدام">خدام</option>
+            <option value="عام">عام</option>
+          </select>
+          <select id="adminStatusFilter" onchange="renderAdminTable()">
+            <option value="الكل">الكل (حاضر/غائب)</option>
+            <option value="حاضر">حاضر فقط</option>
+            <option value="غائب">غائب فقط</option>
+          </select>
+        </div>
         <div style="overflow-x:auto;">
           <table>
             <thead>
@@ -295,6 +407,11 @@
             <tbody id="adminMembersTable"></tbody>
           </table>
         </div>
+      </div>
+
+      <div class="card">
+        <h2>🙏 طلبات الصلاة والأسئلة الواردة</h2>
+        <div id="adminPrayersList"></div>
       </div>
 
       <div class="card">
@@ -314,16 +431,38 @@
   const SUPABASE_ANON_KEY = "sb_publishable_N3YDAUjaKH5rjmTMbAdZPA_c3JHhOrH";
   const DEFAULT_ADMIN_HASH = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9";
 
-  let churchState = { members: [], attendance: {}, messages: [] };
+  let churchState = { members: [], attendance: {}, messages: [], prayers: [] };
   let currentUser = JSON.parse(localStorage.getItem("church_current_user") || "null");
   let currentAdminName = localStorage.getItem("church_admin_name") || "";
   const todayKey = new Date().toISOString().split("T")[0];
   document.getElementById("todayDateBadge").textContent = todayKey;
   document.getElementById("adminDateSelect").value = todayKey;
 
-  let savedProgress = JSON.parse(localStorage.getItem("church_quiz_progress_" + todayKey) || '{"idx":0,"answered":[]}');
+  if (localStorage.getItem("church_dark_mode") === "1") {
+    document.body.classList.add("dark");
+  }
+
+  function toggleDarkMode() {
+    document.body.classList.toggle("dark");
+    localStorage.setItem("church_dark_mode", document.body.classList.contains("dark") ? "1" : "0");
+  }
+
+  let savedProgress = JSON.parse(localStorage.getItem("church_quiz_progress_" + todayKey) || '{"idx":0,"answered":[],"bonusAwarded":false}');
+  if (!Array.isArray(savedProgress.answered)) savedProgress.answered = [];
   let currentQuestionIdx = savedProgress.idx || 0;
   let dailyQuestions = [];
+
+  const DAILY_VERSES = [
+    "«لِأَنَّهُ حَيْثُمَا اجْتَمَعَ اثْنَانِ أَوْ ثَلَاثَةٌ بِاسْمِي، فَهُنَاكَ أَكُونُ فِي وَسَطِهِمْ» (متى 18: 20) — قراءة اليوم: مزمور 23 وإنجيل يوحنا 15",
+    "«أَسْتَطِيعُ كُلَّ شَيْءٍ فِي الْمَسِيحِ الَّذِي يُقَوِّينِي» (فيلبي 4: 13) — قراءة اليوم: مزمور 27 ورسالة فيلبي 4",
+    "«الرَّبُّ رَاعِيَّ فَلاَ يُعْوِزُنِي شَيْءٌ» (مزمور 23: 1) — قراءة اليوم: مزمور 121 وإنجيل متى 6",
+    "«اِفْرَحُوا فِي الرَّبِّ كُلَّ حِينٍ، وَأَقُولُ أَيْضًا: افْرَحُوا» (فيلبي 4: 4) — قراءة اليوم: مزمور 91 وأعمال الرسل 2"
+  ];
+
+  function renderDailyVerse() {
+    const daySeed = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
+    document.getElementById("dailyVerseText").textContent = DAILY_VERSES[daySeed % DAILY_VERSES.length];
+  }
 
   async function sbFetch(table, query = "", method = "GET", body = null) {
     const headers = {
@@ -491,6 +630,7 @@
     if (!dailyQuestions.length) generateDaily100Questions();
     const qObj = dailyQuestions[currentQuestionIdx];
     document.getElementById("qProgress").textContent = `السؤال ${currentQuestionIdx + 1} من 100`;
+    document.getElementById("qCompletedToday").textContent = `مُجاب اليوم: ${savedProgress.answered.length} / 100`;
     const userPoints = currentUser ? (churchState.members.find(m => m.id === currentUser.id)?.points || 0) : 0;
     document.getElementById("qScore").textContent = `مجموع نقاطك: ${userPoints}`;
     document.getElementById("questionText").textContent = qObj.q;
@@ -524,20 +664,29 @@
       savedProgress.answered.push(currentQuestionIdx);
     }
 
+    const member = churchState.members.find(m => m.id === currentUser.id);
+    let addedPoints = 0;
     if (selectedIdx === qObj.a) {
       btn.classList.add("correct");
-      const member = churchState.members.find(m => m.id === currentUser.id);
-      if (member) {
-        member.points = (member.points || 0) + 10;
-        try {
-          await sbFetch("members", `?id=eq.${encodeURIComponent(member.id)}`, "PATCH", { points: member.points });
-        } catch (e) {
-          alert("لم تُحفظ النقاط في قاعدة البيانات: " + e.message);
-        }
-      }
+      addedPoints += 10;
     } else {
       btn.classList.add("wrong");
       document.querySelectorAll(".quiz-option")[qObj.a].classList.add("correct");
+    }
+
+    if (savedProgress.answered.length >= 100 && !savedProgress.bonusAwarded) {
+      savedProgress.bonusAwarded = true;
+      addedPoints += 50;
+      alert("🎉 مبروك! أنهيت 100 سؤال اليوم وحصلت على مكافأة +50 نقطة وشارة بطل اليوم!");
+    }
+
+    if (member && addedPoints > 0) {
+      member.points = (member.points || 0) + addedPoints;
+      try {
+        await sbFetch("members", `?id=eq.${encodeURIComponent(member.id)}`, "PATCH", { points: member.points });
+      } catch (e) {
+        alert("لم تُحفظ النقاط في قاعدة البيانات: " + e.message);
+      }
     }
 
     setTimeout(async () => {
@@ -546,6 +695,23 @@
       localStorage.setItem("church_quiz_progress_" + todayKey, JSON.stringify(savedProgress));
       await pullFromCloud(false);
     }, 700);
+  }
+
+  function getMemberAttendanceCount(memberId) {
+    return Object.values(churchState.attendance).filter(ids => ids.includes(memberId)).length;
+  }
+
+  function getMemberStreak(memberId) {
+    const sortedDates = Object.keys(churchState.attendance).sort();
+    let streak = 0;
+    for (let i = sortedDates.length - 1; i >= 0; i--) {
+      if ((churchState.attendance[sortedDates[i]] || []).includes(memberId)) {
+        streak++;
+      } else {
+        break;
+      }
+    }
+    return streak;
   }
 
   async function registerOrLoginMember() {
@@ -638,10 +804,21 @@
       return;
     }
 
+    const memberObj = churchState.members.find(m => m.id === currentUser.id);
+    const attCount = getMemberAttendanceCount(currentUser.id);
+    const streak = getMemberStreak(currentUser.id);
+
     userBox.style.display = "block";
-    userBox.textContent = `👋 أهلاً بك يا ${currentUser.name} (مسجل دخول)`;
+    userBox.textContent = `👋 أهلاً بك يا ${currentUser.name} • منتخب: ${memberObj?.group || "عام"} • نقاطك: ${memberObj?.points || 0}`;
     attCard.style.display = "block";
     passCard.style.display = "block";
+
+    const badges = [];
+    if (attCount >= 1) badges.push(`<span class="badge badge-ok">🌱 مواظب (${attCount} يوم)</span>`);
+    if (streak >= 2) badges.push(`<span class="badge badge-gold">🔥 سلسلة حضور متواصلة (${streak})</span>`);
+    if ((memberObj?.points || 0) >= 100) badges.push(`<span class="badge badge-gold">⭐ نجم المسابقة</span>`);
+    if (savedProgress.bonusAwarded) badges.push(`<span class="badge badge-ok">🏆 بطل الـ 100 سؤال</span>`);
+    document.getElementById("memberBadgesArea").innerHTML = badges.join(" ");
 
     const allDates = Object.keys(churchState.attendance).sort().reverse();
     const myPresentDates = allDates.filter(d => (churchState.attendance[d] || []).includes(currentUser.id));
@@ -649,12 +826,70 @@
 
     document.getElementById("memberAttSummary").innerHTML = `
       حالة اليوم (${todayKey}): <span class="badge ${isPresentToday ? 'badge-ok' : 'badge-warn'}">${isPresentToday ? 'حاضر ✅' : 'غائب ⚠️'}</span>
-      • إجمالي أيام الحضور المسجلة: <strong>${myPresentDates.length}</strong> يوم
+      • إجمالي أيام الحضور: <strong>${myPresentDates.length}</strong> يوم
     `;
 
     document.getElementById("memberAttDates").innerHTML = myPresentDates.map(d =>
       `<span class="badge badge-ok">✅ ${d}</span>`
-    ).join("") || "<span style='color:#64748b;'>لا توجد أيام حضور مسجلة بعد.</span>";
+    ).join("") || "<span style='color:var(--muted);'>لا توجد أيام حضور مسجلة بعد.</span>";
+  }
+
+  function renderWorldCup() {
+    const groups = ["إعدادي", "ثانوي", "شباب وجامعة", "خدام", "عام"];
+    const groupStats = groups.map((g, idx) => {
+      const membersInGroup = churchState.members.filter(m => m.group === g);
+      const quizPoints = membersInGroup.reduce((sum, m) => sum + (m.points || 0), 0);
+      const attDays = membersInGroup.reduce((sum, m) => sum + getMemberAttendanceCount(m.id), 0);
+      const totalScore = quizPoints + (attDays * 25);
+      return {
+        group: g,
+        code: `مجموعة ${String.fromCharCode(65 + idx)}`,
+        count: membersInGroup.length,
+        quizPoints,
+        attDays,
+        totalScore
+      };
+    }).sort((a, b) => b.totalScore - a.totalScore);
+
+    const topScorer = [...churchState.members].sort((a, b) => (b.points || 0) - (a.points || 0))[0];
+    const mostAttended = [...churchState.members].sort((a, b) => getMemberAttendanceCount(b.id) - getMemberAttendanceCount(a.id))[0];
+
+    document.getElementById("topScorerAward").textContent = topScorer ? `${topScorer.name} (${topScorer.points || 0} ن)` : "-";
+    document.getElementById("mostAttendedAward").textContent = mostAttended ? `${mostAttended.name} (${getMemberAttendanceCount(mostAttended.id)} يوم)` : "-";
+    document.getElementById("topTeamAward").textContent = groupStats[0] ? `${groupStats[0].group} (${groupStats[0].totalScore} ن)` : "-";
+
+    document.getElementById("worldCupStandings").innerHTML = groupStats.map((g, i) => `
+      <div class="leader-item">
+        <div style="display:flex; align-items:center;">
+          <div class="leader-rank ${i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : ''}">${i + 1}</div>
+          <div>
+            <strong>منتخب ${g.group}</strong> <span class="badge badge-gold">${g.code}</span>
+            <div style="font-size:0.78rem; color:var(--muted);">أعضاء: ${g.count} • نقاط المسابقة: ${g.quizPoints} • أيام حضور: ${g.attDays}</div>
+          </div>
+        </div>
+        <span class="badge badge-ok">${g.totalScore} نقطة</span>
+      </div>
+    `).join("");
+
+    const matches = [
+      ["إعدادي", "ثانوي"],
+      ["شباب وجامعة", "خدام"],
+      ["عام", "إعدادي"],
+      ["ثانوي", "شباب وجامعة"]
+    ];
+    document.getElementById("worldCupMatches").innerHTML = matches.map(([t1, t2], idx) => {
+      const s1 = groupStats.find(x => x.group === t1)?.totalScore || 0;
+      const s2 = groupStats.find(x => x.group === t2)?.totalScore || 0;
+      const leader = s1 > s2 ? `متقدم: ${t1}` : (s2 > s1 ? `متقدم: ${t2}` : "تعادل");
+      return `
+        <div class="match-item">
+          <div>
+            <strong>مباراة #${idx + 1}:</strong> ${t1} (${s1} ن) 🆚 ${t2} (${s2} ن)
+          </div>
+          <span class="badge badge-ok">${leader}</span>
+        </div>
+      `;
+    }).join("");
   }
 
   async function sendChatMessage() {
@@ -680,25 +915,73 @@
         <div class="msg-meta">${m.sender} • ${m.time}</div>
         <div>${m.text}</div>
       </div>
-    `).join("") || "<p style='color:#64748b;text-align:center;'>لا توجد رسائل بعد.</p>";
+    `).join("") || "<p style='color:var(--muted);text-align:center;'>لا توجد رسائل بعد.</p>";
     box.scrollTop = box.scrollHeight;
+  }
+
+  async function submitPrayerRequest() {
+    const txt = document.getElementById("prayerInput").value.trim();
+    const anon = document.getElementById("prayerAnon").checked;
+    if (!txt) {
+      alert("اكتب طلب الصلاة أو السؤال أولاً.");
+      return;
+    }
+    const sender = anon ? "طلب صلاة مجهول" : (currentUser ? currentUser.name : "عضو بالكنيسة");
+    const entry = { id: "pr_" + Date.now(), sender, text: txt, date: todayKey };
+    try {
+      await sbFetch("messages", "", "POST", [{ sender: `🙏 ${sender}`, text: `[طلب صلاة] ${txt}`, time: todayKey }]);
+    } catch (_) {}
+    const localPrayers = JSON.parse(localStorage.getItem("church_local_prayers") || "[]");
+    localPrayers.unshift(entry);
+    localStorage.setItem("church_local_prayers", JSON.stringify(localPrayers));
+    document.getElementById("prayerInput").value = "";
+    document.getElementById("prayerSentMsg").textContent = "✅ تم إرسال طلب الصلاة بنجاح.";
+    renderAdminPrayers();
+  }
+
+  function renderAdminPrayers() {
+    const container = document.getElementById("adminPrayersList");
+    if (!container) return;
+    const localPrayers = JSON.parse(localStorage.getItem("church_local_prayers") || "[]");
+    if (!localPrayers.length) {
+      container.innerHTML = "<p style='color:var(--muted);'>لا توجد طلبات صلاة جديدة حالياً.</p>";
+      return;
+    }
+    container.innerHTML = localPrayers.map(p => `
+      <div class="prayer-item">
+        <div>
+          <strong>${p.sender}</strong> <small style="color:var(--muted);">(${p.date})</small>
+          <div>${p.text}</div>
+        </div>
+        <button class="btn btn-danger btn-sm" onclick="removePrayer('${p.id}')">تمت المتابعة / حذف</button>
+      </div>
+    `).join("");
+  }
+
+  function removePrayer(id) {
+    const list = JSON.parse(localStorage.getItem("church_local_prayers") || "[]").filter(p => p.id !== id);
+    localStorage.setItem("church_local_prayers", JSON.stringify(list));
+    renderAdminPrayers();
   }
 
   function renderLeaderboard() {
     const sorted = [...churchState.members].sort((a, b) => (b.points || 0) - (a.points || 0));
     const list = document.getElementById("leaderboardList");
-    list.innerHTML = sorted.map((m, i) => `
-      <div class="leader-item">
-        <div style="display:flex; align-items:center;">
-          <div class="leader-rank ${i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : ''}">${i + 1}</div>
-          <div>
-            <strong>${m.name}</strong>
-            <div style="font-size:0.78rem; color:var(--muted);">${m.group}</div>
+    list.innerHTML = sorted.map((m, i) => {
+      const attCount = getMemberAttendanceCount(m.id);
+      return `
+        <div class="leader-item">
+          <div style="display:flex; align-items:center;">
+            <div class="leader-rank ${i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : ''}">${i + 1}</div>
+            <div>
+              <strong>${m.name}</strong>
+              <div style="font-size:0.78rem; color:var(--muted);">${m.group} • حضور: ${attCount} يوم</div>
+            </div>
           </div>
+          <span class="badge badge-ok">${m.points || 0} نقطة</span>
         </div>
-        <span class="badge badge-ok">${m.points || 0} نقطة</span>
-      </div>
-    `).join("") || "<p>لا يوجد أعضاء مسجلون بعد.</p>";
+      `;
+    }).join("") || "<p>لا يوجد أعضاء مسجلون بعد.</p>";
   }
 
   async function loginAdmin() {
@@ -725,6 +1008,7 @@
     document.getElementById("adminDashboard").style.display = "block";
     document.getElementById("activeAdminBadge").textContent = `🛡️ الخادم الحالي: ${currentAdminName}`;
     renderAdminTable();
+    renderAdminPrayers();
   }
 
   function logoutAdmin() {
@@ -754,7 +1038,7 @@
 
     const tbody = document.getElementById("servantsReportTable");
     if (!servants.length) {
-      tbody.innerHTML = "<tr><td colspan='4' style='color:#64748b;text-align:center;'>لا يوجد أعضاء مسجلون ضمن مرحلة (خدام) بعد.</td></tr>";
+      tbody.innerHTML = "<tr><td colspan='4' style='color:var(--muted);text-align:center;'>لا يوجد أعضاء مسجلون ضمن مرحلة (خدام) بعد.</td></tr>";
       return;
     }
     tbody.innerHTML = servants.map(s => {
@@ -770,6 +1054,20 @@
     }).join("");
   }
 
+  function getFilteredAdminMembers(selectedDate, presentIds) {
+    const q = (document.getElementById("adminSearchInput")?.value || "").trim().toLowerCase();
+    const grp = document.getElementById("adminGroupFilter")?.value || "الكل";
+    const st = document.getElementById("adminStatusFilter")?.value || "الكل";
+
+    return churchState.members.filter(m => {
+      const isPresent = presentIds.includes(m.id);
+      const matchesQ = !q || m.name.toLowerCase().includes(q) || (m.phone || "").toLowerCase().includes(q);
+      const matchesGrp = grp === "الكل" || m.group === grp;
+      const matchesSt = st === "الكل" || (st === "حاضر" && isPresent) || (st === "غائب" && !isPresent);
+      return matchesQ && matchesGrp && matchesSt;
+    });
+  }
+
   function renderAdminTable() {
     const selectedDate = document.getElementById("adminDateSelect").value || todayKey;
     const presentIds = churchState.attendance[selectedDate] || [];
@@ -778,13 +1076,16 @@
     document.getElementById("statAbsent").textContent = Math.max(0, churchState.members.length - presentIds.length);
 
     renderServantsReport(selectedDate, presentIds);
+    const filtered = getFilteredAdminMembers(selectedDate, presentIds);
 
     const tbody = document.getElementById("adminMembersTable");
-    tbody.innerHTML = churchState.members.map(m => {
+    tbody.innerHTML = filtered.map(m => {
       const isPresent = presentIds.includes(m.id);
+      const attCount = getMemberAttendanceCount(m.id);
+      const repeatedAbsenceAlert = !isPresent && attCount === 0 ? `<span class="badge badge-warn">يحتاج افتقاد</span>` : "";
       return `
         <tr>
-          <td><strong>${m.name}</strong><br><small>${m.phone}</small></td>
+          <td><strong>${m.name}</strong> ${repeatedAbsenceAlert}<br><small>${m.phone}</small></td>
           <td>${m.group}</td>
           <td>${m.points || 0}</td>
           <td>
@@ -801,7 +1102,7 @@
           </td>
         </tr>
       `;
-    }).join("");
+    }).join("") || "<tr><td colspan='5' style='text-align:center;color:var(--muted);'>لا توجد نتائج مطابقة للفلتر.</td></tr>";
   }
 
   async function toggleAttendance(id, dateKey) {
@@ -827,6 +1128,19 @@
     } catch (err) {
       alert("تعذر حذف العضو: " + err.message);
     }
+  }
+
+  function copyAbsentNames() {
+    const selectedDate = document.getElementById("adminDateSelect").value || todayKey;
+    const presentIds = churchState.attendance[selectedDate] || [];
+    const absentList = churchState.members.filter(m => !presentIds.includes(m.id));
+    if (!absentList.length) {
+      alert("لا يوجد غائبون في هذا التاريخ.");
+      return;
+    }
+    const text = `قائمة الغائبين ليوم ${selectedDate}:\n` + absentList.map((m, i) => `${i + 1}. ${m.name} (${m.group}) - ${m.phone}`).join("\n");
+    navigator.clipboard?.writeText(text);
+    alert("✅ تم نسخ قائمة الغائبين جاهزة للصق في الواتساب!");
   }
 
   function exportCSVReport() {
@@ -857,6 +1171,21 @@
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.download = `تقرير_الخدام_${selectedDate}.csv`;
+    a.click();
+  }
+
+  function exportAbsentCSVReport() {
+    const selectedDate = document.getElementById("adminDateSelect").value || todayKey;
+    const presentIds = churchState.attendance[selectedDate] || [];
+    const absent = churchState.members.filter(m => !presentIds.includes(m.id));
+    let csv = `\uFEFFاسم الغائب,الهاتف,المرحلة,النقاط,تاريخ الغياب\n`;
+    absent.forEach(m => {
+      csv += `"${m.name}","${m.phone}","${m.group}",${m.points || 0},"${selectedDate}"\n`;
+    });
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `تقرير_الغائبين_${selectedDate}.csv`;
     a.click();
   }
 
@@ -896,12 +1225,15 @@
   }
 
   function renderAll() {
+    renderDailyVerse();
     renderMemberProfileExtras();
     renderQuiz();
+    renderWorldCup();
     renderLeaderboard();
     renderChat();
     if (document.getElementById("adminDashboard").style.display === "block") {
       renderAdminTable();
+      renderAdminPrayers();
     }
   }
 
