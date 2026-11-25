@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="r84XIlkn0rXdCZby-eZB_FANKx6DYwJOSHrX493YDJw" />
+  <meta name="description" content="منصة الكنيسة الرسولية الأولى بالعزية للمتابعة الروحية والحضور والغياب والمسابقة اليومية وتواصل الأعضاء والخدام." />
   <title>الكنيسة الرسولية الأولى بالعزية - بوابة الخدمة والأعضاء</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -168,14 +170,12 @@
       <div id="currentUserBox" style="margin-top:12px; display:none; background:#dcfce7; padding:10px; border-radius:10px; font-weight:700; color:#14532d;"></div>
     </div>
 
-    <!-- سجل حضور العضو -->
     <div class="card" id="memberAttendanceCard" style="display:none;">
       <h2>📅 سجل حضوري وغيابي</h2>
       <div id="memberAttSummary" style="font-weight:700; margin-bottom:8px;"></div>
       <div class="att-history-list" id="memberAttDates"></div>
     </div>
 
-    <!-- تغيير كلمة السر للعضو -->
     <div class="card" id="memberChangePassCard" style="display:none;">
       <h2>🔑 تغيير كلمة المرور الخاصة بي</h2>
       <div class="form-group">
@@ -340,7 +340,6 @@
     renderAll();
   }
 
-  // بنك من 100 سؤال كتاب مقدس مختلف تماماً عن بعضها
   const BIBLE_100_BANK = [
     { q: "من هو النبي الذي ابتلعه الحوت ثلاثة أيام؟", opts: ["يونان", "إيليا", "أرميا", "دانيال"], a: 0 },
     { q: "كم عدد تلاميذ السيد المسيح؟", opts: ["7", "10", "12", "70"], a: 2 },
@@ -444,11 +443,9 @@
     { q: "ما هي آخر كلمات السيد المسيح على الصليب في إنجيل يوحنا؟", opts: ["قد أُكمل", "يا أبتاه اغفر لهم", "اليوم تكون معي في الفردوس", "أنا عطشان"], a: 0 }
   ];
 
-  // توليد 100 سؤال مختلف تماماً عن بعضها في نفس اليوم، ويتغير ترتيبها يومياً عند الجميع
   function generateDaily100Questions() {
     const daySeed = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
     const list = [...BIBLE_100_BANK];
-    // خلط حتمي بناءً على تاريخ اليوم ليكون موحداً عند جميع الهواتف في نفس اليوم ومختلفاً في اليوم التالي
     let seed = daySeed * 9301 + 49297;
     for (let i = list.length - 1; i > 0; i--) {
       seed = (seed * 1664525 + 1013904223) % 4294967296;
