@@ -49,6 +49,7 @@
     .badge-ok { background: #166534; color: #dcfce7; }
     .badge-warn { background: #92400e; color: #fef3c7; }
     .badge-gold { background: #b45309; color: #fef3c7; }
+    .badge-locked { background: #7f1d1d; color: #fee2e2; }
 
     .container { max-width: 960px; margin: 14px auto; padding: 0 12px; }
     .verse-banner {
@@ -115,14 +116,14 @@
     .rank-2 { background: #94a3b8; color: #000; }
     .rank-3 { background: #b45309; color: #fff; }
 
-    .quiz-option {
+    .quiz-option, .wc-option {
       display: block; width: 100%; text-align: right; padding: 12px;
       margin: 8px 0; border: 2px solid var(--border); border-radius: 12px;
       background: var(--soft); color: var(--text); font-weight: 600; cursor: pointer;
     }
-    .quiz-option:hover { border-color: var(--primary-light); }
-    .quiz-option.correct { background: #dcfce7; border-color: var(--success); color: #14532d; }
-    .quiz-option.wrong { background: #fee2e2; border-color: var(--danger); color: #7f1d1d; }
+    .quiz-option:hover, .wc-option:hover { border-color: var(--primary-light); }
+    .quiz-option.correct, .wc-option.correct { background: #dcfce7; border-color: var(--success); color: #14532d; }
+    .quiz-option.wrong, .wc-option.wrong { background: #fee2e2; border-color: var(--danger); color: #7f1d1d; }
 
     .chat-box {
       height: 260px; overflow-y: auto; border: 1px solid var(--border);
@@ -148,6 +149,10 @@
     .att-history-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
     .filter-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
     @media (max-width: 650px) { .filter-row { grid-template-columns: 1fr; } }
+    .locked-banner {
+      background: #7f1d1d; color: #fee2e2; padding: 14px; border-radius: 12px;
+      font-weight: 700; text-align: center; margin: 10px 0;
+    }
   </style>
 </head>
 <body>
@@ -268,14 +273,22 @@
   <!-- 3. كأس العالم للكنيسة -->
   <div id="worldcup" class="section">
     <div class="card">
-      <h2>🌍 بطولة كأس العالم الروحية للكنيسة</h2>
-      <p style="color:var(--muted); font-size:0.86rem; margin-top:0;">تُحسب نقاط المنتخبات من مجموع نقاط الأعضاء + نقاط الحضور المسجلة في قاعدة البيانات (كل يوم حضور = +25 نقطة للمنتخب).</p>
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <h2 style="margin-bottom:0; border-bottom:none; padding-bottom:0;">🌍 بطولة كأس العالم الروحية للكنيسة</h2>
+        <span id="wcStatusBadge" class="badge badge-locked">🔒 الأسئلة مغلقة</span>
+      </div>
+      <p style="color:var(--muted); font-size:0.86rem; margin-top:8px;">تُحسب نقاط المنتخبات من مجموع نقاط الأعضاء + نقاط الحضور المسجلة في قاعدة البيانات (كل يوم حضور = +25 نقطة للمنتخب).</p>
       <div class="awards-grid">
         <div class="award-box"><span>⚽ هداف البطولة</span><strong id="topScorerAward">-</strong></div>
         <div class="award-box"><span>🛡️ الأكثر التزاماً بالحضور</span><strong id="mostAttendedAward">-</strong></div>
         <div class="award-box"><span>🏆 المنتخب المتصدر</span><strong id="topTeamAward">-</strong></div>
       </div>
       <div id="worldCupStandings"></div>
+    </div>
+
+    <div class="card">
+      <h2>🎯 أسئلة كأس العالم (تحكم الخادم: فتح / قفل)</h2>
+      <div id="wcQuestionsArea"></div>
     </div>
 
     <div class="card">
@@ -340,6 +353,13 @@
           <span id="activeAdminBadge" class="badge badge-ok">🛡️ الخادم الحالي: -</span>
           <button class="btn btn-danger btn-sm" onclick="logoutAdmin()">تسجيل خروج</button>
         </div>
+        <h2>🌍 إدارة أسئلة كأس العالم (فتح / قفل)</h2>
+        <div id="adminWcStatusText" style="font-weight:700; margin-bottom:10px;"></div>
+        <button class="btn btn-success" onclick="setWorldCupQuestionsOpen(true)">🔓 فتح أسئلة كأس العالم للأعضاء</button>
+        <button class="btn btn-danger" onclick="setWorldCupQuestionsOpen(false)">🔒 قفل أسئلة كأس العالم الآن</button>
+      </div>
+
+      <div class="card">
         <h2>📊 الإحصائيات والتقارير</h2>
         <div class="form-group">
           <label>📅 اختر تاريخ الاجتماع لمتابعة الحضور والغياب:</label>
@@ -431,7 +451,7 @@
   const SUPABASE_ANON_KEY = "sb_publishable_N3YDAUjaKH5rjmTMbAdZPA_c3JHhOrH";
   const DEFAULT_ADMIN_HASH = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9";
 
-  let churchState = { members: [], attendance: {}, messages: [], prayers: [] };
+  let churchState = { members: [], attendance: {}, messages: [], wcOpen: false };
   let currentUser = JSON.parse(localStorage.getItem("church_current_user") || "null");
   let currentAdminName = localStorage.getItem("church_admin_name") || "";
   const todayKey = new Date().toISOString().split("T")[0];
@@ -451,6 +471,15 @@
   if (!Array.isArray(savedProgress.answered)) savedProgress.answered = [];
   let currentQuestionIdx = savedProgress.idx || 0;
   let dailyQuestions = [];
+
+  let wcAnsweredIds = JSON.parse(localStorage.getItem("church_wc_answered_" + todayKey) || "[]");
+
+  const WORLD_CUP_QUESTIONS = [
+    { id: "wc1", q: "سؤال كأس العالم #1: ما اسم السفر الذي يتحدث عن خروج شعب الله من أرض العبودية؟", opts: ["التكوين", "الخروج", "اللاويين", "العدد"], a: 1 },
+    { id: "wc2", q: "سؤال كأس العالم #2: كم عدد أسفار العهد الجديد التي كتبها يوحنا الحبيب (مع الإنجيل والرسائل والرؤيا)؟", opts: ["3 أسفار", "4 أسفار", "5 أسفار", "7 أسفار"], a: 2 },
+    { id: "wc3", q: "سؤال كأس العالم #3: من هو الملك الذي أرسل رسالة يطلب فيها من النبي أن يبارك الشعب أو يلعنه في قصة بلعام؟", opts: ["بالاق", "هيرودس", "نبوخذنصر", "أخاب"], a: 0 },
+    { id: "wc4", q: "سؤال كأس العالم #4: في أي مدينة وُلد أبولّوس الرجل الفصيح المقتدر في الكتب بحسب سفر أعمال الرسل؟", opts: ["أثينا", "الإسكندرية", "كوروثوس", "أفسس"], a: 1 }
+  ];
 
   const DAILY_VERSES = [
     "«لِأَنَّهُ حَيْثُمَا اجْتَمَعَ اثْنَانِ أَوْ ثَلَاثَةٌ بِاسْمِي، فَهُنَاكَ أَكُونُ فِي وَسَطِهِمْ» (متى 18: 20) — قراءة اليوم: مزمور 23 وإنجيل يوحنا 15",
@@ -697,6 +726,94 @@
     }, 700);
   }
 
+  async function setWorldCupQuestionsOpen(isOpen) {
+    try {
+      await sbFetch("messages", "?sender=eq.WC_CONTROL", "DELETE");
+      await sbFetch("messages", "", "POST", [{
+        sender: "WC_CONTROL",
+        text: isOpen ? "OPEN" : "CLOSED",
+        time: currentAdminName || "الخادم"
+      }]);
+      await pullFromCloud(false);
+      alert(isOpen ? "🔓 تم فتح أسئلة كأس العالم لجميع الأعضاء!" : "🔒 تم قفل أسئلة كأس العالم الآن.");
+    } catch (err) {
+      alert("تعذر تحديث حالة أسئلة كأس العالم: " + err.message);
+    }
+  }
+
+  function renderWorldCupQuestions() {
+    const badge = document.getElementById("wcStatusBadge");
+    const area = document.getElementById("wcQuestionsArea");
+    const adminText = document.getElementById("adminWcStatusText");
+
+    if (adminText) {
+      adminText.textContent = churchState.wcOpen
+        ? "الحالة الحالية: مفتوحة للأعضاء ويمكنهم الحل الآن ✅"
+        : "الحالة الحالية: مغلقة ولا يمكن للأعضاء حلها حتى يفتحها الخادم 🔒";
+    }
+
+    if (churchState.wcOpen) {
+      badge.className = "badge badge-ok";
+      badge.textContent = "🔓 الأسئلة مفتوحة";
+    } else {
+      badge.className = "badge badge-locked";
+      badge.textContent = "🔒 الأسئلة مغلقة";
+      area.innerHTML = `<div class="locked-banner">🔒 أسئلة كأس العالم مغلقة حالياً — ينتظر فتحها من لوحة الخادم.</div>`;
+      return;
+    }
+
+    area.innerHTML = WORLD_CUP_QUESTIONS.map((item, qIndex) => {
+      const done = wcAnsweredIds.includes(item.id);
+      const optsHtml = item.opts.map((opt, idx) => `
+        <button class="wc-option ${done && idx === item.a ? 'correct' : ''}" ${done ? 'disabled' : ''} onclick="answerWorldCupQuestion(${qIndex}, ${idx}, this)">
+          ${opt}
+        </button>
+      `).join("");
+      return `
+        <div class="card" style="margin-bottom:12px; background:var(--soft);">
+          <div style="font-weight:700; margin-bottom:6px;">${item.q} <span class="badge badge-gold">+15 نقطة</span></div>
+          <div>${optsHtml}</div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  async function answerWorldCupQuestion(qIndex, selectedIdx, btnEl) {
+    if (!churchState.wcOpen) {
+      alert("أسئلة كأس العالم مغلقة حالياً.");
+      return;
+    }
+    if (!currentUser) {
+      alert("سجّل دخولك أولاً في تبويب (العضوية) لاحتساب نقاط كأس العالم!");
+      return;
+    }
+    const item = WORLD_CUP_QUESTIONS[qIndex];
+    if (wcAnsweredIds.includes(item.id)) return;
+
+    wcAnsweredIds.push(item.id);
+    localStorage.setItem("church_wc_answered_" + todayKey, JSON.stringify(wcAnsweredIds));
+
+    const parentCard = btnEl.parentElement;
+    parentCard.querySelectorAll(".wc-option").forEach(b => b.disabled = true);
+
+    if (selectedIdx === item.a) {
+      btnEl.classList.add("correct");
+      const member = churchState.members.find(m => m.id === currentUser.id);
+      if (member) {
+        member.points = (member.points || 0) + 15;
+        try {
+          await sbFetch("members", `?id=eq.${encodeURIComponent(member.id)}`, "PATCH", { points: member.points });
+          await pullFromCloud(false);
+        } catch (err) {
+          alert("لم تُحفظ النقاط: " + err.message);
+        }
+      }
+    } else {
+      btnEl.classList.add("wrong");
+      parentCard.querySelectorAll(".wc-option")[item.a].classList.add("correct");
+    }
+  }
+
   function getMemberAttendanceCount(memberId) {
     return Object.values(churchState.attendance).filter(ids => ids.includes(memberId)).length;
   }
@@ -835,6 +952,8 @@
   }
 
   function renderWorldCup() {
+    renderWorldCupQuestions();
+
     const groups = ["إعدادي", "ثانوي", "شباب وجامعة", "خدام", "عام"];
     const groupStats = groups.map((g, idx) => {
       const membersInGroup = churchState.members.filter(m => m.group === g);
@@ -910,7 +1029,8 @@
 
   function renderChat() {
     const box = document.getElementById("chatBox");
-    box.innerHTML = churchState.messages.slice(-60).map(m => `
+    const visibleMsgs = churchState.messages.filter(m => m.sender !== "WC_CONTROL");
+    box.innerHTML = visibleMsgs.slice(-60).map(m => `
       <div class="msg">
         <div class="msg-meta">${m.sender} • ${m.time}</div>
         <div>${m.text}</div>
@@ -1009,6 +1129,7 @@
     document.getElementById("activeAdminBadge").textContent = `🛡️ الخادم الحالي: ${currentAdminName}`;
     renderAdminTable();
     renderAdminPrayers();
+    renderWorldCupQuestions();
   }
 
   function logoutAdmin() {
@@ -1195,7 +1316,7 @@
       const [membersRows, attRows, msgRows] = await Promise.all([
         sbFetch("members", "?order=points.desc"),
         sbFetch("attendance", ""),
-        sbFetch("messages", "?order=id.asc&limit=60")
+        sbFetch("messages", "?order=id.asc&limit=80")
       ]);
 
       churchState.members = membersRows.map(r => ({
@@ -1214,6 +1335,13 @@
       });
       churchState.attendance = attMap;
       churchState.messages = msgRows;
+
+      const controlMsgs = msgRows.filter(m => m.sender === "WC_CONTROL");
+      if (controlMsgs.length > 0) {
+        churchState.wcOpen = controlMsgs[controlMsgs.length - 1].text === "OPEN";
+      } else {
+        churchState.wcOpen = false;
+      }
 
       statusEl.textContent = "✅ متصل بقاعدة البيانات (مزامنة حية)";
       renderAll();
@@ -1234,6 +1362,7 @@
     if (document.getElementById("adminDashboard").style.display === "block") {
       renderAdminTable();
       renderAdminPrayers();
+      renderWorldCupQuestions();
     }
   }
 
