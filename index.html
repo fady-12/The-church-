@@ -75,7 +75,6 @@
     .section { display: none; }
     .section.active { display: block; }
 
-    /* Leaderboard */
     .leader-item {
       display: flex; align-items: center; justify-content: space-between;
       padding: 12px; border-radius: 12px; background: #f8fafc;
@@ -90,7 +89,6 @@
     .rank-2 { background: #94a3b8; }
     .rank-3 { background: #b45309; }
 
-    /* Quiz */
     .quiz-option {
       display: block; width: 100%; text-align: right; padding: 12px;
       margin: 8px 0; border: 2px solid var(--border); border-radius: 12px;
@@ -100,7 +98,6 @@
     .quiz-option.correct { background: #dcfce7; border-color: var(--success); color: #14532d; }
     .quiz-option.wrong { background: #fee2e2; border-color: var(--danger); color: #7f1d1d; }
 
-    /* Chat */
     .chat-box {
       height: 300px; overflow-y: auto; border: 1px solid var(--border);
       border-radius: 12px; padding: 12px; background: #f1f5f9; margin-bottom: 10px;
@@ -111,7 +108,6 @@
     }
     .msg-meta { font-size: 0.75rem; color: var(--primary); font-weight: 700; }
 
-    /* Table */
     table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
     th, td { padding: 10px 6px; border-bottom: 1px solid var(--border); text-align: right; }
     th { background: #f1f5f9; color: var(--primary); }
@@ -134,11 +130,11 @@
 
 <div class="container">
   <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('register')">👤 العضوية</button>
-    <button class="tab-btn" onclick="switchTab('quiz')">📖 100 سؤال</button>
-    <button class="tab-btn" onclick="switchTab('leaderboard')">🏆 المتصدرين</button>
-    <button class="tab-btn" onclick="switchTab('chat')">💬 الدردشة</button>
-    <button class="tab-btn" onclick="switchTab('admin')">🛡️ الخادم</button>
+    <button class="tab-btn active" onclick="switchTab('register', this)">👤 العضوية</button>
+    <button class="tab-btn" onclick="switchTab('quiz', this)">📖 100 سؤال</button>
+    <button class="tab-btn" onclick="switchTab('leaderboard', this)">🏆 المتصدرين</button>
+    <button class="tab-btn" onclick="switchTab('chat', this)">💬 الدردشة</button>
+    <button class="tab-btn" onclick="switchTab('admin', this)">🛡️ الخادم</button>
   </div>
 
   <!-- 1. تسجيل العضو بدون رمز -->
@@ -146,7 +142,7 @@
     <div class="card">
       <h2>تسجيل دخول / إضافة عضو جديد (بدون رمز سحابي)</h2>
       <p style="font-size:0.85rem; color:var(--muted);">
-        سجّل اسمك ليظهر تلقائياً عند الخادم وفي لوحة المتصدرين وعلى جميع الهواتف.
+        سجّل اسمك ليظهر عند الخادم وفي لوحة المتصدرين، ويتم دمجه في السحابة عند مزامنة الخادم.
       </p>
       <div class="form-group">
         <label>الاسم ثلاثي</label>
@@ -181,7 +177,7 @@
       <h2>📖 مسابقة الكتاب المقدس اليومية (100 سؤال متجدد يومياً)</h2>
       <div id="quizHeaderInfo" style="display:flex; justify-content:space-between; margin-bottom:10px; font-weight:700;">
         <span id="qProgress">السؤال 1 من 100</span>
-        <span id="qScore">نقاطك اليوم: 0</span>
+        <span id="qScore">مجموع نقاطك: 0</span>
       </div>
       <div id="quizArea">
         <h3 id="questionText" style="font-size:1.05rem;">جاري تحميل أسئلة اليوم...</h3>
@@ -277,7 +273,6 @@
 </div>
 
 <script>
-  // ====== إعدادات أساسية ======
   const DEFAULT_REPO = "fady-12/The-church";
   const DEFAULT_BRANCH = "main";
   const STATE_FILE = "church-state.json";
@@ -285,7 +280,7 @@
 
   let churchState = {
     members: [],
-    attendance: {}, // { "YYYY-MM-DD": ["memberId1", ...] }
+    attendance: {},
     messages: [],
     lastUpdated: new Date().toISOString()
   };
@@ -297,22 +292,19 @@
   const todayKey = new Date().toISOString().split("T")[0];
   document.getElementById("todayDateBadge").textContent = todayKey;
 
-  // ====== دالة تشفير SHA-256 لكلمات المرور ======
   async function sha256(str) {
     const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
     return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
   }
 
-  // ====== التنقل بين التبويبات ======
-  function switchTab(id) {
+  function switchTab(id, btnEl) {
     document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
     document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
     document.getElementById(id).classList.add("active");
-    event.target.classList.add("active");
+    if (btnEl) btnEl.classList.add("active");
     renderAll();
   }
 
-  // ====== بنك أسئلة كتابي + مولّد 100 سؤال مختلف كل يوم ======
   const BASE_QUESTIONS = [
     { q: "من هو النبي الذي ابتلعه الحوت ثلاثة أيام؟", opts: ["يونان", "إيليا", "أرميا", "دانيال"], a: 0 },
     { q: "كم عدد تلاميذ السيد المسيح؟", opts: ["7", "10", "12", "70"], a: 2 },
@@ -327,18 +319,15 @@
   ];
 
   function generateDaily100Questions() {
-    // بذرة يومية تتغير كل 24 ساعة تلقائياً
     const daySeed = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
-    const list = [];
-    for (let i = 0; i < 100; i++) {
+    dailyQuestions = Array.from({ length: 100 }, (_, i) => {
       const base = BASE_QUESTIONS[(i + daySeed) % BASE_QUESTIONS.length];
-      list.push({
+      return {
         q: `(سؤال اليوم #${i + 1} - دورة ${daySeed % 365}) ${base.q}`,
         opts: base.opts,
         a: base.a
-      });
-    }
-    dailyQuestions = list;
+      };
+    });
   }
 
   function renderQuiz() {
@@ -366,8 +355,7 @@
       return;
     }
     const qObj = dailyQuestions[currentQuestionIdx];
-    const buttons = document.querySelectorAll(".quiz-option");
-    buttons.forEach(b => b.disabled = true);
+    document.querySelectorAll(".quiz-option").forEach(b => b.disabled = true);
 
     if (selectedIdx === qObj.a) {
       btn.classList.add("correct");
@@ -380,7 +368,7 @@
       await pushToGitHubIfConfigured();
     } else {
       btn.classList.add("wrong");
-      buttons[qObj.a].classList.add("correct");
+      document.querySelectorAll(".quiz-option")[qObj.a].classList.add("correct");
     }
 
     setTimeout(() => {
@@ -389,7 +377,6 @@
     }, 900);
   }
 
-  // ====== تسجيل عضو جديد أو دخوله ======
   async function registerOrLoginMember() {
     const name = document.getElementById("regName").value.trim();
     const phone = document.getElementById("regPhone").value.trim();
@@ -416,13 +403,12 @@
         phone,
         group,
         passHash,
-        points: 10, // مكافأة التسجيل
+        points: 10,
         joinedAt: todayKey
       };
       churchState.members.push(member);
     }
 
-    // تسجيل حضور تلقائي عند الدخول
     if (!churchState.attendance[todayKey]) churchState.attendance[todayKey] = [];
     if (!churchState.attendance[todayKey].includes(member.id)) {
       churchState.attendance[todayKey].push(member.id);
@@ -439,7 +425,6 @@
     renderAll();
   }
 
-  // ====== الدردشة ======
   async function sendChatMessage() {
     const input = document.getElementById("chatInput");
     const text = input.value.trim();
@@ -468,7 +453,6 @@
     box.scrollTop = box.scrollHeight;
   }
 
-  // ====== لوحة المتصدرين ======
   function renderLeaderboard() {
     const sorted = [...churchState.members].sort((a, b) => (b.points || 0) - (a.points || 0));
     const list = document.getElementById("leaderboardList");
@@ -486,7 +470,6 @@
     `).join("") || "<p>لا يوجد أعضاء مسجلون بعد.</p>";
   }
 
-  // ====== لوحة تحكم الخادم ======
   async function loginAdmin() {
     const val = document.getElementById("adminPassInput").value;
     const hash = await sha256(val);
@@ -561,7 +544,6 @@
     a.click();
   }
 
-  // ====== المزامنة السحابية مع GitHub ======
   function saveLocalState() {
     churchState.lastUpdated = new Date().toISOString();
     localStorage.setItem("church_state_cache", JSON.stringify(churchState));
@@ -577,19 +559,25 @@
       const res = await fetch(url);
       if (res.ok) {
         const remoteData = await res.json();
-        // دمج الأعضاء المحليين الجدد مع السحابة حتى لا يضيع أي عضو سجل بدون رمز
         const localCache = JSON.parse(localStorage.getItem("church_state_cache") || "null");
-        if (localCache && localCache.members) {
+        if (localCache && Array.isArray(localCache.members)) {
+          remoteData.members = remoteData.members || [];
           localCache.members.forEach(lm => {
             if (!remoteData.members.some(rm => rm.phone === lm.phone)) {
               remoteData.members.push(lm);
             }
           });
         }
-        churchState = remoteData;
+        churchState = {
+          members: remoteData.members || [],
+          attendance: remoteData.attendance || {},
+          messages: remoteData.messages || [],
+          lastUpdated: remoteData.lastUpdated || new Date().toISOString()
+        };
         saveLocalState();
         statusEl.textContent = "✅ متزامن مع سحابة الكنيسة";
         renderAll();
+        if (manual) alert("تم التحديث من سحابة GitHub بنجاح!");
       } else {
         statusEl.textContent = "ℹ️ وضع محلي (بانتظار مزامنة الخادم)";
       }
@@ -660,7 +648,6 @@
     }
   }
 
-  // التشغيل الأولي + تحديث تلقائي كل 15 ثانية لجميع الهواتف
   const cached = localStorage.getItem("church_state_cache");
   if (cached) churchState = JSON.parse(cached);
   generateDaily100Questions();
