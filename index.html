@@ -230,14 +230,22 @@
     <div class="card" id="adminLoginCard">
       <h2>🛡️ دخول لوحة تحكم الخادم</h2>
       <div class="form-group">
+        <label>اسم الخادم</label>
+        <input type="text" id="adminNameInput" placeholder="مثال: خادم فادي" />
+      </div>
+      <div class="form-group">
         <label>كلمة مرور الخادم</label>
         <input type="password" id="adminPassInput" placeholder="أدخل كلمة مرور الإدارة" />
       </div>
-      <button class="btn btn-primary" onclick="loginAdmin()">فتح لوحة التحكم</button>
+      <button class="btn btn-primary" onclick="loginAdmin()">دخول باسم الخادم وفتح اللوحة</button>
     </div>
 
     <div id="adminDashboard" style="display:none;">
       <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+          <span id="activeAdminBadge" class="badge badge-ok">🛡️ الخادم الحالي: -</span>
+          <button class="btn btn-danger btn-sm" onclick="logoutAdmin()">تسجيل خروج</button>
+        </div>
         <h2>📊 الإحصائيات والتقارير</h2>
         <div class="form-group">
           <label>📅 اختر تاريخ الاجتماع لمتابعة الحضور والغياب:</label>
@@ -249,7 +257,26 @@
           <div class="stat-box"><strong id="statAbsent">0</strong>غائبون للافتقاد</div>
         </div>
         <button class="btn btn-primary" onclick="testDatabaseConnection()">🔍 فحص اتصال وحفظ قاعدة البيانات الآن</button>
-        <button class="btn btn-gold" onclick="exportCSVReport()">📥 تحميل تقرير الحضور والغياب (CSV)</button>
+        <button class="btn btn-gold" onclick="exportCSVReport()">📥 تحميل تقرير الحضور والغياب الكامل (CSV)</button>
+        <button class="btn btn-success" onclick="exportServantsCSVReport()">✝️ تحميل تقرير الخدام فقط (CSV)</button>
+      </div>
+
+      <div class="card">
+        <h2>✝️ تقرير الخدام</h2>
+        <div id="servantsSummaryText" style="font-weight:700; margin-bottom:8px; color:var(--primary);"></div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>اسم الخادم</th>
+                <th>الهاتف</th>
+                <th>النقاط</th>
+                <th>الحالة في التاريخ</th>
+              </tr>
+            </thead>
+            <tbody id="servantsReportTable"></tbody>
+          </table>
+        </div>
       </div>
 
       <div class="card">
@@ -289,6 +316,7 @@
 
   let churchState = { members: [], attendance: {}, messages: [] };
   let currentUser = JSON.parse(localStorage.getItem("church_current_user") || "null");
+  let currentAdminName = localStorage.getItem("church_admin_name") || "";
   const todayKey = new Date().toISOString().split("T")[0];
   document.getElementById("todayDateBadge").textContent = todayKey;
   document.getElementById("adminDateSelect").value = todayKey;
@@ -633,7 +661,7 @@
     const input = document.getElementById("chatInput");
     const text = input.value.trim();
     if (!text) return;
-    const sender = currentUser ? currentUser.name : "زائر من الكنيسة";
+    const sender = currentUser ? currentUser.name : (currentAdminName ? `خادم: ${currentAdminName}` : "زائر من الكنيسة");
     const time = new Date().toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit" });
 
     try {
@@ -674,16 +702,36 @@
   }
 
   async function loginAdmin() {
+    const adminName = document.getElementById("adminNameInput").value.trim();
     const val = document.getElementById("adminPassInput").value;
+    if (!adminName) {
+      alert("برجاء إدخال اسم الخادم أولاً.");
+      return;
+    }
     const hash = await sha256(val);
     const savedAdminHash = localStorage.getItem("church_admin_hash") || DEFAULT_ADMIN_HASH;
     if (hash === savedAdminHash || (!localStorage.getItem("church_admin_hash") && val === "admin123")) {
-      document.getElementById("adminLoginCard").style.display = "none";
-      document.getElementById("adminDashboard").style.display = "block";
-      renderAdminTable();
+      currentAdminName = adminName;
+      localStorage.setItem("church_admin_name", currentAdminName);
+      document.getElementById("adminPassInput").value = "";
+      showAdminDashboard();
     } else {
       alert("كلمة مرور الخادم غير صحيحة.");
     }
+  }
+
+  function showAdminDashboard() {
+    document.getElementById("adminLoginCard").style.display = "none";
+    document.getElementById("adminDashboard").style.display = "block";
+    document.getElementById("activeAdminBadge").textContent = `🛡️ الخادم الحالي: ${currentAdminName}`;
+    renderAdminTable();
+  }
+
+  function logoutAdmin() {
+    currentAdminName = "";
+    localStorage.removeItem("church_admin_name");
+    document.getElementById("adminDashboard").style.display = "none";
+    document.getElementById("adminLoginCard").style.display = "block";
   }
 
   async function changeAdminPassword() {
@@ -698,12 +746,38 @@
     alert("✅ تم تغيير كلمة مرور لوحة الخادم بنجاح!");
   }
 
+  function renderServantsReport(selectedDate, presentIds) {
+    const servants = churchState.members.filter(m => m.group === "خدام");
+    const presentServantsCount = servants.filter(s => presentIds.includes(s.id)).length;
+    document.getElementById("servantsSummaryText").textContent =
+      `إجمالي الخدام: ${servants.length} • حاضرون في ${selectedDate}: ${presentServantsCount} • غائبون: ${Math.max(0, servants.length - presentServantsCount)}`;
+
+    const tbody = document.getElementById("servantsReportTable");
+    if (!servants.length) {
+      tbody.innerHTML = "<tr><td colspan='4' style='color:#64748b;text-align:center;'>لا يوجد أعضاء مسجلون ضمن مرحلة (خدام) بعد.</td></tr>";
+      return;
+    }
+    tbody.innerHTML = servants.map(s => {
+      const isPresent = presentIds.includes(s.id);
+      return `
+        <tr>
+          <td><strong>${s.name}</strong></td>
+          <td>${s.phone}</td>
+          <td>${s.points || 0}</td>
+          <td><span class="badge ${isPresent ? 'badge-ok' : 'badge-warn'}">${isPresent ? 'حاضر ✅' : 'غائب ⚠️'}</span></td>
+        </tr>
+      `;
+    }).join("");
+  }
+
   function renderAdminTable() {
     const selectedDate = document.getElementById("adminDateSelect").value || todayKey;
     const presentIds = churchState.attendance[selectedDate] || [];
     document.getElementById("statTotal").textContent = churchState.members.length;
     document.getElementById("statPresent").textContent = presentIds.length;
     document.getElementById("statAbsent").textContent = Math.max(0, churchState.members.length - presentIds.length);
+
+    renderServantsReport(selectedDate, presentIds);
 
     const tbody = document.getElementById("adminMembersTable");
     tbody.innerHTML = churchState.members.map(m => {
@@ -758,15 +832,31 @@
   function exportCSVReport() {
     const selectedDate = document.getElementById("adminDateSelect").value || todayKey;
     const presentIds = churchState.attendance[selectedDate] || [];
-    let csv = `\uFEFFالاسم,الهاتف,المرحلة,النقاط,حالة الحضور (${selectedDate})\n`;
+    let csv = `\uFEFFالاسم,الهاتف,المرحلة,النقاط,حالة الحضور (${selectedDate}),الخادم المسؤول\n`;
     churchState.members.forEach(m => {
       const st = presentIds.includes(m.id) ? "حاضر" : "غائب";
-      csv += `"${m.name}","${m.phone}","${m.group}",${m.points || 0},"${st}"\n`;
+      csv += `"${m.name}","${m.phone}","${m.group}",${m.points || 0},"${st}","${currentAdminName || "-"}"\n`;
     });
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.download = `تقرير_الحضور_والغياب_${selectedDate}.csv`;
+    a.click();
+  }
+
+  function exportServantsCSVReport() {
+    const selectedDate = document.getElementById("adminDateSelect").value || todayKey;
+    const presentIds = churchState.attendance[selectedDate] || [];
+    const servants = churchState.members.filter(m => m.group === "خدام");
+    let csv = `\uFEFFاسم الخادم,الهاتف,النقاط,حالة الحضور (${selectedDate}),معد التقرير\n`;
+    servants.forEach(s => {
+      const st = presentIds.includes(s.id) ? "حاضر" : "غائب";
+      csv += `"${s.name}","${s.phone}",${s.points || 0},"${st}","${currentAdminName || "-"}"\n`;
+    });
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `تقرير_الخدام_${selectedDate}.csv`;
     a.click();
   }
 
@@ -815,6 +905,9 @@
     }
   }
 
+  if (currentAdminName) {
+    showAdminDashboard();
+  }
   generateDaily100Questions();
   pullFromCloud(false);
   setInterval(() => pullFromCloud(false), 6000);
