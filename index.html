@@ -475,12 +475,12 @@
       </div>
 
       <div class="card">
-        <h2>🔐 تغيير كلمة السر الموحدة للموقع</h2>
+        <h2>🔐 تغيير كلمة السر الموحدة لكل من في قاعدة البيانات</h2>
         <div class="form-group">
           <label>كلمة السر الموحدة الجديدة</label>
           <input type="password" id="newAdminPassInput" placeholder="أدخل كلمة السر الجديدة" />
         </div>
-        <button class="btn btn-danger" onclick="changeAdminPassword()">تحديث كلمة السر الموحدة</button>
+        <button class="btn btn-danger" onclick="changeAdminPassword()">تحديث كلمة السر في قاعدة البيانات للجميع</button>
       </div>
     </div>
   </div>
@@ -491,7 +491,15 @@
   const SUPABASE_ANON_KEY = "sb_publishable_N3YDAUjaKH5rjmTMbAdZPA_c3JHhOrH";
   const DEFAULT_SHARED_HASH = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9";
 
-  let churchState = { members: [], attendance: {}, messages: [], wcOpen: false, customQuestions: [], activeTopic: "ALL_100" };
+  let churchState = {
+    members: [],
+    attendance: {},
+    messages: [],
+    wcOpen: false,
+    customQuestions: [],
+    activeTopic: "ALL_100",
+    cloudPassHash: ""
+  };
   let currentUser = JSON.parse(localStorage.getItem("church_current_user") || "null");
   let currentAdminName = localStorage.getItem("church_admin_name") || "";
   const todayKey = new Date().toISOString().split("T")[0];
@@ -571,9 +579,9 @@
   async function isValidSharedPassword(pass) {
     if (!pass) return false;
     const hash = await sha256(pass);
-    const savedHash = localStorage.getItem("church_shared_pass_hash") || localStorage.getItem("church_admin_hash") || DEFAULT_SHARED_HASH;
-    const hasCustomHash = Boolean(localStorage.getItem("church_shared_pass_hash") || localStorage.getItem("church_admin_hash"));
-    return hash === savedHash || (!hasCustomHash && pass === "admin123");
+    const activeHash = churchState.cloudPassHash || localStorage.getItem("church_shared_pass_hash") || DEFAULT_SHARED_HASH;
+    const hasCustomHash = Boolean(churchState.cloudPassHash || localStorage.getItem("church_shared_pass_hash"));
+    return hash === activeHash || (!hasCustomHash && pass === "admin123");
   }
 
   function switchTab(id, btnEl) {
@@ -1169,7 +1177,7 @@
 
   function renderChat() {
     const box = document.getElementById("chatBox");
-    const hiddenSenders = ["WC_CONTROL", "CUSTOM_Q", "TOPIC_CONTROL"];
+    const hiddenSenders = ["WC_CONTROL", "CUSTOM_Q", "TOPIC_CONTROL", "PASS_CONTROL"];
     const visibleMsgs = churchState.messages.filter(m => !hiddenSenders.includes(m.sender));
     box.innerHTML = visibleMsgs.slice(-60).map(m => `
       <div class="msg">
@@ -1286,10 +1294,21 @@
       return;
     }
     const newHash = await sha256(newPass);
-    localStorage.setItem("church_shared_pass_hash", newHash);
-    localStorage.setItem("church_admin_hash", newHash);
-    document.getElementById("newAdminPassInput").value = "";
-    alert("✅ تم تغيير كلمة السر الموحدة بنجاح!");
+    try {
+      await sbFetch("messages", "?sender=eq.PASS_CONTROL", "DELETE");
+      await sbFetch("messages", "", "POST", [{
+        sender: "PASS_CONTROL",
+        text: newHash,
+        time: currentAdminName || "الخادم"
+      }]);
+      churchState.cloudPassHash = newHash;
+      localStorage.setItem("church_shared_pass_hash", newHash);
+      document.getElementById("newAdminPassInput").value = "";
+      await pullFromCloud(false);
+      alert("✅ تم تغيير كلمة السر الموحدة في قاعدة البيانات للجميع!");
+    } catch (err) {
+      alert("تعذر حفظ كلمة السر الجديدة في قاعدة البيانات: " + err.message);
+    }
   }
 
   function renderServantsReport(selectedDate, presentIds) {
@@ -1457,7 +1476,7 @@
       const [membersRows, attRows, msgRows] = await Promise.all([
         sbFetch("members", "?order=points.desc"),
         sbFetch("attendance", ""),
-        sbFetch("messages", "?order=id.asc&limit=120")
+        sbFetch("messages", "?order=id.asc&limit=150")
       ]);
 
       churchState.members = membersRows.map(r => ({
@@ -1482,6 +1501,12 @@
 
       const topicMsgs = msgRows.filter(m => m.sender === "TOPIC_CONTROL");
       churchState.activeTopic = topicMsgs.length > 0 ? topicMsgs[topicMsgs.length - 1].text : "ALL_100";
+
+      const passMsgs = msgRows.filter(m => m.sender === "PASS_CONTROL");
+      if (passMsgs.length > 0) {
+        churchState.cloudPassHash = passMsgs[passMsgs.length - 1].text;
+        localStorage.setItem("church_shared_pass_hash", churchState.cloudPassHash);
+      }
 
       const parsedCustom = [];
       msgRows.filter(m => m.sender === "CUSTOM_Q").forEach(m => {
